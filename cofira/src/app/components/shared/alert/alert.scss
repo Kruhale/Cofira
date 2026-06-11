@@ -1,27 +1,24 @@
-
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
 
 .alert {
-  --alert-icono-color: currentColor;
-  --alert-cerrar-color: currentColor;
-  --alert-cerrar-hover-fondo: var(--negro-puro-transparente-010);
-
   display: flex;
   align-items: center;
   gap: var(--spacing-size-s);
   padding: var(--spacing-size-s) var(--spacing-size-m);
   margin-bottom: var(--spacing-size-s);
-  border-radius: var(--radius-xss);
-  border-left: 0.25rem solid;
-  box-shadow: 0 0.125rem 0.5rem var(--negro-puro-transparente-010);
+  @include superficie-bento;
+  border-left: 0.25rem solid var(--alert-acento);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  transition: all var(--duration-base) ease;
+  color: var(--texto-principal);
+  transition: transform var(--duration-base) ease, box-shadow var(--duration-base) ease;
   animation: alerta-deslizar-entrada var(--duration-base) ease;
 }
 
 .alert:hover {
-  box-shadow: 0 0.25rem 0.75rem var(--negro-puro-transparente-015);
   transform: translateY(-0.125rem);
+  box-shadow: var(--sombra-bento), var(--glow-interior), var(--glow-acento);
 }
 
 
@@ -34,19 +31,21 @@
   width: 1.5rem;
   height: 1.5rem;
   margin: 0;
+  color: var(--alert-acento);
 }
 
 .alert__icono-svg {
   width: 100%;
   height: 100%;
-  fill: var(--alert-icono-color);
+  fill: currentColor;
 }
 
 .alert__mensaje {
   flex: 1;
+  margin: 0;
   line-height: var(--line-height-normal);
   font-weight: var(--font-weight-medium);
-  margin: 0;
+  color: var(--texto-principal);
 }
 
 .alert__cerrar {
@@ -54,70 +53,52 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0.25rem;
   background: transparent;
   border: none;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 50%;
   opacity: 0.7;
-  transition: all var(--duration-fast) ease;
+  color: var(--texto-secundario);
+  transition: opacity var(--duration-fast) ease,
+    background var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
 }
 
 .alert__cerrar-svg {
   width: 1.25rem;
   height: 1.25rem;
-  fill: var(--alert-cerrar-color);
+  fill: currentColor;
 }
 
 .alert__cerrar:hover {
   opacity: 1;
-  background: var(--alert-cerrar-hover-fondo);
+  background: var(--superficie-3);
+  color: var(--texto-principal);
   transform: rotate(90deg);
 }
 
-.alert__cerrar:focus {
-  outline: 0.125rem solid currentColor;
-  outline-offset: 0.125rem;
+.alert__cerrar:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 
 
 .alert--success {
-  --alert-icono-color: var(--amarillo-darker);
-  --alert-cerrar-color: var(--negro-normal);
-
-  background-color: var(--amarillo-normal);
-  border-left-color: var(--amarillo-dark);
-  color: var(--negro-normal);
+  --alert-acento: var(--exito);
 }
 
 .alert--error {
-  --alert-icono-color: var(--blanco-normal);
-  --alert-cerrar-color: var(--blanco-normal);
-  --alert-cerrar-hover-fondo: var(--blanco-puro-transparente-020);
-
-  background-color: var(--button-red);
-  border-left-color: var(--button-red-hover);
-  color: var(--blanco-normal);
+  --alert-acento: var(--peligro);
 }
 
 .alert--warning {
-  --alert-icono-color: var(--amarillo-dark);
-  --alert-cerrar-color: var(--negro-normal);
-
-  background-color: var(--amarillo-normal-hover);
-  border-left-color: var(--amarillo-normal);
-  color: var(--negro-normal);
+  --alert-acento: var(--ambar);
 }
 
 .alert--info {
-  --alert-icono-color: var(--blanco-normal);
-  --alert-cerrar-color: var(--blanco-normal);
-  --alert-cerrar-hover-fondo: var(--blanco-puro-transparente-020);
-
-  background-color: var(--gris-normal);
-  border-left-color: var(--gris-dark);
-  color: var(--blanco-normal);
+  --alert-acento: var(--naranja-normal);
 }
 
 

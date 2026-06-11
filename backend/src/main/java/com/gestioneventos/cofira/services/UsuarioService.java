@@ -74,12 +74,10 @@ public class UsuarioService {
         usuario.setEmail(crearUsuarioDTO.getEmail());
         String contrasenaHasheada = passwordEncoder.encode(crearUsuarioDTO.getPassword());
         usuario.setPassword(contrasenaHasheada);
-        
-        // Establecer el rol (si se proporciona, sino usar el default USER)
-        if (crearUsuarioDTO.getRol() != null) {
-            usuario.setRol(crearUsuarioDTO.getRol());
-        }
-        
+
+        // El rol se fija en servidor, nunca desde el cliente (anti mass-assignment).
+        usuario.setRol(Rol.USER);
+
         usuario.setEdad(crearUsuarioDTO.getEdad());
         usuario.setPeso(crearUsuarioDTO.getPeso());
         usuario.setAltura(crearUsuarioDTO.getAltura());

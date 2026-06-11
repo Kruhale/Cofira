@@ -1,4 +1,5 @@
-
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
 
 .formulario-seleccion {
   display: flex;
@@ -11,43 +12,41 @@
 
 
 .formulario-seleccion__etiqueta {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-light);
+  @include etiqueta-tecnica(var(--texto-secundario));
 }
 
 .formulario-seleccion__campo {
   padding: var(--spacing-size-s) var(--spacing-size-m);
-  border: 0.125rem solid var(--gris-normal);
-  border-radius: var(--radius-xs);
+  padding-right: var(--spacing-size-xl);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
   font-size: var(--font-size-md);
-  color: var(--negro-normal);
-  background-color: var(--blanco-normal);
+  color: var(--texto-principal);
   cursor: pointer;
-  transition: all 0.3s ease;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23f97316' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right var(--spacing-size-s) center;
-  padding-right: var(--spacing-size-xl);
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
 }
 
 .formulario-seleccion__campo:hover {
-  border-color: var(--button-yellow);
+  border-color: var(--borde-medio);
 }
 
 .formulario-seleccion__campo:focus-visible {
-  border-color: var(--button-yellow);
-  box-shadow: 0 0 0 0.1875rem var(--amarillo-normal-transparente-010);
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 .formulario-seleccion__campo option {
-  background-color: var(--blanco-normal);
-  color: var(--negro-normal);
   padding: var(--spacing-size-s);
+  background: var(--superficie-1);
+  color: var(--texto-principal);
 }
 
 .formulario-seleccion__campo option:disabled {
-  color: var(--gris-normal);
-  opacity: 0.5;
+  color: var(--texto-suave);
 }

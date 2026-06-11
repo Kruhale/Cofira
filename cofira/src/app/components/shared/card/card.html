@@ -1,12 +1,29 @@
 <article [class]="obtenerClasesCard()">
 
-  <h3 [class]="obtenerClasesTitulo()">{{ titulo }}</h3>
+  @if (destacada && etiqueta) {
+    <span class="tarjeta-precios__insignia">{{ etiqueta }}</span>
+  }
 
-  <ul class="tarjeta-precios__lista">
-    @for (ventaja of ventajas; track ventaja) {
-    <li [class]="obtenerClasesVentaja()">{{ ventaja }}</li>
+  <header class="tarjeta-precios__cabecera">
+    <h3 [class]="obtenerClasesTitulo()">{{ titulo }}</h3>
+    @if (descripcion) {
+      <p class="tarjeta-precios__descripcion">{{ descripcion }}</p>
     }
-  </ul>
+  </header>
+
+  @if (precioCantidad) {
+    <div class="tarjeta-precios__bloque-precio">
+      <p class="tarjeta-precios__importe">
+        <span class="tarjeta-precios__cantidad">{{ precioCantidad }}</span>
+        @if (precioPeriodo) {
+          <span class="tarjeta-precios__periodo">{{ precioPeriodo }}</span>
+        }
+      </p>
+      @if (notaPrecio) {
+        <p class="tarjeta-precios__nota">{{ notaPrecio }}</p>
+      }
+    </div>
+  }
 
   <app-button
     class="tarjeta-precios__app-boton"
@@ -14,10 +31,25 @@
     [anchoCompleto]="true"
     [habilitado]="deshabilitada"
     tamanio="grande"
-    variante="primario">
+    [variante]="destacada ? 'primario' : 'secundario'">
     {{ texto_boton }}
   </app-button>
 
-  <p [class]="obtenerClasesPrecio()">{{ precio }}</p>
+  <hr class="tarjeta-precios__separador">
+
+  <ul class="tarjeta-precios__lista">
+    @for (ventaja of ventajas; track ventaja) {
+      <li [class]="obtenerClasesVentaja()">
+        <svg aria-hidden="true" class="tarjeta-precios__check" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>{{ ventaja }}</span>
+      </li>
+    }
+  </ul>
+
+  @if (!precioCantidad && precio) {
+    <p [class]="obtenerClasesPrecio()">{{ precio }}</p>
+  }
 
 </article>

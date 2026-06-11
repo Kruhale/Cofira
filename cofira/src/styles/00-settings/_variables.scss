@@ -1,6 +1,81 @@
 @import 'css-variables';
 
 :root {
+  /* ════════════════════════════════════════════════════════════
+     SISTEMA DE DISEÑO 2026 — Oscuro premium + acento NARANJA
+     Tokens semánticos = nueva base del rediseño. Los valores aquí
+     son del TEMA CLARO ("día"); el TEMA OSCURO (protagonista) los
+     sobrescribe en 07-dark-mode/_dark-mode-config.scss.
+     ════════════════════════════════════════════════════════════ */
+
+  /* Superficies (4 niveles) — claro */
+  --superficie-fondo: hsl(40, 20%, 98%);
+  --superficie-1: hsl(0, 0%, 100%);
+  --superficie-2: hsl(40, 12%, 95.5%);
+  --superficie-3: hsl(40, 10%, 91%);
+
+  /* Acento naranja energía — claro (oscurecido para contraste sobre blanco) */
+  --naranja-normal: hsl(24, 92%, 47%);
+  --naranja-hover: hsl(24, 92%, 41%);
+  --naranja-active: hsl(24, 92%, 36%);
+  --naranja-texto: hsl(24, 95%, 35%);
+  --ambar: hsl(38, 95%, 48%);
+
+  /* Glows del acento (rgba, válidos en ambos temas) */
+  --naranja-glow-fuerte: hsla(24, 100%, 50%, 0.30);
+  --naranja-glow-media: hsla(24, 100%, 50%, 0.16);
+  --naranja-glow-suave: hsla(24, 100%, 50%, 0.07);
+
+  /* Texto (3 niveles) — claro */
+  --texto-principal: hsl(240, 6%, 8%);
+  --texto-secundario: hsla(240, 6%, 8%, 0.66);
+  --texto-suave: hsla(240, 6%, 8%, 0.42);
+  --texto-sobre-acento: hsl(0, 0%, 100%);
+
+  /* Bordes — claro */
+  --borde-sutil: hsla(240, 6%, 8%, 0.10);
+  --borde-medio: hsla(240, 6%, 8%, 0.18);
+  --borde-foco: var(--naranja-normal);
+
+  /* Estados */
+  --exito: hsl(150, 65%, 40%);
+  --exito-texto: hsl(150, 70%, 30%);
+  --peligro: hsl(4, 80%, 52%);
+  --peligro-texto: hsl(4, 80%, 45%);
+
+  /* Gradientes y efectos */
+  --gradiente-acento: linear-gradient(135deg, hsl(24, 95%, 52%) 0%, hsl(38, 95%, 52%) 100%);
+  --gradiente-halo: radial-gradient(120% 80% at 50% 0%, var(--naranja-glow-media), transparent 60%);
+  --gradiente-overlay-foto: linear-gradient(180deg, hsla(0, 0%, 0%, 0.10) 0%, hsla(40, 20%, 98%, 0.92) 100%);
+  --vidrio-fondo: hsla(40, 20%, 98%, 0.72);
+  --vidrio-blur: blur(16px) saturate(140%);
+
+  /* Sombras del sistema bento — claro (cálidas y difusas) */
+  --sombra-bento: 0 1px 0 hsla(0, 0%, 100%, 0.6) inset, 0 0.75rem 2rem hsla(30, 30%, 20%, 0.08);
+  --glow-interior: inset 0 1px 0 hsla(0, 0%, 100%, 0.5);
+  --glow-acento: 0 0 1.5rem var(--naranja-glow-media), 0 0 4rem var(--naranja-glow-suave);
+
+  /* Tipografía display + cuerpo + mono */
+  --fuente-display: 'Satoshi', 'Archivo', sans-serif;
+  --fuente-cuerpo: 'Hanken Grotesk', system-ui, sans-serif;
+  --fuente-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Escala display fluida + etiqueta técnica */
+  --display-xl: clamp(3.25rem, 9vw + 1rem, 8rem);
+  --display-lg: clamp(2.5rem, 5.5vw + 0.75rem, 5rem);
+  --display-md: clamp(1.875rem, 3.5vw + 0.5rem, 3.25rem);
+  --etiqueta-tecnica: 0.6875rem;
+
+  /* Radios añadidos por el rediseño */
+  --radius-full: 9999px;
+  --radius-bento: 1.25rem;
+
+  /* ════════════════════════════════════════════════════════════
+     TOKENS HEREDADOS — se conservan; los de acento ahora apuntan
+     a la paleta naranja (recolor global). DEPRECATED: migrar a
+     --naranja-* / --superficie-* al rediseñar cada página.
+     ════════════════════════════════════════════════════════════ */
+
   --negro-normal: hsl(320, 9.68%, 6.08%);
   --negro-normal-hover: hsl(330, 7.14%, 5.49%);
   --negro-normal-active: hsl(320, 12%, 4.9%);
@@ -8,14 +83,15 @@
   --negro-dark-hover: hsl(300, 11.11%, 3.53%);
   --negro-dark-active: hsl(330, 14.29%, 2.75%);
 
-  --amarillo-normal: hsl(49.65, 100%, 50%);
-  --amarillo-normal-hover: hsl(49.57, 100%, 45.1%);
-  --amarillo-normal-active: hsl(49.71, 100%, 40%);
-  --amarillo-dark: hsl(49.63, 100%, 37.45%);
-  --amarillo-dark-hover: hsl(49.8, 100%, 30%);
-  --amarillo-dark-active: hsl(49.57, 100%, 22.55%);
-  --amarillo-darker: hsl(49.89, 100%, 17.45%);
-  --amarillo-texto-accesible: hsl(50, 100%, 25%);
+  /* DEPRECATED: aliases del antiguo amarillo → ahora naranja */
+  --amarillo-normal: var(--naranja-normal);
+  --amarillo-normal-hover: var(--naranja-hover);
+  --amarillo-normal-active: var(--naranja-active);
+  --amarillo-dark: var(--naranja-active);
+  --amarillo-dark-hover: var(--naranja-active);
+  --amarillo-dark-active: var(--naranja-active);
+  --amarillo-darker: var(--naranja-active);
+  --amarillo-texto-accesible: var(--naranja-texto);
 
   --blanco-normal: hsl(0, 0%, 96.08%);
   --blanco-normal-hover: hsl(0, 0%, 86.67%);
@@ -59,8 +135,8 @@
   --button-red-hover: hsl(0, 93.33%, 29.41%);
   --button-gray: hsl(212.31, 9.35%, 27.25%);
   --button-gray-hover: hsl(210, 9.62%, 20.39%);
-  --button-yellow: hsl(49.65, 100%, 50%);
-  --button-yellow-hover: hsl(49.89, 100%, 17.45%);
+  --button-yellow: var(--naranja-normal);
+  --button-yellow-hover: var(--naranja-hover);
   --button-darker: hsl(212.73, 9.91%, 21.76%);
   --button-darker-hover: hsl(217.5, 9.52%, 16.47%);
 
@@ -99,8 +175,8 @@
 
 
 
-  --font-primary: 'Montserrat', sans-serif;
-  --font-secondary: 'Poppins', sans-serif;
+  --font-primary: 'Hanken Grotesk', sans-serif;
+  --font-secondary: 'Satoshi', sans-serif;
 
 
 
@@ -157,7 +233,9 @@
 
 
 
-  --z-header: 1;
+  /* El contenido de página llega hasta z 2: el header va por encima (3),
+     y overlay (4) / modal (5) por encima del header. */
+  --z-header: 3;
   --z-header-controls: 2;
   --z-dropdown: 3;
   --z-overlay: 4;
@@ -166,18 +244,18 @@
   --z-tooltip: 11;
 
 
-  --bg-body: hsl(0, 0%, 96.08%);
-  --bg-card: hsl(0, 0%, 96.08%);
-  --bg-card-alt: hsl(0, 0%, 86.67%);
-  --bg-input: hsl(0, 0%, 96.08%);
-  --bg-input-config: hsl(0, 0%, 94.12%);
-  --bg-surface: hsl(0, 0%, 94.12%);
+  --bg-body: var(--superficie-fondo);
+  --bg-card: var(--superficie-1);
+  --bg-card-alt: var(--superficie-2);
+  --bg-input: var(--superficie-1);
+  --bg-input-config: var(--superficie-2);
+  --bg-surface: var(--superficie-2);
   --blanco: hsl(0, 0%, 100%);
-  --text-primary: hsl(320, 9.68%, 6.08%);
-  --text-secondary: hsl(212.31, 9.35%, 27.25%);
-  --text-muted: hsl(0, 0%, 57.65%);
-  --border-color: hsl(0, 0%, 72.16%);
-  --border-color-light: hsl(0, 0%, 86.67%);
+  --text-primary: var(--texto-principal);
+  --text-secondary: var(--texto-secundario);
+  --text-muted: var(--texto-suave);
+  --border-color: var(--borde-medio);
+  --border-color-light: var(--borde-sutil);
 
 
   --radius-sm: 0.25rem;
@@ -212,8 +290,8 @@
   --blanco-puro-transparente-090: hsla(0, 0%, 100%, 0.9);
   --blanco-normal-transparente-085: hsla(0, 0%, 96.08%, 0.85);
 
-  /* Transparencias comunes - Amarillo */
-  --amarillo-normal-transparente-030: hsla(49.65, 100%, 50%, 0.3);
+  /* Transparencias comunes - Acento (naranja) */
+  --amarillo-normal-transparente-030: var(--naranja-glow-fuerte);
 
   /* Transparencias comunes - Rojo */
   --rojo-normal-transparente-003: hsla(0, 84.24%, 60.2%, 0.03);
@@ -234,40 +312,40 @@
   /* Transparencias comunes - Dorado (macros) */
   --dorado-normal-transparente-010: hsla(45.4, 93.39%, 47.45%, 0.1);
 
-  /* Transparencias comunes - Amarillo (adicionales) */
-  --amarillo-normal-transparente-012: hsla(49.65, 100%, 50%, 0.12);
+  /* Transparencias comunes - Acento (naranja, adicionales) */
+  --amarillo-normal-transparente-012: var(--naranja-glow-suave);
 
-  /* Paleta modo oscuro - Colores base */
-  --oscuro-fondo-muy-oscuro: hsl(210, 13.33%, 11.76%);
-  --oscuro-fondo-oscuro: hsl(213.33, 13.04%, 13.53%);
-  --oscuro-fondo-medio: hsl(212.73, 12.09%, 17.84%);
-  --oscuro-fondo-medio-claro: hsl(214.29, 12.28%, 22.35%);
-  --oscuro-borde-principal: hsl(216, 12.2%, 24.12%);
-  --oscuro-borde-suave: hsl(214.29, 14.29%, 19.22%);
-  --oscuro-texto-claro: hsl(216, 20%, 95.1%);
-  --oscuro-texto-medio: hsl(216.43, 19.18%, 71.37%);
-  --oscuro-texto-apagado: hsl(215.68, 14.74%, 49.22%);
-  --oscuro-acento-amarillo: hsl(49.43, 100%, 58.82%);
-  --oscuro-acento-amarillo-hover: hsl(49.38, 79.34%, 52.55%);
-  --oscuro-cta-gradiente-inicio: hsl(48.46, 44.83%, 11.37%);
+  /* Paleta modo oscuro - Superficies premium (near-black neutro) */
+  --oscuro-fondo-muy-oscuro: hsl(240, 6%, 4%);
+  --oscuro-fondo-oscuro: hsl(240, 6%, 7%);
+  --oscuro-fondo-medio: hsl(240, 7%, 9%);
+  --oscuro-fondo-medio-claro: hsl(240, 7%, 12.5%);
+  --oscuro-borde-principal: hsla(0, 0%, 100%, 0.1);
+  --oscuro-borde-suave: hsla(0, 0%, 100%, 0.06);
+  --oscuro-texto-claro: hsl(40, 8%, 96%);
+  --oscuro-texto-medio: hsla(40, 8%, 96%, 0.64);
+  --oscuro-texto-apagado: hsla(40, 8%, 96%, 0.42);
+  --oscuro-acento-amarillo: hsl(24, 100%, 55%);
+  --oscuro-acento-amarillo-hover: hsl(24, 100%, 61%);
+  --oscuro-cta-gradiente-inicio: hsl(24, 60%, 12%);
 }
 
 
 
 [data-theme="dark"] {
-  --amarillo-texto-accesible: hsl(49.65, 100%, 50%);
-  --bg-body: hsl(210, 9.62%, 20.39%);
-  --bg-card: hsl(212.31, 9.35%, 27.25%);
-  --bg-card-alt: hsl(217.5, 9.52%, 16.47%);
-  --bg-input: hsl(212.31, 9.35%, 27.25%);
-  --bg-input-config: hsl(212.73, 8.8%, 24.51%);
-  --bg-surface: hsl(212.73, 8.8%, 24.51%);
+  --amarillo-texto-accesible: var(--naranja-texto);
+  --bg-body: var(--superficie-fondo);
+  --bg-card: var(--superficie-2);
+  --bg-card-alt: var(--superficie-1);
+  --bg-input: var(--superficie-1);
+  --bg-input-config: var(--superficie-1);
+  --bg-surface: var(--superficie-2);
   --blanco: hsl(0, 0%, 96.08%);
-  --text-primary: hsl(0, 0%, 96.08%);
-  --text-secondary: hsl(0, 0%, 72.16%);
-  --text-muted: hsl(0, 0%, 57.65%);
-  --border-color: hsl(212.73, 8.8%, 24.51%);
-  --border-color-light: hsl(217.5, 9.52%, 16.47%);
+  --text-primary: var(--texto-principal);
+  --text-secondary: var(--texto-secundario);
+  --text-muted: var(--texto-suave);
+  --border-color: var(--borde-medio);
+  --border-color-light: var(--borde-sutil);
 
 
   --negro-normal-transparente-085: hsla(320, 9.68%, 6.08%, 0.85);
@@ -286,18 +364,18 @@
   --blanco-normal-transparente-050: hsla(0, 0%, 96.08%, 0.5);
 
   /* Onboarding header dark mode */
-  --onboarding-header-gradient-inicio: hsla(212.73, 12.09%, 17.84%, 0.75);
-  --onboarding-header-gradient-fin: hsla(213.33, 13.04%, 13.53%, 0.65);
+  --onboarding-header-gradient-inicio: hsla(240, 7%, 9%, 0.75);
+  --onboarding-header-gradient-fin: hsla(240, 6%, 7%, 0.65);
   --blanco-normal-transparente-070: hsla(0, 0%, 96.08%, 0.7);
 
 
-  --amarillo-normal-transparente-005: hsla(49.65, 100%, 50%, 0.05);
-  --amarillo-normal-transparente-008: hsla(49.65, 100%, 50%, 0.08);
-  --amarillo-normal-transparente-010: hsla(49.65, 100%, 50%, 0.1);
-  --amarillo-normal-transparente-015: hsla(49.65, 100%, 50%, 0.15);
-  --amarillo-normal-transparente-020: hsla(49.65, 100%, 50%, 0.2);
-  --amarillo-normal-transparente-025: hsla(49.65, 100%, 50%, 0.25);
-  --amarillo-normal-transparente-040: hsla(49.65, 100%, 50%, 0.4);
+  --amarillo-normal-transparente-005: hsla(24, 100%, 55%, 0.05);
+  --amarillo-normal-transparente-008: hsla(24, 100%, 55%, 0.08);
+  --amarillo-normal-transparente-010: hsla(24, 100%, 55%, 0.1);
+  --amarillo-normal-transparente-015: hsla(24, 100%, 55%, 0.15);
+  --amarillo-normal-transparente-020: hsla(24, 100%, 55%, 0.2);
+  --amarillo-normal-transparente-025: hsla(24, 100%, 55%, 0.25);
+  --amarillo-normal-transparente-040: hsla(24, 100%, 55%, 0.4);
 
 
   --rojo-normal-transparente-010: hsla(0, 84.24%, 60.2%, 0.1);

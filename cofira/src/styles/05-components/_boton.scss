@@ -3,126 +3,102 @@
 
 
 .boton {
-  @include boton-base;
-  font-family: var(--font-primary);
+  @include boton-pill;
   font-size: var(--font-size-md);
+  letter-spacing: 0.01em;
 }
 
 
 
+/* El botón primario real vive en el componente app-button (button.scss): allí gana
+   por especificidad (encapsulación emulada). Aquí se deja la versión base por si se
+   usa .boton--primario suelto fuera del componente. */
 .boton--primario {
-  background-color: var(--button-yellow);
-  color: var(--negro-normal);
-  box-shadow: var(--shadow-md);
+  background: var(--gradiente-acento);
+  color: var(--texto-sobre-acento);
+  box-shadow: 0 0.5rem 1.25rem var(--naranja-glow-media);
 
   @include hover-activo {
-    background-color: var(--button-yellow-hover);
     transform: translateY(-0.125rem);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 0.75rem 1.75rem var(--naranja-glow-fuerte);
   }
 
   @include click-activo {
     transform: translateY(0);
-    box-shadow: var(--shadow-sm);
-  }
-
-  @include focus-activo {
-    outline: 0.1875rem solid var(--amarillo-normal);
-    outline-offset: 0.125rem;
   }
 }
 
 
 
 .boton--secundario {
-  background-color: var(--button-gray);
-  color: var(--text-dark);
-  box-shadow: var(--shadow-sm);
+  background: var(--superficie-3);
+  color: var(--texto-principal);
+  border-color: var(--borde-sutil);
 
   @include hover-activo {
-    background-color: var(--button-gray-hover);
     transform: translateY(-0.125rem);
-    box-shadow: var(--shadow-md);
+    border-color: var(--naranja-normal);
+    color: var(--naranja-texto);
   }
 
   @include click-activo {
     transform: translateY(0);
-  }
-
-  @include focus-activo {
-    outline: 0.1875rem solid var(--gris-normal);
-    outline-offset: 0.125rem;
   }
 }
 
 
 
 .boton--fantasma {
-  background-color: transparent;
-  color: var(--text-dark);
-  border: var(--border-width-normal) solid var(--gris-normal);
+  background: transparent;
+  color: var(--texto-principal);
+  border-color: var(--borde-medio);
 
   @include hover-activo {
-    background-color: var(--gris-normal);
-    color: var(--text-dark);
-    border-color: var(--gris-normal-hover);
+    background: var(--superficie-2);
+    border-color: var(--naranja-normal);
+    color: var(--naranja-texto);
   }
 
   @include click-activo {
-    background-color: var(--gris-normal-hover);
-  }
-
-  @include focus-activo {
-    outline: 0.1875rem solid var(--gris-normal);
-    outline-offset: 0.125rem;
+    background: var(--superficie-3);
   }
 }
 
 
 
 .boton--peligro {
-  background-color: var(--button-red);
-  color: var(--text-dark);
-  box-shadow: var(--shadow-md);
+  background: var(--peligro);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 0.5rem 1.25rem var(--rojo-normal-transparente-030);
 
   @include hover-activo {
-    background-color: var(--button-red-hover);
     transform: translateY(-0.125rem);
-    box-shadow: var(--shadow-lg);
+    filter: brightness(1.08);
   }
 
   @include click-activo {
     transform: translateY(0);
-    box-shadow: var(--shadow-sm);
-  }
-
-  @include focus-activo {
-    outline: 0.1875rem solid var(--button-red);
-    outline-offset: 0.125rem;
   }
 }
 
 
 
 .boton--pequeno {
-  padding: var(--spacing-size-xss) var(--spacing-size-s);
+  padding: 0.5rem 1.15rem;
   font-size: var(--font-size-sm);
-  height: 2rem;
-  min-width: var(--width-muy-pequenio);
+  min-height: 2.25rem;
 }
 
 .boton--mediano {
-  padding: var(--spacing-size-xss) var(--spacing-size-m);
+  padding: 0.7rem 1.6rem;
   font-size: var(--font-size-md);
-  height: 2.75rem;
-  min-width: var(--width-mediano);
+  min-height: 2.85rem;
 }
 
 .boton--grande {
-  padding: var(--spacing-size-s) var(--spacing-size-l);
-  font-size: var(--font-size-lg);
-  height: 3.5rem;
-  min-width: var(--width-estandar);
+  padding: 0.8rem 2rem;
+  font-size: var(--font-size-md);
+  min-height: 3rem;
 }
 
 

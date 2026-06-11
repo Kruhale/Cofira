@@ -1,0 +1,159 @@
+@import '../../../../styles/01-tools/mixins';
+
+:host {
+  display: contents;
+}
+
+.boton {
+  @include boton-pill;
+  font-size: var(--font-size-md);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.boton__icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.boton__texto {
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Primario: botón HUD de cristal oscuro con esquinas achaflanadas y borde de luz.
+   El degradado naranja es el borde; el ::before pinta el relleno oscuro dejando ~1.5px de luz. */
+.boton--primario {
+  --chaflan: 0.55rem;
+  position: relative;
+  isolation: isolate;
+  border: none;
+  background: var(--gradiente-acento);
+  color: hsl(40, 14%, 95%);
+  font-family: var(--fuente-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  clip-path: polygon(
+    var(--chaflan) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan)),
+    calc(100% - var(--chaflan)) 100%,
+    0 100%,
+    0 var(--chaflan)
+  );
+  filter: drop-shadow(0 0.4rem 0.9rem var(--naranja-glow-media));
+  transition: filter var(--duration-base) ease, color var(--duration-base) ease;
+}
+
+.boton--primario::before {
+  position: absolute;
+  inset: 1.5px;
+  z-index: -1;
+  content: '';
+  background: hsla(240, 8%, 8%, 0.82);
+  clip-path: polygon(
+    var(--chaflan) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan)),
+    calc(100% - var(--chaflan)) 100%,
+    0 100%,
+    0 var(--chaflan)
+  );
+  transition: background var(--duration-base) ease;
+}
+
+.boton--primario:hover:not(:disabled) {
+  color: hsl(40, 16%, 99%);
+  filter: drop-shadow(0 0.65rem 1.3rem var(--naranja-glow-fuerte));
+}
+
+.boton--primario:hover:not(:disabled)::before {
+  background: hsla(24, 55%, 11%, 0.84);
+}
+
+.boton--primario:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Secundario: superficie elevada con borde sutil */
+.boton--secundario {
+  background: var(--superficie-3);
+  color: var(--texto-principal);
+  border-color: var(--borde-sutil);
+
+  @include hover-activo {
+    transform: translateY(-0.125rem);
+    border-color: var(--naranja-normal);
+    color: var(--naranja-texto);
+  }
+
+  @include click-activo {
+    transform: translateY(0);
+  }
+}
+
+/* Fantasma: solo contorno */
+.boton--fantasma {
+  background: transparent;
+  color: var(--texto-principal);
+  border-color: var(--borde-medio);
+
+  @include hover-activo {
+    background: var(--superficie-2);
+    border-color: var(--naranja-normal);
+    color: var(--naranja-texto);
+  }
+
+  @include click-activo {
+    background: var(--superficie-3);
+  }
+}
+
+/* Peligro */
+.boton--peligro {
+  background: var(--peligro);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 0.5rem 1.25rem var(--rojo-normal-transparente-030);
+
+  @include hover-activo {
+    transform: translateY(-0.125rem);
+    filter: brightness(1.08);
+  }
+
+  @include click-activo {
+    transform: translateY(0);
+  }
+}
+
+.boton--pequeno {
+  padding: 0.5rem 1.15rem;
+  font-size: var(--font-size-sm);
+  min-height: 2.25rem;
+}
+
+.boton--mediano {
+  padding: 0.7rem 1.6rem;
+  font-size: var(--font-size-md);
+  min-height: 2.85rem;
+}
+
+.boton--grande {
+  padding: 0.8rem 2.1rem;
+  font-size: var(--font-size-md);
+  min-height: 3rem;
+}
+
+.boton:disabled,
+.boton--deshabilitado {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.boton--completo {
+  width: 100%;
+}

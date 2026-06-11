@@ -14,8 +14,9 @@
   align-items: center;
   gap: var(--spacing-size-l);
   padding: var(--spacing-size-l);
-  background-color: var(--blanco-normal-hover);
-  border-radius: var(--radius-xss);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-bento);
 }
 
 .ingredientes__icono {
@@ -28,9 +29,10 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background-color: var(--amarillo-normal);
-  border-radius: 50%;
-  color: var(--negro-normal);
+  background: var(--gradiente-acento);
+  border-radius: var(--radius-full);
+  color: var(--texto-sobre-acento);
+  box-shadow: var(--glow-acento);
 }
 
 .ingredientes__icono-svg {
@@ -47,10 +49,10 @@
 }
 
 .ingredientes__calorias {
+  margin: 0;
   font-family: var(--font-primary);
   font-size: var(--font-size-lg);
-  color: var(--negro-normal);
-  margin: 0;
+  color: var(--texto-principal);
 }
 
 
@@ -62,11 +64,11 @@
 }
 
 .ingredientes__subtitulo {
+  margin: 0;
   font-family: var(--font-secondary);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--negro-normal);
-  margin: 0;
+  color: var(--texto-principal);
 }
 
 .ingredientes__items {
@@ -83,8 +85,9 @@
   grid-template-columns: 2fr 1fr 1fr;
   gap: var(--spacing-size-m);
   padding: var(--spacing-size-m);
-  background-color: var(--blanco-normal-hover);
-  border-radius: var(--radius-xss);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
   align-items: center;
 
   @include responsive-down('md') {
@@ -97,13 +100,13 @@
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
-  color: var(--negro-normal);
+  color: var(--texto-principal);
 }
 
 .ingredientes__cantidad {
-  font-family: var(--font-primary);
+  font-family: var(--fuente-mono);
   font-size: var(--font-size-sm);
-  color: var(--gris-normal);
+  color: var(--texto-secundario);
   text-align: center;
 
   @include responsive-down('md') {
@@ -112,10 +115,10 @@
 }
 
 .ingredientes__calorias-item {
-  font-family: var(--font-primary);
+  font-family: var(--fuente-mono);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--amarillo-dark);
+  color: var(--naranja-texto);
   text-align: right;
 
   @include responsive-down('md') {

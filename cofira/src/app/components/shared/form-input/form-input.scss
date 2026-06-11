@@ -13,51 +13,54 @@
 
 
 .campo-entrada__etiqueta {
-  color: var(--text-light);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-regular);
-  font-family: var(--font-secondary);
   margin-bottom: var(--input-margin-bottom);
+  @include etiqueta-tecnica(var(--texto-secundario));
 }
 
 
 .campo-entrada__requerido {
-  color: var(--button-red);
+  color: var(--naranja-texto);
 }
 
 
 .campo-entrada__campo {
-  @include input-base;
-  background-color: var(--button-yellow);
-  transition: all 0.3s ease;
+  width: 100%;
+  padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
 }
 
 .campo-entrada__campo::placeholder {
-  @include input-placeholder;
+  color: var(--texto-suave);
 }
 
 .campo-entrada__campo:hover {
-  @include input-hover;
+  border-color: var(--borde-medio);
 }
 
-.campo-entrada__campo:focus {
-  outline: 0.125rem solid var(--amarillo-dark);
-  outline-offset: 0.125rem;
+.campo-entrada__campo:focus-visible {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 
 .campo-entrada__error {
-  color: var(--button-red);
-  font-size: var(--font-size-sm);
-  font-family: var(--font-secondary);
   margin-top: var(--input-margin-bottom);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--peligro-texto);
 }
 
 
 .campo-entrada__ayuda {
-  color: var(--text-dark);
-  font-size: var(--font-size-sm);
-  font-family: var(--font-secondary);
-  opacity: 0.8;
   margin-top: var(--input-margin-bottom);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
 }

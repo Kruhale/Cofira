@@ -14,16 +14,20 @@
   gap: var(--spacing-size-s);
   width: 100%;
   padding: var(--spacing-size-m);
-  background-color: var(--bg-input);
-  border: var(--border-width-normal) solid var(--border-color-light);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
   border-radius: var(--radius-md);
-  transition: border-color var(--duration-fast) ease;
   cursor: text;
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
+}
+
+.autocomplete__input-wrapper:hover {
+  border-color: var(--borde-medio);
 }
 
 .autocomplete__input-wrapper:focus-within {
-  border-color: var(--amarillo-normal);
-  box-shadow: 0 0 0 3px var(--amarillo-normal-transparente-025);
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 
@@ -36,7 +40,7 @@
   width: 1.25rem;
   height: 1.25rem;
   margin: 0;
-  color: var(--gris-normal);
+  color: var(--naranja-texto);
 }
 
 .autocomplete__icono-svg {
@@ -68,12 +72,12 @@
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
+  color: var(--texto-principal);
   outline: none;
 }
 
 .autocomplete__input::placeholder {
-  color: var(--gris-light);
+  color: var(--texto-suave);
 }
 
 .autocomplete__input::-webkit-search-decoration,
@@ -93,10 +97,7 @@
   z-index: var(--z-dropdown);
   margin: var(--spacing-size-xs) 0 0 0;
   padding: var(--spacing-size-xs);
-  background-color: var(--bg-card);
-  border: var(--border-width-normal) solid var(--border-color-light);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  @include superficie-bento(var(--radius-md));
   list-style: none;
   max-height: 15rem;
   overflow-y: auto;
@@ -109,18 +110,20 @@
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
+  color: var(--texto-principal);
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background-color var(--duration-fast) ease;
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
 }
 
 .autocomplete__item:hover {
-  background-color: var(--amarillo-light);
+  background: var(--naranja-glow-suave);
+  color: var(--naranja-texto);
 }
 
 .autocomplete__item--destacado {
-  background-color: var(--amarillo-light);
+  background: var(--naranja-glow-suave);
+  color: var(--naranja-texto);
 }
 
 
@@ -130,6 +133,6 @@
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-regular);
-  color: var(--gris-normal);
+  color: var(--texto-suave);
   text-align: center;
 }

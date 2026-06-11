@@ -1,7 +1,5 @@
 package com.gestioneventos.cofira.dto.auth;
 
-import com.gestioneventos.cofira.enums.Rol;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -21,5 +19,6 @@ public class RegisterRequestDTO {
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
 
-    private Rol rol; // USER o ADMIN
+    // El rol NO se acepta desde el cliente: el registro público siempre crea
+    // usuarios con rol USER. La promoción a ADMIN va por una ruta protegida.
 }

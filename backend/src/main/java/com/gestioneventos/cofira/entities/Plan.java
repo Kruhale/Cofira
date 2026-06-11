@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +25,9 @@ public class Plan {
 
     @NotNull
     private Boolean subscripcionActiva;
+
+    // Fecha en la que caduca la suscripción PRO (null si nunca ha sido PRO).
+    private LocalDate fechaExpiracion;
 
     @OneToOne
     @JoinColumn(name = "usuario_id")

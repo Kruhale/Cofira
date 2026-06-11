@@ -1,15 +1,30 @@
-@import '../../../styles/00-settings/css-variables';
 @import '../../../styles/01-tools/mixins';
 
 .onboarding {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--bg-body);
+  background-color: var(--superficie-fondo);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.onboarding::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 64rem;
+  height: 38rem;
+  z-index: -1;
+  content: '';
+  transform: translateX(-50%);
+  background: var(--gradiente-halo);
+  pointer-events: none;
 }
 
 
-
+/* ── Header glassy con progreso ── */
 .onboarding__header {
   position: sticky;
   top: 0;
@@ -18,30 +33,8 @@
   align-items: center;
   gap: var(--spacing-size-m);
   padding: var(--spacing-size-m) var(--spacing-size-xl);
-  background-color: var(--bg-card);
-  border-bottom: var(--border-width-fino) solid var(--border-color-light);
-}
-
-:host-context([data-theme="dark"]) .onboarding__header {
-  background: linear-gradient(
-    135deg,
-    var(--onboarding-header-gradient-inicio) 0%,
-    var(--onboarding-header-gradient-fin) 100%
-  );
-  backdrop-filter: blur(20px) saturate(1.2);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2);
-  border-bottom: 1px solid transparent;
-  border-image: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--amarillo-normal-transparente-020) 20%,
-    var(--amarillo-normal-transparente-015) 50%,
-    var(--amarillo-normal-transparente-020) 80%,
-    transparent 100%
-  ) 1;
-  box-shadow:
-    0 4px 30px var(--negro-puro-transparente-030),
-    0 1px 0 var(--blanco-normal-transparente-005) inset;
+  @include vidrio(16px);
+  border-bottom: 1px solid var(--borde-sutil);
 }
 
 .onboarding__nav {
@@ -57,42 +50,52 @@
   height: 2.5rem;
   padding: 0;
   background-color: transparent;
-  border: none;
-  border-radius: var(--radius-full);
-  color: var(--gris-normal);
+  border: 1px solid var(--borde-sutil);
+  border-radius: 50%;
+  color: var(--texto-secundario);
   cursor: pointer;
   transition: all var(--duration-fast) ease;
 }
 
 .onboarding__boton-back:hover {
-  background-color: var(--blanco-normal-hover);
-  color: var(--negro-normal);
+  border-color: var(--naranja-normal);
+  color: var(--naranja-normal);
+  transform: translateX(-2px);
 }
 
 .onboarding__boton-back:focus-visible {
-  box-shadow: 0 0 0 0.125rem var(--amarillo-normal);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
-
 .onboarding__boton-back-svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .onboarding__progress {
   flex: 1;
-  max-width: 30rem;
+  max-width: 32rem;
+  margin: 0 auto;
 }
 
 
-
+/* ── Contenido (centra cada paso) ── */
 .onboarding__content {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 3rem 2rem var(--spacing-size-xxxl);
+  box-sizing: border-box;
 }
 
 
-
+/* ── Placeholder (estado interno) ── */
 .onboarding__placeholder {
   @include flex-center;
   flex-direction: column;
@@ -102,19 +105,25 @@
   text-align: center;
 }
 
-
 .onboarding__placeholder-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--negro-normal);
+  @include titular-display(var(--display-md));
   margin: 0;
 }
-
 
 .onboarding__placeholder-texto {
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--gris-normal);
+  color: var(--texto-secundario);
   margin: 0;
+}
+
+
+@include responsive-down('sm') {
+  .onboarding__header {
+    padding: var(--spacing-size-s) var(--spacing-size-m);
+  }
+
+  .onboarding__content {
+    padding: 2rem 1.25rem var(--spacing-size-xxl);
+  }
 }

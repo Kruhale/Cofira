@@ -1,72 +1,18 @@
-<header class="cabecera">
-  <a class="cabecera__logo-enlace" routerLink="/home">
-    <img alt="Cofira Logo" class="cabecera__logo" src="assets/images/cofira_logo_hombre.png">
+<header class="cabecera" [class.cabecera--transparente]="cabeceraTransparente()">
+  <a class="cabecera__logo-enlace" routerLink="/home" aria-label="Cofira - inicio">
+    <span class="cabecera__logo-texto">Cofira<span class="cabecera__logo-punto" aria-hidden="true">.</span></span>
   </a>
 
+  <div class="cabecera__modulo">
   <nav class="cabecera__navegacion cabecera__navegacion--escritorio" aria-label="Navegación principal">
     <ul class="cabecera__menu">
-      <li><a class="cabecera__enlace" routerLink="/alimentacion">Nutrición</a></li>
-      <li><a class="cabecera__enlace" routerLink="/gimnasio">Ejercicio</a></li>
-      <li><a class="cabecera__enlace" routerLink="/seguimiento">Seguimiento</a></li>
+      <li><a class="cabecera__enlace" routerLink="/alimentacion" routerLinkActive="cabecera__enlace--activo">Nutrición</a></li>
+      <li><a class="cabecera__enlace" routerLink="/gimnasio" routerLinkActive="cabecera__enlace--activo">Ejercicio</a></li>
+      <li><a class="cabecera__enlace" routerLink="/seguimiento" routerLinkActive="cabecera__enlace--activo">Seguimiento</a></li>
     </ul>
   </nav>
 
   <nav class="cabecera__acciones cabecera__acciones--escritorio" aria-label="Acciones de usuario">
-    @if (isAuthenticated()) {
-        <section class="cabecera__perfil-contenedor">
-            <button (click)="toggleMenuCuenta()" [attr.aria-expanded]="menuCuentaAbierto" aria-controls="menu-cuenta" aria-haspopup="true"
-                    aria-label="Menú de cuenta" class="cabecera__perfil">
-                <svg aria-hidden="true" class="cabecera__perfil-icono" fill="none" stroke="currentColor"
-                     stroke-width="1.5" viewBox="0 0 24 24">
-                    <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                </svg>
-                <span class="cabecera__perfil-nombre">{{ userNombre() }}</span>
-                <svg aria-hidden="true" class="cabecera__perfil-chevron" fill="none" stroke="currentColor"
-                     stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-
-            <section [class.cabecera__desplegable--abierto]="menuCuentaAbierto" class="cabecera__desplegable"
-                   id="menu-cuenta" tabindex="-1">
-        <nav class="cabecera__desplegable-navegacion">
-          <a (click)="cerrarMenuCuenta()" class="cabecera__desplegable-item" routerLink="/perfil">
-            <svg aria-hidden="true" class="cabecera__desplegable-item-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-            <span>Mi perfil</span>
-          </a>
-          <a (click)="cerrarMenuCuenta()" class="cabecera__desplegable-item" routerLink="/configuracion">
-            <svg aria-hidden="true" class="cabecera__desplegable-item-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Configuración</span>
-          </a>
-          <hr class="cabecera__desplegable-separador">
-          <button (click)="logout()" class="cabecera__desplegable-item cabecera__desplegable-item--cerrar-sesion">
-            <svg aria-hidden="true" class="cabecera__desplegable-item-icono cabecera__desplegable-item-icono--cerrar-sesion" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-            <span>Cerrar sesión</span>
-          </button>
-        </nav>
-      </section>
-
-      @if (menuCuentaAbierto) {
-          <span (click)="cerrarMenuCuenta()" aria-hidden="true" class="cabecera__desplegable-overlay"
-                tabindex="-1"></span>
-      }
-        </section>
-    } @else {
-      <app-button enlace="/onboarding" tamanio="pequeno" variante="primario">Inscríbete</app-button>
-    }
-
     <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? 'Activar modo claro' : 'Activar modo oscuro'" [attr.aria-pressed]="modoOscuro" class="cabecera__tema-boton">
       @if (modoOscuro) {
         <svg aria-hidden="true" class="cabecera__tema-boton-icono" fill="currentColor" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -87,7 +33,97 @@
         </svg>
       }
     </button>
+
+    @if (isAuthenticated()) {
+        <section class="cabecera__perfil-contenedor">
+            <button (click)="toggleMenuCuenta()" [attr.aria-expanded]="menuCuentaAbierto" aria-controls="menu-cuenta" aria-haspopup="true"
+                    aria-label="Menú de cuenta" class="cabecera__perfil">
+                <span class="cabecera__perfil-avatar" aria-hidden="true">{{ inicialUsuario() }}</span>
+                <span class="cabecera__perfil-nombre">{{ userNombre() }}</span>
+                <svg aria-hidden="true" class="cabecera__perfil-chevron" [class.cabecera__perfil-chevron--abierto]="menuCuentaAbierto" fill="none" stroke="currentColor"
+                     stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <section [class.cabecera__desplegable--abierto]="menuCuentaAbierto" class="cabecera__desplegable"
+                   id="menu-cuenta" tabindex="-1">
+        <header class="cabecera__cuenta">
+          <span class="cabecera__cuenta-avatar" aria-hidden="true">{{ inicialUsuario() }}</span>
+          <span class="cabecera__cuenta-info">
+            <span class="cabecera__cuenta-nombre">{{ userNombre() }}</span>
+            @if (userEmail() && userEmail() !== userNombre()) {
+              <span class="cabecera__cuenta-email">{{ userEmail() }}</span>
+            } @else {
+              <span class="cabecera__cuenta-email">Cuenta personal</span>
+            }
+          </span>
+          @if (esPro()) {
+            <span class="cabecera__cuenta-chip">PRO</span>
+          }
+        </header>
+        <nav class="cabecera__desplegable-navegacion">
+          <span class="cabecera__desplegable-etiqueta" aria-hidden="true">Cuenta</span>
+          <a (click)="cerrarMenuCuenta()" class="cabecera__desplegable-item" routerLink="/perfil">
+            <span class="cabecera__desplegable-item-caja" aria-hidden="true">
+              <svg class="cabecera__desplegable-item-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="cabecera__desplegable-item-textos">
+              <span class="cabecera__desplegable-item-titulo">Mi perfil</span>
+              <span class="cabecera__desplegable-item-descripcion">Datos y objetivos</span>
+            </span>
+            <svg aria-hidden="true" class="cabecera__desplegable-item-flecha" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a (click)="cerrarMenuCuenta()" class="cabecera__desplegable-item" routerLink="/configuracion">
+            <span class="cabecera__desplegable-item-caja" aria-hidden="true">
+              <svg class="cabecera__desplegable-item-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="cabecera__desplegable-item-textos">
+              <span class="cabecera__desplegable-item-titulo">Configuración</span>
+              <span class="cabecera__desplegable-item-descripcion">Preferencias y unidades</span>
+            </span>
+            <svg aria-hidden="true" class="cabecera__desplegable-item-flecha" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </nav>
+        <hr class="cabecera__desplegable-separador">
+        <nav class="cabecera__desplegable-navegacion cabecera__desplegable-navegacion--pie">
+          <button (click)="logout()" class="cabecera__desplegable-item cabecera__desplegable-item--cerrar-sesion">
+            <span class="cabecera__desplegable-item-caja cabecera__desplegable-item-caja--peligro" aria-hidden="true">
+              <svg class="cabecera__desplegable-item-icono cabecera__desplegable-item-icono--cerrar-sesion" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="cabecera__desplegable-item-textos">
+              <span class="cabecera__desplegable-item-titulo">Cerrar sesión</span>
+            </span>
+          </button>
+        </nav>
+      </section>
+
+      @if (menuCuentaAbierto) {
+          <span (click)="cerrarMenuCuenta()" aria-hidden="true" class="cabecera__desplegable-overlay"
+                tabindex="-1"></span>
+      }
+        </section>
+    } @else {
+      <span class="cabecera__cta-marco">
+        <app-button enlace="/onboarding" tamanio="pequeno" variante="primario">Inscríbete</app-button>
+      </span>
+    }
   </nav>
+  </div>
 
   <button (click)="toggleMenu()" [class.cabecera__hamburguesa--abierto]="menuAbierto" [attr.aria-expanded]="menuAbierto" aria-controls="menu-movil" aria-label="Menú"
           class="cabecera__hamburguesa">
@@ -96,6 +132,19 @@
     <span aria-hidden="true" class="cabecera__hamburguesa-linea"></span>
   </button>
 </header>
+
+<nav resaltadoDeslizante class="mini-cabecera" [class.mini-cabecera--visible]="miniCabeceraVisible()" aria-label="Navegación rápida">
+  <span class="mini-cabecera__resaltado" aria-hidden="true"></span>
+  <a class="mini-cabecera__logo" routerLink="/home" aria-label="Cofira - inicio">C<span class="mini-cabecera__logo-punto" aria-hidden="true">.</span></a>
+  <a class="mini-cabecera__enlace" routerLink="/alimentacion" routerLinkActive="mini-cabecera__enlace--activo">Nutrición</a>
+  <a class="mini-cabecera__enlace" routerLink="/gimnasio" routerLinkActive="mini-cabecera__enlace--activo">Ejercicio</a>
+  <a class="mini-cabecera__enlace" routerLink="/seguimiento" routerLinkActive="mini-cabecera__enlace--activo">Seguimiento</a>
+  @if (isAuthenticated()) {
+    <a class="mini-cabecera__cta" routerLink="/perfil" aria-label="Mi perfil">{{ inicialUsuario() }}</a>
+  } @else {
+    <a class="mini-cabecera__cta mini-cabecera__cta--texto" routerLink="/login">Entrar</a>
+  }
+</nav>
 
 <section class="menu-movil" [class.menu-movil--abierto]="menuAbierto" id="menu-movil" role="dialog" aria-label="Menú de navegación" tabindex="-1">
   <span aria-hidden="true" class="menu-movil__overlay" tabindex="-1" [class.menu-movil__overlay--visible]="menuAbierto" (click)="cerrarMenu()"></span>

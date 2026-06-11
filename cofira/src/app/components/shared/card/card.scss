@@ -1,155 +1,294 @@
 @import '../../../../styles/00-settings/css-variables';
 @import '../../../../styles/01-tools/mixins';
 
+:host {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 
-
+/* Tarjeta chaflán HUD: el fondo del elemento ES el borde (gradiente) y un
+   ::before a 1px pinta el relleno con un chaflán 1px menor para que las
+   diagonales queden paralelas. radius 0 obligatorio y drop-shadow (no
+   box-shadow: no sigue el clip-path). Misma técnica que el botón primario. */
 .tarjeta-precios {
+  --chaflan: 0.85rem;
+
+  position: relative;
+  isolation: isolate;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  max-width: 28.125rem;
-  padding: var(--spacing-size-xxl) var(--spacing-size-m);
+  max-width: 23.5rem;
+  padding: 2rem 1.75rem;
 
-  text-align: center;
+  text-align: left;
 
-  background: var(--gris-normal);
-  border-radius: var(--radius-xs);
-  box-shadow: var(--shadow-xl);
-
-  @include hover-elevacion(-0.25rem, var(--shadow-2xl));
+  background: linear-gradient(160deg, var(--borde-medio), var(--borde-sutil) 55%, var(--borde-medio));
+  border: none;
+  border-radius: 0;
+  clip-path: polygon(
+    var(--chaflan) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan)),
+    calc(100% - var(--chaflan)) 100%,
+    0 100%,
+    0 var(--chaflan)
+  );
+  filter: drop-shadow(0 0.5rem 1.1rem hsla(240, 10%, 2%, 0.3));
+  transition: transform var(--duration-base) ease, filter var(--duration-base) ease;
 }
 
+.tarjeta-precios::before {
+  --chaflan-interior: calc(var(--chaflan) - 1px);
 
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  content: '';
 
+  background: var(--superficie-1);
+  clip-path: polygon(
+    var(--chaflan-interior) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan-interior)),
+    calc(100% - var(--chaflan-interior)) 100%,
+    0 100%,
+    0 var(--chaflan-interior)
+  );
+}
 
+.tarjeta-precios:hover {
+  transform: translateY(-0.25rem);
+}
+
+/* Plan recomendado: el borde gradiente pasa a naranja (eco del botón primario)
+   y el relleno sube un paso. El naranja vive solo aquí, en la insignia y en el
+   CTA; nunca en los checks. */
+.tarjeta-precios--destacada {
+  background: linear-gradient(
+    120deg,
+    hsla(24, 90%, 60%, 0.85),
+    hsla(24, 60%, 50%, 0.4) 45%,
+    hsla(24, 90%, 60%, 0.75)
+  );
+  filter: drop-shadow(0 0.5rem 1.2rem hsla(24, 100%, 50%, 0.12));
+}
+
+.tarjeta-precios--destacada::before {
+  background: var(--superficie-2);
+}
+
+/* La insignia vive DENTRO de la tarjeta (el clip-path recortaría cualquier
+   cosa que asome fuera): etiqueta técnica en la esquina superior derecha. */
+.tarjeta-precios__insignia {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.25rem;
+
+  padding: 0.3rem 0.7rem;
+
+  background: var(--naranja-normal);
+  border-radius: 0;
+  clip-path: polygon(0.35rem 0, 100% 0, 100% calc(100% - 0.35rem), calc(100% - 0.35rem) 100%, 0 100%, 0 0.35rem);
+
+  font-family: var(--fuente-mono);
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: hsl(20, 30%, 8%);
+}
+
+.tarjeta-precios__cabecera {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1.5rem;
+}
 
 .tarjeta-precios__titulo {
-  margin: 0 0 var(--spacing-size-xxl) 0;
-
-  font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.2;
-
-  color: var(--text-dark);
-}
-
-
-.tarjeta-precios__precio {
   margin: 0;
 
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.01em;
 
-  color: var(--text-dark);
+  color: var(--texto-principal);
 }
 
+.tarjeta-precios__descripcion {
+  margin: 0;
+
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+
+  color: var(--texto-suave);
+}
+
+.tarjeta-precios__bloque-precio {
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta-precios__importe {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.375rem;
+  margin: 0;
+}
+
+.tarjeta-precios__cantidad {
+  font-family: var(--fuente-display);
+  font-size: 3.5rem; /* 56px */
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+
+  color: var(--texto-principal);
+}
+
+.tarjeta-precios__periodo {
+  padding-bottom: 0.375rem;
+
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+
+  color: var(--texto-suave);
+}
+
+.tarjeta-precios__nota {
+  margin: 0.625rem 0 0;
+
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem; /* 12px */
+  letter-spacing: 0.02em;
+
+  color: var(--texto-suave);
+}
+
+.tarjeta-precios--destacada .tarjeta-precios__nota {
+  color: var(--naranja-texto);
+}
+
+.tarjeta-precios__separador {
+  width: 100%;
+  height: 1px;
+  margin: 1.5rem 0;
+  border: none;
+
+  background: var(--borde-sutil);
+}
 
 .tarjeta-precios__lista {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-s);
+  gap: 0.25rem;
   width: 100%;
-  margin: 0 0 var(--spacing-size-xxl) 0;
+  margin: 0;
   padding: 0;
 
   list-style: none;
 }
 
-
 .tarjeta-precios__ventaja {
-  position: relative;
-
   display: flex;
-  align-items: center;
-  gap: var(--spacing-size-xs);
-  padding-left: var(--spacing-size-s);
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.375rem 0;
 
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-normal);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
   text-align: left;
 
-  color: var(--text-dark);
+  color: var(--texto-secundario);
 }
 
-.tarjeta-precios__ventaja::before {
-  content: '✓';
-  font-weight: var(--font-weight-bold);
-  color: var(--amarillo-normal);
+/* Checks en gris: el acento se reserva para insignia y CTA. */
+.tarjeta-precios__check {
+  width: 1rem;
+  height: 1rem;
   flex-shrink: 0;
+  margin-top: 0.1875rem;
+
+  color: var(--texto-suave);
 }
 
+.tarjeta-precios--destacada .tarjeta-precios__check {
+  color: var(--texto-secundario);
+}
 
 .tarjeta-precios__app-boton {
-  margin-bottom: var(--spacing-size-m);
+  width: 100%;
 }
 
+/* Precio legado (usos antiguos sin precioCantidad) */
+.tarjeta-precios__precio {
+  margin: 1rem 0 0;
 
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
 
-
+  color: var(--naranja-texto);
+}
 
 .tarjeta-precios--info {
-  background: var(--gris-normal);
+  @include superficie-bento;
 }
-
-
-.tarjeta-precios--planes {
-  background: var(--gris-normal);
-  box-shadow: var(--shadow-2xl);
-}
-
-
-
-
 
 .tarjeta-precios--pequena {
   max-width: 21rem;
-  padding: var(--spacing-size-l) var(--spacing-size-s);
+  padding: 1.5rem 1.25rem;
 }
 
 .tarjeta-precios__titulo--pequena {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-sm);
 }
 
 .tarjeta-precios__ventaja--pequena {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
 }
 
 .tarjeta-precios__precio--pequena {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
 }
 
-
 .tarjeta-precios--mediana {
-  width: 75%;
+  max-width: 23.5rem;
 }
 
 .tarjeta-precios__titulo--mediana {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-md);
 }
 
 .tarjeta-precios__ventaja--mediana {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
 }
 
 .tarjeta-precios__precio--mediana {
   font-size: var(--font-size-md);
 }
 
-
 .tarjeta-precios--grande {
-  max-width: 34rem;
-  padding: var(--spacing-size-3xl) var(--spacing-size-xl);
+  max-width: 26rem;
+  padding: 2.5rem 2rem;
 }
 
 .tarjeta-precios__titulo--grande {
-  font-size: var(--font-size-5xl);
+  font-size: var(--font-size-lg);
 }
 
 .tarjeta-precios__ventaja--grande {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-md);
 }
 
 .tarjeta-precios__precio--grande {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
 }

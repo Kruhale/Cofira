@@ -1,0 +1,74 @@
+@import '../../../../styles/01-tools/mixins';
+
+/* Rastro de scroll: regla vertical de rallitas. La ola (ancho + color de cada
+   rallita) y la posición de la etiqueta los pinta el componente
+   imperativamente; aquí solo viven la geometría y la tipografía. */
+.rastro {
+  position: fixed;
+  top: 50%;
+  left: 1.7rem;
+  z-index: var(--z-header);
+
+  height: 56vh;
+  min-height: 22rem;
+
+  transform: translateY(-50%);
+  animation: rastro-entrada 0.8s ease 0.4s both;
+}
+
+@keyframes rastro-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+.rastro__ticks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+  padding-right: 1.5rem; /* zona de clic más generosa */
+
+  cursor: pointer;
+}
+
+.rastro__tick {
+  width: 0.55rem;
+  height: 2px;
+  border-radius: 1px;
+
+  background: hsla(24, 0%, 44%, 0.16);
+  will-change: width, background;
+}
+
+/* Etiqueta única que viaja con la ola nombrando la sección actual */
+.rastro__etiqueta {
+  position: absolute;
+  top: 0;
+  left: 2.9rem;
+
+  font-family: var(--fuente-mono);
+  font-size: 0.625rem; /* 10px */
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--naranja-texto);
+
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* En pantallas medianas y pequeñas estorba más que ayuda */
+@include responsive-down('lg') {
+  .rastro {
+    display: none;
+  }
+}

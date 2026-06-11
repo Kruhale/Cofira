@@ -1,0 +1,34 @@
+@import '../../../../styles/01-tools/mixins';
+
+/* Cinta marquee: texto display en contorno a sangre completa. El movimiento
+   lo pinta el componente imperativamente (transform en .cinta__pista). */
+.cinta {
+  overflow: hidden;
+  padding: 4rem 0;
+  background: var(--superficie-fondo);
+}
+
+.cinta__pista {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.cinta__texto {
+  font-family: var(--fuente-display);
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--texto-principal) 26%, transparent);
+}
+
+@include responsive-down('sm') {
+  .cinta {
+    padding: 2.5rem 0;
+  }
+}

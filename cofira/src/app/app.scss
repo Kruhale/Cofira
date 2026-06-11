@@ -2,13 +2,17 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  /* clip (no 'hidden') evita crear un contenedor de scroll anidado,
+     para que la ventana sea el único scroller y ScrollTrigger funcione */
+  overflow-x: clip;
   width: 100%;
   max-width: 100vw;
+  background-color: var(--superficie-fondo);
 }
 
 :host {
-  background-color: var(--blanco-normal-hover);
+  display: block;
+  background-color: var(--superficie-fondo);
 }
 
 
@@ -16,23 +20,24 @@ body {
   margin: 0;
   box-sizing: border-box;
   font-family: var(--font-primary);
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   max-width: 100%;
+  min-height: 100vh;
+  background-color: var(--superficie-fondo);
 }
 
 .skip-link {
   position: fixed;
   top: -10rem;
   left: 0;
-  background: var(--negro-normal);
-  color: var(--blanco-normal);
+  background: var(--naranja-normal);
+  color: var(--texto-sobre-acento);
   padding: var(--spacing-size-s);
+  border-radius: 0 0 var(--radius-md) 0;
   z-index: var(--z-toast);
 }
 
 .skip-link:focus {
   top: 0;
 }
-
-

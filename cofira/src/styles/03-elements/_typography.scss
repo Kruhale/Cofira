@@ -67,6 +67,10 @@ body {
   color: var(--text-light);
 }
 
+body::after {
+  @include textura-grano(0.05);
+}
+
 p {
   font-family: var(--font-primary);
   font-size: var(--font-size-md);

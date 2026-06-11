@@ -1,4 +1,14 @@
-<article class="acceso">
+<div class="acceso-layout">
+
+  <aside class="acceso-visual" aria-hidden="true">
+    <span class="acceso-visual__halo"></span>
+    <div class="acceso-visual__contenido">
+      <p class="acceso-visual__eyebrow">Cofira</p>
+      <p class="acceso-visual__cita">Tu progreso empieza con un solo entreno.<br>Vuelve, registra, repite.</p>
+    </div>
+  </aside>
+
+  <article class="acceso">
 
   <header class="acceso__cabecera">
     <h1 class="acceso__titulo">Bienvenido de nuevo</h1>
@@ -61,7 +71,7 @@
       <app-button
         [habilitado]="formularioLogin.invalid || estaCargando()"
         tamanio="grande"
-        type="submit"
+        tipo="submit"
         variante="primario">
         @if (estaCargando()) {
           <span class="acceso__cargando">
@@ -82,4 +92,5 @@
     </footer>
   </form>
 
-</article>
+  </article>
+</div>

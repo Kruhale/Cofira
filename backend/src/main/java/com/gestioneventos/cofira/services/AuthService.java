@@ -86,18 +86,14 @@ public class AuthService {
             throw new RecursoDuplicadoException("Error: El email ya está en uso!");
         }
 
-        // Determinar el rol (por defecto USER si no se especifica o es inválido)
-        Rol rol = Rol.USER;
-        if (registerRequest.getRol() != null) {
-            rol = registerRequest.getRol();
-        }
-
+        // El registro público SIEMPRE crea usuarios con rol USER. El rol nunca
+        // se toma del cliente (evita escalada de privilegios por mass-assignment).
         Usuario usuario = Usuario.builder()
                 .nombre(registerRequest.getNombre())
                 .username(registerRequest.getUsername())
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .rol(rol)
+                .rol(Rol.USER)
                 .build();
 
         usuarioRepository.save(usuario);

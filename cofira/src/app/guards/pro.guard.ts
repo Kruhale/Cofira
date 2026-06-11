@@ -1,10 +1,12 @@
-import { inject } from "@angular/core";
-import { CanActivateFn, Router } from "@angular/router";
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
-import { AuthService } from "../services/auth.service";
-import { SuscripcionService } from "../services/suscripcion.service";
+import { AuthService } from '../services/auth.service';
+import { SuscripcionService } from '../services/suscripcion.service';
 
-export const proGuard: CanActivateFn = function() {
+export const proGuard: CanActivateFn = function () {
   const servicioAutenticacion = inject(AuthService);
   const servicioSuscripcion = inject(SuscripcionService);
   const enrutador = inject(Router);
@@ -12,20 +14,19 @@ export const proGuard: CanActivateFn = function() {
   const usuarioActual = servicioAutenticacion.currentUser();
 
   if (!usuarioActual) {
-    const rutaDeRedireccionLogin = enrutador.createUrlTree(["/login"]);
-    return rutaDeRedireccionLogin;
+    return enrutador.createUrlTree(['/login']);
   }
 
-  const estadoSuscripcion = servicioSuscripcion.verificarEstadoSuscripcion();
+  // La autoridad sobre el acceso PRO es el SERVIDOR: preguntamos su estado
+  // real en cada acceso, en vez de fiarnos del localStorage del navegador.
+  const rutaAccesoPro = enrutador.createUrlTree(['/acceso-pro']);
 
-  const suscripcionEstaActiva = estadoSuscripcion === "activa";
-  const estaEnPeriodoGracia = estadoSuscripcion === "periodo_gracia";
-  const tieneAccesoPro = suscripcionEstaActiva || estaEnPeriodoGracia;
-
-  if (tieneAccesoPro) {
-    return true;
-  }
-
-  const rutaDeRedireccionAccesoPro = enrutador.createUrlTree(["/acceso-pro"]);
-  return rutaDeRedireccionAccesoPro;
+  return servicioSuscripcion.refrescarEstado().pipe(
+    map(function (estado) {
+      return estado.esPro ? true : rutaAccesoPro;
+    }),
+    catchError(function () {
+      return of(rutaAccesoPro);
+    }),
+  );
 };

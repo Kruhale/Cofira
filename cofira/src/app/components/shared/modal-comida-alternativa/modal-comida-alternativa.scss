@@ -8,19 +8,14 @@
 }
 
 .modal-alternativa__subtitulo {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  color: var(--gris-dark);
   margin: 0;
   padding: var(--spacing-size-s);
-  background-color: var(--gris-light);
-  border-radius: var(--radius-xss);
-  border-left: 0.1875rem solid var(--amarillo-normal);
-
-  [data-theme="dark"] & {
-    background-color: var(--gris-dark);
-    color: var(--blanco-dark);
-  }
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+  background: var(--superficie-1);
+  border-radius: var(--radius-md);
+  border-left: 0.1875rem solid var(--naranja-normal);
 }
 
 .modal-alternativa__formulario {
@@ -39,36 +34,28 @@
 }
 
 .modal-alternativa__label {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--negro-normal);
-
-  [data-theme="dark"] & {
-    color: var(--blanco-normal);
-  }
+  @include etiqueta-tecnica(var(--texto-secundario));
 }
 
 .modal-alternativa__input {
+  padding: var(--spacing-size-s) var(--spacing-size-m);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--negro-normal);
-  background-color: var(--blanco-normal);
-  border: 0.0625rem solid var(--gris-normal);
-  border-radius: var(--radius-xss);
-  padding: var(--spacing-size-s) var(--spacing-size-m);
-  transition: border-color var(--duration-fast) ease;
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
+}
 
-  [data-theme="dark"] & {
-    background-color: var(--gris-dark);
-    color: var(--blanco-normal);
-    border-color: var(--gris-normal);
-  }
+.modal-alternativa__input::placeholder {
+  color: var(--texto-suave);
 }
 
 .modal-alternativa__input:focus-visible {
-  border-color: var(--amarillo-normal);
-  box-shadow: 0 0 0 3px var(--amarillo-normal-transparente-025);
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 .modal-alternativa__grupo-macros {
@@ -81,15 +68,8 @@
 }
 
 .modal-alternativa__grupo-titulo {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--gris-dark);
   padding: 0;
-
-  [data-theme="dark"] & {
-    color: var(--blanco-dark);
-  }
+  @include etiqueta-tecnica(var(--texto-suave));
 }
 
 .modal-alternativa__macro {
@@ -102,45 +82,33 @@
   flex: 1;
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
-  color: var(--negro-normal);
-
-  [data-theme="dark"] & {
-    color: var(--blanco-normal);
-  }
+  color: var(--texto-principal);
 }
 
 .modal-alternativa__macro-input {
   width: 5rem;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--negro-normal);
-  background-color: var(--blanco-normal);
-  border: 0.0625rem solid var(--gris-normal);
-  border-radius: var(--radius-xss);
   padding: var(--spacing-size-xs) var(--spacing-size-s);
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
   text-align: right;
-
-  [data-theme="dark"] & {
-    background-color: var(--gris-dark);
-    color: var(--blanco-normal);
-    border-color: var(--gris-normal);
-  }
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
 }
 
 .modal-alternativa__macro-input:focus-visible {
-  border-color: var(--amarillo-normal);
-  box-shadow: 0 0 0 3px var(--amarillo-normal-transparente-025);
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 .modal-alternativa__macro-unidad {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  color: var(--gris-dark);
   min-width: 2rem;
-
-  [data-theme="dark"] & {
-    color: var(--blanco-dark);
-  }
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
 }
 
 .modal-alternativa__acciones {
@@ -148,45 +116,48 @@
   justify-content: flex-end;
   gap: var(--spacing-size-m);
   padding-top: var(--spacing-size-m);
-  border-top: 0.0625rem solid var(--gris-normal);
+  border-top: 1px solid var(--borde-sutil);
 }
 
 .modal-alternativa__boton {
+  padding: var(--spacing-size-s) var(--spacing-size-l);
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  border-radius: var(--radius-xss);
-  padding: var(--spacing-size-s) var(--spacing-size-l);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: background-color var(--duration-fast) ease,
-              border-color var(--duration-fast) ease;
+  transition: background var(--duration-base) ease,
+    border-color var(--duration-base) ease,
+    color var(--duration-base) ease,
+    transform var(--duration-fast) ease;
 }
 
 .modal-alternativa__boton--cancelar {
-  color: var(--gris-dark);
-  background-color: transparent;
-  border: 0.0625rem solid var(--gris-normal);
-
-  [data-theme="dark"] & {
-    color: var(--blanco-dark);
-  }
+  color: var(--texto-secundario);
+  background: transparent;
+  border: 1px solid var(--borde-sutil);
 }
 
 .modal-alternativa__boton--cancelar:hover {
-  border-color: var(--gris-dark);
+  border-color: var(--borde-medio);
+  color: var(--texto-principal);
 }
 
 .modal-alternativa__boton--guardar {
-  color: var(--blanco-normal);
-  background-color: var(--amarillo-normal);
-  border: none;
+  color: var(--texto-sobre-acento);
+  background: var(--gradiente-acento);
+  border: 1px solid transparent;
 }
 
 .modal-alternativa__boton--guardar:hover {
-  background-color: var(--amarillo-dark);
+  transform: translateY(-0.125rem);
+  box-shadow: var(--glow-acento);
 }
 
 .modal-alternativa__boton--guardar:disabled {
-  background-color: var(--gris-normal);
+  background: var(--superficie-3);
+  color: var(--texto-suave);
+  box-shadow: none;
+  transform: none;
   cursor: not-allowed;
 }

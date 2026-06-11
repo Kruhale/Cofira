@@ -7,41 +7,44 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
-  padding: var(--spacing-size-xxxl) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-size-xxl);
   min-height: calc(100vh - 10.5rem);
-  background-color: var(--blanco-normal-hover);
+  padding: calc(4.5rem + var(--spacing-size-xxl)) var(--spacing-size-m) var(--spacing-size-xxxl);
+  background-color: var(--superficie-fondo);
 
   @include responsive-down('md') {
     padding-top: calc(4rem + var(--spacing-size-xl));
-    padding-left: var(--spacing-size-m);
-    padding-right: var(--spacing-size-m);
-    padding-bottom: var(--spacing-size-xl);
     gap: var(--spacing-size-l);
   }
 }
 
 
 
-.seguimiento__titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--negro-normal);
+.seguimiento__cabecera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-size-xss);
+  width: 100%;
+  max-width: 60.625rem;
   text-align: center;
-  text-shadow: 0 0.25rem 0.25rem var(--negro-puro-transparente-025);
+}
+
+.seguimiento__eyebrow {
+  @include etiqueta-tecnica(var(--naranja-texto));
   margin: 0;
+}
 
-  @include responsive-down('lg') {
-    font-size: var(--font-size-3xl);
-  }
+.seguimiento__titulo {
+  @include titular-display(var(--display-md));
+  text-align: center;
+}
 
-  @include responsive-down('md') {
-    font-size: var(--font-size-2xl);
-  }
+.seguimiento__titulo-punto {
+  color: var(--naranja-normal);
 }
 
 
@@ -50,17 +53,16 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 60.625rem;
-  padding: 0 var(--spacing-size-m);
 }
 
 .seguimiento__card-macros {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: var(--spacing-size-xxl);
-  background-color: var(--blanco-normal);
-  border: 0.0625rem solid var(--blanco-dark);
-  border-radius: var(--radius-xss);
   padding: var(--spacing-size-xl);
+  @include superficie-bento;
 
   @include responsive-down('lg') {
     flex-direction: column;
@@ -73,31 +75,61 @@
   }
 }
 
+/* Momento de firma: el haz va por encima del contenido con mezcla "screen",
+   así enciende los números que tiene debajo sobre el fondo oscuro. */
+.seguimiento__haz {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  background: radial-gradient(16rem 16rem at var(--haz-x, 32%) var(--haz-y, 26%), var(--naranja-glow-fuerte), transparent 62%);
+  transition: opacity var(--duration-base) ease;
+}
+
+.haz--activo .seguimiento__haz {
+  opacity: 1;
+}
+
+.haz--estatico .seguimiento__haz {
+  opacity: 0.85;
+}
+
 .seguimiento__macros-info {
+  position: relative;
+  z-index: 1;
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-size-m);
 }
 
-.seguimiento__macros-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--negro-normal);
+.seguimiento__macros-etiqueta {
+  @include etiqueta-tecnica(var(--texto-suave));
   margin: 0;
-
-  @include responsive-down('md') {
-    font-size: var(--font-size-lg);
-  }
 }
 
 .seguimiento__macros-calorias {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-size-xss);
   margin: 0;
+}
+
+.seguimiento__calorias-valor {
+  font-family: var(--fuente-display);
+  font-size: var(--display-md);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--texto-principal);
+}
+
+.seguimiento__calorias-objetivo {
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
 }
 
 .seguimiento__macros-lista {
@@ -116,59 +148,66 @@
 }
 
 .seguimiento__macro-indicador {
-  width: 1rem;
-  height: 1rem;
+  width: 0.75rem;
+  height: 0.75rem;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .seguimiento__macro-indicador--proteinas {
-  background-color: var(--negro-normal);
+  background-color: var(--naranja-normal);
 }
 
 .seguimiento__macro-indicador--carbohidratos {
-  background-color: var(--amarillo-normal);
+  background-color: var(--ambar);
 }
 
 .seguimiento__macro-indicador--grasas {
-  background-color: var(--gris-normal);
+  background-color: hsl(40, 7%, 56%); /* neutro cálido */
 }
 
 .seguimiento__macro-texto {
+  flex: 1;
   font-family: var(--font-primary);
-  font-size: 0.9375rem;
-  font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+}
+
+.seguimiento__macro-cifra {
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  color: var(--texto-principal);
 }
 
 .seguimiento__extras {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--spacing-size-xs) var(--spacing-size-s);
-  margin: 0;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  gap: var(--spacing-size-xss) var(--spacing-size-m);
+  margin: var(--spacing-size-xss) 0 0;
+  padding-top: var(--spacing-size-m);
+  border-top: 1px solid var(--borde-sutil);
 }
 
 .seguimiento__extra-label {
-  font-family: var(--font-primary);
-  font-size: 0.9375rem;
-  font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
+  @include etiqueta-tecnica(var(--texto-suave));
 }
 
 .seguimiento__extra-valor {
-  font-family: var(--font-primary);
-  font-size: 0.9375rem;
-  font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
   margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  color: var(--texto-principal);
 }
 
 
 
 .seguimiento__grafico-circular {
+  position: relative;
+  z-index: 1;
   flex-shrink: 0;
-  width: 15.625rem;
-  height: 15.625rem;
+  width: 15rem;
+  height: 15rem;
   max-width: 100%;
   margin: 0;
 
@@ -191,6 +230,42 @@
 .seguimiento__pie-chart {
   width: 100%;
   height: 100%;
+  overflow: visible;
+}
+
+.seguimiento__pie-pista {
+  stroke: var(--borde-sutil);
+}
+
+.seguimiento__pie-segmento {
+  transition: stroke-dasharray var(--duration-slow) ease;
+}
+
+.seguimiento__pie-segmento--proteinas {
+  stroke: var(--naranja-normal);
+  filter: drop-shadow(0 0 5px var(--naranja-glow-media));
+}
+
+.seguimiento__pie-segmento--carbohidratos {
+  stroke: var(--ambar);
+}
+
+.seguimiento__pie-segmento--grasas {
+  stroke: hsl(40, 7%, 56%);
+}
+
+.seguimiento__pie-centro-valor {
+  font-family: var(--fuente-display);
+  font-size: 30px;
+  font-weight: 800;
+  fill: var(--texto-principal);
+}
+
+.seguimiento__pie-centro-label {
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  fill: var(--texto-suave);
 }
 
 
@@ -199,25 +274,26 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 60.625rem;
-  padding: 0 var(--spacing-size-m);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-size-l);
 }
 
-.seguimiento__fuerza-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--negro-normal);
+.seguimiento__fuerza-cabecera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-size-xss);
   text-align: center;
-  margin: 0;
-
-  @include responsive-down('md') {
-    font-size: var(--font-size-xl);
-  }
 }
+
+.seguimiento__fuerza-titulo {
+  @include titular-display(var(--font-size-2xl));
+  text-align: center;
+}
+
+
 
 .seguimiento__selector-ejercicio {
   display: flex;
@@ -244,33 +320,34 @@
 .seguimiento__chip {
   display: inline-flex;
   align-items: center;
-  padding: var(--spacing-size-xs) var(--spacing-size-s);
-  background-color: var(--blanco-normal);
-  border: 0.0625rem solid var(--blanco-dark);
-  border-radius: var(--radius-m);
-  font-family: var(--font-primary);
+  padding: 0.5rem 1.1rem;
+  background-color: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-full);
+  font-family: var(--fuente-mono);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--negro-normal);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--texto-secundario);
   cursor: pointer;
   transition: all var(--duration-fast) ease;
   white-space: nowrap;
 }
 
 .seguimiento__chip:hover {
-  border-color: var(--amarillo-normal);
-  background-color: var(--amarillo-normal-transparente-012);
+  border-color: var(--naranja-normal);
+  color: var(--texto-principal);
 }
 
 .seguimiento__chip--activo {
-  background-color: var(--amarillo-normal);
-  border-color: var(--amarillo-dark);
-  color: var(--negro-normal);
-  font-weight: var(--font-weight-semibold);
+  background: var(--gradiente-acento);
+  border-color: transparent;
+  color: var(--texto-sobre-acento);
+  font-weight: 600;
 }
 
 .seguimiento__chip--activo:hover {
-  background-color: var(--amarillo-normal-hover);
+  color: var(--texto-sobre-acento);
 }
 
 
@@ -278,11 +355,9 @@
 .seguimiento__grafico-lineas {
   box-sizing: border-box;
   width: 100%;
-  background-color: var(--blanco-normal);
-  border: 0.0625rem solid var(--blanco-dark);
-  border-radius: var(--radius-xss);
   padding: var(--spacing-size-l);
   overflow-x: auto;
+  @include superficie-bento;
 }
 
 .seguimiento__chart-container {
@@ -304,24 +379,66 @@
 .seguimiento__line-chart {
   width: 100%;
   height: 100%;
+  overflow: visible;
+}
+
+.seguimiento__eje {
+  stroke: var(--borde-medio);
+  stroke-width: 1;
+}
+
+.seguimiento__linea-guia {
+  stroke: var(--borde-sutil);
+  stroke-width: 1;
+  stroke-dasharray: 3 7;
 }
 
 .seguimiento__chart-label {
-  font-family: var(--font-primary);
-  font-size: 0.75rem;
-  fill: var(--negro-normal);
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  fill: var(--texto-suave);
 }
 
 .seguimiento__chart-label-axis {
-  font-family: var(--font-primary);
-  font-size: 0.75rem;
-  fill: var(--gris-normal);
+  font-family: var(--fuente-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  fill: var(--texto-suave);
 }
+
+.seguimiento__parada-inicio {
+  stop-color: var(--naranja-normal);
+}
+
+.seguimiento__parada-fin {
+  stop-color: var(--ambar);
+}
+
+.seguimiento__linea-progreso {
+  stroke: url(#gradienteFuerza);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px var(--naranja-glow-media));
+}
+
+.seguimiento__punto {
+  fill: var(--naranja-normal);
+  stroke: var(--superficie-1);
+  stroke-width: 2;
+}
+
+.seguimiento__punto--ultimo {
+  filter: drop-shadow(0 0 6px var(--naranja-glow-fuerte));
+}
+
+
 
 .seguimiento__sin-datos {
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--gris-normal);
+  color: var(--texto-suave);
   text-align: center;
   margin: 0;
 }
@@ -331,9 +448,9 @@
   justify-content: center;
   align-items: center;
   min-height: 12.5rem;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--gris-normal);
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
 }
 
 .seguimiento__sin-datos-grafico {
@@ -350,59 +467,16 @@
 .seguimiento__sin-datos-grafico__mensaje {
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--oscuro-seguimiento-sin-datos-texto, var(--negro-normal));
+  color: var(--texto-secundario);
   margin: 0;
 }
 
 .seguimiento__ayuda {
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
-  color: var(--gris-normal);
+  color: var(--texto-suave);
   margin: 0;
 }
-
-
-
-.seguimiento__agua {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-size-xs);
-}
-
-.seguimiento__agua-boton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  padding: 0;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--negro-normal);
-  background-color: var(--blanco-normal-hover);
-  border: 0.0625rem solid var(--blanco-dark);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all var(--duration-fast) ease;
-}
-
-.seguimiento__agua-boton:hover:not(:disabled) {
-  background-color: var(--amarillo-normal);
-  border-color: var(--amarillo-normal);
-}
-
-.seguimiento__agua-boton:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.seguimiento__agua-valor {
-  min-width: 5rem;
-  text-align: center;
-}
-
-
 
 .seguimiento__sin-datos-circular {
   display: flex;
@@ -417,7 +491,7 @@
 
 .seguimiento__sin-datos-circular p {
   font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--gris-normal);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
   margin: 0;
 }

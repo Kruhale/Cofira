@@ -12,49 +12,52 @@
 
 
 .formulario-textarea__etiqueta {
-  color: var(--text-light);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-regular);
-  font-family: var(--font-secondary);
   margin-bottom: var(--input-margin-bottom);
+  @include etiqueta-tecnica(var(--texto-secundario));
 }
 
 .formulario-textarea__requerido {
-  color: var(--button-red);
+  color: var(--naranja-texto);
 }
 
 .formulario-textarea__campo {
-  @include input-base;
-  background-color: var(--button-yellow);
+  width: 100%;
   min-height: 7.5rem;
+  padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
   resize: vertical;
-  transition: all 0.3s ease;
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
 }
 
 .formulario-textarea__campo::placeholder {
-  @include input-placeholder;
+  color: var(--texto-suave);
 }
 
 .formulario-textarea__campo:hover {
-  @include input-hover;
+  border-color: var(--borde-medio);
 }
 
-.formulario-textarea__campo:focus {
-  outline: 0.125rem solid var(--amarillo-dark);
-  outline-offset: 0.125rem;
+.formulario-textarea__campo:focus-visible {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 .formulario-textarea__error {
-  color: var(--button-red);
-  font-size: var(--font-size-sm);
-  font-family: var(--font-secondary);
   margin-top: var(--input-margin-bottom);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--peligro-texto);
 }
 
 .formulario-textarea__ayuda {
-  color: var(--text-dark);
-  font-size: var(--font-size-sm);
-  font-family: var(--font-secondary);
-  opacity: 0.8;
   margin-top: var(--input-margin-bottom);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
 }

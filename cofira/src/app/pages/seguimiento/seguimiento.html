@@ -1,41 +1,44 @@
 <main class="seguimiento">
 
-  <h1 class="seguimiento__titulo">CONTADOR DE NUTRIENTES</h1>
+  <header class="seguimiento__cabecera">
+    <p class="seguimiento__eyebrow">Seguimiento · tu evolución</p>
+    <h1 class="seguimiento__titulo">Tu progreso<span class="seguimiento__titulo-punto" aria-hidden="true">.</span></h1>
+  </header>
 
   <section class="seguimiento__macronutrientes">
-    <article class="seguimiento__card-macros">
+    <article class="seguimiento__card-macros" hazDeLuz>
+      <span class="seguimiento__haz" aria-hidden="true"></span>
+
       <header class="seguimiento__macros-info">
-        <h2 class="seguimiento__macros-titulo">Desglose de Macronutrientes y Calorías</h2>
+        <p class="seguimiento__macros-etiqueta">Macronutrientes · hoy</p>
+
         <p class="seguimiento__macros-calorias">
-          Calorías totales: {{ macrosConsumo().calorias.consumido }}/{{ macrosConsumo().calorias.objetivo }} kcal
+          <span class="seguimiento__calorias-valor">{{ macrosConsumo().calorias.consumido }}</span>
+          <span class="seguimiento__calorias-objetivo">/ {{ macrosConsumo().calorias.objetivo }} kcal</span>
         </p>
 
         <ul class="seguimiento__macros-lista">
           <li class="seguimiento__macro-item">
             <span aria-hidden="true" class="seguimiento__macro-indicador seguimiento__macro-indicador--proteinas"></span>
-            <span class="seguimiento__macro-texto">
-              Proteínas: {{ macrosConsumo().proteinas.consumido }}g ({{ macrosConsumo().proteinas.porcentajeGrafica }}%)
-            </span>
+            <span class="seguimiento__macro-texto">Proteínas</span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().proteinas.consumido }}g · {{ macrosConsumo().proteinas.porcentajeGrafica }}%</span>
           </li>
           <li class="seguimiento__macro-item">
             <span aria-hidden="true" class="seguimiento__macro-indicador seguimiento__macro-indicador--carbohidratos"></span>
-            <span class="seguimiento__macro-texto">
-              Carbohidratos: {{ macrosConsumo().carbohidratos.consumido }}g ({{ macrosConsumo().carbohidratos.porcentajeGrafica }}%)
-            </span>
+            <span class="seguimiento__macro-texto">Carbohidratos</span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().carbohidratos.consumido }}g · {{ macrosConsumo().carbohidratos.porcentajeGrafica }}%</span>
           </li>
           <li class="seguimiento__macro-item">
             <span aria-hidden="true" class="seguimiento__macro-indicador seguimiento__macro-indicador--grasas"></span>
-            <span class="seguimiento__macro-texto">
-              Grasas: {{ macrosConsumo().grasas.consumido }}g ({{ macrosConsumo().grasas.porcentajeGrafica }}%)
-            </span>
+            <span class="seguimiento__macro-texto">Grasas</span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().grasas.consumido }}g · {{ macrosConsumo().grasas.porcentajeGrafica }}%</span>
           </li>
         </ul>
 
         <dl class="seguimiento__extras">
-          <dt class="seguimiento__extra-label">Fibra objetivo:</dt>
+          <dt class="seguimiento__extra-label">Fibra objetivo</dt>
           <dd class="seguimiento__extra-valor">{{ fibraObjetivo() }}g</dd>
-
-          <dt class="seguimiento__extra-label">Agua hoy:</dt>
+          <dt class="seguimiento__extra-label">Agua hoy</dt>
           <dd class="seguimiento__extra-valor">{{ aguaConsumida() | number:'1.1-1' }}L / {{ aguaObjetivo() }}L</dd>
         </dl>
       </header>
@@ -43,39 +46,21 @@
       <figure class="seguimiento__grafico-circular">
         @if (macrosConsumo().diasConDatos > 0) {
           <svg aria-label="Gráfico circular de macronutrientes" class="seguimiento__pie-chart" role="img" viewBox="0 0 200 200">
-            <circle
+            <circle class="seguimiento__pie-pista" cx="100" cy="100" r="80" fill="transparent" stroke-width="34" transform="rotate(-90 100 100)"/>
+            <circle class="seguimiento__pie-segmento seguimiento__pie-segmento--proteinas"
               [attr.stroke-dasharray]="calcularDashArray(macrosConsumo().proteinas.porcentajeGrafica)"
               [attr.stroke-dashoffset]="calcularDashOffset(0)"
-              cx="100"
-              cy="100"
-              fill="transparent"
-              r="80"
-              stroke="#110e10"
-              stroke-width="40"
-              transform="rotate(-90 100 100)"
-            />
-            <circle
+              cx="100" cy="100" r="80" fill="transparent" stroke-width="34" transform="rotate(-90 100 100)"/>
+            <circle class="seguimiento__pie-segmento seguimiento__pie-segmento--carbohidratos"
               [attr.stroke-dasharray]="calcularDashArray(macrosConsumo().carbohidratos.porcentajeGrafica)"
               [attr.stroke-dashoffset]="calcularDashOffset(macrosConsumo().proteinas.porcentajeGrafica)"
-              cx="100"
-              cy="100"
-              fill="transparent"
-              r="80"
-              stroke="#ffd300"
-              stroke-width="40"
-              transform="rotate(-90 100 100)"
-            />
-            <circle
+              cx="100" cy="100" r="80" fill="transparent" stroke-width="34" transform="rotate(-90 100 100)"/>
+            <circle class="seguimiento__pie-segmento seguimiento__pie-segmento--grasas"
               [attr.stroke-dasharray]="calcularDashArray(macrosConsumo().grasas.porcentajeGrafica)"
               [attr.stroke-dashoffset]="calcularDashOffset(macrosConsumo().proteinas.porcentajeGrafica + macrosConsumo().carbohidratos.porcentajeGrafica)"
-              cx="100"
-              cy="100"
-              fill="transparent"
-              r="80"
-              stroke="#3f454c"
-              stroke-width="40"
-              transform="rotate(-90 100 100)"
-            />
+              cx="100" cy="100" r="80" fill="transparent" stroke-width="34" transform="rotate(-90 100 100)"/>
+            <text class="seguimiento__pie-centro-valor" x="100" y="98" text-anchor="middle">{{ macrosConsumo().calorias.consumido }}</text>
+            <text class="seguimiento__pie-centro-label" x="100" y="120" text-anchor="middle">KCAL</text>
           </svg>
         } @else {
           <aside class="seguimiento__sin-datos-circular">
@@ -88,7 +73,10 @@
   </section>
 
   <section class="seguimiento__fuerza">
-    <h2 class="seguimiento__fuerza-titulo">Ganancia de fuerza</h2>
+    <header class="seguimiento__fuerza-cabecera">
+      <p class="seguimiento__eyebrow">Fuerza · evolución</p>
+      <h2 class="seguimiento__fuerza-titulo">Ganancia de fuerza</h2>
+    </header>
 
     <nav class="seguimiento__selector-ejercicio">
       @if (ejerciciosDisponibles().length > 0) {
@@ -123,47 +111,42 @@
       } @else {
         <figure class="seguimiento__chart-container">
           <svg aria-label="Gráfico de evolución de fuerza" class="seguimiento__line-chart" role="img" viewBox="-30 0 630 300">
-            <!-- Ejes -->
-            <line stroke="#b8b8b8" stroke-width="1" x1="50" x2="50" y1="20" y2="250"/>
-            <line stroke="#b8b8b8" stroke-width="1" x1="50" x2="580" y1="250" y2="250"/>
+            <defs>
+              <linearGradient id="gradienteFuerza" x1="0" y1="0" x2="0" y2="1">
+                <stop class="seguimiento__parada-inicio" offset="0"/>
+                <stop class="seguimiento__parada-fin" offset="1"/>
+              </linearGradient>
+            </defs>
 
-            <!-- Etiquetas eje Y dinámicas -->
+            <line class="seguimiento__eje" x1="50" x2="50" y1="20" y2="250"/>
+            <line class="seguimiento__eje" x1="50" x2="580" y1="250" y2="250"/>
+
             <text class="seguimiento__chart-label" text-anchor="end" x="40" y="35">{{ pesoMaximoGrafico() }}kg</text>
             <text class="seguimiento__chart-label" text-anchor="end" x="40" y="90">{{ pesoMaximoGrafico() * 0.75 | number:'1.0-0' }}kg</text>
             <text class="seguimiento__chart-label" text-anchor="end" x="40" y="145">{{ pesoMaximoGrafico() * 0.5 | number:'1.0-0' }}kg</text>
             <text class="seguimiento__chart-label" text-anchor="end" x="40" y="200">{{ pesoMaximoGrafico() * 0.25 | number:'1.0-0' }}kg</text>
             <text class="seguimiento__chart-label" text-anchor="end" x="40" y="255">0kg</text>
 
-            <!-- Líneas guía horizontales -->
-            <line stroke="#e0e0e0" stroke-dasharray="5,5" stroke-width="1" x1="50" x2="580" y1="35" y2="35"/>
-            <line stroke="#e0e0e0" stroke-dasharray="5,5" stroke-width="1" x1="50" x2="580" y1="90" y2="90"/>
-            <line stroke="#e0e0e0" stroke-dasharray="5,5" stroke-width="1" x1="50" x2="580" y1="145" y2="145"/>
-            <line stroke="#e0e0e0" stroke-dasharray="5,5" stroke-width="1" x1="50" x2="580" y1="200" y2="200"/>
+            <line class="seguimiento__linea-guia" x1="50" x2="580" y1="35" y2="35"/>
+            <line class="seguimiento__linea-guia" x1="50" x2="580" y1="90" y2="90"/>
+            <line class="seguimiento__linea-guia" x1="50" x2="580" y1="145" y2="145"/>
+            <line class="seguimiento__linea-guia" x1="50" x2="580" y1="200" y2="200"/>
 
-            <!-- Etiquetas eje X dinámicas -->
             @for (punto of fechasEjeX(); track punto.fecha) {
               <text class="seguimiento__chart-label" text-anchor="middle" [attr.x]="punto.x" y="270">{{ punto.fecha }}</text>
             }
 
-            <!-- Etiquetas de ejes -->
             <text class="seguimiento__chart-label-axis" text-anchor="middle" x="315" y="295">Fecha</text>
-            <text class="seguimiento__chart-label-axis" text-anchor="middle" transform="rotate(-90 -10 145)" x="-10" y="145">Peso levantado (kg)</text>
+            <text class="seguimiento__chart-label-axis" text-anchor="middle" transform="rotate(-90 -10 145)" x="-10" y="145">Peso (kg)</text>
 
-            <!-- Línea del gráfico -->
             @if (polylinePoints()) {
-              <polyline
-                fill="none"
-                [attr.points]="polylinePoints()"
-                stroke="#ffd300"
-                stroke-width="2"
-              />
+              <polyline class="seguimiento__linea-progreso" fill="none" [attr.points]="polylinePoints()"/>
             }
 
-            <!-- Puntos del gráfico -->
             @for (punto of puntosGrafico(); track punto.fecha; let ultimo = $last) {
-              <circle [attr.cx]="punto.x" [attr.cy]="punto.y" fill="#ffd300" r="5">
+              <circle class="seguimiento__punto" [class.seguimiento__punto--ultimo]="ultimo" [attr.cx]="punto.x" [attr.cy]="punto.y" r="5">
                 @if (ultimo) {
-                  <animate attributeName="r" dur="1s" repeatCount="indefinite" values="5;7;5"/>
+                  <animate attributeName="r" dur="1.4s" repeatCount="indefinite" values="5;7.5;5"/>
                 }
               </circle>
               <title>{{ punto.fecha }}: {{ punto.peso }}kg</title>

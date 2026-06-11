@@ -1,5 +1,3 @@
-
-
 @import '../../../../styles/00-settings/css-variables';
 @import '../../../../styles/01-tools/mixins';
 
@@ -8,27 +6,41 @@
   align-items: center;
   gap: var(--spacing-size-xs);
   padding: var(--spacing-size-xs) var(--spacing-size-s);
-  background-color: var(--bg-surface);
-  border: var(--border-width-normal) solid var(--border-color-light);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
   border-radius: var(--radius-full);
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  font-family: var(--fuente-mono);
+  font-size: var(--etiqueta-tecnica);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
   cursor: pointer;
-  transition: all var(--duration-fast) ease;
-}
+  transition: border-color var(--duration-base) ease,
+    background var(--duration-base) ease,
+    color var(--duration-base) ease;
 
-.chip:hover {
-  border-color: var(--amarillo-normal);
-  background-color: var(--amarillo-light);
+  &:hover {
+    border-color: var(--borde-medio);
+    color: var(--texto-principal);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--naranja-normal);
+    box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+  }
 }
 
 .chip--selected {
-  background-color: var(--amarillo-normal);
-  border-color: var(--amarillo-dark);
-  color: var(--text-primary);
-  font-weight: var(--font-weight-semibold);
+  background: var(--naranja-glow-suave);
+  border-color: var(--naranja-normal);
+  color: var(--naranja-texto);
+
+  &:hover {
+    border-color: var(--naranja-normal);
+    color: var(--naranja-texto);
+  }
 }
 
 .chip__texto {
@@ -36,27 +48,26 @@
 }
 
 .chip__boton-eliminar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   width: 1.25rem;
   height: 1.25rem;
   padding: 0;
-  background-color: transparent;
+  background: transparent;
   border: none;
   border-radius: var(--radius-full);
   cursor: pointer;
-  color: var(--gris-normal);
-  transition: all var(--duration-fast) ease;
-}
+  color: var(--texto-suave);
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
 
-.chip__boton-eliminar:hover {
-  background-color: var(--amarillo-normal);
-  color: var(--text-primary);
-}
+  &:hover {
+    background: var(--naranja-normal);
+    color: var(--texto-sobre-acento);
+  }
 
-.chip__boton-eliminar:focus-visible {
-  box-shadow: 0 0 0 0.125rem var(--amarillo-normal);
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--naranja-glow-suave);
+  }
 }
 
 .chip__boton-eliminar__svg {

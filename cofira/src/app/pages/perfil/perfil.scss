@@ -1,133 +1,160 @@
-@import '../../../styles/00-settings/css-variables';
 @import '../../../styles/01-tools/mixins';
 
-.perfil {
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 4.5rem);
-  padding: var(--spacing-size-xxl) var(--spacing-size-xl);
-  padding-top: calc(4.5rem + var(--spacing-size-xxl));
-
-  background-color: var(--bg-body);
+:host {
+  display: block;
+  background-color: var(--superficie-fondo);
 }
 
-.perfil__cabecera {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-size-xs);
-  margin-bottom: var(--spacing-size-xl);
+.perfil {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: calc(4.5rem + var(--spacing-size-xl)) 2rem var(--spacing-size-xxxl);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
 
-  text-align: center;
+
+/* ── Hero asimétrico con avatar ── */
+.perfil__hero {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.perfil__avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: 0;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--superficie-2);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+}
+
+.perfil__avatar::before {
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  content: '';
+  border-radius: 50%;
+  background: var(--gradiente-acento);
+}
+
+.perfil__avatar-inicial {
+  font-family: var(--fuente-display);
+  font-size: 2.5rem;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--texto-principal);
+}
+
+.perfil__eyebrow {
+  @include etiqueta-tecnica(var(--naranja-texto));
+  margin: 0 0 0.5rem;
 }
 
 .perfil__titulo {
+  @include titular-display(var(--display-md));
+  margin: 0;
+  word-break: break-word;
+}
+
+.perfil__hero-tags {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-size-s);
-  margin: 0;
-
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-
-  color: var(--text-primary);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
 }
 
-.perfil__badge-pro {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-size-xss) var(--spacing-size-s);
-
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-
-  color: var(--negro-normal);
-  background: linear-gradient(135deg, var(--amarillo-light), var(--amarillo-normal));
+.perfil__chip {
+  padding: 0.3rem 0.85rem;
   border-radius: var(--radius-full);
-
-  box-shadow: 0 2px 8px var(--amarillo-normal-transparente-024);
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  font-family: var(--fuente-mono);
+  font-size: var(--etiqueta-tecnica);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
 }
 
-.perfil__subtitulo {
-  margin: 0;
-
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-
-  color: var(--text-secondary);
+.perfil__chip--pro {
+  background: var(--gradiente-acento);
+  border-color: transparent;
+  color: var(--texto-sobre-acento);
+  font-weight: 700;
 }
 
+
+/* ── Bento asimétrico ── */
 .perfil__contenido {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: var(--spacing-size-l);
-  max-width: 75rem;
-  margin: 0 auto;
-  width: 100%;
+  grid-template-columns: 1.6fr 1fr;
+  grid-template-areas:
+    'info salud'
+    'info actividad';
+  gap: 1.25rem;
 }
 
 .perfil__tarjeta {
-  display: flex;
-  flex-direction: column;
-
-  padding: var(--spacing-size-l);
-
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color-light);
-  border-radius: var(--radius-lg);
+  @include superficie-bento;
+  padding: 2rem;
 }
 
 .perfil__tarjeta--info {
-  grid-column: span 2;
+  grid-area: info;
+}
+
+.perfil__tarjeta--salud {
+  grid-area: salud;
+}
+
+.perfil__tarjeta--actividad {
+  grid-area: actividad;
 }
 
 .perfil__tarjeta-cabecera {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-size-m);
-  padding-bottom: var(--spacing-size-s);
-
-  border-bottom: 1px solid var(--border-color-light);
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
 }
 
 .perfil__tarjeta-titulo {
   margin: 0;
-
   font-family: var(--font-secondary);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-
-  color: var(--text-primary);
+  color: var(--texto-principal);
 }
 
 .perfil__boton-editar {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--spacing-size-xss);
-  padding: var(--spacing-size-xss) var(--spacing-size-s);
-
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: 1px solid var(--borde-medio);
+  color: var(--texto-secundario);
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-
-  color: var(--amarillo-dark);
-  background: transparent;
-  border: 1px solid var(--amarillo-normal);
-  border-radius: var(--radius-md);
-
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) ease;
 }
 
 .perfil__boton-editar:hover {
-  color: var(--negro-normal);
-  background: var(--amarillo-normal);
+  border-color: var(--naranja-normal);
+  color: var(--naranja-texto);
 }
 
 .perfil__boton-editar-icono {
@@ -135,245 +162,196 @@
   height: 1rem;
 }
 
+
+/* ── Formulario ── */
 .perfil__formulario {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-m);
-
-  border: none;
-  padding: 0;
-  margin: 0;
+  gap: 1.5rem;
 }
 
 .perfil__campo {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-xss);
-
-  border: none;
-  padding: 0;
+  gap: 0.4rem;
   margin: 0;
+  padding: 0;
+  border: none;
 }
 
 .perfil__etiqueta {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-
-  color: var(--text-secondary);
+  @include etiqueta-tecnica(var(--texto-suave));
 }
 
 .perfil__valor {
   margin: 0;
-
   font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-regular);
-
-  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  color: var(--texto-principal);
 }
 
 .perfil__valor--email {
-  color: var(--amarillo-dark);
+  color: var(--naranja-texto);
 }
 
 .perfil__input {
-  padding: var(--spacing-size-s);
-
+  width: 100%;
+  padding: var(--spacing-size-s) var(--spacing-size-m);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-
-  color: var(--text-primary);
-  background-color: var(--bg-input);
-  border: 1px solid var(--border-color);
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
   border-radius: var(--radius-md);
-
-  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  transition: all var(--duration-fast) ease;
 }
 
 .perfil__input:focus-visible {
-  border-color: var(--amarillo-normal);
-  box-shadow: 0 0 0 3px var(--amarillo-normal-transparente-025);
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 .perfil__acciones {
   display: flex;
   justify-content: flex-end;
-  gap: var(--spacing-size-s);
-  margin-top: var(--spacing-size-s);
-  padding-top: var(--spacing-size-m);
-
-  border-top: 1px solid var(--border-color-light);
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
+
+/* ── Datos de salud (mini-bento) ── */
 .perfil__salud-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-size-m);
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
 .perfil__salud-item {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-xss);
-  padding: var(--spacing-size-s);
-
-  background-color: var(--bg-surface);
+  gap: 0.4rem;
+  padding: 1.1rem;
+  margin: 0;
   border-radius: var(--radius-md);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
 }
 
 .perfil__salud-etiqueta {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-
-  color: var(--text-secondary);
+  @include etiqueta-tecnica(var(--texto-suave));
 }
 
 .perfil__salud-valor {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-size-xss);
-
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-
-  color: var(--text-primary);
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-family: var(--fuente-display);
+  font-size: 1.5rem;
+  line-height: 1.1;
+  color: var(--texto-principal);
 }
 
 .perfil__imc-estado {
-  padding: 0.125rem 0.5rem;
-
-  font-family: var(--font-primary);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-
-  border-radius: var(--radius-sm);
-}
-
-.perfil__imc-estado--bajo {
-  color: var(--rojo-dark);
-  background-color: var(--rojo-normal-transparente-010);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: var(--superficie-3);
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
 }
 
 .perfil__imc-estado--normal {
-  color: var(--verde-dark);
-  background-color: var(--verde-normal-transparente-010);
+  color: var(--exito-texto);
 }
 
-.perfil__imc-estado--sobrepeso {
-  color: var(--amarillo-darker);
-  background-color: var(--amarillo-normal-transparente-012);
+.perfil__imc-estado--bajo,
+.perfil__imc-estado--alto {
+  color: var(--peligro-texto);
 }
 
-.perfil__imc-estado--obesidad {
-  color: var(--rojo-dark);
-  background-color: var(--rojo-normal-transparente-010);
-}
 
+/* ── Nivel de actividad ── */
 .perfil__actividad {
   display: flex;
   align-items: center;
-  gap: var(--spacing-size-m);
-  padding: var(--spacing-size-m);
-
-  background-color: var(--bg-surface);
-  border-radius: var(--radius-md);
+  gap: 1.25rem;
 }
 
 .perfil__actividad-icono {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3.25rem;
+  height: 3.25rem;
   margin: 0;
-
-  background-color: var(--amarillo-normal-transparente-012);
-  border-radius: 50%;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--naranja-glow-suave);
+  border: 1px solid var(--borde-sutil);
+  color: var(--naranja-normal);
 }
 
 .perfil__actividad-icono svg {
-  width: 1.75rem;
-  height: 1.75rem;
-
-  color: var(--amarillo-dark);
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
 .perfil__actividad-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  margin: 0;
 }
 
 .perfil__actividad-nivel {
-  margin: 0;
-
+  margin: 0 0 0.25rem;
   font-family: var(--font-secondary);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-
-  color: var(--text-primary);
+  color: var(--texto-principal);
 }
 
 .perfil__actividad-descripcion {
   margin: 0;
-
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
-
-  color: var(--text-secondary);
+  color: var(--texto-secundario);
 }
 
+
+/* ── Responsive ── */
 @include responsive-down('md') {
-  .perfil {
-    padding: var(--spacing-size-l) var(--spacing-size-m);
-    padding-top: calc(4rem + var(--spacing-size-l));
-  }
-
-  .perfil__titulo {
-    font-size: var(--font-size-2xl);
-  }
-
   .perfil__contenido {
     grid-template-columns: 1fr;
-  }
-
-  .perfil__tarjeta--info {
-    grid-column: span 1;
-  }
-
-  .perfil__salud-grid {
-    grid-template-columns: 1fr;
+    grid-template-areas:
+      'info'
+      'salud'
+      'actividad';
   }
 }
 
 @include responsive-down('sm') {
   .perfil {
-    padding: var(--spacing-size-m);
-    padding-top: calc(4rem + var(--spacing-size-m));
+    padding: var(--spacing-size-xl) 1.25rem var(--spacing-size-xxl);
   }
 
-  .perfil__titulo {
-    font-size: var(--font-size-xl);
+  .perfil__hero {
+    gap: 1.25rem;
   }
 
-  .perfil__tarjeta {
-    padding: var(--spacing-size-m);
+  .perfil__avatar {
+    width: 4.5rem;
+    height: 4.5rem;
   }
 
-  .perfil__tarjeta-cabecera {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-size-s);
+  .perfil__avatar-inicial {
+    font-size: 2rem;
   }
 
-  .perfil__acciones {
-    flex-direction: column;
-  }
-
-  .perfil__actividad {
-    flex-direction: column;
-    text-align: center;
+  .perfil__salud-grid {
+    grid-template-columns: 1fr;
   }
 }

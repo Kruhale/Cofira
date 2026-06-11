@@ -1,12 +1,23 @@
 <main class="perfil">
-  <header class="perfil__cabecera">
-    <h1 class="perfil__titulo">
-      Mi Perfil
-      @if (usuarioEsPro()) {
-        <mark class="perfil__badge-pro">PRO</mark>
-      }
-    </h1>
-    <p class="perfil__subtitulo">Gestiona tu información personal y preferencias</p>
+  <header class="perfil__hero">
+    <figure class="perfil__avatar">
+      <span class="perfil__avatar-inicial">{{ (datosUsuario().nombre || datosUsuario().email || '?').charAt(0) }}</span>
+    </figure>
+    <hgroup class="perfil__hero-info">
+      <p class="perfil__eyebrow">Mi cuenta</p>
+      <h1 class="perfil__titulo">{{ datosUsuario().nombre || 'Mi perfil' }}</h1>
+      <div class="perfil__hero-tags">
+        @if (usuarioEsPro()) {
+          <span class="perfil__chip perfil__chip--pro">PRO</span>
+        }
+        @if (datosUsuario().objetivo) {
+          <span class="perfil__chip">{{ datosUsuario().objetivo }}</span>
+        }
+        @if (datosUsuario().nivelActividad) {
+          <span class="perfil__chip">{{ datosUsuario().nivelActividad }}</span>
+        }
+      </div>
+    </hgroup>
   </header>
 
   <section class="perfil__contenido">

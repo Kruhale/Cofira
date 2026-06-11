@@ -1,11 +1,12 @@
-import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
-import {DecimalPipe} from '@angular/common';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { HazDeLuz } from '../../directives/haz-de-luz.directive';
 
-import {GimnasioService} from '../../services/gimnasio.service';
-import {OnboardingService} from '../../services/onboarding.service';
-import {AguaService} from '../../services/agua.service';
-import {ConsumoComidaService} from '../../services/consumo-comida.service';
-import {HistorialEntrenamiento} from '../../models/gimnasio.model';
+import { GimnasioService } from '../../services/gimnasio.service';
+import { OnboardingService } from '../../services/onboarding.service';
+import { AguaService } from '../../services/agua.service';
+import { ConsumoComidaService } from '../../services/consumo-comida.service';
+import { HistorialEntrenamiento } from '../../models/gimnasio.model';
 
 interface PuntoGrafico {
   x: number;
@@ -17,7 +18,7 @@ interface PuntoGrafico {
 @Component({
   selector: 'app-seguimiento',
   standalone: true,
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, HazDeLuz],
   templateUrl: './seguimiento.html',
   styleUrl: './seguimiento.scss',
 })
@@ -37,7 +38,7 @@ export class Seguimiento implements OnInit {
   readonly aguaObjetivo = signal(3);
 
   readonly ejerciciosDisponibles = signal<string[]>([]);
-  readonly ejercicioSeleccionado = signal<string>("");
+  readonly ejercicioSeleccionado = signal<string>('');
   readonly historialEjercicio = signal<HistorialEntrenamiento[]>([]);
   readonly cargandoGrafico = signal(false);
 
@@ -49,46 +50,83 @@ export class Seguimiento implements OnInit {
       calorias: this.caloriasDiarias() * diasSemana,
       proteinas: this.proteinasObjetivo() * diasSemana,
       carbohidratos: this.carbohidratosObjetivo() * diasSemana,
-      grasas: this.grasasObjetivo() * diasSemana
+      grasas: this.grasasObjetivo() * diasSemana,
     };
 
     if (!resumen) {
       return {
         diasConDatos: 0,
         calorias: { consumido: 0, objetivo: objetivosSemana.calorias, porcentaje: 0 },
-        proteinas: { consumido: 0, objetivo: objetivosSemana.proteinas, porcentaje: 0, porcentajeGrafica: 0 },
-        carbohidratos: { consumido: 0, objetivo: objetivosSemana.carbohidratos, porcentaje: 0, porcentajeGrafica: 0 },
-        grasas: { consumido: 0, objetivo: objetivosSemana.grasas, porcentaje: 0, porcentajeGrafica: 0 }
+        proteinas: {
+          consumido: 0,
+          objetivo: objetivosSemana.proteinas,
+          porcentaje: 0,
+          porcentajeGrafica: 0,
+        },
+        carbohidratos: {
+          consumido: 0,
+          objetivo: objetivosSemana.carbohidratos,
+          porcentaje: 0,
+          porcentajeGrafica: 0,
+        },
+        grasas: {
+          consumido: 0,
+          objetivo: objetivosSemana.grasas,
+          porcentaje: 0,
+          porcentajeGrafica: 0,
+        },
       };
     }
 
-    const totalGramosConsumidos = resumen.proteinasConsumidas + resumen.carbohidratosConsumidos + resumen.grasasConsumidas;
+    const totalGramosConsumidos =
+      resumen.proteinasConsumidas + resumen.carbohidratosConsumidos + resumen.grasasConsumidas;
 
     return {
       diasConDatos: resumen.comidasRegistradas,
       calorias: {
         consumido: resumen.caloriasConsumidas,
         objetivo: objetivosSemana.calorias,
-        porcentaje: objetivosSemana.calorias > 0 ? Math.round((resumen.caloriasConsumidas / objetivosSemana.calorias) * 100) : 0
+        porcentaje:
+          objetivosSemana.calorias > 0
+            ? Math.round((resumen.caloriasConsumidas / objetivosSemana.calorias) * 100)
+            : 0,
       },
       proteinas: {
         consumido: resumen.proteinasConsumidas,
         objetivo: objetivosSemana.proteinas,
-        porcentaje: objetivosSemana.proteinas > 0 ? Math.round((resumen.proteinasConsumidas / objetivosSemana.proteinas) * 100) : 0,
-        porcentajeGrafica: totalGramosConsumidos > 0 ? Math.round((resumen.proteinasConsumidas / totalGramosConsumidos) * 100) : 0
+        porcentaje:
+          objetivosSemana.proteinas > 0
+            ? Math.round((resumen.proteinasConsumidas / objetivosSemana.proteinas) * 100)
+            : 0,
+        porcentajeGrafica:
+          totalGramosConsumidos > 0
+            ? Math.round((resumen.proteinasConsumidas / totalGramosConsumidos) * 100)
+            : 0,
       },
       carbohidratos: {
         consumido: resumen.carbohidratosConsumidos,
         objetivo: objetivosSemana.carbohidratos,
-        porcentaje: objetivosSemana.carbohidratos > 0 ? Math.round((resumen.carbohidratosConsumidos / objetivosSemana.carbohidratos) * 100) : 0,
-        porcentajeGrafica: totalGramosConsumidos > 0 ? Math.round((resumen.carbohidratosConsumidos / totalGramosConsumidos) * 100) : 0
+        porcentaje:
+          objetivosSemana.carbohidratos > 0
+            ? Math.round((resumen.carbohidratosConsumidos / objetivosSemana.carbohidratos) * 100)
+            : 0,
+        porcentajeGrafica:
+          totalGramosConsumidos > 0
+            ? Math.round((resumen.carbohidratosConsumidos / totalGramosConsumidos) * 100)
+            : 0,
       },
       grasas: {
         consumido: resumen.grasasConsumidas,
         objetivo: objetivosSemana.grasas,
-        porcentaje: objetivosSemana.grasas > 0 ? Math.round((resumen.grasasConsumidas / objetivosSemana.grasas) * 100) : 0,
-        porcentajeGrafica: totalGramosConsumidos > 0 ? Math.round((resumen.grasasConsumidas / totalGramosConsumidos) * 100) : 0
-      }
+        porcentaje:
+          objetivosSemana.grasas > 0
+            ? Math.round((resumen.grasasConsumidas / objetivosSemana.grasas) * 100)
+            : 0,
+        porcentajeGrafica:
+          totalGramosConsumidos > 0
+            ? Math.round((resumen.grasasConsumidas / totalGramosConsumidos) * 100)
+            : 0,
+      },
     };
   });
 
@@ -103,7 +141,7 @@ export class Seguimiento implements OnInit {
     const margenIzquierdo = 50;
     const margenSuperior = 20;
 
-    const pesos = historial.map(h => h.pesoKg || 0);
+    const pesos = historial.map((h) => h.pesoKg || 0);
     const pesoMaximo = Math.max(...pesos, 100);
 
     const puntos: PuntoGrafico[] = historial.map((registro, indice) => {
@@ -114,7 +152,7 @@ export class Seguimiento implements OnInit {
         x,
         y,
         fecha: this.formatearFechaCorta(registro.fechaEntrenamiento),
-        peso: registro.pesoKg || 0
+        peso: registro.pesoKg || 0,
       };
     });
 
@@ -123,7 +161,7 @@ export class Seguimiento implements OnInit {
 
   readonly polylinePoints = computed(() => {
     const puntos = this.puntosGrafico();
-    return puntos.map(p => `${p.x},${p.y}`).join(' ');
+    return puntos.map((p) => `${p.x},${p.y}`).join(' ');
   });
 
   readonly fechasEjeX = computed(() => {
@@ -152,7 +190,7 @@ export class Seguimiento implements OnInit {
       return 100;
     }
 
-    const pesos = historial.map(h => h.pesoKg || 0);
+    const pesos = historial.map((h) => h.pesoKg || 0);
     return Math.ceil(Math.max(...pesos) / 25) * 25;
   });
 
@@ -199,8 +237,8 @@ export class Seguimiento implements OnInit {
         this.fibraObjetivo.set(objetivos.fiberGrams || 25);
       },
       error: () => {
-        console.error("No se pudieron cargar los objetivos nutricionales");
-      }
+        console.error('No se pudieron cargar los objetivos nutricionales');
+      },
     });
   }
 
@@ -215,8 +253,8 @@ export class Seguimiento implements OnInit {
         }
       },
       error: () => {
-        console.error("No se pudieron cargar los ejercicios");
-      }
+        console.error('No se pudieron cargar los ejercicios');
+      },
     });
   }
 
@@ -231,7 +269,7 @@ export class Seguimiento implements OnInit {
       error: () => {
         this.historialEjercicio.set([]);
         this.cargandoGrafico.set(false);
-      }
+      },
     });
   }
 
@@ -245,7 +283,7 @@ export class Seguimiento implements OnInit {
     this.gimnasioService.obtenerProgresoPorEjercicio(ejercicioActual).subscribe({
       next: (historial) => {
         this.historialEjercicio.set(historial);
-      }
+      },
     });
   }
 

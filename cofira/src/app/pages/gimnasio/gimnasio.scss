@@ -4,9 +4,7 @@
 
 .gimnasio {
   --contenido-max-width: 970px;
-  --color-exito: var(--verde-normal);
-  --color-error: var(--rojo-normal);
-  --boton-accion-size: 1.875rem;
+  --boton-accion-size: 2.25rem;
   --boton-nav-size: 1.5rem;
 }
 
@@ -20,7 +18,7 @@
   position: relative;
   z-index: 0;
   padding: calc(4.5rem + var(--spacing-size-xxl)) var(--spacing-size-xl) var(--spacing-size-xxxl);
-  background-color: var(--blanco-normal-hover);
+  background-color: var(--superficie-fondo);
 
   @include responsive-down('md') {
     gap: var(--spacing-size-l);
@@ -37,34 +35,31 @@
 
 .gimnasio__cabecera {
   @include flex-center;
-  gap: var(--spacing-size-l);
+  flex-direction: column;
+  gap: 0.6rem;
   width: 100%;
   max-width: var(--contenido-max-width);
+}
 
-  @include responsive-down('md') {
-    flex-direction: column;
-    gap: var(--spacing-size-m);
-  }
+.gimnasio__eyebrow {
+  @include etiqueta-tecnica(var(--naranja-texto));
+  margin: 0;
+  text-align: center;
 }
 
 .gimnasio__titulo {
-  @include titulo-seccion(var(--negro-normal), var(--font-size-4xl), 0);
-  text-shadow: 0 0.25rem 0.25rem var(--negro-puro-transparente-025);
+  @include titular-display(var(--display-md));
+  margin: 0;
+  text-align: center;
+}
 
-  @include responsive-down('lg') {
-    font-size: var(--font-size-3xl);
-  }
-  @include responsive-down('md') {
-    font-size: var(--font-size-2xl);
-  }
-  @include responsive-down('xs') {
-    font-size: var(--font-size-xl);
-  }
+.gimnasio__titulo-punto {
+  color: var(--naranja-normal);
 }
 
 .gimnasio__estado {
   @include flex-columna(var(--spacing-size-m));
-  @include caja-contenido;
+  @include superficie-bento;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -80,14 +75,14 @@
 }
 
 .gimnasio__estado--error {
-  border: 1px solid var(--rojo-normal);
+  border-color: var(--peligro);
 }
 
 .gimnasio__estado-texto {
   font-family: var(--font-secondary);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--negro-normal);
+  color: var(--texto-principal);
   margin: 0;
 
   @include responsive-down('md') {
@@ -98,8 +93,7 @@
 .gimnasio__estado-subtexto {
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--negro-normal);
-  opacity: 0.7;
+  color: var(--texto-secundario);
   margin: 0;
 
   @include responsive-down('md') {
@@ -126,7 +120,7 @@
 
 .gimnasio__dias-boton {
   @include boton-icono(var(--boton-nav-size));
-  color: var(--negro-normal);
+  color: var(--texto-secundario);
 
   @include responsive-down('xs') {
     width: 1.25rem;
@@ -135,19 +129,20 @@
 }
 
 .gimnasio__dias-boton:hover {
-  color: var(--amarillo-dark);
+  color: var(--naranja-normal);
 }
 
 .gimnasio__dia {
-  font-family: var(--font-secondary);
-  font-weight: var(--font-weight-medium);
-  color: var(--negro-normal);
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--texto-principal);
   margin: 0;
 }
 
 .gimnasio__dia--adyacente {
-  font-size: var(--font-size-xl);
-  opacity: 0.6;
+  font-size: var(--font-size-lg);
+  color: var(--texto-suave);
 
   @include responsive-down('md') {
     display: none;
@@ -155,15 +150,15 @@
 }
 
 .gimnasio__dia--actual {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
 
   @include responsive-down('md') {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
   }
 
   @include responsive-down('xs') {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
   }
 }
 
@@ -184,68 +179,57 @@
 }
 
 .gimnasio__tabla {
-  @include caja-contenido;
+  @include superficie-bento;
   border-collapse: separate;
   border-spacing: 0;
   overflow: hidden;
   width: 100%;
 }
 
-
-.gimnasio__tabla-celda {
-  font-family: var(--font-primary);
-  font-size: 0.9375rem;
-  font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
-  padding: var(--spacing-size-s) var(--spacing-size-m);
-  text-align: center;
-  white-space: nowrap;
-}
-
-.gimnasio__tabla-celda:first-child {
-  text-align: left;
-  min-width: 100px;
-}
-
-
 .gimnasio__tabla-cabecera {
-  font-family: var(--font-primary);
-  font-size: 0.9375rem;
-  font-weight: var(--font-weight-semibold);
-  color: var(--negro-normal);
-  padding: var(--spacing-size-s) var(--spacing-size-m);
+  font-family: var(--fuente-mono);
+  font-size: var(--etiqueta-tecnica);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  padding: var(--spacing-size-m);
   text-align: center;
-  border-bottom: 0.0625rem solid var(--blanco-dark);
+  border-bottom: 1px solid var(--borde-sutil);
 }
 
 .gimnasio__tabla-cabecera:first-child {
   text-align: left;
 }
 
-
 .gimnasio__tabla-fila {
-  border-bottom: 0.0625rem solid var(--blanco-dark);
+  border-bottom: 1px solid var(--borde-sutil);
   transition: background-color var(--duration-fast) ease;
+}
+
+.gimnasio__tabla-fila:hover {
+  background-color: var(--superficie-3);
 }
 
 .gimnasio__tabla-fila:last-child {
   border-bottom: none;
 }
 
-
-
 .gimnasio__tabla-dato {
-  font-family: var(--font-primary);
-  font-size: 0.9375rem;
+  font-family: var(--fuente-mono);
+  font-size: 1rem;
   font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
-  padding: var(--spacing-size-s) var(--spacing-size-m);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+  padding: var(--spacing-size-m);
   text-align: center;
   vertical-align: middle;
 }
 
 .gimnasio__tabla-dato:first-child {
   text-align: left;
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .gimnasio__ejercicio {
@@ -281,61 +265,45 @@
   height: var(--boton-accion-size);
   padding: 0;
   border-radius: 50%;
-  border: none;
+  border: 1.5px solid var(--borde-medio);
+  background: transparent;
+  color: var(--texto-suave);
   cursor: pointer;
-  transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
-  opacity: 0.5;
+  transition: transform var(--duration-fast) ease, background var(--duration-fast) ease,
+    border-color var(--duration-fast) ease, color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
 }
 
 .gimnasio__boton-accion:hover {
   transform: scale(1.1);
 }
 
-.gimnasio__boton-accion--activo {
-  opacity: 1;
+.gimnasio__boton-accion--ok:hover {
+  border-color: var(--exito);
+  color: var(--exito);
 }
 
-.gimnasio__boton-accion--ok {
-  background-color: var(--color-exito);
-  color: var(--blanco-normal);
+.gimnasio__boton-accion--no:hover {
+  border-color: var(--peligro);
+  color: var(--peligro-texto);
 }
 
-.gimnasio__boton-accion--no {
-  background-color: var(--color-error);
-  color: var(--blanco-normal);
+.gimnasio__boton-accion--ok.gimnasio__boton-accion--activo {
+  background: var(--exito);
+  border-color: var(--exito);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 0 0.75rem hsla(150, 65%, 45%, 0.45);
+}
+
+.gimnasio__boton-accion--no.gimnasio__boton-accion--activo {
+  background: var(--peligro);
+  border-color: var(--peligro);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 0 0.75rem var(--rojo-normal-transparente-030);
 }
 
 .gimnasio__boton-accion-svg {
-  width: 50%;
-  height: 50%;
-}
-
-.gimnasio__input-peso {
-  width: 4rem;
-  padding: var(--spacing-size-xs) var(--spacing-size-s);
-  font-family: var(--font-primary);
-  font-size: 0.875rem;
-  font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
-  background-color: var(--blanco-normal);
-  border: 0.0625rem solid var(--blanco-dark);
-  border-radius: var(--radius-xss);
-  text-align: center;
-  transition: border-color var(--duration-fast) ease;
-}
-
-.gimnasio__input-peso:focus-visible {
-  border-color: var(--amarillo-normal);
-  box-shadow: 0 0 0 3px var(--amarillo-normal-transparente-025);
-}
-
-.gimnasio__input-peso::placeholder {
-  color: var(--gris-normal);
-}
-
-.gimnasio__input-peso--acordeon {
-  width: 100%;
-  max-width: 5rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 
@@ -356,8 +324,6 @@
   }
 }
 
-
-
 @media (max-width: 56.25rem) {
   .gimnasio__tabla-cabecera {
     padding: var(--spacing-size-xs) var(--spacing-size-s);
@@ -371,15 +337,17 @@
 }
 
 .gimnasio__acordeon-item {
-  background-color: var(--blanco-normal);
-  border-radius: var(--radius-s);
+  @include superficie-bento;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--duration-base) ease;
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
 }
 
 .gimnasio__acordeon-item:hover {
-  box-shadow: var(--shadow-md);
+  border-color: var(--borde-medio);
+}
+
+.gimnasio__acordeon-item--expandido {
+  border-color: var(--naranja-normal);
 }
 
 .gimnasio__acordeon-header {
@@ -393,7 +361,7 @@
 }
 
 .gimnasio__acordeon-header:hover {
-  background-color: var(--blanco-normal-hover);
+  background-color: var(--superficie-3);
 }
 
 .gimnasio__acordeon-info {
@@ -411,7 +379,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  color: var(--negro-normal);
+  color: var(--texto-suave);
   flex-shrink: 0;
   transition: color var(--duration-fast) ease;
 }
@@ -428,10 +396,10 @@
 }
 
 .gimnasio__acordeon-nombre {
-  font-family: var(--font-primary);
+  font-family: var(--font-secondary);
   font-size: var(--font-size-md);
-  font-weight: var(--font-weight-medium);
-  color: var(--negro-normal);
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-principal);
 }
 
 .gimnasio__acordeon-acciones {
@@ -447,13 +415,8 @@
 }
 
 .gimnasio__boton-accion--acordeon {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-
-.gimnasio__boton-accion-svg {
-  width: 1rem;
-  height: 1rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .gimnasio__acordeon-contenido {
@@ -469,35 +432,29 @@
 
 .gimnasio__acordeon-detalles {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-size-xxs) var(--spacing-size-s);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-size-s) var(--spacing-size-m);
   padding-top: var(--spacing-size-s);
-  border-top: 1px solid var(--blanco-dark);
+  border-top: 1px solid var(--borde-sutil);
   margin: 0;
-  text-align: center;
 }
 
 .gimnasio__acordeon-label {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-regular);
-  color: var(--negro-normal);
-  opacity: 0.6;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  @include etiqueta-tecnica(var(--texto-suave));
 }
 
 .gimnasio__acordeon-valor {
-  font-family: var(--font-secondary);
+  font-family: var(--fuente-mono);
   font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
-  color: var(--negro-normal);
+  font-weight: var(--font-weight-regular);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
 }
 
 
 
 .gimnasio__feedback {
-  @include caja-contenido;
+  @include superficie-bento;
   width: 100%;
   max-width: var(--contenido-max-width);
   margin: 0 auto;
@@ -514,19 +471,15 @@
 }
 
 .gimnasio__feedback-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--negro-normal);
+  @include titular-display(var(--font-size-2xl));
   margin: 0 0 var(--spacing-size-l) 0;
+  text-align: left;
 
   @include responsive-down('md') {
-    font-size: var(--font-size-xl);
     margin-bottom: var(--spacing-size-m);
   }
 
   @include responsive-down('xs') {
-    font-size: var(--font-size-lg);
     margin-bottom: var(--spacing-size-s);
   }
 }
@@ -550,7 +503,7 @@
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
-  color: var(--negro-normal);
+  color: var(--texto-principal);
   margin-bottom: var(--spacing-size-s);
 
   @include responsive-down('xs') {
@@ -579,6 +532,7 @@
 .gimnasio__feedback-label--checkbox span {
   position: relative;
   padding-left: 2.25rem;
+  color: var(--texto-principal);
 }
 
 .gimnasio__feedback-label--checkbox span::before {
@@ -589,8 +543,8 @@
   transform: translateY(-50%);
   width: 1.5rem;
   height: 1.5rem;
-  background-color: var(--blanco-normal);
-  border: 2px solid var(--gris-normal);
+  background-color: var(--superficie-1);
+  border: 2px solid var(--borde-medio);
   border-radius: var(--radius-xss);
   transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
 }
@@ -603,15 +557,15 @@
   transform: translateY(-60%) rotate(45deg) scale(0);
   width: 0.375rem;
   height: 0.75rem;
-  border: solid var(--blanco-normal);
+  border: solid var(--texto-sobre-acento);
   border-width: 0 2.5px 2.5px 0;
   opacity: 0;
   transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
 }
 
 .gimnasio__feedback-checkbox:checked + span::before {
-  background-color: var(--amarillo-normal);
-  border-color: var(--amarillo-normal);
+  background-color: var(--naranja-normal);
+  border-color: var(--naranja-normal);
 }
 
 .gimnasio__feedback-checkbox:checked + span::after {
@@ -620,20 +574,26 @@
 }
 
 .gimnasio__feedback-checkbox:focus-visible + span::before {
-  box-shadow: 0 0 0 3px var(--amarillo-normal-transparente-025);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 .gimnasio__feedback-label--checkbox:hover span::before {
-  border-color: var(--amarillo-normal);
+  border-color: var(--naranja-normal);
 }
 
 .gimnasio__feedback-textarea {
-  @include input-base;
   width: 100%;
   min-height: 8.9375rem;
-  border: 0.0625rem solid var(--blanco-dark);
+  padding: var(--spacing-size-s) var(--spacing-size-m);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  background-color: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
   resize: vertical;
   box-sizing: border-box;
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
 
   @include responsive-down('md') {
     min-height: 6.25rem;
@@ -646,12 +606,13 @@
 }
 
 .gimnasio__feedback-textarea::placeholder {
-  color: var(--negro-normal);
-  opacity: 0.6;
+  color: var(--texto-suave);
 }
 
 .gimnasio__feedback-textarea:focus {
-  border-color: var(--amarillo-normal);
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 .gimnasio__feedback-acciones {
@@ -659,13 +620,7 @@
   justify-content: flex-end;
   margin-top: var(--spacing-size-m);
 
-  @include responsive-down('md') {
-    flex-direction: row;
-    gap: var(--spacing-size-s);
-  }
-
   @include responsive-down('xs') {
-    flex-direction: row;
     gap: var(--spacing-size-xs);
     margin-top: var(--spacing-size-s);
   }
@@ -686,16 +641,12 @@
   display: flex;
   width: 100%;
   min-height: 20rem;
-  border-radius: var(--radius-xss);
+  border-radius: var(--radius-bento);
   overflow: hidden;
-  border: 1px solid var(--blanco-dark);
+  border: 1px solid var(--borde-sutil);
 
   @include responsive-down('md') {
     flex-direction: column;
-    min-height: auto;
-  }
-
-  @include responsive-down('xs') {
     min-height: auto;
   }
 }
@@ -706,64 +657,49 @@
   z-index: 2;
   width: 45%;
   padding: var(--spacing-size-xxl);
-  background-color: var(--gris-normal);
+  background: linear-gradient(135deg, var(--superficie-2), var(--superficie-1));
   overflow: hidden;
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    85% 100%,
-    0 100%
-  );
-
-  #gimnasio__progreso-boton ::ng-deep .boton {
-    max-width: 70%;
-  }
-
-  @include responsive-down('lg') {
-    #gimnasio__progreso-boton ::ng-deep .boton {
-      max-width: 60%;
-    }
-  }
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
 
   @include responsive-down('md') {
     width: 100%;
     padding: var(--spacing-size-l) var(--spacing-size-m);
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-
-    #gimnasio__progreso-boton ::ng-deep .boton {
-      min-width: 0;
-      max-width: 85%;
-    }
-  }
-
-  @media (max-width: 43.75rem) {
-    #gimnasio__progreso-boton ::ng-deep .boton {
-      min-width: 0;
-      max-width: 80%;
-    }
   }
 
   @include responsive-down('xs') {
     gap: var(--spacing-size-m);
     padding: var(--spacing-size-m) var(--spacing-size-s);
     clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+  }
+}
 
-    #gimnasio__progreso-boton ::ng-deep .boton {
-      padding: var(--spacing-size-xss) var(--spacing-size-s);
-      font-size: var(--font-size-md);
-      min-width: 0;
-      max-width: 75%;
-      height: 2.25rem;
-    }
+#gimnasio__progreso-boton ::ng-deep .boton {
+  max-width: 70%;
+}
+
+@include responsive-down('lg') {
+  #gimnasio__progreso-boton ::ng-deep .boton {
+    max-width: 60%;
+  }
+}
+
+@include responsive-down('md') {
+  #gimnasio__progreso-boton ::ng-deep .boton {
+    min-width: 0;
+    max-width: 85%;
+  }
+}
+
+@include responsive-down('xs') {
+  #gimnasio__progreso-boton ::ng-deep .boton {
+    min-width: 0;
+    max-width: 75%;
   }
 }
 
 .gimnasio__progreso-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--blanco-normal);
-  margin: 0;
+  @include titular-display(var(--font-size-3xl));
 
   @include responsive-down('md') {
     font-size: var(--font-size-2xl);
@@ -775,9 +711,9 @@
 }
 
 .gimnasio__progreso-descripcion {
+  font-family: var(--font-primary);
   font-size: var(--font-size-lg);
-  color: var(--blanco-normal);
-  opacity: 0.9;
+  color: var(--texto-secundario);
   margin: 0;
   line-height: 1.6;
   max-width: 20rem;
@@ -814,13 +750,11 @@
   }
 }
 
-
 .gimnasio__progreso-imagen-contenedor {
   display: block;
   width: 100%;
   height: 100%;
 }
-
 
 .gimnasio__progreso-imagen-foto {
   width: 100%;
@@ -828,6 +762,7 @@
   object-fit: cover;
   object-position: center center;
   display: block;
+  filter: grayscale(0.3) contrast(1.05);
 
   @include responsive-down('md') {
     object-position: center calc(50% + 3rem);
@@ -850,7 +785,7 @@
 }
 
 .gimnasio__sin-ejercicios--acordeon {
-  @include caja-contenido;
+  @include superficie-bento;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -862,7 +797,7 @@
   font-family: var(--font-secondary);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--negro-normal);
+  color: var(--texto-principal);
   margin: 0 0 var(--spacing-size-xs) 0;
 
   @include responsive-down('md') {
@@ -873,8 +808,7 @@
 .gimnasio__sin-ejercicios-subtitulo {
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--negro-normal);
-  opacity: 0.6;
+  color: var(--texto-suave);
 
   @include responsive-down('md') {
     font-size: var(--font-size-sm);

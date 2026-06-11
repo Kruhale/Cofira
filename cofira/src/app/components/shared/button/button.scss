@@ -5,149 +5,257 @@
 }
 
 .boton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-primary);
-  font-weight: var(--font-weight-semibold);
-  border: none;
-  border-radius: var(--radius-xss);
-  cursor: pointer;
-  transition: all var(--duration-base) ease;
-  text-decoration: none;
-  user-select: none;
+  @include boton-pill;
+  font-size: var(--font-size-md);
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
-
-
 
 .boton__icono {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   flex-shrink: 0;
 }
 
 .boton__texto {
-  flex: 1;
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
 }
 
-
-
+/* Primario: HUD de cristal oscuro achaflanado (referencia "EXPLORE OUR PROJECTS").
+   El fondo del botón es el borde de luz (degradado tenue); el ::before pinta el
+   relleno de cristal cálido dejando 1px de borde. Sin box-shadow: solo drop-shadow,
+   que sí respeta el chaflán. */
 .boton--primario {
-  background: var(--button-yellow);
-  color: var(--negro-normal);
-  box-shadow: var(--shadow-md);
-
-  @include hover-activo {
-    background: var(--amarillo-dark);
-    transform: translateY(-0.125rem);
-    box-shadow: var(--shadow-lg);
-  }
-
-  @include click-activo {
-    transform: translateY(0);
-    box-shadow: var(--shadow-sm);
-  }
+  --chaflan: 0.6rem;
+  position: relative;
+  isolation: isolate;
+  border: none;
+  /* Sin radius: el pill-radius heredado redondeaba el fondo naranja y el relleno
+     oscuro recto asomaba en triángulo por las esquinas */
+  border-radius: 0;
+  background: linear-gradient(
+    120deg,
+    hsla(24, 90%, 60%, 0.8),
+    hsla(24, 60%, 50%, 0.55) 45%,
+    hsla(24, 90%, 60%, 0.7)
+  );
+  color: hsl(36, 30%, 96%);
+  font-family: var(--fuente-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  clip-path: polygon(
+    var(--chaflan) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan)),
+    calc(100% - var(--chaflan)) 100%,
+    0 100%,
+    0 var(--chaflan)
+  );
+  box-shadow: none;
+  filter: drop-shadow(0 0.35rem 0.8rem hsla(24, 100%, 50%, 0.14));
+  transition: filter var(--duration-base) ease, color var(--duration-base) ease;
 }
 
+/* Relleno de cristal oscuro cálido (no gris frío): deja 1px del degradado como borde */
+.boton--primario::before {
+  /* Chaflán interior 1px menor para que la diagonal quede paralela al borde exterior */
+  --chaflan-interior: calc(var(--chaflan) - 1px);
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  content: '';
+  background: linear-gradient(160deg, hsla(20, 18%, 13%, 0.92), hsla(20, 14%, 8%, 0.94));
+  clip-path: polygon(
+    var(--chaflan-interior) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan-interior)),
+    calc(100% - var(--chaflan-interior)) 100%,
+    0 100%,
+    0 var(--chaflan-interior)
+  );
+  transition: background var(--duration-base) ease;
+}
 
+/* Glifo pixel a la izquierda del texto (orden -1 porque .boton es flex):
+   escalera diagonal ascendente de 3 píxeles — progreso, marca de Cofira */
+.boton--primario::after {
+  order: -1;
+  content: '';
+  width: 0.3rem;
+  height: 0.3rem;
+  background: hsla(24, 100%, 55%, 0.7);
+  box-shadow:
+    -0.3rem 0.3rem 0 hsla(24, 100%, 55%, 0.35),
+    0.3rem -0.3rem 0 var(--naranja-normal);
+  margin: 0 0.6rem 0 0.3rem;
+}
 
+.boton--primario:hover:not(:disabled) {
+  color: hsl(36, 40%, 99%);
+  filter: drop-shadow(0 0.55rem 1.2rem hsla(24, 100%, 50%, 0.3));
+}
+
+.boton--primario:hover:not(:disabled)::before {
+  background: linear-gradient(160deg, hsla(22, 30%, 16%, 0.92), hsla(22, 20%, 10%, 0.94));
+}
+
+.boton--primario:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Secundario: estilo "LOGIN" de la referencia — cristal oscuro achaflanado con
+   borde neutro sutil y glifo pixel claro. Misma técnica de capas que el primario. */
 .boton--secundario {
-  background: var(--button-gray);
-  color: var(--text-dark);
-  box-shadow: var(--shadow-sm);
-
-  @include hover-activo {
-    background: var(--button-gray-hover);
-    transform: translateY(-0.125rem);
-    box-shadow: var(--shadow-md);
-  }
-
-  @include click-activo {
-    transform: translateY(0);
-  }
-
-  @include focus-activo {
-    outline: 0.1875rem solid var(--gris-normal);
-    outline-offset: 0.125rem;
-  }
+  --chaflan: 0.6rem;
+  position: relative;
+  isolation: isolate;
+  border: none;
+  border-radius: 0;
+  background: linear-gradient(
+    120deg,
+    hsla(36, 25%, 85%, 0.4),
+    hsla(36, 15%, 60%, 0.22) 45%,
+    hsla(36, 25%, 85%, 0.34)
+  );
+  color: hsl(36, 30%, 96%);
+  font-family: var(--fuente-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  clip-path: polygon(
+    var(--chaflan) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan)),
+    calc(100% - var(--chaflan)) 100%,
+    0 100%,
+    0 var(--chaflan)
+  );
+  box-shadow: none;
+  transition: color var(--duration-base) ease, filter var(--duration-base) ease;
 }
 
+.boton--secundario::before {
+  --chaflan-interior: calc(var(--chaflan) - 1px);
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  content: '';
+  background: linear-gradient(160deg, hsla(20, 12%, 12%, 0.92), hsla(20, 10%, 7%, 0.94));
+  clip-path: polygon(
+    var(--chaflan-interior) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan-interior)),
+    calc(100% - var(--chaflan-interior)) 100%,
+    0 100%,
+    0 var(--chaflan-interior)
+  );
+  transition: background var(--duration-base) ease;
+}
 
+.boton--secundario::after {
+  order: -1;
+  content: '';
+  width: 0.3rem;
+  height: 0.3rem;
+  background: hsla(36, 30%, 90%, 0.7);
+  box-shadow:
+    -0.3rem 0.3rem 0 hsla(36, 30%, 90%, 0.35),
+    0.3rem -0.3rem 0 hsl(36, 30%, 90%);
+  margin: 0 0.6rem 0 0.3rem;
+}
 
+.boton--secundario:hover:not(:disabled) {
+  color: hsl(36, 40%, 99%);
+  filter: drop-shadow(0 0.35rem 0.9rem hsla(36, 40%, 80%, 0.12));
+}
+
+.boton--secundario:hover:not(:disabled)::before {
+  background: linear-gradient(160deg, hsla(20, 14%, 16%, 0.92), hsla(20, 12%, 10%, 0.94));
+}
+
+.boton--secundario:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Fantasma: estilo "MENU" de la referencia — relleno claro sólido achaflanado,
+   texto oscuro mono y glifo pixel oscuro. */
 .boton--fantasma {
-  background: transparent;
-  color: var(--text-dark);
-  border: var(--border-width-normal) solid var(--gris-normal);
-
-  @include hover-activo {
-    background: var(--gris-normal);
-    color: var(--text-dark);
-    border-color: var(--gris-normal-hover);
-  }
-
-  @include click-activo {
-    background: var(--gris-normal-hover);
-  }
-
-  @include focus-activo {
-    outline: 0.1875rem solid var(--gris-normal);
-    outline-offset: 0.125rem;
-  }
+  --chaflan: 0.6rem;
+  border: none;
+  border-radius: 0;
+  background: hsl(36, 30%, 94%);
+  color: hsl(20, 14%, 8%);
+  font-family: var(--fuente-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  clip-path: polygon(
+    var(--chaflan) 0,
+    100% 0,
+    100% calc(100% - var(--chaflan)),
+    calc(100% - var(--chaflan)) 100%,
+    0 100%,
+    0 var(--chaflan)
+  );
+  box-shadow: none;
+  transition: background var(--duration-base) ease, filter var(--duration-base) ease;
 }
 
+.boton--fantasma::after {
+  order: -1;
+  content: '';
+  width: 0.3rem;
+  height: 0.3rem;
+  background: hsla(20, 14%, 10%, 0.7);
+  box-shadow:
+    -0.3rem 0.3rem 0 hsla(20, 14%, 10%, 0.35),
+    0.3rem -0.3rem 0 hsl(20, 14%, 10%);
+  margin: 0 0.6rem 0 0.3rem;
+}
 
+.boton--fantasma:hover:not(:disabled) {
+  background: hsl(36, 40%, 99%);
+  filter: drop-shadow(0 0.35rem 0.9rem hsla(36, 40%, 85%, 0.18));
+}
 
+.boton--fantasma:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Peligro */
 .boton--peligro {
-  background: var(--button-red);
-  color: var(--text-dark);
-  box-shadow: var(--shadow-md);
+  background: var(--peligro);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 0.5rem 1.25rem var(--rojo-normal-transparente-030);
 
   @include hover-activo {
-    background: var(--button-red-hover);
     transform: translateY(-0.125rem);
-    box-shadow: var(--shadow-lg);
+    filter: brightness(1.08);
   }
 
   @include click-activo {
     transform: translateY(0);
-    box-shadow: var(--shadow-sm);
-  }
-
-  @include focus-activo {
-    outline: 0.1875rem solid var(--button-red);
-    outline-offset: 0.125rem;
   }
 }
-
-
 
 .boton--pequeno {
-  padding: var(--spacing-size-xss) var(--spacing-size-s);
+  padding: 0.5rem 1.15rem;
   font-size: var(--font-size-sm);
-  height: 2rem;
-  min-width: var(--width-muy-pequenio);
+  min-height: 2.25rem;
 }
 
 .boton--mediano {
-  padding: var(--spacing-size-xss) var(--spacing-size-m);
+  padding: 0.7rem 1.6rem;
   font-size: var(--font-size-md);
-  height: 2.75rem;
-  min-width: var(--width-mediano);
+  min-height: 2.85rem;
 }
 
 .boton--grande {
-  padding: var(--spacing-size-s) var(--spacing-size-l);
-  font-size: var(--font-size-lg);
-  height: 2.5rem;
-  min-width: 12rem;
+  padding: 0.8rem 2.1rem;
+  font-size: var(--font-size-md);
+  min-height: 3rem;
 }
-
-
 
 .boton:disabled,
 .boton--deshabilitado {
@@ -157,8 +265,6 @@
   box-shadow: none;
 }
 
-
-
 .boton--completo {
-  width: 70%;
+  width: 100%;
 }

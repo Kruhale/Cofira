@@ -450,3 +450,139 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+
+
+/* ════════════════════════════════════════════════════════════
+   MIXINS DEL REDISEÑO 2026 — oscuro premium + acento naranja
+   ════════════════════════════════════════════════════════════ */
+
+/* Tarjeta "bento": superficie + borde sutil + glow interior */
+@mixin superficie-bento($radio: var(--radius-bento)) {
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: $radio;
+  box-shadow: var(--sombra-bento), var(--glow-interior);
+}
+
+/* Elevación al pasar el ratón sobre una tarjeta bento */
+@mixin bento-hover {
+  transition: transform var(--duration-base) ease,
+    border-color var(--duration-base) ease,
+    box-shadow var(--duration-base) ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--borde-medio);
+    box-shadow: var(--sombra-bento), var(--glow-interior), var(--glow-acento);
+  }
+}
+
+/* Resplandor del acento */
+@mixin glow-acento {
+  box-shadow: var(--glow-acento);
+}
+
+/* Micro-etiqueta técnica monoespaciada en mayúsculas */
+@mixin etiqueta-tecnica($color: var(--texto-suave)) {
+  font-family: var(--fuente-mono);
+  font-size: var(--etiqueta-tecnica);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $color;
+}
+
+/* Cristal esmerilado (nav flotante, modales) */
+@mixin vidrio($blur: 16px) {
+  background: var(--vidrio-fondo);
+  backdrop-filter: blur($blur) saturate(140%);
+  -webkit-backdrop-filter: blur($blur) saturate(140%);
+}
+
+/* Titular display (Archivo) — sentence-case, peso extremo, eje de anchura.
+   La cursiva (font-style: italic) se reserva para resaltar nombres/métricas. */
+@mixin titular-display($tamano: var(--display-lg), $peso: 900, $ancho: 100%) {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-weight: $peso;
+  font-stretch: $ancho;
+  font-size: $tamano;
+  line-height: 1.02;
+  letter-spacing: 0;
+  color: var(--texto-principal);
+}
+
+/* Relleno de texto con el gradiente del acento */
+@mixin texto-gradiente {
+  background: var(--gradiente-acento);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Capa oscura degradada sobre una fotografía a sangre */
+@mixin overlay-foto {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: var(--gradiente-overlay-foto);
+    pointer-events: none;
+  }
+}
+
+/* Foco accesible con anillo naranja */
+@mixin foco-visible($color: var(--naranja-normal)) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: 2px;
+  }
+}
+
+/* Botón en forma de pastilla (base del rediseño) */
+@mixin boton-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-semibold);
+  border: 1px solid transparent;
+  border-radius: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  transition: transform var(--duration-fast) ease,
+    box-shadow var(--duration-base) ease,
+    background var(--duration-base) ease,
+    border-color var(--duration-base) ease,
+    color var(--duration-base) ease;
+  @include foco-visible;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+/* Resalte en cursiva real para nombres y métricas dentro de un titular */
+@mixin acento-italica {
+  font-style: italic;
+  font-weight: 800;
+}
+
+/* Textura de grano/ruido sutil — capa fija decorativa (atmósfera cinematográfica) */
+@mixin textura-grano($opacidad: 0.05) {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  content: '';
+  pointer-events: none;
+  opacity: $opacidad;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='ruido'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ruido)'/%3E%3C/svg%3E");
+}

@@ -1,265 +1,207 @@
-@import "../../../styles/00-settings/css-variables";
-@import "../../../styles/01-tools/mixins";
+@import '../../../styles/01-tools/mixins';
 
-$acceso-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-
-
-
-.acceso-pro {
-  @include flex-center;
-  min-height: calc(100vh - 4.5rem);
-  padding: var(--spacing-size-xxl) var(--spacing-size-m);
-  background-color: var(--bg-body);
+:host {
+  display: block;
+  background-color: var(--superficie-fondo);
 }
 
-
-
-.acceso-pro__exito {
+.acceso-pro {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: var(--spacing-size-l);
-  padding: var(--spacing-size-xxl);
-  animation: aparecer-acceso 0.4s ease-out;
-}
-
-.acceso-pro__exito-icono {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  width: 5rem;
-  height: 5rem;
-  background-color: var(--verde-normal-transparente-012);
-  border-radius: 50%;
-  color: var(--verde-normal);
-  margin: 0;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: calc(4.5rem + var(--spacing-size-xxl)) 2rem var(--spacing-size-xxxl);
+  min-height: 100vh;
+  box-sizing: border-box;
+  isolation: isolate;
+  overflow: hidden;
 }
 
-.acceso-pro__exito-icono svg {
-  width: 3rem;
-  height: 3rem;
-}
-
-.acceso-pro__exito-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--verde-normal);
-  margin: 0;
-}
-
-.acceso-pro__exito-texto {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--gris-normal);
-  margin: 0;
+.acceso-pro::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 60rem;
+  height: 40rem;
+  z-index: -1;
+  content: '';
+  transform: translateX(-50%);
+  background: var(--gradiente-halo);
+  pointer-events: none;
 }
 
 
-
+/* ── Estado por defecto (venta) ── */
 .acceso-pro__contenido {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: var(--spacing-size-xl);
-  max-width: 32rem;
-  padding: var(--spacing-size-xxl);
-  background-color: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  width: 100%;
 }
 
 .acceso-pro__icono {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5rem;
-  height: 5rem;
-  background-color: var(--amarillo-normal-transparente-012);
-  border-radius: 50%;
-  color: var(--amarillo-dark);
-  margin: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0 0 1.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--naranja-glow-suave);
+  border: 1px solid var(--borde-sutil);
+  color: var(--naranja-normal);
 }
 
 .acceso-pro__icono svg {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-.acceso-pro__header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-size-s);
+  width: 2.25rem;
+  height: 2.25rem;
 }
 
 .acceso-pro__titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
-  margin: 0;
-
-  @include responsive-down("sm") {
-    font-size: var(--font-size-xl);
-  }
+  @include titular-display(var(--display-lg));
+  margin: 0 0 1rem;
 }
 
 .acceso-pro__subtitulo {
+  margin: 0 0 3rem;
+  max-width: 32rem;
   font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--gris-normal);
-  margin: 0;
+  font-size: var(--font-size-lg);
+  line-height: 1.5;
+  color: var(--texto-secundario);
 }
-
-
 
 .acceso-pro__beneficios {
   width: 100%;
-  text-align: left;
+  margin-bottom: 2.5rem;
 }
 
 .acceso-pro__beneficios-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gris-normal);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0 0 var(--spacing-size-m) 0;
-  text-align: center;
+  @include etiqueta-tecnica(var(--naranja-texto));
+  margin: 0 0 1.5rem;
 }
 
 .acceso-pro__beneficios-lista {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-size-s);
-  list-style: none;
-  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .acceso-pro__beneficio {
+  @include superficie-bento;
+  @include bento-hover;
   display: flex;
-  align-items: center;
-  gap: var(--spacing-size-m);
-  padding: var(--spacing-size-m);
-  background-color: var(--bg-surface);
-  border-radius: var(--radius-md);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.75rem;
+  text-align: left;
 }
 
 .acceso-pro__beneficio-icono {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  flex-shrink: 0;
-  background-color: var(--amarillo-normal-transparente-012);
-  border-radius: var(--radius-md);
-  color: var(--amarillo-dark);
+  width: 3rem;
+  height: 3rem;
   margin: 0;
+  border-radius: var(--radius-md);
+  background: var(--naranja-glow-suave);
+  border: 1px solid var(--borde-sutil);
+  color: var(--naranja-normal);
 }
 
 .acceso-pro__beneficio-icono svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .acceso-pro__beneficio-texto {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
+  margin: 0;
 }
 
 .acceso-pro__beneficio-titulo {
+  margin: 0 0 0.4rem;
   font-family: var(--font-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  margin: 0;
+  color: var(--texto-principal);
 }
 
 .acceso-pro__beneficio-descripcion {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-xs);
-  color: var(--gris-normal);
   margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--texto-secundario);
 }
 
 
-
-.acceso-pro__precio-seccion {
+/* ── Precio ── */
+.acceso-pro__precio-seccion,
+.acceso-pro__precio {
   display: flex;
   align-items: baseline;
-  gap: var(--spacing-size-xss);
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 2rem;
 }
 
 .acceso-pro__precio-cantidad {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  font-family: var(--fuente-display);
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  line-height: 1;
+  @include texto-gradiente;
 }
 
 .acceso-pro__precio-periodo {
   font-family: var(--font-primary);
   font-size: var(--font-size-lg);
-  color: var(--gris-normal);
+  color: var(--texto-secundario);
 }
-
-
 
 .acceso-pro__acciones {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-size-m);
-  width: 100%;
+  gap: 1rem;
 }
 
 .acceso-pro__volver {
+  background: transparent;
+  border: none;
+  color: var(--texto-secundario);
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--gris-normal);
-  background: none;
-  border: none;
   cursor: pointer;
-  padding: var(--spacing-size-xs) var(--spacing-size-m);
-  border-radius: var(--radius-md);
-  transition: all $acceso-transition;
+  transition: color var(--duration-fast) ease;
 }
 
 .acceso-pro__volver:hover {
-  color: var(--text-primary);
-  background-color: var(--bg-surface);
-}
-
-.acceso-pro__volver:focus {
-  outline: 2px solid var(--amarillo-normal);
-  outline-offset: 2px;
+  color: var(--naranja-texto);
 }
 
 
-
+/* ── Formulario de pago ── */
 .acceso-pro__pago {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-size-xl);
+  @include superficie-bento;
   width: 100%;
-  max-width: 28rem;
-  padding: var(--spacing-size-xl);
-  background-color: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  max-width: 30rem;
+  padding: 2.25rem;
 }
 
 .acceso-pro__pago-header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-size-m);
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .acceso-pro__pago-cerrar {
@@ -268,17 +210,17 @@ $acceso-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  background: none;
-  border: none;
-  border-radius: var(--radius-md);
-  color: var(--gris-normal);
+  border: 1px solid var(--borde-sutil);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--texto-secundario);
   cursor: pointer;
-  transition: all $acceso-transition;
+  transition: all var(--duration-fast) ease;
 }
 
 .acceso-pro__pago-cerrar:hover {
-  color: var(--text-primary);
-  background-color: var(--bg-surface);
+  border-color: var(--naranja-normal);
+  color: var(--naranja-normal);
 }
 
 .acceso-pro__pago-cerrar svg {
@@ -287,179 +229,180 @@ $acceso-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .acceso-pro__pago-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
   margin: 0;
+  font-family: var(--fuente-display);
+  font-size: var(--font-size-2xl);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--texto-principal);
 }
-
-
 
 .acceso-pro__form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-l);
+  gap: 1.75rem;
 }
 
 .acceso-pro__fieldset {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-m);
-  border: none;
-  padding: var(--spacing-size-l);
+  gap: 1.1rem;
   margin: 0;
-  background-color: var(--bg-surface);
-  border-radius: var(--radius-lg);
+  padding: 0;
+  border: none;
 }
 
 .acceso-pro__legend {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-size-s);
+  @include etiqueta-tecnica(var(--naranja-texto));
+  padding: 0;
+  margin-bottom: 0.5rem;
 }
 
 .acceso-pro__field {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-xss);
-}
-
-.acceso-pro__field--mitad {
-  flex: 1;
-}
-
-.acceso-pro__field-row {
-  display: flex;
-  gap: var(--spacing-size-m);
+  gap: 0.45rem;
 }
 
 .acceso-pro__field-label {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  color: var(--gris-normal);
+  @include etiqueta-tecnica(var(--texto-suave));
 }
 
 .acceso-pro__input {
   width: 100%;
-  padding: var(--spacing-size-m);
+  padding: var(--spacing-size-s) var(--spacing-size-m);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--text-primary);
-  background-color: var(--bg-input);
-  border: 1.5px solid transparent;
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
   border-radius: var(--radius-md);
-  transition: all $acceso-transition;
-}
-
-.acceso-pro__input::placeholder {
-  color: var(--gris-normal);
-  font-weight: var(--font-weight-regular);
-}
-
-.acceso-pro__input:hover {
-  border-color: var(--gris-light);
+  box-sizing: border-box;
+  transition: all var(--duration-fast) ease;
 }
 
 .acceso-pro__input:focus-visible {
-  border-color: var(--amarillo-normal);
-  box-shadow: 0 0 0 4px var(--amarillo-normal-transparente-012);
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
-
+.acceso-pro__field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
 
 .acceso-pro__checkbox-field {
   display: flex;
   align-items: center;
-  gap: var(--spacing-size-s);
+  gap: 0.6rem;
   cursor: pointer;
 }
 
 .acceso-pro__checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
-  accent-color: var(--amarillo-normal);
-  cursor: pointer;
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--naranja-normal);
 }
 
 .acceso-pro__checkbox-label {
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--texto-secundario);
 }
-
-
 
 .acceso-pro__form-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-size-m);
+  gap: 1rem;
 }
-
-.acceso-pro__precio {
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-size-xss);
-}
-
-
 
 .acceso-pro__aviso {
   display: flex;
   align-items: center;
-  gap: var(--spacing-size-xs);
-  padding: var(--spacing-size-s) var(--spacing-size-m);
-  background-color: var(--amarillo-normal-transparente-010);
-  border-radius: var(--radius-md);
+  gap: 0.5rem;
+  color: var(--texto-suave);
 }
 
 .acceso-pro__aviso-icono {
   width: 1rem;
   height: 1rem;
-  flex-shrink: 0;
-  color: var(--amarillo-dark);
 }
 
 .acceso-pro__aviso-texto {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-xs);
-  color: var(--amarillo-dark);
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
 }
 
 
+/* ── Estado de éxito ── */
+.acceso-pro__exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.acceso-pro__exito-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  margin: 0 0 1.5rem;
+  border-radius: 50%;
+  background: var(--verde-normal-transparente-012);
+  border: 1px solid var(--verde-normal-transparente-012);
+  color: var(--exito-texto);
+}
+
+.acceso-pro__exito-icono svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.acceso-pro__exito-titulo {
+  @include titular-display(var(--display-md));
+  margin: 0 0 0.75rem;
+}
+
+.acceso-pro__exito-texto {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  color: var(--texto-secundario);
+}
 
 .acceso-pro__loading {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-size-s);
+  gap: 0.5rem;
 }
 
 .acceso-pro__spinner {
   width: 1.25rem;
   height: 1.25rem;
-  animation: acceso-girar 0.8s linear infinite;
+  animation: acceso-pro-girar 0.8s linear infinite;
 }
 
-@keyframes acceso-girar {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes acceso-pro-girar {
+  to { transform: rotate(360deg); }
 }
 
-@keyframes aparecer-acceso {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+
+/* ── Responsive ── */
+@include responsive-down('sm') {
+  .acceso-pro {
+    padding: calc(4rem + var(--spacing-size-xl)) 1.25rem var(--spacing-size-xxl);
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+
+  .acceso-pro__beneficios-lista {
+    grid-template-columns: 1fr;
+  }
+
+  .acceso-pro__field-row {
+    grid-template-columns: 1fr;
   }
 }

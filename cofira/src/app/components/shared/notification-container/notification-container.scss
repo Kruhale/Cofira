@@ -1,3 +1,6 @@
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
+
 .notification-container {
   position: fixed;
   top: var(--spacing-size-m);

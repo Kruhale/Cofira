@@ -1,164 +1,859 @@
-<section class="home__seccion-intro" aria-labelledby="titulo-principal">
+<app-rastro-scroll [secciones]="seccionesRastro"></app-rastro-scroll>
 
-  <picture class="home__seccion-intro__contenedor-imagen">
-    <source
-      media="(max-width: 48rem)"
-      srcset="/assets/images/heroFitnessNutricion-640w.webp"
-      type="image/webp">
-    <source
-      media="(max-width: 56.25rem)"
-      srcset="/assets/images/heroFitnessNutricion-1024w.webp"
-      type="image/webp">
-    <source
-      srcset="/assets/images/heroFitnessNutricion-1920w.webp"
-      type="image/webp">
-    <img
-      alt="Persona entrenando con pesas y preparando comida saludable"
-      class="home__seccion-intro__imagen"
-      fetchpriority="high"
-      height="600"
-      src="/assets/images/heroFitnessNutricion.jpg"
-      width="1920">
-  </picture>
-
-  <div class="home__seccion-intro__contenido">
-    <h1 id="titulo-principal" class="home__seccion-intro__titulo">Tu entrenamiento, nutrición y progreso en un solo lugar</h1>
-
-    <p class="home__seccion-intro__subtitulo">Inscríbete hoy y empieza tu cambio</p>
-
-    <div class="boton__primary">
-      <app-button class="boton__primary--inscripcion home__seccion-intro__boton" enlace="/onboarding" tamanio="grande" variante="primario">
-        Inscríbete
-      </app-button>
-
-      <app-button (click)="navegarAPlanes()" class="boton__primary--planes home__seccion-intro__boton" tamanio="grande" variante="secundario">
-        Ver planes
-      </app-button>
-    </div>
+<section class="hero" aria-labelledby="titulo-principal">
+  <div class="hero__media">
+    <picture class="hero__picture">
+      <img
+        appParallaxSuave
+        [velocidad]="0.18"
+        alt="Atleta entrenando con intensidad"
+        class="hero__imagen"
+        fetchpriority="high"
+        height="1280"
+        src="/assets/images/hero-fitness.jpg"
+        width="1920">
+    </picture>
+    <span aria-hidden="true" class="hero__velo"></span>
   </div>
 
-</section>
-
-<section class="planes__section" id="seccion-planes" aria-labelledby="titulo-planes">
-  <h2 id="titulo-planes" class="planes__titulo">PLANES</h2>
-
-  <div class="planes__contenido">
-
-    <div class="planes__info planes__info--responsive">
-      <h3 class="planes__subtitulo">
-        Elige tu cuota <span class="planes__destacado">individual</span>
-      </h3>
-      <p class="planes__info-texto">Profesionales 24/7 listos para atenderte y resolverte las dudas.</p>
-      <p class="planes__info-texto">Si quieres lograrlo porque no intentarlo.</p>
-    </div>
-
-
-    <div class="home__tarjetas">
-      <div class="home__tarjeta">
-        <app-card [ventajas]="[
-            'Máximo de 7 comidas diarias',
-            'Rutinas de ejercicios hasta 7 días',
-            'Seguimiento avanzado con gráficos',
-            'Asesoría nutricional personalizada',
-            'Acceso a contenido exclusivo'
-          ]" precio="19.99€ + IVA al mes" texto_boton="Inscríbete" titulo="Cuota mensual"></app-card>
-      </div>
-
-      <div class="home__tarjeta">
-        <app-card [deshabilitada]="false" [ventajas]="[
-            'Máximo de 7 comidas diarias',
-            'Rutinas de ejercicios hasta 7 días',
-            'Seguimiento avanzado con gráficos',
-            'Asesoría nutricional personalizada',
-            'Acceso a contenido exclusivo'
-          ]" precio="15.99€ + IVA al año" texto_boton="Inscríbete"
-                  titulo="Cuota anual"></app-card>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-<section class="funcionalidades__contenedor" aria-labelledby="titulo-funcionalidades">
-  <h2 id="titulo-funcionalidades" class="funcionalidades__titulo">Más funcionalidades que disfrutar</h2>
-
-  <ul class="funcionalidades__grid">
-    <li class="funcionalidades__item">
-      <fa-icon aria-hidden="true" class="funcionalidades__icono" [icon]="iconoGraficos"></fa-icon>
-      <p class="funcionalidades__texto">Gráficos de Progreso</p>
-    </li>
-
-    <li class="funcionalidades__item">
-      <fa-icon aria-hidden="true" class="funcionalidades__icono" [icon]="iconoFotos"></fa-icon>
-      <p class="funcionalidades__texto">Fotos de Progreso</p>
-    </li>
-
-    <li class="funcionalidades__item">
-      <fa-icon aria-hidden="true" class="funcionalidades__icono" [icon]="iconoAyuno"></fa-icon>
-      <p class="funcionalidades__texto">Ayuno</p>
-    </li>
-
-    <li class="funcionalidades__item">
-      <fa-icon aria-hidden="true" class="funcionalidades__icono" [icon]="iconoAgua"></fa-icon>
-      <p class="funcionalidades__texto">Registro de Agua</p>
-    </li>
-
-    <li class="funcionalidades__item">
-      <fa-icon aria-hidden="true" class="funcionalidades__icono" [icon]="iconoWidgets"></fa-icon>
-      <p class="funcionalidades__texto">Widgets</p>
-    </li>
-
-    <li class="funcionalidades__item">
-      <fa-icon aria-hidden="true" class="funcionalidades__icono" [icon]="iconoComidas"></fa-icon>
-      <p class="funcionalidades__texto">Registro de comidas</p>
-    </li>
-  </ul>
-</section>
-
-<section class="faq__section" aria-labelledby="titulo-faq">
-  <h2 id="titulo-faq" class="faq__titulo">Preguntas frecuentes</h2>
-
-  <div class="faq__contenedor">
-    <details class="faq__item" (toggle)="alternarEstadoFaq(0)">
-      <summary class="faq__pregunta">
-        <span>¿Qué incluye la cuota mensual de Cofira?</span>
-        <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[0]"></span>
-      </summary>
-      <p class="faq__respuesta">
-        La cuota mensual incluye acceso completo a todas las funcionalidades: planificación de hasta 7 comidas diarias,
-        rutinas de ejercicio personalizadas, seguimiento avanzado con gráficos de progreso, asesoría nutricional y
-        acceso a contenido exclusivo.
-      </p>
-    </details>
-
-    <details class="faq__item" (toggle)="alternarEstadoFaq(1)">
-      <summary class="faq__pregunta">
-        <span>¿Puedo cancelar mi suscripción en cualquier momento?</span>
-        <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[1]"></span>
-      </summary>
-      <p class="faq__respuesta">
-        Sí, puedes cancelar tu suscripción cuando quieras desde la configuración de tu cuenta. No hay permanencia mínima
-        ni penalizaciones por cancelación anticipada.
-      </p>
-    </details>
-
-
-    <details class="faq__item" (toggle)="alternarEstadoFaq(2)">
-      <summary class="faq__pregunta">
-        <span>¿Cómo funciona el seguimiento de progreso?</span>
-        <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[2]"></span>
-      </summary>
-      <p class="faq__respuesta">
-        Cofira registra tu peso, medidas corporales y fotos de progreso. Genera gráficos detallados que te muestran tu
-        evolución a lo largo del tiempo, permitiéndote visualizar tus logros y ajustar tu plan según tus objetivos.
-      </p>
-    </details>
-
-
-    <p class="faq__contacto">
-      ¿Tienes más preguntas? Escríbenos a
-      <a class="faq__email" href="mailto:soporte@cofira.com">soporte&#64;cofira.com</a>
+  <div class="hero__contenido">
+    <p class="hero__eyebrow">Entrena · Come · Progresa</p>
+    <h1 id="titulo-principal" class="hero__titulo">
+      Tu cuerpo,<br>
+      <span class="hero__titulo-acento">tu sistema</span>
+    </h1>
+    <p class="hero__subtitulo">
+      Entrenamiento, nutrición y seguimiento de progreso en un solo lugar. Diseñado a tu medida, medido al detalle.
     </p>
+    <div class="hero__acciones">
+      <app-button botonMagnetico enlace="/onboarding" tamanio="grande" variante="primario">Empieza tu cambio</app-button>
+      <app-button botonMagnetico (click)="navegarAPlanes()" tamanio="grande" variante="fantasma">Ver planes</app-button>
+    </div>
+  </div>
+
+  <a class="hero__scroll" (click)="navegarAPlanes()" aria-hidden="true">
+    <span class="hero__scroll-texto">Desliza</span>
+    <span class="hero__scroll-linea"></span>
+  </a>
+</section>
+
+
+<section class="manifiesto" aria-label="Manifiesto de Cofira">
+  <p class="manifiesto__texto">
+    @for (palabra of palabrasManifiesto; track $index) {
+      <span class="manifiesto__palabra" [class.manifiesto__palabra--clave]="palabra.clave">{{ palabra.texto }}</span>
+    }
+  </p>
+</section>
+
+
+<section class="proceso" aria-labelledby="titulo-proceso">
+  <header class="proceso__cabecera">
+    <p class="seccion__eyebrow">Cómo funciona</p>
+    <h2 id="titulo-proceso" class="seccion__titulo">De cero a en marcha en tres pasos</h2>
+  </header>
+
+  <ol class="proceso__lista">
+    @for (paso of pasos; track paso.numero) {
+      <li class="proceso__paso">
+        <span class="proceso__numero" aria-hidden="true">{{ paso.numero }}</span>
+        <span class="proceso__paso-marcador" aria-hidden="true"></span>
+        <h3 class="proceso__paso-titulo">{{ paso.titulo }}</h3>
+        <p class="proceso__paso-texto">{{ paso.descripcion }}</p>
+      </li>
+    }
+  </ol>
+</section>
+
+
+<app-cinta-marquee [palabras]="['Entrena', 'Come', 'Disciplina', 'Disfruta', 'Repite']"></app-cinta-marquee>
+
+
+<section class="pilares" aria-label="Lo que incluye Cofira">
+  <article class="pilar">
+    <figure class="pilar__media">
+      <img
+        class="pilar__imagen"
+        src="/assets/images/home-entrenamiento.jpg"
+        alt="Persona entrenando con peso en un gimnasio en penumbra"
+        loading="lazy"
+        width="1400"
+        height="933">
+      <span aria-hidden="true" class="pilar__velo"></span>
+    </figure>
+    <div class="pilar__texto">
+      <p class="seccion__eyebrow">Entrenamiento</p>
+      <h2 class="pilar__titulo">Rutinas que <em>evolucionan</em> contigo</h2>
+      <p class="pilar__descripcion">
+        Cada semana ajustamos series, cargas y descansos según tu feedback real. Nada de planes genéricos:
+        aquí manda tu cuerpo.
+      </p>
+      <ul class="pilar__datos">
+        <li class="pilar__dato">Ajuste semanal automático</li>
+        <li class="pilar__dato">Feedback ✓/✗ por ejercicio</li>
+        <li class="pilar__dato">Hasta 7 días de rutina</li>
+      </ul>
+      <button type="button" class="pilar__enlace" (click)="verFuncionalidades()">
+        Ver cómo<span class="pilar__enlace-flecha" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </article>
+
+  <article class="pilar pilar--invertido">
+    <figure class="pilar__media">
+      <img
+        class="pilar__imagen"
+        src="/assets/images/home-nutricion.jpg"
+        alt="Comida saludable preparada al detalle"
+        loading="lazy"
+        width="1400"
+        height="933">
+      <span aria-hidden="true" class="pilar__velo"></span>
+    </figure>
+    <div class="pilar__texto">
+      <p class="seccion__eyebrow">Nutrición</p>
+      <h2 class="pilar__titulo">Menús al <em>gramo</em>, sin pensar</h2>
+      <p class="pilar__descripcion">
+        Generamos tu menú semanal con los macros calculados y comidas que de verdad te apetecen.
+        Comer bien deja de ser un trabajo.
+      </p>
+      <ul class="pilar__datos">
+        <li class="pilar__dato">Macros al gramo: P · C · G</li>
+        <li class="pilar__dato">Hasta 7 comidas diarias</li>
+        <li class="pilar__dato">Alergias y preferencias en cuenta</li>
+      </ul>
+      <button type="button" class="pilar__enlace" (click)="verFuncionalidades()">
+        Ver cómo<span class="pilar__enlace-flecha" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </article>
+
+  <article class="pilar">
+    <figure class="pilar__media">
+      <img
+        class="pilar__imagen"
+        src="/assets/images/home-progreso.jpg"
+        alt="Atleta midiendo su progreso al aire libre"
+        loading="lazy"
+        width="1400"
+        height="933">
+      <span aria-hidden="true" class="pilar__velo"></span>
+    </figure>
+    <div class="pilar__texto">
+      <p class="seccion__eyebrow">Progreso</p>
+      <h2 class="pilar__titulo">Mira cómo <em>avanzas</em>, semana a semana</h2>
+      <p class="pilar__descripcion">
+        Peso, fuerza, macros y fotos en gráficas claras. Ves tu evolución con datos reales y ajustas
+        sobre la marcha, no a ojo.
+      </p>
+      <ul class="pilar__datos">
+        <li class="pilar__dato">Gráficas en tiempo real</li>
+        <li class="pilar__dato">Fotos antes / después privadas</li>
+        <li class="pilar__dato">Agua, ayuno y rachas</li>
+      </ul>
+      <button type="button" class="pilar__enlace" (click)="verFuncionalidades()">
+        Ver cómo<span class="pilar__enlace-flecha" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </article>
+</section>
+
+
+<section class="planes" id="seccion-planes" aria-labelledby="titulo-planes">
+  <div class="planes__halo" aria-hidden="true"></div>
+
+  <header class="planes__cabecera">
+    <p class="seccion__eyebrow">Planes</p>
+    <h2 id="titulo-planes" class="seccion__titulo">Elige tu cuota individual</h2>
+    <p class="seccion__subtitulo">
+      Profesionales 24/7 listos para atenderte. Sin permanencia: si quieres lograrlo, ¿por qué no intentarlo?
+    </p>
+
+    <div class="planes__selector" role="group" aria-label="Ciclo de facturación">
+      <button
+        type="button"
+        class="planes__opcion"
+        [class.planes__opcion--activa]="cicloSeleccionado() === 'mensual'"
+        (click)="seleccionarCiclo('mensual')">Mensual</button>
+      <button
+        type="button"
+        class="planes__opcion"
+        [class.planes__opcion--activa]="cicloSeleccionado() === 'anual'"
+        (click)="seleccionarCiclo('anual')">Anual<span class="planes__opcion-ahorro">−20%</span></button>
+    </div>
+
+    <p class="planes__garantia">Sin permanencia · cancela en 1 clic · profesionales 24/7</p>
+  </header>
+
+  <div class="planes__tarjetas">
+    <div class="planes__tarjeta" [class.planes__tarjeta--realzada]="cicloSeleccionado() === 'mensual'">
+      <app-card
+        [destacada]="cicloSeleccionado() === 'mensual'"
+        [ventajas]="[
+          'Máximo de 7 comidas diarias',
+          'Rutinas de ejercicios hasta 7 días',
+          'Seguimiento avanzado con gráficos',
+          'Asesoría nutricional personalizada',
+          'Acceso a contenido exclusivo'
+        ]"
+        descripcion="Flexibilidad total, cancela cuando quieras"
+        precioCantidad="19,99€"
+        precioPeriodo="/mes"
+        notaPrecio="+ IVA · facturación mensual"
+        texto_boton="Inscríbete"
+        titulo="Cuota mensual"></app-card>
+    </div>
+
+    <div class="planes__tarjeta" [class.planes__tarjeta--realzada]="cicloSeleccionado() === 'anual'">
+      <app-card
+        [deshabilitada]="false"
+        [destacada]="cicloSeleccionado() === 'anual'"
+        etiqueta="Ahorra 20%"
+        [ventajas]="[
+          'Máximo de 7 comidas diarias',
+          'Rutinas de ejercicios hasta 7 días',
+          'Seguimiento avanzado con gráficos',
+          'Asesoría nutricional personalizada',
+          'Acceso a contenido exclusivo'
+        ]"
+        descripcion="El plan que eligen quienes van en serio"
+        precioCantidad="15,99€"
+        precioPeriodo="/mes"
+        notaPrecio="+ IVA · facturación anual · ahorras 48€"
+        texto_boton="Inscríbete"
+        titulo="Cuota anual"></app-card>
+    </div>
+  </div>
+</section>
+
+
+<section class="funcionalidades" aria-labelledby="titulo-funcionalidades">
+  <header class="funcionalidades__cabecera">
+    <p class="seccion__eyebrow">Todo incluido</p>
+    <h2 id="titulo-funcionalidades" class="seccion__titulo">Más funcionalidades que disfrutar</h2>
+  </header>
+
+  <div class="funcionalidades__escena">
+    <ol class="funcionalidades__lista" aria-label="Funcionalidades de Cofira">
+      @for (funcionalidad of funcionalidades; track funcionalidad.titulo; let indice = $index) {
+        <li
+          class="funcionalidades__paso"
+          [class.funcionalidades__paso--activo]="indice === indiceFuncionalidadActiva()">
+          <button
+            type="button"
+            class="funcionalidades__paso-boton"
+            [attr.aria-current]="indice === indiceFuncionalidadActiva() ? 'true' : null"
+            (click)="seleccionarFuncionalidad(indice)">
+            <span aria-hidden="true" class="funcionalidades__paso-numero">{{ indice + 1 }}</span>
+            <span class="funcionalidades__paso-titulo">{{ funcionalidad.titulo }}</span>
+          </button>
+          <p class="funcionalidades__paso-texto">{{ funcionalidad.descripcion }}</p>
+        </li>
+      }
+    </ol>
+
+    <div class="funcionalidades__panel" hazDeLuz>
+      <span aria-hidden="true" class="funcionalidades__panel-reticula"></span>
+      <span aria-hidden="true" class="funcionalidades__panel-resplandor"></span>
+
+      @for (funcionalidad of funcionalidades; track funcionalidad.titulo; let indice = $index) {
+        <figure
+          class="funcionalidades__visual"
+          [class.funcionalidades__visual--activo]="indice === indiceFuncionalidadActiva()"
+          [class.funcionalidades__visual--lienzo]="indice === 2"
+          aria-hidden="true">
+          <span class="funcionalidades__visual-cabecera">
+            <span class="funcionalidades__visual-titulo">{{ funcionalidad.titulo }}</span>
+          </span>
+
+          @switch (indice) {
+            @case (0) {
+              <span class="funcionalidades__grafica">
+                <span class="funcionalidades__grafica-resumen">
+                  <img
+                    class="funcionalidades__grafica-avatar"
+                    src="/assets/images/soyYo-200w.webp"
+                    alt=""
+                    width="44"
+                    height="44">
+                  <span class="funcionalidades__grafica-persona">
+                    <span class="funcionalidades__grafica-nombre">Alejandro</span>
+                    <span class="funcionalidades__grafica-periodo">Últimos 6 meses</span>
+                  </span>
+                  <span class="funcionalidades__grafica-cifras">
+                    <span class="funcionalidades__grafica-cifra">
+                      <span class="funcionalidades__grafica-cifra-etiqueta">Actual</span>
+                      <span class="funcionalidades__grafica-cifra-valor">76,4 kg</span>
+                    </span>
+                    <span class="funcionalidades__grafica-cifra">
+                      <span class="funcionalidades__grafica-cifra-etiqueta">Cambio</span>
+                      <span class="funcionalidades__grafica-cifra-valor funcionalidades__grafica-cifra-valor--acento">−4,2 kg</span>
+                    </span>
+                    <span class="funcionalidades__grafica-cifra">
+                      <span class="funcionalidades__grafica-cifra-etiqueta">Objetivo</span>
+                      <span class="funcionalidades__grafica-cifra-valor">74,0 kg</span>
+                    </span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__grafica-lienzo" (mouseleave)="restaurarPunto()">
+                  <svg class="funcionalidades__grafica-svg" viewBox="0 0 400 190">
+                    <defs>
+                      <linearGradient id="gradientePeso" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="var(--naranja-normal)" stop-opacity="0.22"/>
+                        <stop offset="100%" stop-color="var(--naranja-normal)" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+
+                    <line x1="8" y1="55" x2="392" y2="55" class="funcionalidades__grafica-guia"/>
+                    <line x1="8" y1="96" x2="392" y2="96" class="funcionalidades__grafica-guia"/>
+                    <line x1="8" y1="137" x2="392" y2="137" class="funcionalidades__grafica-guia"/>
+                    <text x="2" y="51" class="funcionalidades__grafica-eje">78</text>
+                    <text x="2" y="92" class="funcionalidades__grafica-eje">77</text>
+                    <text x="2" y="133" class="funcionalidades__grafica-eje">76</text>
+
+                    <line x1="8" y1="170" x2="392" y2="170" class="funcionalidades__grafica-objetivo"/>
+                    <text x="318" y="164" class="funcionalidades__grafica-eje funcionalidades__grafica-eje--acento">objetivo 74,0</text>
+
+                    @if (indicePuntoActivo() !== null) {
+                      <line
+                        class="funcionalidades__grafica-cursor"
+                        [attr.x1]="puntoMostrado().x"
+                        [attr.y1]="puntoMostrado().y"
+                        [attr.x2]="puntoMostrado().x"
+                        y2="190"/>
+                    }
+
+                    <path
+                      class="funcionalidades__grafica-area"
+                      d="M8 30 C40 36 60 42 85 50 C115 60 135 68 162 79 C190 90 215 95 239 100 C270 106 292 109 316 112 C342 115 370 118 392 120 L392 190 L8 190 Z"
+                      fill="url(#gradientePeso)"/>
+                    <path
+                      class="funcionalidades__grafica-media"
+                      d="M8 36 C60 46 120 64 180 82 C240 98 320 110 392 115"/>
+                    <path
+                      class="funcionalidades__grafica-linea"
+                      d="M8 30 C40 36 60 42 85 50 C115 60 135 68 162 79 C190 90 215 95 239 100 C270 106 292 109 316 112 C342 115 370 118 392 120"/>
+
+                    @if (indicePuntoActivo() !== null) {
+                      <circle
+                        class="funcionalidades__grafica-halo"
+                        [attr.cx]="puntoMostrado().x"
+                        [attr.cy]="puntoMostrado().y"
+                        r="8"/>
+                    }
+
+                    @for (punto of puntosGrafica; track punto.mes; let indicePunto = $index) {
+                      <circle
+                        class="funcionalidades__grafica-punto"
+                        [class.funcionalidades__grafica-punto--activo]="indicePunto === indicePuntoActivo()"
+                        [attr.cx]="punto.x"
+                        [attr.cy]="punto.y"
+                        [attr.r]="indicePunto === indicePuntoActivo() ? 4.5 : 2.5"/>
+                    }
+
+                    @for (punto of puntosGrafica; track punto.mes; let indicePunto = $index) {
+                      <circle
+                        class="funcionalidades__grafica-zona"
+                        [attr.cx]="punto.x"
+                        [attr.cy]="punto.y"
+                        r="16"
+                        (mouseenter)="seleccionarPunto(indicePunto)"/>
+                    }
+                  </svg>
+
+                  <span
+                    class="funcionalidades__grafica-tooltip"
+                    [class.funcionalidades__grafica-tooltip--visible]="indicePuntoActivo() !== null"
+                    [class.funcionalidades__grafica-tooltip--inicio]="(indicePuntoActivo() ?? 5) <= 1"
+                    [class.funcionalidades__grafica-tooltip--fin]="(indicePuntoActivo() ?? 5) >= 4"
+                    [style.left.%]="puntoMostrado().x / 4"
+                    [style.top.%]="puntoMostrado().y / 1.9">
+                    <span class="funcionalidades__grafica-tooltip-mes">{{ puntoMostrado().etiqueta }}</span>
+                    <span class="funcionalidades__grafica-tooltip-valor">{{ puntoMostrado().peso }} kg</span>
+                    <span class="funcionalidades__grafica-tooltip-extra">{{ puntoMostrado().cambio }}</span>
+                    <span class="funcionalidades__grafica-tooltip-fila">
+                      <span>Media 7 días</span>
+                      <span class="funcionalidades__grafica-tooltip-cifra">{{ puntoMostrado().media }} kg</span>
+                    </span>
+                    <span class="funcionalidades__grafica-tooltip-fila">
+                      <span>Hacia 74,0 kg</span>
+                      <span class="funcionalidades__grafica-tooltip-cifra">{{ puntoMostrado().objetivoPct }} %</span>
+                    </span>
+                    <span class="funcionalidades__grafica-tooltip-barra">
+                      <span
+                        class="funcionalidades__grafica-tooltip-barra-relleno"
+                        [style.width.%]="puntoMostrado().objetivoPct"></span>
+                    </span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__grafica-meses">
+                  <span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span>
+                </span>
+
+                <span class="funcionalidades__grafica-leyenda">
+                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--peso">Peso</span>
+                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--media">Media 7 días</span>
+                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--objetivo">Objetivo</span>
+                </span>
+              </span>
+              <span class="funcionalidades__visual-pie">
+                <span class="funcionalidades__chip funcionalidades__chip--acento">−0,3 kg esta semana</span>
+                <span class="funcionalidades__visual-dato">Sincronizado hoy a las 08:12</span>
+              </span>
+            }
+            @case (1) {
+              <span class="funcionalidades__comparador" (pointermove)="moverComparador($event)">
+                <img
+                  class="funcionalidades__comparador-imagen funcionalidades__comparador-imagen--antes"
+                  [src]="fotoAntes().imagen"
+                  alt=""
+                  loading="lazy">
+                <img
+                  class="funcionalidades__comparador-imagen funcionalidades__comparador-imagen--despues"
+                  src="/assets/images/transformacion-hoy.png"
+                  alt=""
+                  loading="lazy"
+                  [style.clip-path]="'inset(0 0 0 ' + posicionComparador() + '%)'">
+
+                <span class="funcionalidades__comparador-division" [style.left.%]="posicionComparador()">
+                  <span class="funcionalidades__comparador-tirador">‹ ›</span>
+                </span>
+
+                <span class="funcionalidades__comparador-etiqueta funcionalidades__comparador-etiqueta--antes">
+                  <span class="funcionalidades__comparador-fecha">{{ fotoAntes().fecha }}</span>
+                  <span class="funcionalidades__comparador-peso">{{ fotoAntes().peso }}</span>
+                </span>
+                <span class="funcionalidades__comparador-etiqueta funcionalidades__comparador-etiqueta--despues">
+                  <span class="funcionalidades__comparador-fecha">Hoy · Semana 16</span>
+                  <span class="funcionalidades__comparador-peso">79,2 kg</span>
+                </span>
+              </span>
+
+              <span class="funcionalidades__carrete">
+                @for (foto of fotosAntes; track foto.fecha; let indiceFoto = $index) {
+                  <button
+                    type="button"
+                    class="funcionalidades__carrete-miniatura"
+                    [class.funcionalidades__carrete-miniatura--activa]="indiceFoto === indiceFotoAntes()"
+                    (click)="seleccionarFotoAntes(indiceFoto)">
+                    <img class="funcionalidades__carrete-imagen" [src]="foto.imagen" alt="" loading="lazy">
+                    <span class="funcionalidades__carrete-fecha">{{ foto.fecha }}</span>
+                  </button>
+                }
+                <span class="funcionalidades__carrete-vs">vs</span>
+                <span class="funcionalidades__carrete-miniatura funcionalidades__carrete-miniatura--hoy">
+                  <img class="funcionalidades__carrete-imagen" src="/assets/images/transformacion-hoy.png" alt="" loading="lazy">
+                  <span class="funcionalidades__carrete-fecha">Hoy</span>
+                </span>
+              </span>
+
+              <span class="funcionalidades__visual-pie">
+                <span class="funcionalidades__chip funcionalidades__chip--acento">−15,6 kg en 16 semanas</span>
+                <span class="funcionalidades__chip">Privado</span>
+                <span class="funcionalidades__visual-dato">Desliza para comparar tu transformación</span>
+              </span>
+            }
+            @case (2) {
+              <span
+                class="funcionalidades__ayuno"
+                [class.funcionalidades__ayuno--inspeccion]="zonaInspeccionada() !== null">
+                <canvas
+                  heliceAdn
+                  class="funcionalidades__ayuno-lienzo"
+                  [tiempoAyuno]="horaActualReloj()"
+                  [frenteAyuno]="fraccionAyuno()"
+                  [zonaAyuno]="zonaInspeccionada()"
+                  aria-hidden="true"></canvas>
+                <span class="funcionalidades__ayuno-fantasma" aria-hidden="true">{{ horaActualReloj() }}</span>
+
+                <span class="funcionalidades__ayuno-estado">
+                  <span class="funcionalidades__ayuno-estado-fase">{{ estadoAyuno().fase }}</span>
+                  <span class="funcionalidades__ayuno-estado-detalle">{{ estadoAyuno().detalle }}</span>
+                </span>
+
+                <span class="funcionalidades__ayuno-rotulo">{{ rotuloAyuno() }}</span>
+
+                <span class="funcionalidades__plan">
+                  <span class="funcionalidades__plan-titulo">Plan de hoy</span>
+                  @for (fila of filasPlan(); track fila.nombre) {
+                    <span
+                      class="funcionalidades__plan-fila"
+                      [class.funcionalidades__plan-fila--proxima]="fila.esProxima"
+                      [class.funcionalidades__plan-fila--ultima]="!fila.esComida">
+                      <span class="funcionalidades__plan-hora">{{ fila.etiqueta }}</span>
+                      <span class="funcionalidades__plan-comida">{{ fila.nombre }}</span>
+                      <span class="funcionalidades__plan-detalle">{{ fila.detalle }}</span>
+                    </span>
+                  }
+                </span>
+
+                <span class="funcionalidades__fase-nota funcionalidades__fase-nota--una funcionalidades__fase-nota--cian">
+                  <span class="funcionalidades__fase-nota-titulo">Glucógeno agotado</span>
+                  <span class="funcionalidades__fase-nota-sub">{{ subGlucogeno() }}</span>
+                  <span class="funcionalidades__fase-nota-dato">glucosa 72 mg/dl · estable</span>
+                </span>
+
+                <span class="funcionalidades__fase-nota funcionalidades__fase-nota--tres funcionalidades__fase-nota--activa">
+                  <span class="funcionalidades__fase-nota-titulo">Cetosis</span>
+                  <span class="funcionalidades__fase-nota-sub">{{ subCetosis() }}</span>
+                  <span class="funcionalidades__fase-nota-dato">cetonas 1,8 mmol/L · subiendo</span>
+                </span>
+
+                <span class="funcionalidades__fase-nota funcionalidades__fase-nota--grafica">
+                  <span class="funcionalidades__fase-nota-titulo">Hormona de crecimiento</span>
+                  <span class="funcionalidades__fase-nota-sub">pico natural · +800 %</span>
+                  <svg class="funcionalidades__fase-nota-curva" viewBox="0 0 90 26" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline points="0,23 12,21 24,22 36,17 48,18 60,12 72,13 84,4 90,3" />
+                  </svg>
+                </span>
+
+                <span class="funcionalidades__ayuno-vertical">autofagia</span>
+
+                <span class="funcionalidades__tarjeta-detox">
+                  <span class="funcionalidades__tarjeta-detox-titulo">Detox celular y reparación</span>
+                  <span class="funcionalidades__tarjeta-detox-sub">autofagia activa en <span class="funcionalidades__tarjeta-detox-cuenta">{{ cuentaAtrasAutofagia() }}</span></span>
+                  <svg class="funcionalidades__tarjeta-detox-grafico" viewBox="0 0 120 30" aria-hidden="true">
+                    <circle class="funcionalidades__tarjeta-detox-nucleo" cx="98" cy="15" r="8" />
+                    <circle class="funcionalidades__tarjeta-detox-particula" cx="14" cy="9" r="2.6" />
+                    <circle class="funcionalidades__tarjeta-detox-particula funcionalidades__tarjeta-detox-particula--dos" cx="30" cy="21" r="2" />
+                    <circle class="funcionalidades__tarjeta-detox-particula funcionalidades__tarjeta-detox-particula--tres" cx="48" cy="12" r="3" />
+                    <circle class="funcionalidades__tarjeta-detox-particula funcionalidades__tarjeta-detox-particula--cuatro" cx="62" cy="22" r="1.8" />
+                    <circle class="funcionalidades__tarjeta-detox-particula funcionalidades__tarjeta-detox-particula--cinco" cx="76" cy="8" r="2.4" />
+                  </svg>
+                  <span class="funcionalidades__tarjeta-detox-celdas">
+                    <span class="funcionalidades__tarjeta-detox-celda">
+                      <span class="funcionalidades__tarjeta-detox-valor">+19 %</span>
+                      <span class="funcionalidades__tarjeta-detox-etiqueta">mitocondrias</span>
+                    </span>
+                    <span class="funcionalidades__tarjeta-detox-celda">
+                      <span class="funcionalidades__tarjeta-detox-valor">14.493</span>
+                      <span class="funcionalidades__tarjeta-detox-etiqueta">células/min</span>
+                    </span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__regla">
+                  <span class="funcionalidades__regla-zona funcionalidades__regla-zona--cian"></span>
+                  <span class="funcionalidades__regla-zona funcionalidades__regla-zona--ambar"></span>
+                  <span class="funcionalidades__regla-zona funcionalidades__regla-zona--violeta"></span>
+                  @for (tick of ticksRegla; track tick.hora) {
+                    <span
+                      class="funcionalidades__regla-tick"
+                      [class.funcionalidades__regla-tick--mayor]="tick.mayor"
+                      [style.left.%]="tick.x"></span>
+                  }
+                  <span class="funcionalidades__regla-etiqueta funcionalidades__regla-etiqueta--glucogeno">0 h · glucógeno</span>
+                  <span class="funcionalidades__regla-etiqueta funcionalidades__regla-etiqueta--quema">12 h · quema de grasa</span>
+                  <span class="funcionalidades__regla-etiqueta funcionalidades__regla-etiqueta--reparacion">16 h · reparación</span>
+
+                  @if (estaAyunando()) {
+                    <span class="funcionalidades__regla-ahora" [style.left.%]="fraccionAyuno() * 100">
+                      <span class="funcionalidades__regla-ahora-linea"></span>
+                      <span class="funcionalidades__regla-ahora-texto">llevas {{ tiempoAyunoCorto() }}</span>
+                    </span>
+                  }
+
+                  <span class="funcionalidades__regla-marca funcionalidades__regla-marca--comida">
+                    <span class="funcionalidades__regla-marca-titulo">comida en</span>
+                    <span class="funcionalidades__regla-marca-tiempo">{{ cuentaAtrasComida() }}</span>
+                  </span>
+                </span>
+
+                @for (zona of zonasAyuno; track zona.clave) {
+                  <span
+                    class="funcionalidades__zona"
+                    [style.left.%]="4 + zona.min * 69"
+                    [style.width.%]="(zona.max - zona.min) * 69"
+                    (mouseenter)="inspeccionarZona(zona)"
+                    (mouseleave)="despejarZona()"></span>
+                }
+
+                @if (zonaInspeccionada(); as zona) {
+                  <span
+                    class="funcionalidades__inspector"
+                    [class.funcionalidades__inspector--libre]="!movimientoReducido()"
+                    [style.left.%]="movimientoReducido() ? 6 + zona.min * 52 : null"
+                    [style.border-left-color]="zona.color">
+                    <span class="funcionalidades__inspector-titulo" [style.color]="zona.color">{{ zona.titulo }}</span>
+                    <span class="funcionalidades__inspector-rango">{{ zona.rango }}</span>
+                    <span class="funcionalidades__inspector-descripcion">{{ zona.descripcion }}</span>
+                    <span class="funcionalidades__inspector-datos">
+                      @for (dato of zona.datos; track dato.etiqueta) {
+                        <span class="funcionalidades__inspector-dato">
+                          <span class="funcionalidades__inspector-valor">{{ dato.valor }}</span>
+                          <span class="funcionalidades__inspector-etiqueta">{{ dato.etiqueta }}</span>
+                        </span>
+                      }
+                    </span>
+                  </span>
+                }
+              </span>
+
+              <span class="funcionalidades__visual-pie">
+                <span class="funcionalidades__chip funcionalidades__chip--acento">16:8</span>
+                <span class="funcionalidades__visual-dato">Tu próxima comida a las {{ proximaComida().etiqueta }}</span>
+              </span>
+            }
+            @case (3) {
+              <span class="funcionalidades__agua">
+                <span class="funcionalidades__agua-resumen">
+                  <span class="funcionalidades__agua-valor">{{ litrosAgua() }} L</span>
+                  <span class="funcionalidades__agua-objetivo">de 2,4 L diarios</span>
+                  <span class="funcionalidades__agua-progreso">
+                    <span class="funcionalidades__agua-progreso-relleno" [style.width.%]="porcentajeAgua()"></span>
+                  </span>
+                  <span class="funcionalidades__chip funcionalidades__chip--acento">{{ porcentajeAgua() }} %</span>
+                </span>
+
+                <span class="funcionalidades__agua-vasos">
+                  @for (vaso of vasosAgua; track vaso; let indiceVaso = $index) {
+                    <button
+                      type="button"
+                      class="funcionalidades__agua-vaso"
+                      [class.funcionalidades__agua-vaso--lleno]="indiceVaso < vasosBebidos()"
+                      [class.funcionalidades__agua-vaso--actual]="indiceVaso === vasosBebidos() - 1"
+                      (click)="seleccionarVasos(indiceVaso)">
+                      <span class="funcionalidades__agua-vaso-nivel"></span>
+                      <span class="funcionalidades__agua-vaso-etiqueta">0,3</span>
+                    </button>
+                  }
+                </span>
+              </span>
+              <span class="funcionalidades__visual-pie">
+                <span class="funcionalidades__chip">Toca un vaso</span>
+                <span class="funcionalidades__visual-dato">Próximo recordatorio a las 17:30</span>
+              </span>
+            }
+            @case (4) {
+              <span class="funcionalidades__widgets">
+                <span class="funcionalidades__widget funcionalidades__widget--uno">
+                  <span class="funcionalidades__widget-etiqueta">Kcal hoy</span>
+                  <span class="funcionalidades__widget-valor">1.847</span>
+                  <span class="funcionalidades__widget-tendencia funcionalidades__widget-tendencia--sube">+12 % vs ayer</span>
+                  <svg class="funcionalidades__widget-grafica" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline points="0,20 14,16 28,18 42,11 56,14 70,8 84,10 100,4" />
+                  </svg>
+                </span>
+                <span class="funcionalidades__widget funcionalidades__widget--dos">
+                  <span class="funcionalidades__widget-etiqueta">Pasos</span>
+                  <span class="funcionalidades__widget-valor">8.412</span>
+                  <span class="funcionalidades__widget-tendencia funcionalidades__widget-tendencia--sube">+6 %</span>
+                  <svg class="funcionalidades__widget-grafica" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline points="0,18 14,20 28,13 42,16 56,9 70,12 84,6 100,8" />
+                  </svg>
+                </span>
+                <span class="funcionalidades__widget funcionalidades__widget--tres">
+                  <span class="funcionalidades__widget-etiqueta">Peso</span>
+                  <span class="funcionalidades__widget-valor">76,4 kg</span>
+                  <span class="funcionalidades__widget-tendencia">−0,3 kg esta semana</span>
+                  <svg class="funcionalidades__widget-grafica" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline points="0,6 14,8 28,10 42,12 56,15 70,16 84,18 100,20" />
+                  </svg>
+                </span>
+                <span class="funcionalidades__widget funcionalidades__widget--cuatro">
+                  <span class="funcionalidades__widget-etiqueta">Racha</span>
+                  <span class="funcionalidades__widget-valor">12 días</span>
+                  <span class="funcionalidades__widget-tendencia funcionalidades__widget-tendencia--sube">récord personal</span>
+                  <span class="funcionalidades__widget-racha" aria-hidden="true">
+                    <span class="funcionalidades__widget-dia funcionalidades__widget-dia--hecho"></span>
+                    <span class="funcionalidades__widget-dia funcionalidades__widget-dia--hecho"></span>
+                    <span class="funcionalidades__widget-dia funcionalidades__widget-dia--hecho"></span>
+                    <span class="funcionalidades__widget-dia funcionalidades__widget-dia--hecho"></span>
+                    <span class="funcionalidades__widget-dia funcionalidades__widget-dia--hecho"></span>
+                    <span class="funcionalidades__widget-dia funcionalidades__widget-dia--hecho"></span>
+                    <span class="funcionalidades__widget-dia funcionalidades__widget-dia--hoy"></span>
+                  </span>
+                </span>
+              </span>
+              <span class="funcionalidades__visual-pie">
+                <span class="funcionalidades__chip">iOS · Android</span>
+                <span class="funcionalidades__visual-dato">Tus métricas, allá donde estés</span>
+              </span>
+            }
+            @case (5) {
+              <span class="funcionalidades__comidas">
+                <span class="funcionalidades__comida">
+                  <img class="funcionalidades__comida-foto" src="/assets/images/comida-avena.png" alt="" loading="lazy">
+                  <span class="funcionalidades__comida-detalle">
+                    <span class="funcionalidades__comida-cabecera">
+                      <span class="funcionalidades__comida-nombre">Avena con fruta y nueces</span>
+                      <span class="funcionalidades__comida-momento">08:15</span>
+                    </span>
+                    <span class="funcionalidades__comida-macros">
+                      <span class="funcionalidades__macro funcionalidades__macro--proteina" [style.width.%]="22"></span>
+                      <span class="funcionalidades__macro funcionalidades__macro--carbos" [style.width.%]="58"></span>
+                      <span class="funcionalidades__macro funcionalidades__macro--grasas" [style.width.%]="20"></span>
+                    </span>
+                    <span class="funcionalidades__comida-desglose">P 23 g · C 61 g · G 9 g</span>
+                  </span>
+                  <span class="funcionalidades__comida-kcal">418<span class="funcionalidades__comida-kcal-unidad">kcal</span></span>
+                </span>
+                <span class="funcionalidades__comida">
+                  <img class="funcionalidades__comida-foto" src="/assets/images/comida-pollo.png" alt="" loading="lazy">
+                  <span class="funcionalidades__comida-detalle">
+                    <span class="funcionalidades__comida-cabecera">
+                      <span class="funcionalidades__comida-nombre">Pollo a la plancha con arroz</span>
+                      <span class="funcionalidades__comida-momento">14:05</span>
+                    </span>
+                    <span class="funcionalidades__comida-macros">
+                      <span class="funcionalidades__macro funcionalidades__macro--proteina" [style.width.%]="42"></span>
+                      <span class="funcionalidades__macro funcionalidades__macro--carbos" [style.width.%]="44"></span>
+                      <span class="funcionalidades__macro funcionalidades__macro--grasas" [style.width.%]="14"></span>
+                    </span>
+                    <span class="funcionalidades__comida-desglose">P 52 g · C 55 g · G 11 g</span>
+                  </span>
+                  <span class="funcionalidades__comida-kcal">676<span class="funcionalidades__comida-kcal-unidad">kcal</span></span>
+                </span>
+                <span class="funcionalidades__comida">
+                  <img class="funcionalidades__comida-foto" src="/assets/images/comida-salmon.png" alt="" loading="lazy">
+                  <span class="funcionalidades__comida-detalle">
+                    <span class="funcionalidades__comida-cabecera">
+                      <span class="funcionalidades__comida-nombre">Salmón con verduras asadas</span>
+                      <span class="funcionalidades__comida-momento">21:10</span>
+                    </span>
+                    <span class="funcionalidades__comida-macros">
+                      <span class="funcionalidades__macro funcionalidades__macro--proteina" [style.width.%]="38"></span>
+                      <span class="funcionalidades__macro funcionalidades__macro--carbos" [style.width.%]="24"></span>
+                      <span class="funcionalidades__macro funcionalidades__macro--grasas" [style.width.%]="38"></span>
+                    </span>
+                    <span class="funcionalidades__comida-desglose">P 41 g · C 26 g · G 21 g</span>
+                  </span>
+                  <span class="funcionalidades__comida-kcal">542<span class="funcionalidades__comida-kcal-unidad">kcal</span></span>
+                </span>
+
+                <span class="funcionalidades__comidas-total">
+                  <span class="funcionalidades__comidas-total-texto">
+                    <span>Total del día</span>
+                    <span class="funcionalidades__comidas-total-cifra">1.636 / 2.450 kcal</span>
+                  </span>
+                  <span class="funcionalidades__comidas-total-barra">
+                    <span class="funcionalidades__comidas-total-relleno" [style.width.%]="67"></span>
+                  </span>
+                </span>
+              </span>
+              <span class="funcionalidades__visual-pie">
+                <span class="funcionalidades__chip funcionalidades__chip--acento">Foto</span>
+                <span class="funcionalidades__visual-dato">Apunta lo que comes con análisis por foto</span>
+              </span>
+            }
+          }
+        </figure>
+      }
+    </div>
+  </div>
+</section>
+
+
+<section class="faq" aria-labelledby="titulo-faq">
+  <span aria-hidden="true" class="faq__halo"></span>
+  <div class="faq__rejilla">
+    <header class="faq__cabecera">
+      <p class="seccion__eyebrow">Dudas</p>
+      <h2 id="titulo-faq" class="seccion__titulo">Preguntas<br><span class="faq__titulo-acento">frecuentes</span></h2>
+      <p class="faq__intro">
+        Lo que nos preguntan antes de empezar. Si no encuentras tu respuesta, estamos al otro lado.
+      </p>
+
+      <a class="faq__contacto" href="mailto:soporte@cofira.com">
+        <span class="faq__contacto-textos">
+          <span class="faq__contacto-titulo">¿Tienes más preguntas?</span>
+          <span class="faq__contacto-email">soporte&#64;cofira.com</span>
+        </span>
+        <svg aria-hidden="true" class="faq__contacto-flecha" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M7 17L17 7M17 7H9M17 7v8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </header>
+
+    <div class="faq__contenedor" hazDeLuz>
+      <span aria-hidden="true" class="faq__foco"></span>
+      <p aria-hidden="true" class="faq__meta">
+        <span>Índice</span>
+        <span>05 preguntas</span>
+      </p>
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(0)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">01</span>
+          <span class="faq__pregunta-texto">¿Qué incluye la cuota mensual de Cofira?</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[0]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          La cuota mensual incluye <strong class="faq__clave">acceso completo</strong> a todas las funcionalidades:
+          planificación de hasta <strong class="faq__clave">7 comidas diarias</strong>, rutinas de ejercicio personalizadas,
+          seguimiento avanzado con gráficos de progreso, asesoría nutricional y acceso a contenido exclusivo.
+        </p>
+      </details>
+
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(1)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">02</span>
+          <span class="faq__pregunta-texto">¿Puedo cancelar mi suscripción en cualquier momento?</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[1]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          Sí, puedes cancelar tu suscripción cuando quieras desde la configuración de tu cuenta.
+          <strong class="faq__clave">No hay permanencia mínima</strong> ni penalizaciones por cancelación anticipada.
+        </p>
+      </details>
+
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(2)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">03</span>
+          <span class="faq__pregunta-texto">¿Cómo funciona el seguimiento de progreso?</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[2]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          Cofira registra tu peso, medidas corporales y fotos de progreso. Genera gráficos detallados que te muestran tu
+          evolución a lo largo del tiempo, permitiéndote visualizar tus logros y ajustar tu plan según tus objetivos.
+        </p>
+      </details>
+
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(3)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">04</span>
+          <span class="faq__pregunta-texto">¿Las rutinas y los menús se adaptan a mí?</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[3]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          Sí. Tu rutina y tu menú semanal se generan a partir de tu objetivo, nivel, equipamiento, alergias y preferencias.
+          Cada semana se ajustan con tu feedback real: si algo te cuesta o te sobra, el plan cambia contigo.
+        </p>
+      </details>
+
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(4)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">05</span>
+          <span class="faq__pregunta-texto">¿Qué diferencia hay entre la cuota mensual y la anual?</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[4]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          Las dos incluyen exactamente lo mismo. La anual sale a <strong class="faq__clave">15,99€ al mes</strong> en vez
+          de 19,99€: un 20% menos, unos <strong class="faq__clave">48€ de ahorro al año</strong>.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+
+<app-cinta-marquee [palabras]="['Sin excusas', 'Sin permanencia', 'Sin atajos']" [invertida]="true"></app-cinta-marquee>
+
+
+<section class="cta-final">
+  <figure class="cta-final__media" aria-hidden="true">
+    <img class="cta-final__imagen" src="/assets/images/home-cta.jpg" alt="" loading="lazy" width="1400" height="933">
+  </figure>
+  <div class="cta-final__halo" aria-hidden="true"></div>
+  <div class="cta-final__contenido">
+    <h2 class="cta-final__titulo">Empieza hoy tu transformación</h2>
+    <p class="cta-final__texto">Tu plan personalizado te espera. Sin excusas, con un sistema que se mide solo.</p>
+    <app-button botonMagnetico enlace="/onboarding" tamanio="grande" variante="primario">
+      Crear mi cuenta
+      <svg class="cta-final__flecha" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </app-button>
   </div>
 </section>

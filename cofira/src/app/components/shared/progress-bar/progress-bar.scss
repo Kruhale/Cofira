@@ -12,12 +12,9 @@
 
 
 .progress-bar__label {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--amarillo-dark);
-  text-align: center;
   margin: 0;
+  text-align: center;
+  @include etiqueta-tecnica(var(--naranja-texto));
 }
 
 .progress-bar__label--hidden {
@@ -38,7 +35,7 @@
   position: relative;
   width: 100%;
   height: 0.5rem;
-  background-color: var(--blanco-dark);
+  background: var(--superficie-3);
   border-radius: var(--radius-full);
   overflow: hidden;
   appearance: none;
@@ -66,7 +63,8 @@
   top: 0;
   left: 0;
   height: 100%;
-  background-color: var(--amarillo-normal);
+  background: var(--gradiente-acento);
   border-radius: var(--radius-full);
-  transition: width var(--duration-normal) var(--easing-default);
+  box-shadow: var(--glow-acento);
+  transition: width var(--duration-base) ease;
 }

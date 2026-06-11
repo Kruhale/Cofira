@@ -1,3 +1,4 @@
+@import '../../../../styles/00-settings/css-variables';
 @import '../../../../styles/01-tools/mixins';
 
 
@@ -13,11 +14,14 @@
   min-width: 18.75rem;
   max-width: 25rem;
   padding: var(--spacing-size-s) var(--spacing-size-m);
-  border-radius: var(--radius-xss);
-  border-left: 0.25rem solid;
-  box-shadow: 0 0.25rem 1rem var(--negro-puro-transparente-025);
+  @include vidrio(16px);
+  border: 1px solid var(--borde-sutil);
+  border-left: 0.25rem solid var(--notification-acento);
+  border-radius: var(--radius-bento);
+  box-shadow: var(--sombra-bento);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
+  color: var(--texto-principal);
   animation: notificacion-deslizar-derecha var(--duration-base) ease;
 
   @include responsive-down('sm') {
@@ -30,7 +34,7 @@
 }
 
 .notification:hover {
-  box-shadow: 0 0.375rem 1.25rem var(--negro-puro-transparente-025);
+  box-shadow: var(--sombra-bento), var(--glow-acento);
 }
 
 
@@ -49,7 +53,7 @@
   width: 1.5rem;
   height: 1.5rem;
   margin: 0;
-  color: var(--notification-icono-color);
+  color: var(--notification-acento);
 }
 
 .notification__icono-svg {
@@ -59,9 +63,10 @@
 
 .notification__mensaje {
   flex: 1;
+  margin: 0;
   line-height: var(--line-height-normal);
   font-weight: var(--font-weight-medium);
-  margin: 0;
+  color: var(--texto-principal);
 }
 
 .notification__cerrar {
@@ -69,14 +74,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0.25rem;
   background: transparent;
   border: none;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 50%;
   opacity: 0.7;
-  transition: all var(--duration-fast) ease;
-  color: var(--notification-cerrar-color);
+  color: var(--texto-secundario);
+  transition: opacity var(--duration-fast) ease,
+    background var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
 }
 
 .notification__cerrar-svg {
@@ -86,51 +93,32 @@
 
 .notification__cerrar:hover {
   opacity: 1;
-  background: var(--negro-puro-transparente-010);
+  background: var(--superficie-3);
+  color: var(--texto-principal);
   transform: rotate(90deg);
 }
 
-.notification__cerrar:focus {
-  outline: 0.125rem solid currentColor;
-  outline-offset: 0.125rem;
+.notification__cerrar:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 
 
 .notification--success {
-  --notification-icono-color: var(--amarillo-darker);
-  --notification-cerrar-color: var(--negro-normal);
-
-  background-color: var(--amarillo-normal);
-  border-left-color: var(--amarillo-dark);
-  color: var(--negro-normal);
+  --notification-acento: var(--exito);
 }
 
 .notification--error {
-  --notification-icono-color: var(--blanco-normal);
-  --notification-cerrar-color: var(--blanco-normal);
-
-  background-color: var(--button-red);
-  border-left-color: var(--button-red-hover);
-  color: var(--blanco-normal);
+  --notification-acento: var(--peligro);
 }
 
 .notification--warning {
-  --notification-icono-color: var(--amarillo-dark);
-  --notification-cerrar-color: var(--negro-normal);
-
-  background-color: var(--amarillo-normal-hover);
-  border-left-color: var(--amarillo-normal);
-  color: var(--negro-normal);
+  --notification-acento: var(--ambar);
 }
 
 .notification--info {
-  --notification-icono-color: var(--blanco-normal);
-  --notification-cerrar-color: var(--blanco-normal);
-
-  background-color: var(--gris-normal);
-  border-left-color: var(--gris-dark);
-  color: var(--blanco-normal);
+  --notification-acento: var(--naranja-normal);
 }
 
 

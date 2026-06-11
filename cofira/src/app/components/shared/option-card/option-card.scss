@@ -2,55 +2,52 @@
 @import '../../../../styles/01-tools/mixins';
 
 .option-card {
-  --card-titulo-color: var(--text-primary);
-  --card-icono-fondo: var(--amarillo-light);
-  --card-icono-color: var(--amarillo-dark);
-
   display: flex;
   align-items: center;
   gap: var(--spacing-size-m);
   width: 100%;
   padding: var(--spacing-size-l);
-  background-color: var(--bg-card);
-  border: var(--border-width-normal) solid var(--border-color-light);
-  border-radius: var(--radius-md);
+  @include superficie-bento;
+  @include bento-hover;
   cursor: pointer;
   text-align: left;
-  transition: all var(--duration-fast) ease;
-}
 
-.option-card:hover {
-  border-color: var(--amarillo-normal);
-  background-color: var(--blanco-normal-hover);
-}
-
-.option-card:focus-visible {
-  border-color: var(--amarillo-normal);
-  box-shadow: 0 0 0 0.1875rem var(--amarillo-light);
+  &:focus-visible {
+    outline: none;
+    border-color: var(--naranja-normal);
+    box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+  }
 }
 
 .option-card--seleccionado {
-  --card-titulo-color: var(--text-primary);
-  --card-icono-fondo: var(--amarillo-normal);
-  --card-icono-color: var(--negro-normal);
+  border-color: var(--naranja-normal);
+  background: var(--naranja-glow-suave);
+  box-shadow: var(--sombra-bento), var(--glow-interior), var(--glow-acento);
 
-  border-color: var(--amarillo-normal);
-  background-color: var(--amarillo-light);
+  &:hover {
+    border-color: var(--naranja-normal);
+  }
 }
 
 
 
 .option-card__icono {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   flex-shrink: 0;
   width: 3rem;
   height: 3rem;
   margin: 0;
-  background-color: var(--card-icono-fondo);
+  background: var(--superficie-3);
+  border: 1px solid var(--borde-sutil);
   border-radius: var(--radius-md);
-  color: var(--card-icono-color);
+  color: var(--naranja-texto);
+  transition: background var(--duration-base) ease, color var(--duration-base) ease;
+}
+
+.option-card--seleccionado .option-card__icono {
+  background: var(--gradiente-acento);
+  border-color: transparent;
+  color: var(--texto-sobre-acento);
 }
 
 .option-card__icono-svg {
@@ -66,34 +63,32 @@
 }
 
 .option-card__titulo {
+  margin: 0 0 var(--spacing-size-xss) 0;
   font-family: var(--font-secondary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--card-titulo-color);
-  margin: 0 0 var(--spacing-size-xxs) 0;
+  color: var(--texto-principal);
 }
 
 .option-card__descripcion {
+  margin: 0;
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-regular);
-  color: var(--text-secondary);
-  margin: 0;
   line-height: var(--line-height-normal);
+  color: var(--texto-secundario);
 }
 
 
 
 .option-card__check {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   flex-shrink: 0;
   width: 1.5rem;
   height: 1.5rem;
-  background-color: transparent;
-  border: var(--border-width-normal) solid var(--border-color-light);
-  border-radius: var(--radius-l);
+  background: transparent;
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-full);
   outline: none;
   opacity: 0;
   transform: scale(0.8);
@@ -103,12 +98,12 @@
 .option-card__check--visible {
   opacity: 1;
   transform: scale(1);
-  background-color: var(--amarillo-normal);
-  border-color: var(--amarillo-normal);
+  background: var(--gradiente-acento);
+  border-color: transparent;
 }
 
 .option-card__check-svg {
   width: 0.875rem;
   height: 0.875rem;
-  color: var(--blanco-normal);
+  color: var(--texto-sobre-acento);
 }
