@@ -92,13 +92,13 @@ const VERTICE_CUERPO = `
       vec2 radial = vec2(p.x, p.y * 0.34);
       float lon = length(radial) + 1e-4;
       vec2 dir = radial / lon;
-      float empuje = 0.42 + lon * 0.18; // las extremidades vuelan algo más lejos
+      float empuje = 0.16 + lon * 0.08; // apertura CONTENIDA: la silueta no se disuelve
       p.xy += dir * empuje * ap;
-      // La losa de ±0.42 se despliega en Z: al girar se ve volumen 3D real.
-      p.z += sign(p.z + 0.0001) * (0.72 + semilla * 1.15) * ap;
-      // Turbulencia orgánica por semilla: no es un escalado rígido, respira.
-      p.x += sin(semilla * 31.0 + uTiempo * 0.9) * 0.16 * ap;
-      p.y += cos(semilla * 23.0 + uTiempo * 0.8) * 0.16 * ap;
+      // La losa fina se despliega en Z: al girar se lee como volumen 3D real.
+      p.z += sign(p.z + 0.0001) * (0.55 + semilla * 0.8) * ap;
+      // Turbulencia leve por semilla: respira sin romper la forma.
+      p.x += sin(semilla * 31.0 + uTiempo * 0.9) * 0.07 * ap;
+      p.y += cos(semilla * 23.0 + uTiempo * 0.8) * 0.07 * ap;
     }
 
     // --- Burbujas (tipo 2): nacen sumergidas, ascienden y estallan en superficie ---
@@ -510,8 +510,8 @@ export class EscenaCuerpoAgua {
     const distancia = Math.sqrt(dx * dx + dy * dy);
     const cercania = Math.max(0, Math.min(1, 1 - distancia));
     const suave = cercania * cercania * (3 - 2 * cercania); // smoothstep
-    // Tope < 1: en el centro abre con fuerza pero sin disolver del todo la figura.
-    this.aperturaObjetivo = suave * 0.72;
+    // Tope contenido: el cuerpo gana volumen y gira, pero la silueta se mantiene.
+    this.aperturaObjetivo = suave * 0.55;
   }
 
   fijarNivel(fraccion: number, inmediato = false): void {
