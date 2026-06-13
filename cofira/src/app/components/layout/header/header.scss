@@ -26,7 +26,7 @@
 /* Sobre un hero oscuro (home / sobre-nosotros), en la parte superior:
    sin fondo ni línea, solo un scrim sutil; la imagen sube a ras del header. */
 .cabecera--transparente {
-  background: linear-gradient(180deg, hsla(240, 6%, 3%, 0.55) 0%, hsla(240, 6%, 3%, 0) 100%);
+  background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border-bottom-color: transparent;
@@ -57,6 +57,7 @@
 .cabecera__logo-enlace {
   display: flex;
   align-items: center;
+  gap: 0.7rem;
   flex-shrink: 0;
   z-index: 2;
   pointer-events: auto;
@@ -77,26 +78,33 @@
   color: var(--naranja-normal);
 }
 
+/* Coletilla mono junto al wordmark: lockup editorial (estilo Wolverine) */
+.cabecera__logo-etiqueta {
+  padding-left: 0.7rem;
+  border-left: 1px solid var(--borde-medio);
+
+  font-family: var(--fuente-mono);
+  font-size: 0.625rem; /* 10px */
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+
+.cabecera--transparente .cabecera__logo-etiqueta {
+  border-left-color: hsla(0, 0%, 100%, 0.25);
+  color: hsla(40, 14%, 96%, 0.72);
+}
+
 .cabecera__logo-enlace:hover .cabecera__logo-texto {
   opacity: 0.85;
 }
 
-/* Módulo contenedor a la derecha (estilo Cura): los enlaces y las acciones viven
-   dentro de una barra sólida; el logo queda suelto a la izquierda. */
-.cabecera__modulo {
-  display: flex;
-  align-items: stretch;
-  height: 3.25rem;
-  pointer-events: auto;
-  background: linear-gradient(160deg, hsla(20, 14%, 11%, 0.94), hsla(20, 12%, 7%, 0.96));
-  border: 1px solid var(--borde-medio);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
 .cabecera__navegacion {
   display: flex;
-  align-items: stretch;
+  align-items: center;
+  pointer-events: auto;
 }
 
 .cabecera__navegacion--escritorio {
@@ -109,19 +117,19 @@
 
 .cabecera__menu {
   display: flex;
-  align-items: stretch;
-  gap: 0;
+  align-items: center;
+  gap: 1.5rem;
   margin: 0;
-  padding: 0 0.4rem;
+  padding: 0;
 
   list-style: none;
 }
 
 .cabecera__enlace {
+  position: relative;
   display: flex;
   align-items: center;
-  height: 100%;
-  padding: 0 1.15rem;
+  padding: 0.45rem 0.3rem;
 
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
@@ -133,72 +141,47 @@
   transition: color var(--duration-fast) ease;
 }
 
-/* Marcador cuadrado naranja (estilo Cura): visible en el enlace activo y al pasar */
-.cabecera__enlace::before {
+/* Subrayado naranja que crece (estilo Wolverine, acento Cofira): hover y activo */
+.cabecera__enlace::after {
   content: '';
-  width: 0.4rem;
-  height: 0.4rem;
-  margin-right: 0.5rem;
+  position: absolute;
+  left: 0.3rem;
+  right: 0.3rem;
+  bottom: 0.1rem;
+  height: 1.5px;
+
   background: var(--naranja-normal);
-  opacity: 0;
-  transform: scale(0.5);
-  transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-base) ease;
 }
 
 .cabecera__enlace:hover {
   color: var(--texto-principal);
 }
 
-.cabecera__enlace:hover::before {
-  opacity: 0.55;
-  transform: scale(1);
+.cabecera__enlace:hover::after {
+  transform: scaleX(1);
 }
 
 .cabecera__enlace--activo {
   color: var(--texto-principal);
 }
 
-.cabecera__enlace--activo::before {
-  opacity: 1;
-  transform: scale(1);
+.cabecera__enlace--activo::after {
+  transform: scaleX(1);
 }
 
 .cabecera__acciones {
   position: relative;
 
   display: flex;
-  align-items: stretch;
-  gap: 0;
+  align-items: center;
+  gap: 0.5rem;
   flex-shrink: 0;
   z-index: 2;
-}
-
-/* Marco de mira (corner brackets, estilo Cura) alrededor del CTA */
-.cabecera__cta-marco {
-  position: relative;
-  display: inline-flex;
-}
-
-.cabecera__cta-marco::before {
-  content: '';
-  position: absolute;
-  top: -5px; /* 5px */
-  left: -5px;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-top: 1.5px solid var(--naranja-normal);
-  border-left: 1.5px solid var(--naranja-normal);
-}
-
-.cabecera__cta-marco::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  right: -5px;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-bottom: 1.5px solid var(--naranja-normal);
-  border-right: 1.5px solid var(--naranja-normal);
+  pointer-events: auto;
 }
 
 .cabecera__acciones--escritorio {
@@ -213,12 +196,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.1rem;
-  height: 100%;
+  width: 2.5rem;
+  height: 2.5rem;
   padding: 0;
   border: none;
-  border-left: 1px solid var(--borde-sutil);
-  border-radius: 0;
+  border-radius: var(--radius-full);
   background: transparent;
   color: var(--texto-secundario);
   cursor: pointer;
@@ -257,14 +239,14 @@
   height: 3.25rem;
   padding: 0 0.45rem 0 1.15rem;
 
-  background: hsla(20, 10%, 9%, 0.72);
+  background: hsla(20, 10%, 8%, 0.92);
   border: 1px solid hsla(0, 0%, 100%, 0.12);
   border-radius: 1.65rem;
   backdrop-filter: blur(28px) saturate(1.6);
   -webkit-backdrop-filter: blur(28px) saturate(1.6);
   box-shadow:
     inset 0 1px 0 hsla(0, 0%, 100%, 0.08),
-    0 1rem 2.5rem hsla(0, 0%, 0%, 0.45);
+    0 1rem 2.5rem hsla(0, 0%, 0%, 0.55);
 
   transform: translateX(-50%) translateY(-150%);
   opacity: 0;
@@ -582,44 +564,19 @@
 .cabecera__perfil-contenedor {
   position: relative;
   display: flex;
-  align-items: stretch;
+  align-items: center;
 }
 
-/* Marco de mira también en el botón de perfil (CTA cuando hay sesión) */
-.cabecera__perfil-contenedor::before {
-  content: '';
-  position: absolute;
-  top: -5px; /* 5px */
-  left: -5px;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-top: 1.5px solid var(--naranja-normal);
-  border-left: 1.5px solid var(--naranja-normal);
-  pointer-events: none;
-}
-
-.cabecera__perfil-contenedor::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  right: -5px;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-bottom: 1.5px solid var(--naranja-normal);
-  border-right: 1.5px solid var(--naranja-normal);
-  pointer-events: none;
-}
-
-/* Bloque CTA naranja pegado al final del módulo (el "Speak with us" de Cura) */
+/* Botón de cuenta (CTA cuando hay sesión): pill naranja redondeado */
 .cabecera__perfil {
   display: flex;
   align-items: center;
   gap: var(--spacing-size-xs);
-  height: 100%;
-  padding: 0 1rem;
+  height: 2.5rem;
+  padding: 0.25rem 0.85rem 0.25rem 0.5rem;
   background: var(--gradiente-acento);
   border: none;
-  border-radius: 0;
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition: filter 0.2s ease;
 }
@@ -1024,7 +981,7 @@
     height: 6rem;
   }
 
-  .cabecera__modulo {
+  .cabecera__logo-etiqueta {
     display: none;
   }
 

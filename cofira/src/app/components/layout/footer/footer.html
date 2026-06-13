@@ -1,77 +1,123 @@
 <footer class="pie">
-  <section class="pie__principal">
 
-    <article class="pie__marca">
-      <h2 class="pie__logo">COFIRA</h2>
+  <section class="pie__cta" appRevelarScroll>
+    <article class="pie__cta-texto">
+      <p class="pie__cta-eyebrow">Empieza hoy</p>
+      <h2 class="pie__cta-titulo">Tu mejor versión,<br><span class="pie__cta-acento">sin excusas.</span></h2>
+    </article>
+
+    <article class="pie__cta-newsletter">
+      <p class="pie__cta-newsletter-texto">Recibe rutinas y tips cada semana. Sin spam.</p>
+      <section class="pie__newsletter">
+        <label class="enlaces__arial-oculto" for="pie-newsletter-email">Tu email</label>
+        <input class="pie__newsletter-input" id="pie-newsletter-email" type="email" placeholder="tu@email.com" autocomplete="email">
+        <button class="pie__newsletter-boton" type="button">Únete</button>
+      </section>
+      <p class="pie__cta-newsletter-nota">Cancela cuando quieras.</p>
+    </article>
+  </section>
+
+  <hr class="pie__division" aria-hidden="true">
+
+  <section class="pie__principal" appRevelarScroll [escalonado]="true">
+
+    <article class="pie__marca" data-revelar-item>
+      <a class="pie__logo" routerLink="/home" aria-label="Cofira - inicio">
+        <span class="pie__logo-letra">C</span>
+        <span class="pie__logo-letra">O</span>
+        <span class="pie__logo-letra">F</span>
+        <span class="pie__logo-letra">I</span>
+        <span class="pie__logo-letra">R</span>
+        <span class="pie__logo-letra">A</span>
+      </a>
+
       <p class="pie__descripcion">
-        Tu plataforma integral para entrenamiento, nutrición y seguimiento de progreso. Alcanza tus metas de salud y
-        fitness.
+        Tu plataforma integral para entrenamiento, nutrición y seguimiento de progreso. Alcanza tus metas de salud y fitness.
       </p>
-      <ul class="pie__sociales-lista">
+
+      <ul class="pie__sociales">
         <li class="pie__sociales-item">
           <a aria-label="Twitter" class="pie__social" href="https://twitter.com" rel="noopener noreferrer" target="_blank">
-            <svg aria-hidden="true" class="pie__social-icono" fill="currentColor" height="20" viewBox="0 0 24 24"
-              width="20" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            <svg aria-hidden="true" class="pie__social-icono" fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
-            <span class="enlaces__arial-oculto">Twitter</span>
           </a>
         </li>
         <li class="pie__sociales-item">
           <a aria-label="LinkedIn" class="pie__social" href="https://linkedin.com" rel="noopener noreferrer" target="_blank">
-            <svg aria-hidden="true" class="pie__social-icono" fill="currentColor" height="20" viewBox="0 0 24 24"
-              width="20" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+            <svg aria-hidden="true" class="pie__social-icono" fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
             </svg>
-            <span class="enlaces__arial-oculto">LinkedIn</span>
           </a>
         </li>
         <li class="pie__sociales-item">
           <a aria-label="GitHub" class="pie__social" href="https://github.com" rel="noopener noreferrer" target="_blank">
-            <svg aria-hidden="true" class="pie__social-icono" fill="currentColor" height="20" viewBox="0 0 24 24"
-              width="20" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+            <svg aria-hidden="true" class="pie__social-icono" fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
             </svg>
-            <span class="enlaces__arial-oculto">GitHub</span>
           </a>
         </li>
         <li class="pie__sociales-item">
           <a aria-label="Instagram" class="pie__social" href="https://instagram.com" rel="noopener noreferrer" target="_blank">
-            <svg aria-hidden="true" class="pie__social-icono" fill="currentColor" height="20" viewBox="0 0 24 24"
-              width="20" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+            <svg aria-hidden="true" class="pie__social-icono" fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
             </svg>
-            <span class="enlaces__arial-oculto">Instagram</span>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="pie__apps">
+        <li>
+          <a class="pie__app" href="https://www.apple.com/app-store/" rel="noopener noreferrer" target="_blank" aria-label="Descárgalo en el App Store">
+            <svg aria-hidden="true" class="pie__app-icono" viewBox="0 0 24 24" fill="currentColor" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.05 12.04c-.03-2.6 2.13-3.85 2.23-3.91-1.22-1.78-3.11-2.02-3.78-2.05-1.61-.16-3.14.95-3.96.95-.81 0-2.07-.93-3.4-.9-1.75.02-3.36 1.02-4.26 2.58-1.82 3.16-.47 7.84 1.3 10.4.86 1.26 1.89 2.66 3.24 2.61 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.39.81 1.4-.02 2.29-1.28 3.15-2.54.99-1.46 1.4-2.87 1.42-2.94-.03-.01-2.72-1.04-2.75-4.13zM14.53 4.5c.72-.87 1.2-2.08 1.07-3.28-1.03.04-2.28.69-3.02 1.55-.66.77-1.24 2-.09 3.05 1.04.08 2.32-.55 3.06-1.32z"/>
+            </svg>
+            <span class="pie__app-textos">
+              <span class="pie__app-pre">Descárgalo en</span>
+              <span class="pie__app-tienda">App Store</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="pie__app" href="https://play.google.com/" rel="noopener noreferrer" target="_blank" aria-label="Disponible en Google Play">
+            <svg aria-hidden="true" class="pie__app-icono" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+              <path fill="currentColor" d="M3.6 2.3c-.25.27-.4.69-.4 1.23v16.94c0 .54.15.96.4 1.23l.06.05L13.2 12.1v-.2L3.66 2.25l-.06.05z" opacity="0.85"/>
+              <path fill="currentColor" d="M16.4 15.3l-3.2-3.2v-.2l3.2-3.2.07.04 3.79 2.15c1.08.61 1.08 1.62 0 2.24l-3.79 2.15-.07.04z"/>
+              <path fill="currentColor" d="M16.47 15.26L13.2 12 3.6 21.7c.36.38.94.43 1.6.06l11.27-6.5z" opacity="0.7"/>
+              <path fill="currentColor" d="M16.47 8.74L5.2 2.24c-.66-.38-1.24-.32-1.6.06L13.2 12l3.27-3.26z" opacity="0.5"/>
+            </svg>
+            <span class="pie__app-textos">
+              <span class="pie__app-pre">Disponible en</span>
+              <span class="pie__app-tienda">Google Play</span>
+            </span>
           </a>
         </li>
       </ul>
     </article>
 
-    <nav class="pie__nav pie__nav--producto" aria-label="Producto">
-      <h3 class="pie__nav-titulo">PRODUCTO</h3>
-      <ul class="pie__nav-lista pie__nav-lista--producto">
+    <nav class="pie__nav pie__nav--producto" aria-label="Producto" data-revelar-item>
+      <h3 class="pie__nav-titulo">Producto</h3>
+      <ul class="pie__nav-lista">
         <li><a class="pie__nav-enlace" routerLink="/alimentacion">Nutrición</a></li>
         <li><a class="pie__nav-enlace" routerLink="/gimnasio">Ejercicio</a></li>
         <li><a class="pie__nav-enlace" routerLink="/seguimiento">Seguimiento</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/seguimiento">Widgets</a></li>
       </ul>
     </nav>
 
-    <nav class="pie__nav pie__nav--compania" aria-label="Compañía">
-      <h3 class="pie__nav-titulo">COMPAÑÍA</h3>
-      <ul class="pie__nav-lista pie__nav-lista--compania">
+    <nav class="pie__nav pie__nav--compania" aria-label="Compañía" data-revelar-item>
+      <h3 class="pie__nav-titulo">Compañía</h3>
+      <ul class="pie__nav-lista">
         <li><a class="pie__nav-enlace" routerLink="/sobre-nosotros">Sobre Nosotros</a></li>
         <li><a class="pie__nav-enlace" routerLink="/blog">Blog</a></li>
         <li><a class="pie__nav-enlace" routerLink="/contacto">Contacto</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/sobre-nosotros">Empleo</a></li>
       </ul>
     </nav>
 
-    <nav class="pie__nav pie__nav--legal" aria-label="Legal">
-      <h3 class="pie__nav-titulo">LEGAL</h3>
-      <ul class="pie__nav-lista pie__nav-lista--legal">
+    <nav class="pie__nav pie__nav--legal" aria-label="Legal" data-revelar-item>
+      <h3 class="pie__nav-titulo">Legal</h3>
+      <ul class="pie__nav-lista">
         <li><a class="pie__nav-enlace" routerLink="/privacidad">Privacidad</a></li>
         <li><a class="pie__nav-enlace" routerLink="/terminos">Términos</a></li>
         <li><a class="pie__nav-enlace" routerLink="/cookies">Cookies</a></li>
@@ -79,69 +125,94 @@
       </ul>
     </nav>
 
+    <section class="pie__contacto" data-revelar-item>
+      <h3 class="pie__nav-titulo">Hablemos</h3>
+      <a class="pie__contacto-enlace" routerLink="/contacto">
+        <span class="pie__contacto-enlace-texto">Escríbenos</span>
+        <span class="pie__contacto-enlace-flecha" aria-hidden="true">&#8594;</span>
+      </a>
+      <address class="pie__contacto-direccion">
+        Calle Gran Vía 28<br>
+        28013 Madrid, España
+      </address>
+      <p class="pie__estado">
+        <span class="pie__estado-punto" aria-hidden="true"></span>
+        <span class="pie__estado-texto">Soporte en línea</span>
+      </p>
+    </section>
+
+  </section>
+
+  <section class="pie__pulso" aria-label="Actividad de la comunidad en vivo">
+    <p class="pie__pulso-info">
+      <span class="pie__pulso-numero" appContadorAnimado [valorFinal]="24819">24.819</span>
+      <span class="pie__pulso-etiqueta">entrenando ahora</span>
+      <span class="pie__pulso-sub">Comunidad Cofira · En vivo</span>
+    </p>
+
+    <span class="pie__pulso-linea" aria-hidden="true">
+      <svg class="pie__pulso-svg" viewBox="0 0 1600 80" preserveAspectRatio="none">
+        <path class="pie__pulso-trazo" fill="none" d="M0,40 L70,40 L80,33 L90,40 L100,40 L106,52 L112,8 L120,66 L127,40 L140,40 L156,30 L172,40 L200,40 L200,40 L270,40 L280,33 L290,40 L300,40 L306,52 L312,8 L320,66 L327,40 L340,40 L356,30 L372,40 L400,40 L400,40 L470,40 L480,33 L490,40 L500,40 L506,52 L512,8 L520,66 L527,40 L540,40 L556,30 L572,40 L600,40 L600,40 L670,40 L680,33 L690,40 L700,40 L706,52 L712,8 L720,66 L727,40 L740,40 L756,30 L772,40 L800,40 L800,40 L870,40 L880,33 L890,40 L900,40 L906,52 L912,8 L920,66 L927,40 L940,40 L956,30 L972,40 L1000,40 L1000,40 L1070,40 L1080,33 L1090,40 L1100,40 L1106,52 L1112,8 L1120,66 L1127,40 L1140,40 L1156,30 L1172,40 L1200,40 L1200,40 L1270,40 L1280,33 L1290,40 L1300,40 L1306,52 L1312,8 L1320,66 L1327,40 L1340,40 L1356,30 L1372,40 L1400,40 L1400,40 L1470,40 L1480,33 L1490,40 L1500,40 L1506,52 L1512,8 L1520,66 L1527,40 L1540,40 L1556,30 L1572,40 L1600,40" />
+      </svg>
+    </span>
+
+    <p class="pie__pulso-semana">
+      <span class="pie__pulso-semana-num" appContadorAnimado [valorFinal]="12480" prefijo="+">+12.480</span>
+      <span class="pie__pulso-semana-txt">esta semana</span>
+    </p>
   </section>
 
   <section class="pie__inferior">
-    <div class="pie__inferior-encabezado">
-      <p class="pie__copyright">© {{ anioActual }} Cofira. Todos los derechos reservados.</p>
-
-      <menu class="pie__controles">
-        <li>
-          <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? 'Activar modo claro' : 'Activar modo oscuro'" [attr.aria-pressed]="modoOscuro" class="pie__tema-boton">
-            @if (modoOscuro) {
-            <svg aria-hidden="true" class="pie__tema-boton-icono" fill="currentColor" height="20" viewBox="0 0 24 24"
-              width="20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-            } @else {
-            <svg aria-hidden="true" class="pie__tema-boton-icono" fill="none" height="20" stroke="currentColor"
-              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"
-              xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="5" />
-              <line x1="12" x2="12" y1="1" y2="3" />
-              <line x1="12" x2="12" y1="21" y2="23" />
-              <line x1="4.22" x2="5.64" y1="4.22" y2="5.64" />
-              <line x1="18.36" x2="19.78" y1="18.36" y2="19.78" />
-              <line x1="1" x2="3" y1="12" y2="12" />
-              <line x1="21" x2="23" y1="12" y2="12" />
-              <line x1="4.22" x2="5.64" y1="19.78" y2="18.36" />
-              <line x1="18.36" x2="19.78" y1="5.64" y2="4.22" />
-            </svg>
-            }
-          </button>
-        </li>
-        <li class="pie__idioma">
-          <button (click)="toggleIdiomas()" aria-label="Cambiar idioma" [attr.aria-expanded]="mostrarIdiomas"
-            aria-haspopup="listbox" class="pie__idioma-boton">
-            <span>{{ idiomaActual }}</span>
-            <svg aria-hidden="true" fill="currentColor" height="12" viewBox="0 0 24 24" width="12"
-              xmlns="http://www.w3.org/2000/svg">
-              <path d="m7 10 5 5 5-5z" />
-            </svg>
-          </button>
-          @if (mostrarIdiomas) {
-          <ul class="pie__idioma-dropdown" role="listbox">
-            @for (idioma of idiomas; track idioma) {
-            <li class="pie__idioma-dropdown-item">
-              <button (click)="cambiarIdioma(idioma)" [class.pie__idioma-opcion--activo]="idioma === idiomaActual"
-                [attr.aria-selected]="idioma === idiomaActual" role="option" class="pie__idioma-opcion">
-                {{ idioma }}
-              </button>
-            </li>
-            }
-          </ul>
-          }
-        </li>
-      </menu>
-    </div>
-
-    <hr aria-hidden="true" class="pie__inferior-separador">
+    <p class="pie__copyright">&copy; {{ anioActual }} Cofira. Todos los derechos reservados.</p>
 
     <nav class="pie__legal" aria-label="Enlaces legales">
       <a class="pie__legal-enlace" routerLink="/privacidad">Política de Privacidad</a>
       <a class="pie__legal-enlace" routerLink="/terminos">Términos de Servicio</a>
       <a class="pie__legal-enlace" routerLink="/cookies">Cookies</a>
     </nav>
+
+    <menu class="pie__controles">
+      <li>
+        <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? 'Activar modo claro' : 'Activar modo oscuro'" [attr.aria-pressed]="modoOscuro" class="pie__tema-boton">
+          @if (modoOscuro) {
+          <svg aria-hidden="true" class="pie__tema-boton-icono" fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          } @else {
+          <svg aria-hidden="true" class="pie__tema-boton-icono" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" x2="12" y1="1" y2="3" />
+            <line x1="12" x2="12" y1="21" y2="23" />
+            <line x1="4.22" x2="5.64" y1="4.22" y2="5.64" />
+            <line x1="18.36" x2="19.78" y1="18.36" y2="19.78" />
+            <line x1="1" x2="3" y1="12" y2="12" />
+            <line x1="21" x2="23" y1="12" y2="12" />
+            <line x1="4.22" x2="5.64" y1="19.78" y2="18.36" />
+            <line x1="18.36" x2="19.78" y1="5.64" y2="4.22" />
+          </svg>
+          }
+        </button>
+      </li>
+      <li class="pie__idioma">
+        <button (click)="toggleIdiomas()" aria-label="Cambiar idioma" [attr.aria-expanded]="mostrarIdiomas" aria-haspopup="listbox" class="pie__idioma-boton">
+          <span>{{ idiomaActual }}</span>
+          <svg aria-hidden="true" fill="currentColor" height="12" viewBox="0 0 24 24" width="12" xmlns="http://www.w3.org/2000/svg">
+            <path d="m7 10 5 5 5-5z" />
+          </svg>
+        </button>
+        @if (mostrarIdiomas) {
+        <ul class="pie__idioma-dropdown" role="listbox">
+          @for (idioma of idiomas; track idioma) {
+          <li class="pie__idioma-dropdown-item">
+            <button (click)="cambiarIdioma(idioma)" [class.pie__idioma-opcion--activo]="idioma === idiomaActual" [attr.aria-selected]="idioma === idiomaActual" role="option" class="pie__idioma-opcion">
+              {{ idioma }}
+            </button>
+          </li>
+          }
+        </ul>
+        }
+      </li>
+    </menu>
   </section>
 
 </footer>

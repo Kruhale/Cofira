@@ -1,9 +1,9 @@
 <header class="cabecera" [class.cabecera--transparente]="cabeceraTransparente()">
   <a class="cabecera__logo-enlace" routerLink="/home" aria-label="Cofira - inicio">
     <span class="cabecera__logo-texto">Cofira<span class="cabecera__logo-punto" aria-hidden="true">.</span></span>
+    <span class="cabecera__logo-etiqueta" aria-hidden="true">Sistema</span>
   </a>
 
-  <div class="cabecera__modulo">
   <nav class="cabecera__navegacion cabecera__navegacion--escritorio" aria-label="Navegación principal">
     <ul class="cabecera__menu">
       <li><a class="cabecera__enlace" routerLink="/alimentacion" routerLinkActive="cabecera__enlace--activo">Nutrición</a></li>
@@ -118,12 +118,9 @@
       }
         </section>
     } @else {
-      <span class="cabecera__cta-marco">
-        <app-button enlace="/onboarding" tamanio="pequeno" variante="primario">Inscríbete</app-button>
-      </span>
+      <app-button enlace="/onboarding" variante="primario" tamanio="pequeno">Inscríbete</app-button>
     }
   </nav>
-  </div>
 
   <button (click)="toggleMenu()" [class.cabecera__hamburguesa--abierto]="menuAbierto" [attr.aria-expanded]="menuAbierto" aria-controls="menu-movil" aria-label="Menú"
           class="cabecera__hamburguesa">

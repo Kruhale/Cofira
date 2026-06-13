@@ -1,12 +1,14 @@
-import {Component, ElementRef, HostListener, inject, ViewEncapsulation} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import { Component, ElementRef, HostListener, inject, ViewEncapsulation } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
-import {ThemeService} from '../../../services/theme.service';
+import { ThemeService } from '../../../services/theme.service';
+import { RevelarScrollDirective } from '../../../directives/revelar-scroll.directive';
+import { ContadorAnimadoDirective } from '../../../directives/contador-animado.directive';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, RevelarScrollDirective, ContadorAnimadoDirective],
   templateUrl: './footer.html',
   styleUrls: ['./footer.scss'],
   encapsulation: ViewEncapsulation.None,
@@ -18,15 +20,15 @@ export class Footer {
   anioActual = new Date().getFullYear();
 
   socialLinks = [
-    {name: "YouTube", url: "https://youtube.com/cofira"},
-    {name: "Facebook", url: "https://facebook.com/cofira"},
-    {name: "Twitter", url: "https://twitter.com/cofira"},
-    {name: "Instagram", url: "https://instagram.com/cofira"},
-    {name: "LinkedIn", url: "https://linkedin.com/company/cofira"},
+    { name: 'YouTube', url: 'https://youtube.com/cofira' },
+    { name: 'Facebook', url: 'https://facebook.com/cofira' },
+    { name: 'Twitter', url: 'https://twitter.com/cofira' },
+    { name: 'Instagram', url: 'https://instagram.com/cofira' },
+    { name: 'LinkedIn', url: 'https://linkedin.com/company/cofira' },
   ];
 
-  idiomaActual = "ES";
-  idiomas = ["ES", "EN", "FR", "DE"];
+  idiomaActual = 'ES';
+  idiomas = ['ES', 'EN', 'FR', 'DE'];
   mostrarIdiomas = false;
 
   get modoOscuro(): boolean {
@@ -46,7 +48,7 @@ export class Footer {
     this.mostrarIdiomas = !this.mostrarIdiomas;
   }
 
-  @HostListener("document:keydown.escape")
+  @HostListener('document:keydown.escape')
   cerrarIdiomasConEscape(): void {
     this.mostrarIdiomas = false;
   }

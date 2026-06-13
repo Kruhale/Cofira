@@ -16,6 +16,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ParallaxSuaveDirective } from '../../directives/parallax-suave.directive';
 import { HazDeLuz } from '../../directives/haz-de-luz.directive';
 import { HeliceAdn } from '../../directives/helice-adn.directive';
+import { CuerpoAgua } from '../../directives/cuerpo-agua.directive';
 import { AnimacionesService } from '../../services/animaciones.service';
 import { RastroScroll, SeccionRastro } from '../../components/shared/rastro-scroll/rastro-scroll';
 import { CintaMarquee } from '../../components/shared/cinta-marquee/cinta-marquee';
@@ -28,6 +29,22 @@ interface PalabraManifiesto {
 interface Funcionalidad {
   titulo: string;
   descripcion: string;
+}
+
+interface ComidaRegistro {
+  foto: string;
+  nombre: string;
+  hora: string;
+  kcal: number;
+  desglose: string;
+}
+
+interface MacroComida {
+  nombre: string;
+  gramos: number;
+  objetivo: number;
+  pct: number;
+  color: string;
 }
 
 interface PuntoGrafica {
@@ -103,7 +120,16 @@ function formatearDuracion(milisegundos: number): string {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Card, Button, ParallaxSuaveDirective, HazDeLuz, HeliceAdn, RastroScroll, CintaMarquee],
+  imports: [
+    Card,
+    Button,
+    ParallaxSuaveDirective,
+    HazDeLuz,
+    HeliceAdn,
+    CuerpoAgua,
+    RastroScroll,
+    CintaMarquee,
+  ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   encapsulation: ViewEncapsulation.None,
@@ -186,6 +212,47 @@ export class Home {
   ];
 
   indiceFuncionalidadActiva = signal(0);
+
+  /* Registro de comidas: el desglose por comida y los gramos de macrosComida
+     suman ~las kcal del día (datos coherentes, no inventados). */
+  registroComidas: ComidaRegistro[] = [
+    {
+      foto: '/assets/images/comida-avena.png',
+      nombre: 'Avena con fruta y nueces',
+      hora: '08:15',
+      kcal: 418,
+      desglose: 'P 23 · C 61 · G 9',
+    },
+    {
+      foto: '/assets/images/comida-pollo.png',
+      nombre: 'Pollo a la plancha con arroz',
+      hora: '14:05',
+      kcal: 676,
+      desglose: 'P 58 · C 70 · G 18',
+    },
+    {
+      foto: '/assets/images/comida-salmon.png',
+      nombre: 'Salmón con verduras asadas',
+      hora: '21:10',
+      kcal: 542,
+      desglose: 'P 44 · C 30 · G 27',
+    },
+  ];
+
+  comidaDestacada = this.registroComidas[this.registroComidas.length - 1];
+
+  totalesComida = {
+    consumidas: '1.636',
+    objetivo: '2.450',
+    restante: '814',
+    pct: 67,
+  };
+
+  macrosComida: MacroComida[] = [
+    { nombre: 'Proteína', gramos: 125, objetivo: 150, pct: 83, color: 'hsl(24, 95%, 56%)' },
+    { nombre: 'Carbohidratos', gramos: 161, objetivo: 265, pct: 61, color: 'hsl(38, 95%, 56%)' },
+    { nombre: 'Grasas', gramos: 54, objetivo: 80, pct: 68, color: 'hsl(43, 70%, 78%)' },
+  ];
 
   puntosGrafica: PuntoGrafica[] = [
     {
@@ -285,12 +352,59 @@ export class Home {
     this.indiceFotoAntes.set(indiceFoto);
   }
 
+  // El comparador se compara solo: la división deriva en vaivén hasta que el
+  // visitante mueve el ratón; al quedarse quieto 2,5 s retoma el vaivén
+  private objetivoComparador = 56;
+  private posicionComparadorViva = 56;
+  private ultimoToqueComparadorMs = -9999;
+  private bucleComparador = 0;
+
   moverComparador(evento: PointerEvent): void {
     const escenario = evento.currentTarget as HTMLElement;
     const caja = escenario.getBoundingClientRect();
     const porcentaje = ((evento.clientX - caja.left) / caja.width) * 100;
     const porcentajeLimitado = Math.min(90, Math.max(10, porcentaje));
-    this.posicionComparador.set(porcentajeLimitado);
+    this.objetivoComparador = porcentajeLimitado;
+    this.ultimoToqueComparadorMs = performance.now();
+
+    if (this.animaciones.movimientoReducido()) {
+      this.posicionComparador.set(porcentajeLimitado);
+    }
+  }
+
+  private iniciarBucleComparador(): void {
+    if (this.animaciones.movimientoReducido()) {
+      return;
+    }
+
+    this.zona.runOutsideAngular(() => {
+      const animar = (tiempoMs: number) => {
+        this.bucleComparador = window.requestAnimationFrame(animar);
+        const raiz = this.elementoRaiz.nativeElement as HTMLElement;
+        const division = raiz.querySelector(
+          '.funcionalidades__comparador-division',
+        ) as HTMLElement | null;
+        const capaDespues = raiz.querySelector(
+          '.funcionalidades__comparador-capa--despues',
+        ) as HTMLElement | null;
+        if (!division || !capaDespues) {
+          return;
+        }
+
+        const enReposo = tiempoMs - this.ultimoToqueComparadorMs > 2500;
+        if (enReposo) {
+          this.objetivoComparador = 50 + 27 * Math.sin(tiempoMs * 0.00045);
+        }
+
+        this.posicionComparadorViva +=
+          (this.objetivoComparador - this.posicionComparadorViva) * 0.055;
+        division.style.left = `${this.posicionComparadorViva}%`;
+        capaDespues.style.clipPath = `inset(0 0 0 ${this.posicionComparadorViva}%)`;
+      };
+
+      this.bucleComparador = window.requestAnimationFrame(animar);
+      this.destroyRef.onDestroy(() => window.cancelAnimationFrame(this.bucleComparador));
+    });
   }
 
   // Hora real del visitante, tick de 1 s; todo el panel deriva de ella
@@ -442,8 +556,8 @@ export class Home {
       max: 0.3,
       datos: [
         { etiqueta: 'glucosa', valor: '72 mg/dl' },
-        { etiqueta: 'insulina', valor: '−38 %' },
-        { etiqueta: 'glucógeno', valor: '9 %' },
+        { etiqueta: 'insulina', valor: '−45 %' },
+        { etiqueta: 'glucógeno', valor: '18 %' },
       ],
     },
     {
@@ -455,9 +569,9 @@ export class Home {
       min: 0.3,
       max: 0.78,
       datos: [
-        { etiqueta: 'cetonas', valor: '1,8 mmol/L' },
-        { etiqueta: 'lipólisis', valor: '+212 %' },
-        { etiqueta: 'h. crecimiento', valor: '+800 %' },
+        { etiqueta: 'cetonas', valor: '0,6 mmol/L' },
+        { etiqueta: 'lipólisis', valor: '+150 %' },
+        { etiqueta: 'h. crecimiento', valor: '+300 %' },
       ],
     },
     {
@@ -469,9 +583,9 @@ export class Home {
       min: 0.78,
       max: 1,
       datos: [
-        { etiqueta: 'reciclaje', valor: '14.493 cél/min' },
-        { etiqueta: 'mitocondrias', valor: '+19 %' },
-        { etiqueta: 'inflamación', valor: '−21 %' },
+        { etiqueta: 'cetonas', valor: '1,1 mmol/L' },
+        { etiqueta: 'mitocondrias', valor: '+15 %' },
+        { etiqueta: 'inflamación (PCR)', valor: '−20 %' },
       ],
     },
   ];
@@ -581,9 +695,100 @@ export class Home {
 
   porcentajeAgua = computed(() => Math.round((this.vasosBebidos() / this.vasosAgua.length) * 100));
 
+  // Nivel visual dentro de la silueta: el 100 % llena hasta el cuello (no la
+  // coronilla), para que la cabeza siempre asome sobre el agua.
+  nivelAgua = computed(() => Math.round(this.porcentajeAgua() * 0.8));
+
+  estadoHidratacion = computed(() => {
+    const pct = this.porcentajeAgua();
+    if (pct >= 100) return 'Objetivo cumplido';
+    if (pct >= 75) return 'Casi lo tienes';
+    if (pct >= 45) return 'Vas muy bien';
+    if (pct >= 20) return 'Vas por buen camino';
+    return 'Empieza a beber';
+  });
+
+  // Historial de la semana (6 días fijos); el día de hoy se calcula en vivo
+  // desde los vasos para que la última barra siga al registro.
+  private readonly historialAgua = [
+    { dia: 'L', litros: 2.4 },
+    { dia: 'M', litros: 2.1 },
+    { dia: 'X', litros: 2.6 },
+    { dia: 'J', litros: 1.9 },
+    { dia: 'V', litros: 2.3 },
+    { dia: 'S', litros: 2.0 },
+  ];
+
+  semanaAgua = computed(() => {
+    const tope = 3;
+    const dias = this.historialAgua.map((dia) => ({ ...dia, hoy: false }));
+    dias.push({ dia: 'D', litros: this.vasosBebidos() * 0.3, hoy: true });
+    return dias.map((dia) => ({
+      ...dia,
+      altura: Math.min(100, Math.round((dia.litros / tope) * 100)),
+    }));
+  });
+
   seleccionarVasos(indiceVaso: number): void {
     this.vasosBebidos.set(indiceVaso + 1);
   }
+
+  /* Tomas del día: una hora por vaso; el timeline enseña las 4 últimas */
+  private readonly horasTomas = [
+    '08:10',
+    '09:35',
+    '11:20',
+    '13:05',
+    '14:50',
+    '16:30',
+    '18:10',
+    '19:45',
+  ];
+
+  tomasVisibles = computed(() =>
+    this.horasTomas
+      .slice(0, this.vasosBebidos())
+      .map((hora, indice) => ({
+        hora,
+        acumulado: ((indice + 1) * 0.3).toFixed(1).replace('.', ','),
+      }))
+      .slice(-4),
+  );
+
+  litrosRestantes = computed(() => {
+    const restante = Math.max(0, 2.4 - this.vasosBebidos() * 0.3);
+    return restante.toFixed(1).replace('.', ',');
+  });
+
+  /* ===== Widgets: "tu pantalla de inicio, en directo" =====
+     Todo deriva del mismo tick de ahoraMs que mueve el ayuno, para que el
+     reloj, la fecha, el saludo y el marcador "ahora" de la regla estén vivos. */
+  private readonly diasWidget = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+  private readonly mesesWidget = [
+    'ene',
+    'feb',
+    'mar',
+    'abr',
+    'may',
+    'jun',
+    'jul',
+    'ago',
+    'sep',
+    'oct',
+    'nov',
+    'dic',
+  ];
+
+  widgetHora = computed(() => {
+    const fecha = new Date(this.ahoraMs());
+    const dosDigitos = (valor: number) => String(valor).padStart(2, '0');
+    return `${dosDigitos(fecha.getHours())}:${dosDigitos(fecha.getMinutes())}`;
+  });
+
+  widgetFecha = computed(() => {
+    const fecha = new Date(this.ahoraMs());
+    return `${this.diasWidget[fecha.getDay()]} ${fecha.getDate()} ${this.mesesWidget[fecha.getMonth()]}`;
+  });
 
   estadoFaqAbierto: Record<number, boolean> = {};
 
@@ -603,6 +808,7 @@ export class Home {
       this.montarCoreografia();
       this.iniciarRelojAyuno();
       this.vigilarRatonInspector();
+      this.iniciarBucleComparador();
     });
 
     this.destroyRef.onDestroy(() => window.cancelAnimationFrame(this.bucleInspector));

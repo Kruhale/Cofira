@@ -2,32 +2,7 @@
 
 [data-theme='dark'] {
 
-  app-footer .pie {
-    background: var(--oscuro-pie-fondo);
-    border-top-color: var(--oscuro-pie-borde);
-  }
-
-  app-footer .pie__nav-enlace {
-    color: var(--oscuro-pie-texto);
-  }
-
-  app-footer .pie__nav-enlace:hover {
-    color: var(--oscuro-pie-enlace-hover);
-  }
-
-  app-footer .pie__copyright {
-    color: var(--oscuro-pie-texto);
-  }
-
-  app-footer .pie__social {
-    background: var(--oscuro-pie-social-fondo);
-    color: var(--oscuro-pie-social-icono);
-  }
-
-  app-footer .pie__social:hover {
-    background: var(--oscuro-pie-social-hover-fondo);
-    color: var(--oscuro-pie-social-hover-icono);
-  }
+  /* Footer (.pie*): rediseñado, se temifica solo vía tokens semánticos. */
 
   .tarjeta {
     background: var(--oscuro-tarjeta-fondo);
