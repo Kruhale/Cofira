@@ -389,10 +389,6 @@
     color: var(--oscuro-texto-principal);
   }
 
-  app-onboarding .welcome__titulo {
-    color: var(--oscuro-texto-principal);
-  }
-
   app-onboarding .step-register__subtitulo {
     color: var(--oscuro-texto-secundario);
   }
@@ -449,10 +445,6 @@
     color: var(--oscuro-texto-secundario);
   }
 
-  app-onboarding .welcome__subtitulo {
-    color: var(--oscuro-texto-secundario);
-  }
-
   app-onboarding .option-card {
     background-color: var(--oscuro-onboarding-option-fondo);
     border-color: var(--oscuro-borde-color);
@@ -493,12 +485,6 @@
   app-onboarding .option-card__icono--seleccionado {
     background-color: var(--amarillo-normal);
     color: var(--negro-normal);
-  }
-
-  app-onboarding .step-register__input {
-    background-color: var(--oscuro-onboarding-input-fondo);
-    border-color: var(--oscuro-onboarding-input-borde);
-    color: var(--oscuro-texto-principal);
   }
 
   app-onboarding .step-measurements__input {
@@ -586,10 +572,6 @@
 
   app-onboarding .step-register__alt-action {
     color: var(--oscuro-texto-secundario);
-  }
-
-  app-step-welcome .welcome__content {
-    background-color: var(--gris-dark);
   }
 
   /* app-gimnasio: overrides del diseño viejo eliminados (F3). El componente
@@ -986,12 +968,6 @@
 
   app-onboarding .step-payment__field-label {
     color: var(--oscuro-texto-secundario);
-  }
-
-  app-onboarding .step-payment__input {
-    background-color: var(--oscuro-input-fondo);
-    color: var(--oscuro-texto-principal);
-    border-color: transparent;
   }
 
   app-onboarding .step-payment__input::placeholder {

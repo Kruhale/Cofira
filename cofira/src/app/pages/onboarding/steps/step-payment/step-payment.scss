@@ -226,9 +226,9 @@ $payment-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   padding: var(--spacing-size-s) var(--spacing-size-m);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--text-primary);
-  background-color: var(--bg-input);
-  border: 1.5px solid transparent;
+  color: var(--texto-principal);
+  background-color: var(--superficie-2);
+  border: 1.5px solid var(--borde-medio);
   border-radius: var(--radius-md);
   transition: all $payment-transition;
 }

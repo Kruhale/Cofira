@@ -1,11 +1,15 @@
 <a href="#contenido-principal" class="skip-link">Saltar al contenido principal</a>
 
-<app-header></app-header>
+@if (mostrarCromo()) {
+  <app-header></app-header>
+}
 
 <main id="contenido-principal" class="main-content">
   <router-outlet></router-outlet>
 </main>
 
-<app-footer></app-footer>
+@if (mostrarCromo()) {
+  <app-footer></app-footer>
+}
 
 <app-notification-container></app-notification-container>

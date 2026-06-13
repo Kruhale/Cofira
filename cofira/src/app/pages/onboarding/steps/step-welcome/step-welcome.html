@@ -1,76 +1,76 @@
 <section class="welcome">
 
-  <figure class="welcome__hero">
-    <img
-      alt="Plato saludable con verduras frescas y coloridas"
-      class="welcome__image"
-      loading="eager"
-      src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200&h=1600&fit=crop">
-  </figure>
+  <span class="welcome__marca">Cofira <span class="welcome__marca-sub">Sistema</span></span>
 
-  <article class="welcome__content">
+  <header class="welcome__header">
+    <h1 class="welcome__titulo">Come mejor, <em class="welcome__acento">obtén resultados.</em></h1>
+    <p class="welcome__subtitulo">
+      Tu plan de nutrición y entrenamiento, hecho a tu medida. Responde unas
+      preguntas y lo construimos contigo en cinco minutos.
+    </p>
+  </header>
 
-    <header class="welcome__header">
-      <h1 class="welcome__titulo">Come mejor, obten resultados</h1>
-      <p class="welcome__subtitulo">
-        Tu plan personalizado de nutricion y entrenamiento te espera.
-        Responde unas preguntas y te ayudaremos a alcanzar tus objetivos.
-      </p>
-    </header>
+  <ul class="welcome__features">
+    <li class="welcome__feature">
+      <span class="welcome__feature-icono" aria-hidden="true">
+        <svg class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </span>
+      <span class="welcome__feature-cuerpo">
+        <span class="welcome__feature-titulo">Plan de alimentación</span>
+        <span class="welcome__feature-sub">Macros y comidas que de verdad te apetecen</span>
+      </span>
+    </li>
+    <li class="welcome__feature">
+      <span class="welcome__feature-icono" aria-hidden="true">
+        <svg class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </span>
+      <span class="welcome__feature-cuerpo">
+        <span class="welcome__feature-titulo">Rutinas de ejercicio</span>
+        <span class="welcome__feature-sub">Adaptadas a tu nivel y a tu material</span>
+      </span>
+    </li>
+    <li class="welcome__feature">
+      <span class="welcome__feature-icono" aria-hidden="true">
+        <svg class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </span>
+      <span class="welcome__feature-cuerpo">
+        <span class="welcome__feature-titulo">Seguimiento de progreso</span>
+        <span class="welcome__feature-sub">Gráficas reales y ajustes sobre la marcha</span>
+      </span>
+    </li>
+  </ul>
 
-    <ul class="welcome__features">
-      <li class="welcome__feature">
-        <figure class="welcome__feature-icono">
-          <svg aria-hidden="true" class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-            <path d="m9 12 2 2 4-4"/>
-          </svg>
-        </figure>
-        <span>Plan de alimentacion personalizado</span>
-      </li>
-      <li class="welcome__feature">
-        <figure class="welcome__feature-icono">
-          <svg aria-hidden="true" class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-            <path d="m9 12 2 2 4-4"/>
-          </svg>
-        </figure>
-        <span>Rutinas de ejercicio adaptadas</span>
-      </li>
-      <li class="welcome__feature">
-        <figure class="welcome__feature-icono">
-          <svg aria-hidden="true" class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-            <path d="m9 12 2 2 4-4"/>
-          </svg>
-        </figure>
-        <span>Seguimiento de tu progreso</span>
-      </li>
-    </ul>
+  <footer class="welcome__footer">
+    <app-button
+      (click)="alContinuar()"
+      [anchoCompleto]="true"
+      tamanio="grande"
+      variante="primario">
+      Comenzar ahora
+    </app-button>
 
-    <footer class="welcome__footer">
-      <app-button
-        (click)="alContinuar()"
-        [anchoCompleto]="true"
-        tamanio="grande"
-        variante="primario">
-        Comenzar ahora
-      </app-button>
-
-      <p class="welcome__tiempo">
+    <p class="welcome__meta">
+      <span class="welcome__tiempo">
         <svg aria-hidden="true" class="welcome__tiempo-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="10"/>
           <path d="M12 6v6l4 2"/>
         </svg>
-        Solo te tomara 5 minutos
-      </p>
-
-      <p class="welcome__login">
+        Solo te toma 5 minutos
+      </span>
+      <span class="welcome__login">
         ¿Ya tienes cuenta?
-        <a class="welcome__login-link" routerLink="/login">Iniciar sesión</a>
-      </p>
-    </footer>
-
-  </article>
+        <a class="welcome__login-link" routerLink="/login">Inicia sesión</a>
+      </span>
+    </p>
+  </footer>
 
 </section>

@@ -102,9 +102,9 @@ $register-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   padding: var(--spacing-size-m) var(--spacing-size-m) var(--spacing-size-m) 3rem;
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
-  color: var(--text-primary);
-  background-color: var(--bg-surface);
-  border: 1.5px solid transparent;
+  color: var(--texto-principal);
+  background-color: var(--superficie-2);
+  border: 1.5px solid var(--borde-medio);
   border-radius: var(--radius-lg);
   transition: all $register-transition;
 }
