@@ -139,12 +139,17 @@ export class CuerpoAgua {
       });
     }
 
-    // Bucle continuo: el navegador ya frena rAF en pestañas ocultas, así que no
-    // hace falta pausar por visibilidad (hacerlo provocaba congelar el primer frame).
+    // Solo pinta cuando ESTE panel es el activo (ahorra GPU: hay otra escena 3D,
+    // la del ayuno, en la misma sección). Gatear por la clase `--activo` es fiable
+    // —Angular la conmuta— y no congela como sí hacía el IntersectionObserver; si
+    // no se puede determinar el panel, pinta igualmente (sin riesgo de quedar negro).
+    const visual = lienzo.closest('.funcionalidades__visual');
     let identificador = 0;
     this.zona.runOutsideAngular(() => {
       const bucle = (milisegundos: number) => {
-        escena.renderizar(milisegundos);
+        if (!visual || visual.classList.contains('funcionalidades__visual--activo')) {
+          escena.renderizar(milisegundos);
+        }
         identificador = requestAnimationFrame(bucle);
       };
       identificador = requestAnimationFrame(bucle);

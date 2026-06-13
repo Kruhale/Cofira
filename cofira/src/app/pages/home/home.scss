@@ -451,6 +451,32 @@
   max-width: none;
   padding-left: 0;
   padding-right: 0;
+
+  /* Showcase inmersivo: SIEMPRE oscuro en ambos temas. Replica los tokens del
+     tema oscuro (07-dark-mode/_dark-mode-config) acotados a esta seccion, para
+     que los paneles de datos (Graficos, Comidas) y las escenas cinematograficas
+     (Fotos/Ayuno/Agua/Widgets) formen una banda oscura coherente, no una mezcla
+     claro/oscuro cuando el usuario activa el modo claro. */
+  --superficie-fondo: hsl(240, 6%, 4%);
+  --superficie-1: hsl(240, 6%, 7%);
+  --superficie-2: hsl(240, 7%, 9%);
+  --superficie-3: hsl(240, 7%, 12.5%);
+  --naranja-normal: hsl(24, 100%, 55%);
+  --naranja-hover: hsl(24, 100%, 61%);
+  --naranja-active: hsl(24, 100%, 48%);
+  --naranja-texto: hsl(28, 100%, 64%);
+  --ambar: hsl(38, 100%, 55%);
+  --texto-principal: hsl(40, 8%, 96%);
+  --texto-secundario: hsla(40, 8%, 96%, 0.64);
+  --texto-suave: hsla(40, 8%, 96%, 0.40);
+  --texto-sobre-acento: hsl(240, 6%, 4%);
+  --borde-sutil: hsla(0, 0%, 100%, 0.08);
+  --borde-medio: hsla(0, 0%, 100%, 0.14);
+  --vidrio-fondo: hsla(240, 6%, 4%, 0.62);
+  --gradiente-overlay-foto: linear-gradient(180deg, hsla(0, 0%, 0%, 0.2) 0%, hsla(240, 6%, 4%, 0.92) 100%);
+  --sombra-bento: 0 1px 0 hsla(0, 0%, 100%, 0.04) inset, 0 1rem 2.5rem hsla(0, 0%, 0%, 0.45);
+  --glow-interior: inset 0 1px 0 hsla(0, 0%, 100%, 0.06), inset 0 0 3.75rem hsla(24, 100%, 50%, 0.05);
+  background: var(--superficie-fondo);
 }
 
 .funcionalidades__cabecera {
@@ -2059,10 +2085,12 @@
   color: hsla(40, 10%, 86%, 0.5);
 }
 
+/* Anclado a la derecha del raíl de secciones (que ocupa right:4rem + width:21rem
+   = 25rem): así nunca lo invade, sea cual sea el ancho de la ventana. */
 .funcionalidades__agua-panel {
   position: absolute;
   top: 50%;
-  left: 61%;
+  right: 27rem;
   transform: translateY(-50%);
   z-index: 3;
   display: flex;
@@ -4285,6 +4313,10 @@
   .funcionalidades__zona { display: none; }
   .funcionalidades__inspector { display: none; }
   .funcionalidades__ayuno-rotulo { display: none; }
+  .funcionalidades__agua-rotulo { display: none; }
+  .funcionalidades__agua-panel { display: none; }
+  .funcionalidades__agua-lectura { display: none; }
+  .funcionalidades__agua-registro { display: none; }
   .funcionalidades__paso-texto { max-height: none; padding-bottom: 1.5rem; opacity: 1; }
   .funcionalidades__paso-titulo { color: var(--texto-principal); }
 }
