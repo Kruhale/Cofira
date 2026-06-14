@@ -261,6 +261,7 @@
           class="funcionalidades__visual"
           [class.funcionalidades__visual--activo]="indice === indiceFuncionalidadActiva()"
           [class.funcionalidades__visual--lienzo]="indice === 1 || indice === 2 || indice === 3 || indice === 4"
+          [class.funcionalidades__visual--datos]="indice === 0 || indice === 5"
           [class.funcionalidades__visual--oscuro]="indice === 2 || indice === 3"
           aria-hidden="true">
           <span class="funcionalidades__visual-cabecera">
@@ -640,17 +641,32 @@
             }
             @case (3) {
               <span class="funcionalidades__agua">
-                <canvas
-                  cuerpoAgua
-                  class="funcionalidades__agua-lienzo"
-                  [nivel]="nivelAgua() / 100"
-                  [litros]="litrosAgua() + ' L'"
-                  aria-hidden="true"></canvas>
-
                 <span class="funcionalidades__agua-rotulo">
                   <span class="funcionalidades__agua-rotulo-titulo">Hidratación · hoy</span>
                   <span class="funcionalidades__agua-rotulo-sub">Objetivo 2,4 L · 8 vasos de 0,3</span>
                 </span>
+
+                <figure class="funcionalidades__vaso">
+                  <span class="funcionalidades__vaso-agua" [style.height.%]="porcentajeAgua()">
+                    <svg class="funcionalidades__vaso-cresta" viewBox="0 0 240 16" preserveAspectRatio="none" aria-hidden="true">
+                      <path d="M0,8 C15,2 30,2 60,8 C90,14 105,14 120,8 C135,2 150,2 180,8 C210,14 225,14 240,8 L240,16 L0,16 Z"></path>
+                    </svg>
+                    <svg class="funcionalidades__vaso-cresta funcionalidades__vaso-cresta--b" viewBox="0 0 240 16" preserveAspectRatio="none" aria-hidden="true">
+                      <path d="M0,8 C15,2 30,2 60,8 C90,14 105,14 120,8 C135,2 150,2 180,8 C210,14 225,14 240,8 L240,16 L0,16 Z"></path>
+                    </svg>
+                  </span>
+                  <span class="funcionalidades__vaso-brillo" aria-hidden="true"></span>
+                  <span class="funcionalidades__vaso-marcas" aria-hidden="true"></span>
+                  <span class="funcionalidades__vaso-burbujas" aria-hidden="true">
+                    <span class="funcionalidades__vaso-burbuja"></span>
+                    <span class="funcionalidades__vaso-burbuja"></span>
+                    <span class="funcionalidades__vaso-burbuja"></span>
+                  </span>
+                  <figcaption class="funcionalidades__vaso-dato">
+                    <span class="funcionalidades__vaso-litros">{{ litrosAgua() }}<span class="funcionalidades__vaso-unidad">L</span></span>
+                    <span class="funcionalidades__vaso-meta">de 2,4 L · {{ porcentajeAgua() }}%</span>
+                  </figcaption>
+                </figure>
 
                 <span class="funcionalidades__agua-panel">
                   <span class="funcionalidades__agua-stat funcionalidades__agua-stat--racha">
@@ -680,33 +696,6 @@
                   </span>
                 </span>
 
-                <span class="funcionalidades__agua-lectura">
-                  <span class="funcionalidades__agua-barra">
-                    <span class="funcionalidades__agua-barra-relleno" [style.width.%]="porcentajeAgua()"></span>
-                  </span>
-                  <span class="funcionalidades__agua-estado">
-                    <span class="funcionalidades__agua-estado-texto">{{ estadoHidratacion() }}</span>
-                    <span class="funcionalidades__agua-estado-pct">te quedan {{ litrosRestantes() }} L</span>
-                  </span>
-                </span>
-
-                <span class="funcionalidades__agua-registro">
-                  <span class="funcionalidades__agua-pista">Toca un vaso para registrar · 0,3 L cada uno</span>
-                  <span class="funcionalidades__agua-vasos">
-                    @for (vaso of vasosAgua; track vaso; let indiceVaso = $index) {
-                      <button
-                        type="button"
-                        class="funcionalidades__agua-vaso"
-                        [class.funcionalidades__agua-vaso--lleno]="indiceVaso < vasosBebidos()"
-                        [class.funcionalidades__agua-vaso--actual]="indiceVaso === vasosBebidos() - 1"
-                        [attr.aria-label]="'Registrar ' + (indiceVaso + 1) + ' vasos de agua'"
-                        [attr.aria-pressed]="indiceVaso < vasosBebidos()"
-                        (click)="seleccionarVasos(indiceVaso)">
-                        <span class="funcionalidades__agua-vaso-nivel"></span>
-                      </button>
-                    }
-                  </span>
-                </span>
               </span>
             }
             @case (4) {

@@ -769,7 +769,7 @@
 
 .funcionalidades__visual-titulo {
   font-family: var(--fuente-display);
-  font-size: clamp(1.85rem, 2.6vw, 2.6rem);
+  font-size: 2.4rem; /* 38.4px */
   font-weight: var(--font-weight-bold);
   line-height: 1;
   letter-spacing: -0.03em;
@@ -981,7 +981,7 @@
 
 .funcionalidades__grafica-valor-num {
   font-family: var(--fuente-display);
-  font-size: clamp(2.85rem, 4.6vw, 3.9rem);
+  font-size: 3.6rem; /* 57.6px */
   font-weight: var(--font-weight-bold);
   line-height: 0.86;
   letter-spacing: -0.04em;
@@ -1242,17 +1242,18 @@
   background: var(--superficie-1);
   box-shadow: var(--sombra-bento);
   pointer-events: none;
-  transform: translate(-50%, calc(-100% - 1.1rem));
+  transform: translate(-50%, -100%);
+  margin-top: -1.1rem; /* hueco sobre el punto sin recurrir a calc */
   opacity: 0;
   transition: opacity 0.4s ease, left 0.25s ease, top 0.25s ease;
 }
 
 .funcionalidades__grafica-tooltip--inicio {
-  transform: translate(-4%, calc(-100% - 1.1rem));
+  transform: translate(-4%, -100%);
 }
 
 .funcionalidades__grafica-tooltip--fin {
-  transform: translate(-96%, calc(-100% - 1.1rem));
+  transform: translate(-96%, -100%);
 }
 
 .funcionalidades__grafica-tooltip--visible {
@@ -1357,6 +1358,41 @@
 .funcionalidades__leyenda-item--objetivo::before {
   background: var(--naranja-normal);
   opacity: 0.45;
+}
+
+/* Móvil/tablet: la sección se des-pinea (≤lg) y la visual deja de estar
+   absoluta-centrada en los paneles de DATOS (Gráficos y Comidas), así el panel
+   crece con su contenido y la tarjeta no se recorta. */
+@include responsive-down('lg') {
+  .funcionalidades__visual--datos.funcionalidades__visual--activo {
+    position: relative;
+  }
+}
+
+/* Pantallas estrechas: la cabecera (número + progreso) se apila, el selector
+   puede saltar de línea y el título baja de tamaño para que nada se desborde. */
+@include responsive-down('xs') {
+  .funcionalidades__visual-titulo {
+    font-size: 1.9rem; /* 30.4px */
+  }
+
+  .funcionalidades__grafica-barra {
+    flex-wrap: wrap;
+  }
+
+  .funcionalidades__grafica-cabecera {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+
+  .funcionalidades__grafica-valor-num {
+    font-size: 3rem; /* 48px */
+  }
+
+  .funcionalidades__grafica-meta {
+    width: 100%;
+  }
 }
 
 /* Pantalla: fotos de progreso — revelado editorial a pantalla completa.
@@ -2359,7 +2395,176 @@
   color: hsla(40, 10%, 86%, 0.5);
 }
 
-/* Dos figuras: las stats van en franja horizontal centrada bajo los cuerpos. */
+/* Vaso de cristal que se llena de agua segun el progreso de hidratacion */
+.funcionalidades__vaso {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  z-index: 3;
+  display: block;
+  width: 13rem;
+  height: 21rem;
+  margin: 0;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(165deg, hsla(200, 60%, 75%, 0.07), hsla(212, 45%, 55%, 0.02));
+  border: 1.5px solid hsla(196, 65%, 74%, 0.3);
+  border-radius: 0.7rem 0.7rem 1.7rem 1.7rem;
+  box-shadow:
+    inset 0 1px 0 hsla(196, 95%, 92%, 0.25),
+    inset 0 0 2.5rem hsla(200, 60%, 50%, 0.06),
+    0 1.8rem 3.5rem hsla(214, 55%, 3%, 0.55),
+    0 0 5rem hsla(196, 88%, 50%, 0.17);
+}
+
+.funcionalidades__vaso-agua {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, hsl(193, 92%, 56%), hsl(207, 88%, 40%));
+  box-shadow: 0 -0.3rem 1.5rem hsla(196, 95%, 60%, 0.4);
+  transition: height 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Onda viajera de la superficie (SVG que se desplaza en bucle) */
+.funcionalidades__vaso-cresta {
+  position: absolute;
+  top: -0.95rem;
+  left: 0;
+  width: 200%;
+  height: 1.9rem;
+  fill: hsl(195, 92%, 64%);
+  animation: funcionalidades-vaso-cresta 4s linear infinite;
+}
+
+.funcionalidades__vaso-cresta--b {
+  top: -0.55rem;
+  fill: hsl(189, 86%, 66%);
+  opacity: 0.5;
+  animation-duration: 6.5s;
+  animation-direction: reverse;
+}
+
+@keyframes funcionalidades-vaso-cresta {
+  to { transform: translateX(-50%); }
+}
+
+/* Reflejo vertical del cristal */
+.funcionalidades__vaso-brillo {
+  position: absolute;
+  top: 0.6rem;
+  bottom: 1.5rem;
+  left: 1.1rem;
+  z-index: 4;
+  width: 0.5rem;
+  border-radius: 99px;
+  background: linear-gradient(180deg, hsla(0, 0%, 100%, 0.5), hsla(0, 0%, 100%, 0.04));
+  pointer-events: none;
+}
+
+.funcionalidades__vaso-dato {
+  position: absolute;
+  top: 1.9rem;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  text-align: center;
+}
+
+.funcionalidades__vaso-litros {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.2rem;
+  font-family: var(--fuente-display);
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: hsl(40, 14%, 97%);
+  text-shadow: 0 2px 18px hsla(214, 60%, 3%, 0.7);
+}
+
+.funcionalidades__vaso-unidad {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: hsla(196, 95%, 82%, 0.95);
+}
+
+.funcionalidades__vaso-meta {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsla(40, 10%, 88%, 0.55);
+}
+
+/* Marcas de medida sutiles en el vidrio (rayitas a la derecha) */
+.funcionalidades__vaso-marcas {
+  position: absolute;
+  top: 2.2rem;
+  bottom: 2rem;
+  right: 0.85rem;
+  z-index: 4;
+  width: 0.6rem;
+  background: repeating-linear-gradient(180deg, hsla(196, 80%, 85%, 0.16) 0, hsla(196, 80%, 85%, 0.16) 1px, transparent 1px, transparent 2.3rem);
+  pointer-events: none;
+}
+
+/* Burbujas que ascienden por el agua */
+.funcionalidades__vaso-burbujas {
+  position: absolute;
+  top: 35%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.funcionalidades__vaso-burbuja {
+  position: absolute;
+  bottom: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: hsla(190, 95%, 88%, 0.5);
+  animation: funcionalidades-vaso-burbuja 5s ease-in infinite;
+}
+
+.funcionalidades__vaso-burbuja:nth-child(1) {
+  left: 30%;
+  animation-duration: 4.8s;
+}
+
+.funcionalidades__vaso-burbuja:nth-child(2) {
+  left: 56%;
+  width: 0.28rem;
+  height: 0.28rem;
+  animation-duration: 6.5s;
+  animation-delay: 1.8s;
+}
+
+.funcionalidades__vaso-burbuja:nth-child(3) {
+  left: 70%;
+  animation-duration: 5.5s;
+  animation-delay: 3.2s;
+}
+
+@keyframes funcionalidades-vaso-burbuja {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-9rem); opacity: 0; }
+}
+
+/* Stats de hidratacion en franja horizontal centrada bajo el vaso. */
 .funcionalidades__agua-panel {
   position: absolute;
   bottom: 3.4rem;
