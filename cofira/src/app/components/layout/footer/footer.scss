@@ -424,83 +424,68 @@ app-footer {
   animation: pie-estado-latido 2s ease-out infinite;
 }
 
-/* ════════════ PULSO EN VIVO ════════════ */
+/* ════════════ COMUNIDAD (stats) ════════════ */
 .pie__pulso {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--spacing-size-l);
-  padding: var(--spacing-size-m) 0;
+  padding: var(--spacing-size-l) 0;
   border-top: 1px solid var(--borde-sutil);
   border-bottom: 1px solid var(--borde-sutil);
 }
 
-.pie__pulso-info {
+.pie__stat {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.45rem;
   margin: 0;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
 }
 
-.pie__pulso-numero {
+.pie__stat-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   font-family: var(--fuente-display);
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  letter-spacing: -0.01em;
-  color: var(--naranja-texto);
-}
-
-.pie__pulso-etiqueta {
-  font-size: var(--font-size-sm);
+  letter-spacing: -0.02em;
+  line-height: 1;
   color: var(--texto-principal);
 }
 
-.pie__pulso-sub {
+.pie__stat-label {
   @include etiqueta-tecnica(var(--texto-suave));
 }
 
-.pie__pulso-linea {
+.pie__stat-punto {
   position: relative;
-  flex: 1;
-  height: 3rem;
-  min-width: 6rem;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-}
-
-.pie__pulso-svg {
-  display: block;
-  width: 200%;
-  height: 100%;
-  animation: pie-pulso-desplazar 9s linear infinite;
-}
-
-.pie__pulso-trazo {
-  stroke: var(--naranja-normal);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.5;
-  filter: drop-shadow(0 0 2px var(--naranja-glow-media));
-}
-
-.pie__pulso-semana {
-  margin: 0;
+  width: 0.5rem;
+  height: 0.5rem;
   flex-shrink: 0;
-  font-size: var(--font-size-sm);
-  color: var(--texto-secundario);
-  text-align: right;
+  background: var(--naranja-normal);
+  border-radius: 50%;
 }
 
-.pie__pulso-semana-num {
-  margin-right: 0.4rem;
-  font-family: var(--fuente-mono);
-  font-weight: var(--font-weight-semibold);
-  color: var(--texto-principal);
+.pie__stat-punto::after {
+  content: '';
+  position: absolute;
+  inset: -0.3rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  opacity: 0.5;
+  animation: pie-estado-latido 2s ease-out infinite;
+}
+
+.pie__stat-division {
+  width: 1px;
+  align-self: stretch;
+  flex-shrink: 0;
+  background: var(--borde-sutil);
 }
 
 /* ════════════ INFERIOR ════════════ */
@@ -638,15 +623,6 @@ app-footer {
 }
 
 /* ════════════ ANIMACIONES ════════════ */
-@keyframes pie-pulso-desplazar {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @keyframes pie-cofira-brillo {
   0% {
     background-position: 130% 0, 0 0;
@@ -673,11 +649,11 @@ app-footer {
     animation: none;
   }
 
-  .pie__pulso-svg {
+  .pie__estado-punto::after {
     animation: none;
   }
 
-  .pie__estado-punto::after {
+  .pie__stat-punto::after {
     animation: none;
   }
 }
@@ -717,13 +693,8 @@ app-footer {
     flex-basis: 40%;
   }
 
-  .pie__pulso {
-    flex-wrap: wrap;
-  }
-
-  .pie__pulso-linea {
-    order: 3;
-    flex-basis: 100%;
+  .pie__stat-num {
+    font-size: var(--font-size-2xl);
   }
 }
 
@@ -744,5 +715,15 @@ app-footer {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-size-s);
+  }
+
+  .pie__pulso {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-size-m);
+  }
+
+  .pie__stat-division {
+    display: none;
   }
 }

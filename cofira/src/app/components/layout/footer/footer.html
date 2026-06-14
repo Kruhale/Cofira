@@ -143,22 +143,27 @@
 
   </section>
 
-  <section class="pie__pulso" aria-label="Actividad de la comunidad en vivo">
-    <p class="pie__pulso-info">
-      <span class="pie__pulso-numero" appContadorAnimado [valorFinal]="24819">24.819</span>
-      <span class="pie__pulso-etiqueta">entrenando ahora</span>
-      <span class="pie__pulso-sub">Comunidad Cofira · En vivo</span>
+  <section class="pie__pulso" aria-label="Comunidad Cofira">
+    <p class="pie__stat">
+      <span class="pie__stat-num">
+        <span class="pie__stat-punto" aria-hidden="true"></span>
+        <span appContadorAnimado [valorFinal]="24819">24.819</span>
+      </span>
+      <span class="pie__stat-label">Entrenando ahora</span>
     </p>
 
-    <span class="pie__pulso-linea" aria-hidden="true">
-      <svg class="pie__pulso-svg" viewBox="0 0 1600 80" preserveAspectRatio="none">
-        <path class="pie__pulso-trazo" fill="none" d="M0,40 L70,40 L80,33 L90,40 L100,40 L106,52 L112,8 L120,66 L127,40 L140,40 L156,30 L172,40 L200,40 L200,40 L270,40 L280,33 L290,40 L300,40 L306,52 L312,8 L320,66 L327,40 L340,40 L356,30 L372,40 L400,40 L400,40 L470,40 L480,33 L490,40 L500,40 L506,52 L512,8 L520,66 L527,40 L540,40 L556,30 L572,40 L600,40 L600,40 L670,40 L680,33 L690,40 L700,40 L706,52 L712,8 L720,66 L727,40 L740,40 L756,30 L772,40 L800,40 L800,40 L870,40 L880,33 L890,40 L900,40 L906,52 L912,8 L920,66 L927,40 L940,40 L956,30 L972,40 L1000,40 L1000,40 L1070,40 L1080,33 L1090,40 L1100,40 L1106,52 L1112,8 L1120,66 L1127,40 L1140,40 L1156,30 L1172,40 L1200,40 L1200,40 L1270,40 L1280,33 L1290,40 L1300,40 L1306,52 L1312,8 L1320,66 L1327,40 L1340,40 L1356,30 L1372,40 L1400,40 L1400,40 L1470,40 L1480,33 L1490,40 L1500,40 L1506,52 L1512,8 L1520,66 L1527,40 L1540,40 L1556,30 L1572,40 L1600,40" />
-      </svg>
-    </span>
+    <span class="pie__stat-division" aria-hidden="true"></span>
 
-    <p class="pie__pulso-semana">
-      <span class="pie__pulso-semana-num" appContadorAnimado [valorFinal]="12480" prefijo="+">+12.480</span>
-      <span class="pie__pulso-semana-txt">esta semana</span>
+    <p class="pie__stat">
+      <span class="pie__stat-num">1,2 M</span>
+      <span class="pie__stat-label">Entrenamientos este mes</span>
+    </p>
+
+    <span class="pie__stat-division" aria-hidden="true"></span>
+
+    <p class="pie__stat">
+      <span class="pie__stat-num" appContadorAnimado [valorFinal]="12480" prefijo="+">+12.480</span>
+      <span class="pie__stat-label">Nuevos esta semana</span>
     </p>
   </section>
 
