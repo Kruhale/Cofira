@@ -479,6 +479,31 @@
   background: var(--superficie-fondo);
 }
 
+/* Modo claro: la sección deja de forzar oscuro y recupera los tokens claros
+   (los valores del tema claro de 00-settings). Así el marco y las pantallas de
+   datos (Gráficos, Comidas, Widgets…) tematizan; las escenas WebGL (Ayuno/Agua)
+   conservan su escenario oscuro propio porque su fondo es un literal, no token. */
+[data-theme='light'] .funcionalidades {
+  --superficie-fondo: hsl(40, 20%, 98%);
+  --superficie-1: hsl(0, 0%, 100%);
+  --superficie-2: hsl(40, 12%, 95.5%);
+  --superficie-3: hsl(40, 10%, 91%);
+  --naranja-hover: hsl(24, 92%, 41%);
+  --naranja-active: hsl(24, 92%, 36%);
+  --naranja-texto: hsl(24, 95%, 35%);
+  --ambar: hsl(38, 95%, 48%);
+  --texto-principal: hsl(240, 6%, 8%);
+  --texto-secundario: hsla(240, 6%, 8%, 0.66);
+  --texto-suave: hsla(240, 6%, 8%, 0.42);
+  --texto-sobre-acento: hsl(0, 0%, 100%);
+  --borde-sutil: hsla(240, 6%, 8%, 0.10);
+  --borde-medio: hsla(240, 6%, 8%, 0.18);
+  --vidrio-fondo: hsla(40, 20%, 98%, 0.72);
+  --gradiente-overlay-foto: linear-gradient(180deg, hsla(0, 0%, 0%, 0.10) 0%, hsla(40, 20%, 98%, 0.92) 100%);
+  --sombra-bento: 0 1px 0 hsla(0, 0%, 100%, 0.6) inset, 0 0.75rem 2rem hsla(30, 30%, 20%, 0.08);
+  --glow-interior: inset 0 1px 0 hsla(0, 0%, 100%, 0.5);
+}
+
 .funcionalidades__cabecera {
   max-width: 1400px;
   margin: 0 auto var(--spacing-size-xl);
