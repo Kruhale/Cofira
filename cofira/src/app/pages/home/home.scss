@@ -2992,17 +2992,28 @@
 .funcionalidades__wid-widget-cuerpo {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
 .funcionalidades__wid-widget-cifra {
   display: flex;
   align-items: baseline;
   gap: 0.2rem;
+  min-width: 0;
   font-family: var(--fuente-display);
   font-size: 1.15rem;
   line-height: 1;
   color: var(--texto-principal);
+}
+
+/* En las tarjetas con anillo (Actividad, Agua) el número + unidad NO caben en
+   fila junto al anillo: se apilan (número arriba, unidad/porcentaje debajo). */
+.funcionalidades__wid-widget-cuerpo .funcionalidades__wid-widget-cifra {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  font-size: 1.05rem;
 }
 
 .funcionalidades__wid-widget-cifra--grande {
@@ -3021,6 +3032,13 @@
   font-family: var(--fuente-mono);
   font-size: 0.56rem;
   color: hsl(196, 90%, 62%);
+}
+
+/* Unidad + porcentaje del widget de Agua en una sola línea bajo la cifra. */
+.funcionalidades__wid-widget-sub {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
 }
 
 .funcionalidades__wid-widget-nota {
@@ -3142,8 +3160,8 @@
 
 .funcionalidades__wid-anillo--mov,
 .funcionalidades__wid-anillo--agua {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.1rem;
+  height: 2.1rem;
 }
 
 .funcionalidades__wid-anillo--watch {
