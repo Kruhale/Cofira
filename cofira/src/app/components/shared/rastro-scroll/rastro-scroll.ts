@@ -49,6 +49,7 @@ export class RastroScroll {
   private elementoEtiqueta: HTMLElement | null = null;
   private fracciones: number[] = [];
   private ticksDeSeccion = new Set<number>();
+  private fraccionFooter = 1;
 
   constructor() {
     afterNextRender(() => this.inicializar());
@@ -126,6 +127,12 @@ export class RastroScroll {
       return;
     }
 
+    const footer = document.querySelector('app-footer');
+    if (footer) {
+      const topFooter = footer.getBoundingClientRect().top + window.scrollY;
+      this.fraccionFooter = Math.min(1, Math.max(0, topFooter / alturaRecorrible));
+    }
+
     this.fracciones = this.secciones.map((seccion) => {
       const elemento = document.querySelector(seccion.objetivo);
       if (!elemento) {
@@ -152,8 +159,8 @@ export class RastroScroll {
     /* La etiqueta viaja con la ola */
     if (this.elementoEtiqueta) {
       this.elementoEtiqueta.style.top = `${progresoLimitado * 100}%`;
-      /* Cerca del fondo se desvanece para no pisarse con el footer */
-      this.elementoEtiqueta.style.opacity = progresoLimitado > 0.94 ? '0' : '1';
+      /* Al entrar en el footer la etiqueta se desvanece para no pisarse con él */
+      this.elementoEtiqueta.style.opacity = progresoLimitado >= this.fraccionFooter - 0.02 ? '0' : '1';
     }
 
     /* Sección actual: la última cuya fracción ya quedó atrás */
