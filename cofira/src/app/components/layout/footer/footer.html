@@ -147,7 +147,7 @@
     <article class="pie__pulso-info">
       <p class="pie__pulso-cifra">
         <span class="pie__pulso-punto" aria-hidden="true"></span>
-        <span class="pie__pulso-num" appContadorAnimado [valorFinal]="24819">24.819</span>
+        <span class="pie__pulso-num">{{ entrenandoTexto() }}</span>
         <span class="pie__pulso-num-sufijo">entrenando ahora</span>
       </p>
       <p class="pie__pulso-caption">Comunidad Cofira &middot; En vivo</p>
@@ -155,15 +155,10 @@
 
     <span class="pie__pulso-linea" aria-hidden="true">
       <span class="pie__pulso-rejilla"></span>
-      <span class="pie__pulso-track">
-        <svg class="pie__pulso-onda" viewBox="0 0 200 36" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 18 H38 l5 -11 l5 22 l4 -11 H104 l5 -11 l5 22 l4 -11 H170 l5 -11 l5 22 l4 -11 H200" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
-        </svg>
-        <svg class="pie__pulso-onda" viewBox="0 0 200 36" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 18 H38 l5 -11 l5 22 l4 -11 H104 l5 -11 l5 22 l4 -11 H170 l5 -11 l5 22 l4 -11 H200" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
-        </svg>
-      </span>
-      <span class="pie__pulso-faro"></span>
+      <svg class="pie__pulso-monitor" viewBox="0 0 300 40" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="pie__pulso-traza" d="M0 20 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+        <path class="pie__pulso-cometa" pathLength="100" d="M0 20 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+      </svg>
     </span>
 
     <span class="pie__pulso-chispa" aria-hidden="true"></span>

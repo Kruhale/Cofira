@@ -524,6 +524,7 @@ app-footer {
   letter-spacing: -0.02em;
   line-height: 1;
   color: var(--texto-principal);
+  transform-origin: left center;
 }
 
 .pie__pulso-num-sufijo {
@@ -541,14 +542,12 @@ app-footer {
   position: relative;
   flex: 1;
   min-width: 4rem;
-  height: 2.5rem;
+  height: 3rem;
   overflow: hidden;
   color: var(--naranja-normal);
-  /* Degradado "tinta fresca" de monitor EKG en papel: la traza nace brillante en
-     el cabezal (derecha ~92%) y se atenúa hacia la izquierda (tinta secándose),
-     con ambos extremos fundidos para integrarse en la banda. */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.32) 8%, rgba(0, 0, 0, 0.62) 50%, rgba(0, 0, 0, 0.95) 85%, #000 92%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.32) 8%, rgba(0, 0, 0, 0.62) 50%, rgba(0, 0, 0, 0.95) 85%, #000 92%, transparent 100%);
+  /* Funde los dos extremos: la señal entra y sale de la banda sin corte seco. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
 }
 
 /* Graticula de osciloscopio muy sutil tras la traza */
@@ -565,56 +564,45 @@ app-footer {
       var(--borde-medio) calc(50% + 0.5px),
       transparent calc(50% + 0.5px)
     );
-  background-size: 2rem 100%, 100% 100%;
-  opacity: 0.6;
+  background-size: 2.4rem 100%, 100% 100%;
+  opacity: 0.55;
 }
 
-.pie__pulso-track {
-  position: relative;
+/* Monitor de constantes de la comunidad: una traza tenue persistente + un cometa
+   de luz que la recorre dibujando el latido (como un monitor de hospital). */
+.pie__pulso-monitor {
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  display: flex;
-  width: 200%;
+  width: 100%;
   height: 100%;
-  animation: pie-ekg-desliza 5s linear infinite;
 }
 
-.pie__pulso-onda {
-  flex: 1 0 50%;
-  width: 50%;
-  height: 100%;
-  /* Señal viva: glow tintado naranja (no neón genérico, controlado) */
-  filter: drop-shadow(0 0 3px var(--naranja-glow-media));
-  /* Respira al mismo ritmo (2.6s) que el punto, el faro y la chispa: toda la
-     banda late como un solo corazón. Solo opacity → barato en GPU. */
-  animation: pie-onda-late 2.6s ease-in-out infinite;
+/* Traza persistente: la onda completa, tenue (la "historia" en la pantalla) */
+.pie__pulso-traza {
+  stroke: var(--naranja-normal);
+  opacity: 0.2;
 }
 
-/* Cabezal "en vivo" en el borde derecho: donde la traza se está dibujando ahora.
-   Late sincronizado con el punto (2.6s) y deja una columna guía tenue. */
-.pie__pulso-faro {
-  position: absolute;
-  top: 50%;
-  right: 8%;
-  z-index: 2;
-  width: 0.45rem;
-  height: 0.45rem;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: var(--naranja-normal);
-  box-shadow: 0 0 0.45rem var(--naranja-glow-fuerte), 0 0 1rem var(--naranja-glow-media);
-  animation: pie-faro-late 2.6s ease-in-out infinite;
+/* Cometa: segmento brillante que recorre el latido (dasharray + dashoffset), con
+   glow tintado. pathLength=100 → dash(34)+gap(66)=100 = bucle perfecto. */
+.pie__pulso-cometa {
+  stroke: var(--naranja-normal);
+  stroke-dasharray: 34 66;
+  filter: drop-shadow(0 0 4px var(--naranja-glow-fuerte))
+    drop-shadow(0 0 9px var(--naranja-glow-media));
+  animation: pie-cometa 3.4s linear infinite;
 }
 
-.pie__pulso-faro::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1px;
-  height: 2.5rem;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(transparent, var(--naranja-glow-media), transparent);
-  opacity: 0.45;
+/* En claro la banda va sobre superficie clara: la traza necesita más cuerpo y el
+   cometa destaca por contraste y grosor, no por halo (el glow ensucia el blanco). */
+[data-theme='light'] .pie__pulso-traza {
+  opacity: 0.42;
+}
+
+[data-theme='light'] .pie__pulso-cometa {
+  stroke-width: 2.75px;
+  filter: drop-shadow(0 0 2px var(--naranja-glow-media));
 }
 
 /* Segmento naranja brillante de energía, antes del contador semanal */
@@ -833,13 +821,13 @@ app-footer {
   }
 }
 
-/* Desliza la línea EKG exactamente una mitad: bucle sin costura */
-@keyframes pie-ekg-desliza {
+/* Cometa recorriendo el latido: el dash se desliza por la traza (bucle perfecto). */
+@keyframes pie-cometa {
   from {
-    transform: translateX(0);
+    stroke-dashoffset: 0;
   }
   to {
-    transform: translateX(-50%);
+    stroke-dashoffset: -100;
   }
 }
 
@@ -852,30 +840,6 @@ app-footer {
   }
   50% {
     transform: scaleX(1.05);
-    opacity: 1;
-  }
-}
-
-/* Latido del cabezal "en vivo" del monitor EKG */
-@keyframes pie-faro-late {
-  0%,
-  100% {
-    transform: translateY(-50%) scale(0.9);
-    opacity: 0.7;
-  }
-  50% {
-    transform: translateY(-50%) scale(1.3);
-    opacity: 1;
-  }
-}
-
-/* Respiración suave de la traza, sincronizada con el resto de la banda */
-@keyframes pie-onda-late {
-  0%,
-  100% {
-    opacity: 0.78;
-  }
-  50% {
     opacity: 1;
   }
 }
@@ -909,19 +873,11 @@ app-footer {
     animation: none;
   }
 
-  .pie__pulso-track {
-    animation: none;
-  }
-
   .pie__pulso-chispa {
     animation: none;
   }
 
-  .pie__pulso-faro {
-    animation: none;
-  }
-
-  .pie__pulso-onda {
+  .pie__pulso-cometa {
     animation: none;
   }
 }

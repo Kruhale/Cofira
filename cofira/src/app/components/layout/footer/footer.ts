@@ -1,7 +1,18 @@
-import { Component, ElementRef, HostListener, inject, ViewEncapsulation } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  HostListener,
+  inject,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ThemeService } from '../../../services/theme.service';
+import { AnimacionesService } from '../../../services/animaciones.service';
 import { RevelarScrollDirective } from '../../../directives/revelar-scroll.directive';
 import { ContadorAnimadoDirective } from '../../../directives/contador-animado.directive';
 
@@ -16,6 +27,50 @@ import { ContadorAnimadoDirective } from '../../../directives/contador-animado.d
 export class Footer {
   private readonly themeService = inject(ThemeService);
   private readonly elementRef = inject(ElementRef);
+  private readonly animaciones = inject(AnimacionesService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  /** Personas entrenando ahora: sube EN VIVO para que la comunidad se sienta viva. */
+  readonly entrenando = signal(24819);
+  readonly entrenandoTexto = computed(() => this.entrenando().toLocaleString('es-ES'));
+  private temporizadorVivo = 0;
+
+  constructor() {
+    afterNextRender(() => this.arrancarComunidadEnVivo());
+    this.destroyRef.onDestroy(() => clearTimeout(this.temporizadorVivo));
+  }
+
+  /** Incrementos pequeños a intervalos irregulares: parece tráfico real, no un reloj. */
+  private arrancarComunidadEnVivo(): void {
+    if (this.animaciones.movimientoReducido()) {
+      return;
+    }
+    const programarSiguiente = (): void => {
+      const esperaMs = 2600 + Math.random() * 3600;
+      this.temporizadorVivo = window.setTimeout(() => {
+        this.entrenando.update((valor) => valor + 1 + Math.floor(Math.random() * 3));
+        this.destellarNumero();
+        programarSiguiente();
+      }, esperaMs);
+    };
+    programarSiguiente();
+  }
+
+  /** Pop sutil del número justo cuando sube: refuerza la sensación de dato en vivo. */
+  private destellarNumero(): void {
+    const elementoNumero = this.elementRef.nativeElement.querySelector('.pie__pulso-num');
+    if (!elementoNumero) {
+      return;
+    }
+    elementoNumero.animate(
+      [
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.09)', offset: 0.35 },
+        { transform: 'scale(1)' },
+      ],
+      { duration: 520, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+    );
+  }
 
   anioActual = new Date().getFullYear();
 
