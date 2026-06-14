@@ -1326,7 +1326,8 @@
 
 .funcionalidades__grafica-leyenda {
   display: flex;
-  gap: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
 }
 
 .funcionalidades__leyenda-item {
@@ -4100,7 +4101,8 @@
   gap: 0.4rem;
   padding: 0.34rem 0.62rem;
   border-radius: 99px;
-  background: hsla(24, 28%, 6%, 0.74);
+  background: hsla(24, 28%, 6%, 0.86);
+  backdrop-filter: blur(5px);
   border: 1px solid hsla(40, 60%, 90%, 0.14);
   font-family: var(--fuente-mono);
   font-size: 0.55rem;
@@ -4156,6 +4158,7 @@
 /* PANEL DEL DÍA: consumidas + macros + menú */
 .funcionalidades__panel-dia {
   flex: 1 1 22rem;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
@@ -4164,7 +4167,7 @@
 .funcionalidades__resumen {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.45rem;
 }
 
 .funcionalidades__resumen-eyebrow {
@@ -4480,16 +4483,12 @@
   color: var(--texto-secundario);
   opacity: 0;
   transform: translateY(0.5rem);
-  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), color var(--duration-fast) ease;
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .funcionalidades__visual--activo .funcionalidades__anadir {
   opacity: 1;
   transform: translateY(0);
-}
-
-.funcionalidades__anadir:hover {
-  color: var(--naranja-texto);
 }
 
 .funcionalidades__anadir-mas {
@@ -5224,10 +5223,11 @@
   .funcionalidades__comparador-imagen,
   .funcionalidades__comparador-delta-valor,
   .funcionalidades__comparador-tirador { animation: none; }
-  .funcionalidades__comidas-ia-punto,
-  .funcionalidades__destacada-foto,
+  .funcionalidades__destacada-marca-punto { animation: none; }
+  .funcionalidades__destacada-foto { animation: none; }
   .funcionalidades__destacada-barrido { animation: none; }
   .funcionalidades__registro { opacity: 1; transform: none; transition: none; }
-  .funcionalidades__resumen-relleno,
-  .funcionalidades__macros-relleno { transform: scaleX(1); transition: none; }
+  .funcionalidades__anadir { opacity: 1; transform: none; transition: none; }
+  .funcionalidades__resumen-relleno { transform: scaleX(var(--relleno)); transition: none; }
+  .funcionalidades__macros-relleno { transform: scaleX(var(--relleno)); transition: none; }
 }
