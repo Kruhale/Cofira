@@ -405,8 +405,8 @@
                   <span
                     class="funcionalidades__grafica-tooltip"
                     [class.funcionalidades__grafica-tooltip--visible]="indicePuntoActivo() !== null"
-                    [class.funcionalidades__grafica-tooltip--inicio]="(indicePuntoActivo() ?? 5) <= 1"
-                    [class.funcionalidades__grafica-tooltip--fin]="(indicePuntoActivo() ?? 5) >= 4"
+                    [class.funcionalidades__grafica-tooltip--inicio]="(indicePuntoActivo() ?? 5) <= 0"
+                    [class.funcionalidades__grafica-tooltip--fin]="(indicePuntoActivo() ?? 5) >= 5"
                     [style.left.%]="puntoMostrado().x / 4"
                     [style.top.%]="puntoMostrado().y / 1.5">
                     <span class="funcionalidades__grafica-tooltip-mes">{{ puntoMostrado().etiqueta }}</span>

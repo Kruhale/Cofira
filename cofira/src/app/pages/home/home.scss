@@ -1248,11 +1248,11 @@
 }
 
 .funcionalidades__grafica-tooltip--inicio {
-  transform: translate(-12%, calc(-100% - 1.1rem));
+  transform: translate(-4%, calc(-100% - 1.1rem));
 }
 
 .funcionalidades__grafica-tooltip--fin {
-  transform: translate(-88%, calc(-100% - 1.1rem));
+  transform: translate(-96%, calc(-100% - 1.1rem));
 }
 
 .funcionalidades__grafica-tooltip--visible {
@@ -3875,7 +3875,9 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--borde-sutil);
-  box-shadow: 0 18px 44px -22px hsla(24, 80%, 18%, 0.7);
+  box-shadow:
+    0 18px 44px -22px hsla(24, 80%, 18%, 0.7),
+    inset 0 1px 0 hsla(40, 60%, 96%, 0.07);
 }
 
 .funcionalidades__destacada-foto {
@@ -4078,11 +4080,23 @@
 }
 
 .funcionalidades__macros-nombre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
   font-family: var(--fuente-mono);
   font-size: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--texto-suave);
+}
+
+.funcionalidades__macros-nombre::before {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--tono);
+  box-shadow: 0 0 6px -1px var(--tono);
+  content: '';
 }
 
 .funcionalidades__macros-cifra {
@@ -4148,6 +4162,10 @@
   transition-delay: calc(0.45s + var(--i) * 0.12s);
 }
 
+.funcionalidades__registro:last-child {
+  border-bottom: none;
+}
+
 .funcionalidades__registro-foto {
   flex: 0 0 auto;
   width: 2.5rem;
@@ -4155,6 +4173,16 @@
   border-radius: var(--radius-sm);
   object-fit: cover;
   border: 1px solid var(--borde-sutil);
+  transition: transform var(--duration-base) ease, border-color var(--duration-base) ease;
+}
+
+.funcionalidades__registro:hover .funcionalidades__registro-foto {
+  transform: scale(1.06);
+  border-color: var(--naranja-normal);
+}
+
+.funcionalidades__registro:hover .funcionalidades__registro-nombre {
+  color: var(--naranja-texto);
 }
 
 .funcionalidades__registro-cuerpo {
@@ -4173,6 +4201,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   color: var(--texto-principal);
+  transition: color var(--duration-fast) ease;
 }
 
 .funcionalidades__registro-desglose {

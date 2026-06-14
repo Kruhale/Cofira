@@ -303,7 +303,7 @@ export class Home {
       restante: 'Te faltan 2,4 kg',
       rangoMin: 73.4,
       rangoMax: 79,
-      ejes: [78, 76, 74],
+      ejes: [78, 77, 76],
       puntos: [
         { mes: 'Ene', etiqueta: 'Enero', valor: 78.6, media: 78.6, cambio: 'inicio', pct: 0 },
         { mes: 'Feb', etiqueta: 'Febrero', valor: 78.1, media: 78.3, cambio: '−0,5 kg', pct: 11 },
@@ -334,7 +334,7 @@ export class Home {
       restante: 'Te faltan 9,0 kg',
       rangoMin: 60,
       rangoMax: 92,
-      ejes: [90, 76, 62],
+      ejes: [82, 72, 62],
       puntos: [
         { mes: 'Ene', etiqueta: 'Enero', valor: 62.5, media: 62.5, cambio: 'inicio', pct: 0 },
         { mes: 'Feb', etiqueta: 'Febrero', valor: 66, media: 64.5, cambio: '+3,5 kg', pct: 13 },
@@ -358,7 +358,7 @@ export class Home {
       restante: 'Te faltan 2,5 cm',
       rangoMin: 81,
       rangoMax: 93,
-      ejes: [92, 87, 82],
+      ejes: [92, 88, 84],
       puntos: [
         { mes: 'Ene', etiqueta: 'Enero', valor: 92, media: 92, cambio: 'inicio', pct: 0 },
         { mes: 'Feb', etiqueta: 'Febrero', valor: 90.2, media: 91, cambio: '−1,8 cm', pct: 18 },
