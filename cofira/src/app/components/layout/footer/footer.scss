@@ -197,13 +197,13 @@ app-footer {
      5 capas recortadas al texto: especular + filo superior + 2 olas molten
      (mar, distinta velocidad) + base oscura. */
   background-image:
-    linear-gradient(102deg, transparent 42%, hsla(45, 100%, 97%, 0.4) 49%, hsla(42, 100%, 90%, 0.1) 53%, transparent 61%),
-    linear-gradient(180deg, hsla(40, 100%, 90%, 0.85) 0%, hsla(34, 100%, 78%, 0.3) 3%, transparent 7.5%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffa85a'/%3E%3Cstop offset='0.16' stop-color='%23f5731a'/%3E%3Cstop offset='0.62' stop-color='%23db5410'/%3E%3Cstop offset='0.9' stop-color='%23ec641a'/%3E%3Cstop offset='1' stop-color='%23ffa44e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 10 Q30 4 60 10 T120 10 V60 H0 Z' fill='url(%23m)'/%3E%3Cpath d='M0 10 Q30 4 60 10 T120 10' fill='none' stroke='%23ffe9d0' stroke-width='2.4' opacity='0.8'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='60' viewBox='0 0 150 60' preserveAspectRatio='none'%3E%3Cpath d='M0 16 Q37 9 75 16 T150 16 V60 H0 Z' fill='%23b8480c'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, hsl(20, 35%, 7%) 0%, hsl(20, 45%, 10%) 26%, hsl(24, 60%, 16%) 100%);
+    linear-gradient(100deg, transparent 41%, hsla(40, 100%, 98%, 0.16) 45%, hsla(46, 100%, 99%, 0.55) 49%, hsla(40, 100%, 95%, 0.2) 51%, hsla(46, 100%, 99%, 0.42) 54%, transparent 59%),
+    linear-gradient(180deg, hsla(38, 100%, 93%, 0.92) 0%, hsla(32, 100%, 80%, 0.35) 3.5%, transparent 8.5%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffb368'/%3E%3Cstop offset='0.14' stop-color='%23ff7a24'/%3E%3Cstop offset='0.5' stop-color='%23f5651a'/%3E%3Cstop offset='0.82' stop-color='%23e2540e'/%3E%3Cstop offset='1' stop-color='%23ffaa52'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 10 Q30 4 60 10 T120 10 V60 H0 Z' fill='url(%23m)'/%3E%3Cpath d='M0 10 Q30 4 60 10 T120 10' fill='none' stroke='%23fff2dc' stroke-width='2.6' opacity='0.9'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='60' viewBox='0 0 150 60' preserveAspectRatio='none'%3E%3Cpath d='M0 16 Q37 9 75 16 T150 16 V60 H0 Z' fill='%23c85510'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, hsl(22, 28%, 6%) 0%, hsl(20, 36%, 8%) 24%, hsl(24, 55%, 14%) 100%);
   background-repeat: no-repeat, no-repeat, repeat-x, repeat-x, no-repeat;
-  background-size: 200% 100%, 100% 100%, 4.5rem 70%, 6rem 62%, 100% 100%;
+  background-size: 200% 100%, 100% 100%, 4.5rem 72%, 6rem 64%, 100% 100%;
   background-position: 200% 0, 0 0, 0 100%, 0 100%, 0 0;
   -webkit-background-clip: text;
   background-clip: text;
