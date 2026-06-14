@@ -216,8 +216,29 @@ app-footer {
   transition: transform var(--duration-base) ease;
 }
 
+/* Hover: las letras se levantan en cascada (ola que recorre COFIRA) */
 .pie__logo:hover .pie__logo-letra {
-  transform: translateY(-0.12em);
+  transform: translateY(-0.16em);
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(2) {
+  transition-delay: 0.05s;
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(3) {
+  transition-delay: 0.1s;
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(4) {
+  transition-delay: 0.15s;
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(5) {
+  transition-delay: 0.2s;
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(6) {
+  transition-delay: 0.25s;
 }
 
 .pie__descripcion {
