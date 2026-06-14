@@ -261,6 +261,7 @@
           class="funcionalidades__visual"
           [class.funcionalidades__visual--activo]="indice === indiceFuncionalidadActiva()"
           [class.funcionalidades__visual--lienzo]="indice === 1 || indice === 2 || indice === 3 || indice === 4"
+          [class.funcionalidades__visual--oscuro]="indice === 2 || indice === 3"
           aria-hidden="true">
           <span class="funcionalidades__visual-cabecera">
             <span class="funcionalidades__visual-titulo">{{ funcionalidad.titulo }}</span>
@@ -658,6 +659,8 @@
                         class="funcionalidades__agua-vaso"
                         [class.funcionalidades__agua-vaso--lleno]="indiceVaso < vasosBebidos()"
                         [class.funcionalidades__agua-vaso--actual]="indiceVaso === vasosBebidos() - 1"
+                        [attr.aria-label]="'Registrar ' + (indiceVaso + 1) + ' vasos de agua'"
+                        [attr.aria-pressed]="indiceVaso < vasosBebidos()"
                         (click)="seleccionarVasos(indiceVaso)">
                         <span class="funcionalidades__agua-vaso-nivel"></span>
                       </button>

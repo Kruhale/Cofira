@@ -504,6 +504,55 @@
   --glow-interior: inset 0 1px 0 hsla(0, 0%, 100%, 0.5);
 }
 
+/* Pantallas HTML (Fotos y Widgets) pasan a claro: solo se aclara el FONDO de
+   pantalla; el texto ya tematiza por tokens, y los "devices" (móvil/reloj/tarjetas
+   de widget) y las fotos conservan sus literales oscuros a propósito (un móvil es
+   oscuro). Las escenas WebGL (Ayuno/Agua) NO se tocan: su fondo literal las
+   mantiene oscuras, que es lo que necesitan las partículas. */
+[data-theme='light'] .funcionalidades__comparador {
+  background:
+    radial-gradient(52% 64% at 40% 48%, hsla(28, 95%, 50%, 0.05), transparent 70%),
+    var(--superficie-fondo);
+}
+
+[data-theme='light'] .funcionalidades__wid {
+  background:
+    radial-gradient(48% 60% at 43% 50%, hsla(28, 90%, 50%, 0.06), transparent 70%),
+    linear-gradient(180deg, var(--superficie-1) 0%, var(--superficie-2) 100%);
+}
+
+/* Fotos: el contenido (textos sueltos, sin fondo) usa literales CLAROS pensados
+   para fondo oscuro; en claro hay que oscurecerlos para que contrasten. Las fotos
+   y sus etiquetas-sobre-imagen conservan sus literales (van sobre la imagen). */
+[data-theme='light'] .funcionalidades__comparador-delta-valor {
+  color: var(--naranja-texto);
+  text-shadow: none;
+}
+[data-theme='light'] .funcionalidades__comparador-delta-sub {
+  color: var(--texto-suave);
+}
+[data-theme='light'] .funcionalidades__comparador-etiqueta {
+  border-left-color: var(--borde-medio);
+}
+[data-theme='light'] .funcionalidades__comparador-etiqueta--despues {
+  border-left-color: var(--naranja-normal);
+}
+[data-theme='light'] .funcionalidades__comparador-fecha {
+  color: var(--texto-suave);
+}
+[data-theme='light'] .funcionalidades__comparador-etiqueta--despues .funcionalidades__comparador-fecha {
+  color: var(--naranja-texto);
+}
+[data-theme='light'] .funcionalidades__comparador-peso {
+  color: var(--texto-principal);
+}
+[data-theme='light'] .funcionalidades__comparador-pista {
+  color: var(--texto-suave);
+}
+[data-theme='light'] .funcionalidades__carrete-miniatura {
+  border-color: var(--borde-medio);
+}
+
 .funcionalidades__cabecera {
   max-width: 1400px;
   margin: 0 auto var(--spacing-size-xl);
@@ -1693,10 +1742,10 @@
 
 /* En tema claro el raíl usa texto oscuro, ilegible sobre este póster oscuro:
    mientras la pantalla de ayuno está activa, el raíl pasa a texto claro */
-[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--lienzo.funcionalidades__visual--activo) .funcionalidades__paso-numero { color: hsla(40, 8%, 88%, 0.5); }
-[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--lienzo.funcionalidades__visual--activo) .funcionalidades__paso-titulo { color: hsla(40, 8%, 92%, 0.75); }
-[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--lienzo.funcionalidades__visual--activo) .funcionalidades__paso-texto { color: hsla(40, 8%, 88%, 0.6); }
-[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--lienzo.funcionalidades__visual--activo) .funcionalidades__paso--activo .funcionalidades__paso-titulo { color: hsl(28, 100%, 64%); }
+[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--oscuro.funcionalidades__visual--activo) .funcionalidades__paso-numero { color: hsla(40, 8%, 88%, 0.5); }
+[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--oscuro.funcionalidades__visual--activo) .funcionalidades__paso-titulo { color: hsla(40, 8%, 92%, 0.75); }
+[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--oscuro.funcionalidades__visual--activo) .funcionalidades__paso-texto { color: hsla(40, 8%, 88%, 0.6); }
+[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--oscuro.funcionalidades__visual--activo) .funcionalidades__paso--activo .funcionalidades__paso-titulo { color: hsl(28, 100%, 64%); }
 
 /* Regla temporal inferior: escala no lineal 0-18 h alineada con el gradiente
    de la hélice; el cursor AHORA sube hasta el frente de combustión del ADN */
