@@ -186,8 +186,11 @@ app-footer {
   display: inline-flex;
   align-items: flex-end;
   gap: 0.02em;
+  margin-bottom: 2.2rem; /* hueco para el reflejo de suelo mojado */
   text-decoration: none;
   line-height: 0.9;
+  /* Reflejo de suelo pulido: COFIRA se refleja debajo, desvanecido (premium, encaja con el liquido) */
+  -webkit-box-reflect: below 0.12em linear-gradient(transparent 56%, rgba(255, 190, 130, 0.2));
 }
 
 .pie__logo-letra {
