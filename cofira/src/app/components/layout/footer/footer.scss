@@ -879,6 +879,9 @@ app-footer {
 
   .pie__pulso-cometa {
     animation: none;
+    /* Sin animación, el dash dejaría un segmento naranja estático huérfano:
+       lo ocultamos y queda solo la traza tenue como EKG en reposo. */
+    opacity: 0;
   }
 }
 

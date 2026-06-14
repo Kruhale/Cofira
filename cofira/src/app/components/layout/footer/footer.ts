@@ -34,9 +34,13 @@ export class Footer {
   readonly entrenando = signal(24819);
   readonly entrenandoTexto = computed(() => this.entrenando().toLocaleString('es-ES'));
   private temporizadorVivo = 0;
+  private elementoNumero: HTMLElement | null = null;
 
   constructor() {
-    afterNextRender(() => this.arrancarComunidadEnVivo());
+    afterNextRender(() => {
+      this.elementoNumero = this.elementRef.nativeElement.querySelector('.pie__pulso-num');
+      this.arrancarComunidadEnVivo();
+    });
     this.destroyRef.onDestroy(() => clearTimeout(this.temporizadorVivo));
   }
 
@@ -58,14 +62,13 @@ export class Footer {
 
   /** Pop sutil del número justo cuando sube: refuerza la sensación de dato en vivo. */
   private destellarNumero(): void {
-    const elementoNumero = this.elementRef.nativeElement.querySelector('.pie__pulso-num');
-    if (!elementoNumero) {
+    if (!this.elementoNumero?.isConnected) {
       return;
     }
-    elementoNumero.animate(
+    this.elementoNumero.animate(
       [
         { transform: 'scale(1)' },
-        { transform: 'scale(1.09)', offset: 0.35 },
+        { transform: 'scale(1.06)', offset: 0.35 },
         { transform: 'scale(1)' },
       ],
       { duration: 520, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
