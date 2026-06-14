@@ -2319,28 +2319,20 @@
   gap: 0.7rem;
 }
 
-.funcionalidades__agua-stat-icono {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* Acento de color a la izquierda (sin icono): cian = media, naranja = racha */
+.funcionalidades__agua-stat::before {
+  content: '';
   flex-shrink: 0;
-  width: 2.15rem;
-  height: 2.15rem;
-  border-radius: var(--radius-sm);
-  background: hsla(196, 60%, 50%, 0.12);
-  border: 1px solid hsla(196, 50%, 62%, 0.24);
-  color: hsl(193, 96%, 68%);
+  width: 3px;
+  height: 2.1rem;
+  border-radius: 99px;
+  background: hsl(193, 96%, 68%);
+  box-shadow: 0 0 10px hsla(196, 95%, 60%, 0.5);
 }
 
-.funcionalidades__agua-stat-icono svg {
-  width: 1.15rem;
-  height: 1.15rem;
-}
-
-.funcionalidades__agua-stat--racha .funcionalidades__agua-stat-icono {
-  background: hsla(24, 70%, 50%, 0.14);
-  border-color: hsla(24, 60%, 55%, 0.28);
-  color: var(--naranja-texto);
+.funcionalidades__agua-stat--racha::before {
+  background: var(--naranja-normal);
+  box-shadow: 0 0 10px hsla(24, 95%, 55%, 0.5);
 }
 
 .funcionalidades__agua-stat-texto {
@@ -2588,18 +2580,20 @@
 .funcionalidades__wid-info {
   position: absolute;
   top: 50%;
-  /* Pegada al móvil: el móvil está centrado en left:41% (ancho 16.5rem → su borde
-     izquierdo cae en 41% − 8.25rem). La columna (19rem) termina ~1.5rem antes de
-     ese borde, así el hueco es CONSTANTE a cualquier ancho (antes, con left fijo,
-     crecía con la pantalla y rozaba el rastro). max() evita que se salga en anchos
-     estrechos. */
-  left: max(1.5rem, calc(41% - 28.75rem));
+  /* Anclada por su borde DERECHO al móvil: el móvil está centrado en left:41%
+     (ancho 16.5rem → borde izquierdo en 41% − 8.25rem), así que el borde derecho de
+     la info cae 1.5rem antes (right ≈ 59% + 9.625rem) y el hueco al móvil es
+     CONSTANTE a cualquier ancho. El ancho ENCOGE con min() para que el borde
+     izquierdo nunca baje de 9.5rem y no pise el rastro fijo de la izquierda (acaba
+     ~8.9rem): antes, con left+ancho fijos, a ≤1490px la columna se deslizaba bajo el
+     rótulo «FUNCIONES». */
+  right: calc(59% + 9.625rem);
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.95rem;
-  width: 19rem;
+  width: min(19rem, calc(41% - 19.125rem));
   transform: translateY(-50%);
 }
 
@@ -2615,7 +2609,9 @@
 .funcionalidades__wid-titulo {
   margin: -0.3rem 0 0;
   font-family: var(--fuente-display);
-  font-size: 4rem; /* 64px */
+  /* 4rem fijo a ≥1392px; en anchos estrechos encoge con el viewport para no
+     desbordar la columna (que mengua) ni rozar el móvil a ~1280px. */
+  font-size: clamp(3.4rem, 4.6vw, 4rem); /* 64px en ancho amplio */
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: 0.01em;
