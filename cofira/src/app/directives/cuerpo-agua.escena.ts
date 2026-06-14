@@ -12,6 +12,7 @@ import {
   Points,
   Scene,
   ShaderMaterial,
+  Vector2,
   WebGLRenderer,
 } from 'three';
 
@@ -54,7 +55,8 @@ const VERTICE_CUERPO = `
   uniform float uEscala;
   uniform float uHalo;
   uniform float uMitadAlto;
-  uniform float uApertura; // 0 cerrado .. 1 cuerpo "abierto" en 3D al hacer hover
+  uniform float uApertura; // 0 sin hover .. 1 hover activo sobre el cuerpo
+  uniform vec2 uPuntero;   // cursor en el espacio LOCAL del cuerpo (xy)
   attribute vec4 aDatos;
   varying vec3 vColor;
   varying float vAlfa;
@@ -82,23 +84,22 @@ const VERTICE_CUERPO = `
     // Respiración global muy sutil para que nunca quede del todo quieto
     p.x += sin(uTiempo * 0.32 + altura * 3.0) * 0.018;
 
-    // --- Apertura: al pasar el ratón el cuerpo "florece" en 3D (efecto holograma) ---
-    // Un solo uniform abre toda la nube sin subir buffers: estallido radial en el
-    // plano frontal + despliegue de la losa fina en profundidad + turbulencia.
+    // --- Apertura LOCAL al cursor: SOLO la zona bajo el ratón se "agrieta" abriendo
+    // una grieta de luz (como un hielo que se rompe donde lo tocas); el resto del
+    // cuerpo queda intacto. uPuntero = cursor en espacio local; uApertura = fuerza 0..1.
     float ap = uApertura;
+    float local = 0.0;
     if (ap > 0.0008) {
-      // Empuje radial MODERADO desde el eje central: la figura se abre y respira
-      // pero conserva densidad (si se dispersa de más, el aditivo se apaga).
-      vec2 radial = vec2(p.x, p.y * 0.34);
-      float lon = length(radial) + 1e-4;
-      vec2 dir = radial / lon;
-      float empuje = 0.16 + lon * 0.08; // apertura CONTENIDA: la silueta no se disuelve
-      p.xy += dir * empuje * ap;
-      // La losa fina se despliega en Z: al girar se lee como volumen 3D real.
-      p.z += sign(p.z + 0.0001) * (0.55 + semilla * 0.8) * ap;
-      // Turbulencia leve por semilla: respira sin romper la forma.
-      p.x += sin(semilla * 31.0 + uTiempo * 0.9) * 0.07 * ap;
-      p.y += cos(semilla * 23.0 + uTiempo * 0.8) * 0.07 * ap;
+      float dCursor = distance(p.xy, uPuntero);
+      float radio = 1.7;                              // tamaño del foco que se abre
+      local = ap * smoothstep(radio, 0.18, dCursor);  // 1 junto al cursor .. 0 lejos
+      if (local > 0.0008) {
+        vec2 fuera = (p.xy - uPuntero) / (dCursor + 1e-4);
+        p.xy += fuera * local * 1.05;                 // aparta las partículas: abre el hueco
+        p.z += (p.z >= 0.0 ? 1.0 : -1.0) * local * 0.5; // pizca de volumen 3D en el trozo
+        p.x += sin(semilla * 31.0 + uTiempo * 2.2) * 0.06 * local;
+        p.y += cos(semilla * 23.0 + uTiempo * 1.9) * 0.06 * local;
+      }
     }
 
     // --- Burbujas (tipo 2): nacen sumergidas, ascienden y estallan en superficie ---
@@ -144,16 +145,16 @@ const VERTICE_CUERPO = `
     }
 
     float titileo = 0.88 + 0.12 * sin(uTiempo * (1.1 + semilla * 2.2) + semilla * 40.0);
-    vColor = color * (0.55 + brillo * 0.7) * (1.0 + ap * 1.2); // abierto = mucho más vivo
+    vColor = color * (0.55 + brillo * 0.7) + ESPUMA * local * 1.8; // borde de la grieta: luz
 
     vec4 posVista = modelViewMatrix * vec4(p, 1.0);
     float tam = tamano * uEscala * (0.5 + 0.85 * prof) * (1.0 + superficie * 0.7) * titileo;
     tam *= mix(1.0, 3.2, uHalo);
-    tam *= 1.0 + ap * 0.7; // partículas mayores al abrirse (mantiene cuerpo)
+    tam *= 1.0 + local * 1.6; // partículas del borde de la grieta mas grandes (brillan)
     gl_PointSize = clamp(tam / -posVista.z, 1.0, 130.0);
 
     vAlfa = mix(clamp(alfa, 0.0, 1.0) * 0.9, clamp(alfa, 0.0, 1.0) * 0.03, uHalo);
-    vAlfa *= 1.0 + ap * 0.7;
+    vAlfa = clamp(vAlfa + local * 0.65, 0.0, 1.0);
     gl_Position = projectionMatrix * posVista;
   }
 `;
@@ -260,6 +261,10 @@ function muestrearCuerpo(): Muestras {
       }
     }
   }
+
+  // Los píxeles ya están en `datos` (copia); libera el backing store del canvas temporal.
+  lienzo.width = 0;
+  lienzo.height = 0;
 
   return { relleno, borde, ancho, alto };
 }
@@ -385,6 +390,7 @@ export class EscenaCuerpoAgua {
       uEscala: { value: 1000 },
       uMitadAlto: { value: ALTO_CUERPO / 2 },
       uApertura: { value: 0 },
+      uPuntero: { value: new Vector2(0, 0) },
     };
 
     this.geometriaCuerpo = construirGeometriaCuerpo(muestrearCuerpo());
@@ -405,6 +411,7 @@ export class EscenaCuerpoAgua {
         uEscala: uniformes.uEscala,
         uMitadAlto: uniformes.uMitadAlto,
         uApertura: uniformes.uApertura,
+        uPuntero: uniformes.uPuntero,
         uHalo: { value: 1 },
       },
       transparent: true,
@@ -502,16 +509,18 @@ export class EscenaCuerpoAgua {
       this.aperturaObjetivo = 0;
       return;
     }
-    const centroX = this.grupoCuerpo.position.x / (this.anchoMundo / 2);
-    const semiX = (ANCHO_CUERPO / this.anchoMundo) * 2.0 + 0.14;
-    const semiY = 0.95;
-    const dx = (cx - centroX) / semiX;
-    const dy = cy / semiY;
-    const distancia = Math.sqrt(dx * dx + dy * dy);
-    const cercania = Math.max(0, Math.min(1, 1 - distancia));
-    const suave = cercania * cercania * (3 - 2 * cercania); // smoothstep
-    // Tope contenido: el cuerpo gana volumen y gira, pero la silueta se mantiene.
-    this.aperturaObjetivo = suave * 0.55;
+    // Cursor (NDC del canvas, -1..1) -> mundo -> espacio LOCAL del cuerpo, para que la
+    // grieta de luz se abra EXACTAMENTE bajo el raton.
+    const mundoX = cx * (this.anchoMundo / 2);
+    const mundoY = -cy * (ALTO_MUNDO / 2);
+    const localX = mundoX - this.grupoCuerpo.position.x;
+    const localY = mundoY - this.grupoCuerpo.position.y;
+    this.materialNucleo.uniforms['uPuntero'].value.set(localX, localY);
+    // Solo se activa si el cursor esta sobre (o muy cerca de) la silueta.
+    const margenX = ANCHO_CUERPO / 2 + 1.4;
+    const margenY = ALTO_CUERPO / 2 + 0.6;
+    const sobreCuerpo = Math.abs(localX) < margenX && Math.abs(localY) < margenY;
+    this.aperturaObjetivo = sobreCuerpo ? 1.0 : 0.0;
   }
 
   fijarNivel(fraccion: number, inmediato = false): void {
@@ -552,16 +561,16 @@ export class EscenaCuerpoAgua {
     this.aperturaActual += (this.aperturaObjetivo - this.aperturaActual) * 0.09;
     this.materialNucleo.uniforms['uApertura'].value = this.aperturaActual;
 
-    // Al abrirse, el cuerpo gira (hacia el ratón + balanceo propio tipo torno) y
-    // cabecea un pelín, para que el volumen desplegado en Z se lea como 3D real.
-    // Cerrado (aperturaActual→0) ambas rotaciones vuelven a 0.
-    this.grupoCuerpo.rotation.y =
-      this.aperturaActual * (this.ratonX * 0.7 + Math.sin(segundos * 0.5) * 0.34);
-    this.grupoCuerpo.rotation.x =
-      this.aperturaActual * (-this.ratonY * 0.22 + Math.sin(segundos * 0.37) * 0.06);
+    // El cuerpo NO gira: el efecto de abrir es LOCAL al cursor (solo se agrieta la zona
+    // bajo el raton), asi que la figura se queda de frente y el hueco de luz aparece
+    // justo donde apunta el puntero.
+    this.grupoCuerpo.rotation.y = 0;
+    this.grupoCuerpo.rotation.x = 0;
 
-    const objetivoX = this.ratonX * 0.4 + Math.sin(segundos * 0.05) * 0.22;
-    const objetivoY = -this.ratonY * 0.28 + Math.cos(segundos * 0.04) * 0.16;
+    // Camara: solo deriva suave de fondo (sin seguir al raton), para que el cuerpo no
+    // se desplace bajo el cursor y la grieta quede alineada con el puntero.
+    const objetivoX = Math.sin(segundos * 0.05) * 0.16;
+    const objetivoY = Math.cos(segundos * 0.04) * 0.12;
     this.camaraX += (objetivoX - this.camaraX) * 0.04;
     this.camaraY += (objetivoY - this.camaraY) * 0.04;
     this.camara.position.x = this.camaraX;

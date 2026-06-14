@@ -84,13 +84,26 @@ export class CuerpoAgua {
     const escena = crearEscenaCuerpoAgua(lienzo);
     this.escena = escena;
 
+    // Si el componente se destruyó durante el await del import, el contexto WebGL
+    // ya está creado: destrúyelo aquí (el onDestroy de abajo no llegaría a
+    // registrarse) para no fugar el contexto ni las geometrías/materiales.
+    if (this.destruida) {
+      escena.destruir();
+      return;
+    }
+
     escena.fijarNivel(this.nivel(), true);
     escena.fijarTexto(this.litros());
     escena.redimensionar(lienzo.clientWidth, lienzo.clientHeight);
     lienzo.classList.add('funcionalidades__agua-lienzo--vivo');
 
+    // Caja del lienzo cacheada: el hover la lee en cada pointermove y recalcularla
+    // ahí forzaría un reflow por evento. Se refresca al redimensionar y al scrollear.
+    let cajaLienzo = lienzo.getBoundingClientRect();
+
     const observadorTamano = new ResizeObserver(() => {
       escena.redimensionar(lienzo.clientWidth, lienzo.clientHeight);
+      cajaLienzo = lienzo.getBoundingClientRect();
       if (this.animaciones.movimientoReducido()) {
         escena.renderizar(0);
       }
@@ -109,6 +122,9 @@ export class CuerpoAgua {
       const visual = lienzo.closest('.funcionalidades__visual');
       let idReducido = 0;
       const repintarLento = () => {
+        if (this.destruida) {
+          return;
+        }
         if (!visual || visual.classList.contains('funcionalidades__visual--activo')) {
           escena.renderizar(0);
         }
@@ -131,7 +147,7 @@ export class CuerpoAgua {
 
             // El canvas es pointer-events:none, así que el hover sobre el muñeco se
             // mide aquí: coords relativas al lienzo (-1..1) + si el cursor está dentro.
-            const caja = lienzo.getBoundingClientRect();
+            const caja = cajaLienzo;
             const canvasX = ((evento.clientX - caja.left) / caja.width) * 2 - 1;
             const canvasY = ((evento.clientY - caja.top) / caja.height) * 2 - 1;
             const dentro =
@@ -140,6 +156,15 @@ export class CuerpoAgua {
               evento.clientY >= caja.top &&
               evento.clientY <= caja.bottom;
             escena.fijarPuntero(canvasX, canvasY, dentro);
+          },
+          { signal: controlPuntero.signal, passive: true },
+        );
+
+        // Refresca la caja cacheada al scrollear (sin reflow en el pointermove).
+        window.addEventListener(
+          'scroll',
+          () => {
+            cajaLienzo = lienzo.getBoundingClientRect();
           },
           { signal: controlPuntero.signal, passive: true },
         );
