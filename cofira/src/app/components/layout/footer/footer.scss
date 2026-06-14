@@ -196,7 +196,7 @@ app-footer {
   font-family: 'Anton', var(--fuente-display);
   font-size: clamp(4rem, 9vw, 7.5rem);
   font-weight: 400;
-  letter-spacing: 0.015em;
+  letter-spacing: -0.01em;
   /* Naranja liquido glossy (ref #11): filo brillante arriba, banda oscura,
      cuerpo naranja mojado con reflejo especular que barre y filo abajo.
      5 capas recortadas al texto: especular + filo superior + 2 olas molten
@@ -581,6 +581,9 @@ app-footer {
   height: 100%;
   /* Señal viva: glow tintado naranja (no neón genérico, controlado) */
   filter: drop-shadow(0 0 3px var(--naranja-glow-media));
+  /* Respira al mismo ritmo (2.6s) que el punto, el faro y la chispa: toda la
+     banda late como un solo corazón. Solo opacity → barato en GPU. */
+  animation: pie-onda-late 2.6s ease-in-out infinite;
 }
 
 /* Cabezal "en vivo" en el borde derecho: donde la traza se está dibujando ahora.
