@@ -9,7 +9,7 @@
     <article class="pie__cta-newsletter">
       <p class="pie__cta-newsletter-texto">Recibe rutinas y tips cada semana. Sin spam.</p>
       <section class="pie__newsletter">
-        <label class="enlaces__arial-oculto" for="pie-newsletter-email">Tu email</label>
+        <label class="pie__newsletter-etiqueta" for="pie-newsletter-email">Tu email</label>
         <input class="pie__newsletter-input" id="pie-newsletter-email" type="email" placeholder="tu@email.com" autocomplete="email">
         <button class="pie__newsletter-boton" type="button">Únete</button>
       </section>
@@ -143,27 +143,32 @@
 
   </section>
 
-  <section class="pie__pulso" aria-label="Comunidad Cofira">
-    <p class="pie__stat">
-      <span class="pie__stat-num">
-        <span class="pie__stat-punto" aria-hidden="true"></span>
-        <span appContadorAnimado [valorFinal]="24819">24.819</span>
+  <section class="pie__pulso" aria-label="Comunidad Cofira en vivo" appRevelarScroll>
+    <article class="pie__pulso-info">
+      <p class="pie__pulso-cifra">
+        <span class="pie__pulso-punto" aria-hidden="true"></span>
+        <span class="pie__pulso-num" appContadorAnimado [valorFinal]="24819">24.819</span>
+        <span class="pie__pulso-num-sufijo">entrenando ahora</span>
+      </p>
+      <p class="pie__pulso-caption">Comunidad Cofira &middot; En vivo</p>
+    </article>
+
+    <span class="pie__pulso-linea" aria-hidden="true">
+      <span class="pie__pulso-track">
+        <svg class="pie__pulso-onda" viewBox="0 0 200 36" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 18 H38 l5 -11 l5 22 l4 -11 H104 l5 -11 l5 22 l4 -11 H170 l5 -11 l5 22 l4 -11 H200" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+        </svg>
+        <svg class="pie__pulso-onda" viewBox="0 0 200 36" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 18 H38 l5 -11 l5 22 l4 -11 H104 l5 -11 l5 22 l4 -11 H170 l5 -11 l5 22 l4 -11 H200" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+        </svg>
       </span>
-      <span class="pie__stat-label">Entrenando ahora</span>
-    </p>
+    </span>
 
-    <span class="pie__stat-division" aria-hidden="true"></span>
+    <span class="pie__pulso-chispa" aria-hidden="true"></span>
 
-    <p class="pie__stat">
-      <span class="pie__stat-num">1,2 M</span>
-      <span class="pie__stat-label">Entrenamientos este mes</span>
-    </p>
-
-    <span class="pie__stat-division" aria-hidden="true"></span>
-
-    <p class="pie__stat">
-      <span class="pie__stat-num" appContadorAnimado [valorFinal]="12480" prefijo="+">+12.480</span>
-      <span class="pie__stat-label">Nuevos esta semana</span>
+    <p class="pie__pulso-semana">
+      <span class="pie__pulso-semana-num" appContadorAnimado [valorFinal]="12480" prefijo="+">+12.480</span>
+      <span class="pie__pulso-semana-etiqueta">esta semana</span>
     </p>
   </section>
 

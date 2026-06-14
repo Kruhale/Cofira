@@ -82,9 +82,9 @@ app-footer {
 .pie__newsletter {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   width: 100%;
-  padding: 0.4rem 0.4rem 0.4rem 0.25rem;
+  padding: 0.4rem 0.4rem 0.4rem 1.1rem;
   background: var(--superficie-2);
   border: 1px solid var(--borde-sutil);
   border-radius: var(--radius-full);
@@ -95,10 +95,18 @@ app-footer {
   border-color: var(--naranja-normal);
 }
 
+.pie__newsletter-etiqueta {
+  flex-shrink: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-principal);
+}
+
 .pie__newsletter-input {
   flex: 1;
   min-width: 0;
-  padding: 0.55rem 1rem;
+  padding: 0.55rem 0.25rem;
   background: transparent;
   border: none;
   outline: none;
@@ -179,16 +187,19 @@ app-footer {
   font-size: clamp(3.5rem, 8vw, 6.5rem);
   font-weight: 900;
   letter-spacing: -0.04em;
+  /* Capa 1: reflejo glossy diagonal con doble pico (cristal pulido) que barre.
+     Capa 2: degradado base dorado-arriba a naranja-quemado-abajo. */
   background-image:
-    linear-gradient(105deg, transparent 40%, hsla(45, 100%, 90%, 0.8) 50%, transparent 60%),
-    linear-gradient(180deg, hsl(34, 100%, 63%) 0%, var(--naranja-normal) 52%, hsl(20, 96%, 46%) 100%);
-  background-size: 250% 100%, 100% 100%;
-  background-position: 130% 0, 0 0;
+    linear-gradient(118deg, transparent 30%, hsla(45, 100%, 97%, 0.95) 44%, hsla(40, 100%, 90%, 0.6) 50%, hsla(45, 100%, 97%, 0.95) 56%, transparent 70%),
+    linear-gradient(177deg, hsl(40, 100%, 72%) 0%, hsl(30, 100%, 60%) 38%, var(--naranja-normal) 66%, hsl(16, 92%, 44%) 100%);
+  background-size: 230% 100%, 100% 100%;
+  background-position: 200% 0, 0 0;
   background-repeat: no-repeat;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: pie-cofira-brillo 6s ease-in-out infinite;
+  filter: drop-shadow(0 0.15rem 0.6rem hsla(24, 100%, 50%, 0.18));
+  animation: pie-cofira-brillo 6.5s ease-in-out infinite;
   transition: transform var(--duration-base) ease;
 }
 
@@ -409,83 +420,160 @@ app-footer {
   position: relative;
   width: 0.5rem;
   height: 0.5rem;
+  flex-shrink: 0;
   background: var(--exito);
   border-radius: 50%;
-  flex-shrink: 0;
+  animation: pie-punto-respira 2.6s ease-in-out infinite;
 }
 
+/* Halo suave que respira: el resplandor difuso del punto */
+.pie__estado-punto::before {
+  content: '';
+  position: absolute;
+  inset: -0.45rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--exito) 0%, transparent 68%);
+  opacity: 0.4;
+  animation: pie-halo-respira 2.6s ease-in-out infinite;
+}
+
+/* Onda sonar que se expande y se desvanece */
 .pie__estado-punto::after {
   content: '';
   position: absolute;
-  inset: -0.25rem;
+  inset: 0;
   border-radius: 50%;
-  background: var(--exito);
-  opacity: 0.5;
-  animation: pie-estado-latido 2s ease-out infinite;
+  border: 1.5px solid var(--exito);
+  animation: pie-sonar 2.6s ease-out infinite;
 }
 
-/* ════════════ COMUNIDAD (stats) ════════════ */
+/* ════════════ COMUNIDAD EN VIVO (banda EKG) ════════════ */
 .pie__pulso {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--spacing-size-l);
   padding: var(--spacing-size-l) 0;
   border-top: 1px solid var(--borde-sutil);
   border-bottom: 1px solid var(--borde-sutil);
 }
 
-.pie__stat {
+.pie__pulso-info {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  margin: 0;
-  flex: 1;
-  min-width: 0;
+  gap: 0.35rem;
+  flex-shrink: 0;
 }
 
-.pie__stat-num {
+.pie__pulso-cifra {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  font-family: var(--fuente-display);
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  color: var(--texto-principal);
+  gap: 0.55rem;
+  margin: 0;
 }
 
-.pie__stat-label {
-  @include etiqueta-tecnica(var(--texto-suave));
-}
-
-.pie__stat-punto {
+.pie__pulso-punto {
   position: relative;
   width: 0.5rem;
   height: 0.5rem;
   flex-shrink: 0;
   background: var(--naranja-normal);
   border-radius: 50%;
+  animation: pie-punto-respira 2.6s ease-in-out infinite;
 }
 
-.pie__stat-punto::after {
+.pie__pulso-punto::before {
   content: '';
   position: absolute;
-  inset: -0.3rem;
+  inset: -0.45rem;
   border-radius: 50%;
-  background: var(--naranja-normal);
-  opacity: 0.5;
-  animation: pie-estado-latido 2s ease-out infinite;
+  background: radial-gradient(circle, var(--naranja-normal) 0%, transparent 68%);
+  opacity: 0.45;
+  animation: pie-halo-respira 2.6s ease-in-out infinite;
 }
 
-.pie__stat-division {
-  width: 1px;
-  align-self: stretch;
+.pie__pulso-punto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--naranja-normal);
+  animation: pie-sonar 2.6s ease-out infinite;
+}
+
+.pie__pulso-num {
+  font-family: var(--fuente-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--texto-principal);
+}
+
+.pie__pulso-num-sufijo {
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+}
+
+.pie__pulso-caption {
+  @include etiqueta-tecnica(var(--texto-suave));
+  margin: 0;
+}
+
+/* Línea de latido que se desliza sin fin (monitor en vivo) */
+.pie__pulso-linea {
+  position: relative;
+  flex: 1;
+  min-width: 4rem;
+  height: 2.25rem;
+  overflow: hidden;
+  color: var(--naranja-normal);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 82%, transparent 100%);
+}
+
+.pie__pulso-track {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  animation: pie-ekg-desliza 5s linear infinite;
+}
+
+.pie__pulso-onda {
+  flex: 1 0 50%;
+  width: 50%;
+  height: 100%;
+  opacity: 0.85;
+}
+
+/* Segmento naranja brillante de energía, antes del contador semanal */
+.pie__pulso-chispa {
+  width: 2.75rem;
+  height: 0.3rem;
   flex-shrink: 0;
-  background: var(--borde-sutil);
+  border-radius: var(--radius-full);
+  background: var(--gradiente-acento);
+  box-shadow: 0 0 0.75rem var(--naranja-glow-fuerte);
+  animation: pie-chispa-late 2.6s ease-in-out infinite;
+}
+
+.pie__pulso-semana {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin: 0;
+  flex-shrink: 0;
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.pie__pulso-semana-num {
+  font-weight: var(--font-weight-semibold);
+  color: var(--naranja-texto);
 }
 
 /* ════════════ INFERIOR ════════════ */
@@ -625,22 +713,71 @@ app-footer {
 /* ════════════ ANIMACIONES ════════════ */
 @keyframes pie-cofira-brillo {
   0% {
-    background-position: 130% 0, 0 0;
+    background-position: 200% 0, 0 0;
   }
-  45%,
+  55%,
   100% {
-    background-position: -30% 0, 0 0;
+    background-position: -80% 0, 0 0;
   }
 }
 
-@keyframes pie-estado-latido {
-  0% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
+/* Núcleo del punto latiendo suavemente */
+@keyframes pie-punto-respira {
+  0%,
   100% {
-    transform: scale(2.4);
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+
+/* Halo difuso del punto respirando */
+@keyframes pie-halo-respira {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.28;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.55;
+  }
+}
+
+/* Onda sonar: se expande, se desvanece y descansa */
+@keyframes pie-sonar {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(3.2);
     opacity: 0;
+  }
+}
+
+/* Desliza la línea EKG exactamente una mitad: bucle sin costura */
+@keyframes pie-ekg-desliza {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Latido de la chispa de energía */
+@keyframes pie-chispa-late {
+  0%,
+  100% {
+    transform: scaleX(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleX(1.05);
+    opacity: 1;
   }
 }
 
@@ -649,11 +786,35 @@ app-footer {
     animation: none;
   }
 
+  .pie__estado-punto {
+    animation: none;
+  }
+
+  .pie__estado-punto::before {
+    animation: none;
+  }
+
   .pie__estado-punto::after {
     animation: none;
   }
 
-  .pie__stat-punto::after {
+  .pie__pulso-punto {
+    animation: none;
+  }
+
+  .pie__pulso-punto::before {
+    animation: none;
+  }
+
+  .pie__pulso-punto::after {
+    animation: none;
+  }
+
+  .pie__pulso-track {
+    animation: none;
+  }
+
+  .pie__pulso-chispa {
     animation: none;
   }
 }
@@ -692,10 +853,6 @@ app-footer {
   .pie__contacto {
     flex-basis: 40%;
   }
-
-  .pie__stat-num {
-    font-size: var(--font-size-2xl);
-  }
 }
 
 @include responsive-down('sm') {
@@ -723,7 +880,12 @@ app-footer {
     gap: var(--spacing-size-m);
   }
 
-  .pie__stat-division {
+  .pie__pulso-linea {
+    flex: none;
+    width: 100%;
+  }
+
+  .pie__pulso-chispa {
     display: none;
   }
 }
