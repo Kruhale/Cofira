@@ -152,6 +152,8 @@ export class RastroScroll {
     /* La etiqueta viaja con la ola */
     if (this.elementoEtiqueta) {
       this.elementoEtiqueta.style.top = `${progresoLimitado * 100}%`;
+      /* Cerca del fondo se desvanece para no pisarse con el footer */
+      this.elementoEtiqueta.style.opacity = progresoLimitado > 0.94 ? '0' : '1';
     }
 
     /* Sección actual: la última cuya fracción ya quedó atrás */
