@@ -866,6 +866,17 @@ app-footer {
   }
 }
 
+/* Respiración suave de la traza, sincronizada con el resto de la banda */
+@keyframes pie-onda-late {
+  0%,
+  100% {
+    opacity: 0.78;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pie__logo-letra {
     animation: none;
@@ -904,6 +915,10 @@ app-footer {
   }
 
   .pie__pulso-faro {
+    animation: none;
+  }
+
+  .pie__pulso-onda {
     animation: none;
   }
 }
