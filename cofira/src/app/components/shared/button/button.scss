@@ -265,6 +265,30 @@
   box-shadow: none;
 }
 
+/* Disabled del primario: en vez de bajar la opacidad del cristal cálido (que lo
+   deja turbio/embarrado), se vuelve una pieza NEUTRA y limpia conservando el
+   chaflán — lee como "inactivo" sin ensuciar. Tematiza solo. */
+.boton--primario:disabled,
+.boton--primario.boton--deshabilitado {
+  opacity: 1;
+  color: var(--texto-suave);
+  background: var(--borde-medio);
+  filter: none;
+}
+
+.boton--primario:disabled::before,
+.boton--primario.boton--deshabilitado::before {
+  background: var(--superficie-2);
+}
+
+.boton--primario:disabled::after,
+.boton--primario.boton--deshabilitado::after {
+  background: var(--texto-suave);
+  box-shadow:
+    -0.3rem 0.3rem 0 var(--borde-medio),
+    0.3rem -0.3rem 0 var(--texto-suave);
+}
+
 .boton--completo {
   width: 100%;
 }

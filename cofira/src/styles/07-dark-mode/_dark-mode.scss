@@ -487,24 +487,6 @@
     color: var(--negro-normal);
   }
 
-  app-onboarding .step-measurements__input {
-    background-color: var(--oscuro-onboarding-input-fondo);
-    border-color: var(--oscuro-onboarding-input-borde);
-    color: var(--oscuro-texto-principal);
-  }
-
-  app-onboarding .step-target-weight__input {
-    background-color: var(--oscuro-onboarding-input-fondo);
-    border-color: var(--oscuro-onboarding-input-borde);
-    color: var(--oscuro-texto-principal);
-  }
-
-  app-onboarding .step-birthdate__input {
-    background-color: var(--oscuro-onboarding-input-fondo);
-    border-color: var(--oscuro-onboarding-input-borde);
-    color: var(--oscuro-texto-principal);
-  }
-
   app-onboarding .step-register__input::placeholder {
     color: var(--oscuro-texto-suave);
   }
