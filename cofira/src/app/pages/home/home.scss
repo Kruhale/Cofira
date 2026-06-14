@@ -3053,7 +3053,9 @@
 .funcionalidades__wid-flotante {
   position: absolute;
   top: 13%;
-  right: 25.5rem;
+  /* Atada al móvil (que está en left:41%), no al nav: así viaja con él como un
+     clúster y no deja el hueco gigante entre móvil y tarjeta a anchos amplios. */
+  left: calc(41% + 9rem);
   z-index: 3;
   display: flex;
   flex-direction: column;
@@ -3119,7 +3121,8 @@
 .funcionalidades__wid-watch {
   position: absolute;
   top: 52%;
-  right: 26.5rem;
+  /* Atada al móvil como la tarjeta de Pasos (clúster cohesionado). */
+  left: calc(41% + 9.5rem);
   z-index: 3;
   width: 9.5rem;
   height: 11rem;
