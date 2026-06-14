@@ -102,8 +102,20 @@ export class CuerpoAgua {
       escena.destruir();
     });
 
+    // Movimiento reducido: nada de animación, pero el canvas (sin preserveDrawingBuffer)
+    // se vacía tras componer si no se repinta. Repintamos a tiempo fijo cada 500 ms
+    // —fotograma idéntico, sin movimiento percibido— y solo si el panel está activo.
     if (this.animaciones.movimientoReducido()) {
-      escena.renderizar(0);
+      const visual = lienzo.closest('.funcionalidades__visual');
+      let idReducido = 0;
+      const repintarLento = () => {
+        if (!visual || visual.classList.contains('funcionalidades__visual--activo')) {
+          escena.renderizar(0);
+        }
+        idReducido = window.setTimeout(repintarLento, 500);
+      };
+      repintarLento();
+      this.destroyRef.onDestroy(() => window.clearTimeout(idReducido));
       return;
     }
 
