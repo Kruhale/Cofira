@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {provideZonelessChangeDetection} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FormSelect } from './form-select';
+import {FormSelect} from './form-select';
 
 describe('FormSelect', () => {
   let component: FormSelect;
@@ -8,9 +9,9 @@ describe('FormSelect', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormSelect]
-    })
-    .compileComponents();
+      imports: [FormSelect],
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FormSelect);
     component = fixture.componentInstance;

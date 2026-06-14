@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {provideZonelessChangeDetection} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FormLogin } from './form-login';
+import {FormLogin} from './form-login';
 
 describe('FormLogin', () => {
   let component: FormLogin;
@@ -8,9 +9,9 @@ describe('FormLogin', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormLogin]
-    })
-    .compileComponents();
+      imports: [FormLogin],
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FormLogin);
     component = fixture.componentInstance;

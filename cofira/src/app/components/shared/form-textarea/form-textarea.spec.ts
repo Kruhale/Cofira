@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {provideZonelessChangeDetection} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FormTextarea } from './form-textarea';
+import {FormTextarea} from './form-textarea';
 
 describe('FormTextarea', () => {
   let component: FormTextarea;
@@ -8,12 +9,14 @@ describe('FormTextarea', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormTextarea]
-    })
-    .compileComponents();
+      imports: [FormTextarea],
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FormTextarea);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('etiqueta', 'Test');
+    fixture.componentRef.setInput('nombre', 'test');
     fixture.detectChanges();
   });
 

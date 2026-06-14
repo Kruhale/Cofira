@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {provideZonelessChangeDetection} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { Notification } from './notification';
+import {Notification} from './notification';
 
 describe('Notification', () => {
   let component: Notification;
@@ -8,9 +9,9 @@ describe('Notification', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Notification]
-    })
-    .compileComponents();
+      imports: [Notification],
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Notification);
     component = fixture.componentInstance;
