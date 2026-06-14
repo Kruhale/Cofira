@@ -191,10 +191,12 @@ app-footer {
 }
 
 .pie__logo-letra {
-  font-family: var(--fuente-display);
-  font-size: clamp(3.5rem, 8vw, 6.5rem);
-  font-weight: 900;
-  letter-spacing: -0.04em;
+  /* Anton: display ultra-condensada e industrial, como el wordmark de la #11
+     (mucho mas caracter que la Satoshi redondeada). Solo aqui, no global. */
+  font-family: 'Anton', var(--fuente-display);
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  font-weight: 400;
+  letter-spacing: 0.015em;
   /* Naranja liquido glossy (ref #11): filo brillante arriba, banda oscura,
      cuerpo naranja mojado con reflejo especular que barre y filo abajo.
      5 capas recortadas al texto: especular + filo superior + 2 olas molten
@@ -536,11 +538,32 @@ app-footer {
   position: relative;
   flex: 1;
   min-width: 4rem;
-  height: 2.25rem;
+  height: 2.5rem;
   overflow: hidden;
   color: var(--naranja-normal);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 82%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 82%, transparent 100%);
+  /* Degradado "tinta fresca" de monitor EKG en papel: la traza nace brillante en
+     el cabezal (derecha ~92%) y se atenúa hacia la izquierda (tinta secándose),
+     con ambos extremos fundidos para integrarse en la banda. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.16) 10%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.92) 86%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.16) 10%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.92) 86%, #000 92%, transparent 100%);
+}
+
+/* Graticula de osciloscopio muy sutil tras la traza */
+.pie__pulso-rejilla {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, var(--borde-sutil) 1px, transparent 1px),
+    linear-gradient(
+      transparent calc(50% - 0.5px),
+      var(--borde-medio) calc(50% - 0.5px),
+      var(--borde-medio) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+  background-size: 2rem 100%, 100% 100%;
+  opacity: 0.6;
 }
 
 .pie__pulso-track {
