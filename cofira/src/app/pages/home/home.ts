@@ -29,6 +29,7 @@ interface PalabraManifiesto {
 interface Funcionalidad {
   titulo: string;
   descripcion: string;
+  categoria: string;
 }
 
 interface ComidaRegistro {
@@ -47,15 +48,38 @@ interface MacroComida {
   color: string;
 }
 
-interface PuntoGrafica {
+interface PuntoMetrica {
   mes: string;
   etiqueta: string;
+  valor: number;
+  media: number;
+  cambio: string;
+  pct: number;
+}
+
+interface MetricaProgreso {
+  clave: string;
+  etiqueta: string;
+  unidad: string;
+  actual: string;
+  delta: string;
+  sube: boolean;
+  periodo: string;
+  objetivo: number;
+  objetivoEtiqueta: string;
+  pctObjetivo: number;
+  restante: string;
+  rangoMin: number;
+  rangoMax: number;
+  ejes: number[];
+  puntos: PuntoMetrica[];
+}
+
+// Punto de la serie ya proyectado al lienzo SVG (x, y derivados del valor real)
+interface PuntoTrazado extends PuntoMetrica {
   x: number;
   y: number;
-  peso: string;
-  cambio: string;
-  media: string;
-  objetivoPct: number;
+  yMedia: number;
 }
 
 interface Paso {
@@ -188,26 +212,32 @@ export class Home {
     {
       titulo: 'Gráficos de progreso',
       descripcion: 'Visualiza peso, fuerza y macros con gráficas claras que cuentan tu evolución.',
+      categoria: 'Seguimiento',
     },
     {
       titulo: 'Fotos de progreso',
       descripcion: 'Compara tu transformación mes a mes con un timeline visual privado.',
+      categoria: 'Seguimiento',
     },
     {
       titulo: 'Ayuno intermitente',
       descripcion: 'Controla tus ventanas de ayuno y sincronízalas con tu plan nutricional.',
+      categoria: 'Nutrición',
     },
     {
       titulo: 'Registro de agua',
       descripcion: 'Mantén tu hidratación al día con un objetivo diario y recordatorios.',
+      categoria: 'Hidratación',
     },
     {
       titulo: 'Widgets',
       descripcion: 'Lleva tus métricas clave siempre a la vista, allá donde estés.',
+      categoria: 'Sistema',
     },
     {
       titulo: 'Registro de comidas',
       descripcion: 'Apunta lo que comes con análisis por foto y base de alimentos.',
+      categoria: 'Nutrición',
     },
   ];
 
@@ -254,77 +284,194 @@ export class Home {
     { nombre: 'Grasas', gramos: 54, objetivo: 80, pct: 68, color: 'hsl(43, 70%, 78%)' },
   ];
 
-  puntosGrafica: PuntoGrafica[] = [
+  /* Métricas del showcase "Gráficos de progreso". Cada pestaña (Peso/Fuerza/
+     Cintura) trae su serie real de 6 meses; la geometría del SVG (x, y y las
+     curvas suaves) se DERIVA de los valores, así las tres pestañas son datos de
+     verdad y no maquetas dibujadas a mano. */
+  metricas: MetricaProgreso[] = [
     {
-      mes: 'Ene',
-      etiqueta: 'Enero',
-      x: 8,
-      y: 30,
-      peso: '78,6',
-      cambio: 'inicio',
-      media: '78,6',
-      objetivoPct: 0,
+      clave: 'peso',
+      etiqueta: 'Peso',
+      unidad: 'kg',
+      actual: '76,4',
+      delta: '−2,2 kg',
+      sube: false,
+      periodo: '6 meses',
+      objetivo: 74,
+      objetivoEtiqueta: '74,0 kg',
+      pctObjetivo: 48,
+      restante: 'Te faltan 2,4 kg',
+      rangoMin: 73.4,
+      rangoMax: 79,
+      ejes: [78, 76, 74],
+      puntos: [
+        { mes: 'Ene', etiqueta: 'Enero', valor: 78.6, media: 78.6, cambio: 'inicio', pct: 0 },
+        { mes: 'Feb', etiqueta: 'Febrero', valor: 78.1, media: 78.3, cambio: '−0,5 kg', pct: 11 },
+        { mes: 'Mar', etiqueta: 'Marzo', valor: 77.4, media: 77.7, cambio: '−0,7 kg', pct: 26 },
+        { mes: 'Abr', etiqueta: 'Abril', valor: 76.9, media: 77.1, cambio: '−0,5 kg', pct: 37 },
+        { mes: 'May', etiqueta: 'Mayo', valor: 76.6, media: 76.8, cambio: '−0,3 kg', pct: 43 },
+        {
+          mes: 'Jun',
+          etiqueta: 'Junio · hoy',
+          valor: 76.4,
+          media: 76.5,
+          cambio: '−0,2 kg',
+          pct: 48,
+        },
+      ],
     },
     {
-      mes: 'Feb',
-      etiqueta: 'Febrero',
-      x: 85,
-      y: 50,
-      peso: '78,1',
-      cambio: '−0,5 kg',
-      media: '78,3',
-      objetivoPct: 11,
+      clave: 'fuerza',
+      etiqueta: 'Fuerza',
+      unidad: 'kg',
+      actual: '81,0',
+      delta: '+18,5 kg',
+      sube: true,
+      periodo: '6 meses',
+      objetivo: 90,
+      objetivoEtiqueta: '90,0 kg',
+      pctObjetivo: 67,
+      restante: 'Te faltan 9,0 kg',
+      rangoMin: 60,
+      rangoMax: 92,
+      ejes: [90, 76, 62],
+      puntos: [
+        { mes: 'Ene', etiqueta: 'Enero', valor: 62.5, media: 62.5, cambio: 'inicio', pct: 0 },
+        { mes: 'Feb', etiqueta: 'Febrero', valor: 66, media: 64.5, cambio: '+3,5 kg', pct: 13 },
+        { mes: 'Mar', etiqueta: 'Marzo', valor: 70.5, media: 68, cambio: '+4,5 kg', pct: 29 },
+        { mes: 'Abr', etiqueta: 'Abril', valor: 74, media: 72, cambio: '+3,5 kg', pct: 42 },
+        { mes: 'May', etiqueta: 'Mayo', valor: 78, media: 76, cambio: '+4,0 kg', pct: 56 },
+        { mes: 'Jun', etiqueta: 'Junio · hoy', valor: 81, media: 79.2, cambio: '+3,0 kg', pct: 67 },
+      ],
     },
     {
-      mes: 'Mar',
-      etiqueta: 'Marzo',
-      x: 162,
-      y: 79,
-      peso: '77,4',
-      cambio: '−0,7 kg',
-      media: '77,7',
-      objetivoPct: 26,
-    },
-    {
-      mes: 'Abr',
-      etiqueta: 'Abril',
-      x: 239,
-      y: 100,
-      peso: '76,9',
-      cambio: '−0,5 kg',
-      media: '77,1',
-      objetivoPct: 37,
-    },
-    {
-      mes: 'May',
-      etiqueta: 'Mayo',
-      x: 316,
-      y: 112,
-      peso: '76,6',
-      cambio: '−0,3 kg',
-      media: '76,8',
-      objetivoPct: 43,
-    },
-    {
-      mes: 'Jun',
-      etiqueta: 'Junio · hoy',
-      x: 392,
-      y: 120,
-      peso: '76,4',
-      cambio: '−0,2 kg',
-      media: '76,5',
-      objetivoPct: 48,
+      clave: 'cintura',
+      etiqueta: 'Cintura',
+      unidad: 'cm',
+      actual: '84,5',
+      delta: '−7,5 cm',
+      sube: false,
+      periodo: '6 meses',
+      objetivo: 82,
+      objetivoEtiqueta: '82,0 cm',
+      pctObjetivo: 75,
+      restante: 'Te faltan 2,5 cm',
+      rangoMin: 81,
+      rangoMax: 93,
+      ejes: [92, 87, 82],
+      puntos: [
+        { mes: 'Ene', etiqueta: 'Enero', valor: 92, media: 92, cambio: 'inicio', pct: 0 },
+        { mes: 'Feb', etiqueta: 'Febrero', valor: 90.2, media: 91, cambio: '−1,8 cm', pct: 18 },
+        { mes: 'Mar', etiqueta: 'Marzo', valor: 88.4, media: 89.4, cambio: '−1,8 cm', pct: 36 },
+        { mes: 'Abr', etiqueta: 'Abril', valor: 86.8, media: 87.6, cambio: '−1,6 cm', pct: 52 },
+        { mes: 'May', etiqueta: 'Mayo', valor: 85.5, media: 86.2, cambio: '−1,3 cm', pct: 65 },
+        {
+          mes: 'Jun',
+          etiqueta: 'Junio · hoy',
+          valor: 84.5,
+          media: 85.1,
+          cambio: '−1,0 cm',
+          pct: 75,
+        },
+      ],
     },
   ];
 
+  // Geometría del lienzo (viewBox 0 0 400 150): X regular por mes, Y proyectada
+  private readonly ejeX = [8, 84.8, 161.6, 238.4, 315.2, 392];
+  private readonly lienzoArriba = 22;
+  private readonly lienzoAbajo = 116;
+  private readonly lienzoPiso = 146;
+
+  indiceMetrica = signal(0);
   indicePuntoActivo = signal<number | null>(null);
 
-  // El tooltip mantiene los últimos datos durante el fundido de salida
-  puntoMostrado(): PuntoGrafica {
-    const indiceActivo = this.indicePuntoActivo();
-    const indiceFinal = this.puntosGrafica.length - 1;
-    return this.puntosGrafica[indiceActivo ?? indiceFinal];
+  metricaActiva = computed(() => this.metricas[this.indiceMetrica()]);
+
+  seleccionarMetrica(indiceMetrica: number): void {
+    this.indiceMetrica.set(indiceMetrica);
+    this.indicePuntoActivo.set(null);
   }
+
+  private redondear1(valor: number): number {
+    return Math.round(valor * 10) / 10;
+  }
+
+  // Proyecta un valor de la métrica a la coordenada Y del lienzo (más valor = más arriba)
+  private proyectarY(valor: number, metrica: MetricaProgreso): number {
+    const proporcion = (metrica.rangoMax - valor) / (metrica.rangoMax - metrica.rangoMin);
+    const y = this.lienzoArriba + proporcion * (this.lienzoAbajo - this.lienzoArriba);
+    return this.redondear1(y);
+  }
+
+  // Serie de la métrica activa ya proyectada al lienzo
+  puntosTrazados = computed<PuntoTrazado[]>(() => {
+    const metrica = this.metricaActiva();
+    return metrica.puntos.map((punto, indice) => ({
+      ...punto,
+      x: this.ejeX[indice],
+      y: this.proyectarY(punto.valor, metrica),
+      yMedia: this.proyectarY(punto.media, metrica),
+    }));
+  });
+
+  // Curva suave (Catmull-Rom → Bézier cúbica) que pasa por todos los puntos
+  private trazarCurva(puntos: { x: number; y: number }[]): string {
+    if (puntos.length === 0) {
+      return '';
+    }
+
+    const tension = 0.18;
+    let ruta = `M${puntos[0].x} ${puntos[0].y}`;
+
+    for (let indice = 0; indice < puntos.length - 1; indice += 1) {
+      const anterior = puntos[indice === 0 ? 0 : indice - 1];
+      const actual = puntos[indice];
+      const siguiente = puntos[indice + 1];
+      const posterior = puntos[Math.min(indice + 2, puntos.length - 1)];
+
+      const control1x = this.redondear1(actual.x + (siguiente.x - anterior.x) * tension);
+      const control1y = this.redondear1(actual.y + (siguiente.y - anterior.y) * tension);
+      const control2x = this.redondear1(siguiente.x - (posterior.x - actual.x) * tension);
+      const control2y = this.redondear1(siguiente.y - (posterior.y - actual.y) * tension);
+
+      ruta += ` C${control1x} ${control1y} ${control2x} ${control2y} ${siguiente.x} ${siguiente.y}`;
+    }
+
+    return ruta;
+  }
+
+  rutaLinea = computed(() =>
+    this.trazarCurva(this.puntosTrazados().map((punto) => ({ x: punto.x, y: punto.y }))),
+  );
+
+  rutaArea = computed(() => `${this.rutaLinea()} L392 ${this.lienzoPiso} L8 ${this.lienzoPiso} Z`);
+
+  rutaMedia = computed(() =>
+    this.trazarCurva(this.puntosTrazados().map((punto) => ({ x: punto.x, y: punto.yMedia }))),
+  );
+
+  objetivoY = computed(() => this.proyectarY(this.metricaActiva().objetivo, this.metricaActiva()));
+
+  ejesTrazados = computed(() =>
+    this.metricaActiva().ejes.map((valor) => ({
+      valor,
+      y: this.proyectarY(valor, this.metricaActiva()),
+    })),
+  );
+
+  // El tooltip mantiene los últimos datos durante el fundido de salida
+  puntoMostrado = computed<PuntoTrazado>(() => {
+    const puntos = this.puntosTrazados();
+    const indiceActivo = this.indicePuntoActivo();
+    return puntos[indiceActivo ?? puntos.length - 1];
+  });
+
+  // Punto "actual": el último de la serie, marcado siempre como dato vigente
+  puntoActual = computed<PuntoTrazado>(() => {
+    const puntos = this.puntosTrazados();
+    return puntos[puntos.length - 1];
+  });
 
   seleccionarPunto(indicePunto: number): void {
     this.indicePuntoActivo.set(indicePunto);
@@ -332,6 +479,11 @@ export class Home {
 
   restaurarPunto(): void {
     this.indicePuntoActivo.set(null);
+  }
+
+  // Número decimal con coma (es-ES) para el tooltip: 76.4 → "76,4"
+  comaDecimal(valor: number): string {
+    return valor.toFixed(1).replace('.', ',');
   }
 
   fotosAntes = [

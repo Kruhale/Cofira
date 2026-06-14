@@ -264,57 +264,100 @@
           [class.funcionalidades__visual--oscuro]="indice === 2 || indice === 3"
           aria-hidden="true">
           <span class="funcionalidades__visual-cabecera">
+            <span class="funcionalidades__visual-eyebrow">Función 0{{ indice + 1 }} · {{ funcionalidad.categoria }}</span>
             <span class="funcionalidades__visual-titulo">{{ funcionalidad.titulo }}</span>
           </span>
 
           @switch (indice) {
             @case (0) {
               <span class="funcionalidades__grafica">
-                <span class="funcionalidades__grafica-resumen">
-                  <img
-                    class="funcionalidades__grafica-avatar"
-                    src="/assets/images/soyYo-200w.webp"
-                    alt=""
-                    width="44"
-                    height="44">
-                  <span class="funcionalidades__grafica-persona">
-                    <span class="funcionalidades__grafica-nombre">Alejandro</span>
-                    <span class="funcionalidades__grafica-periodo">Últimos 6 meses</span>
+                <span class="funcionalidades__grafica-barra">
+                  <span class="funcionalidades__grafica-resumen">
+                    <img
+                      class="funcionalidades__grafica-avatar"
+                      src="/assets/images/soyYo-200w.webp"
+                      alt=""
+                      width="44"
+                      height="44">
+                    <span class="funcionalidades__grafica-persona">
+                      <span class="funcionalidades__grafica-nombre">Alejandro</span>
+                      <span class="funcionalidades__grafica-periodo">Últimos 6 meses</span>
+                    </span>
                   </span>
-                  <span class="funcionalidades__grafica-cifras">
-                    <span class="funcionalidades__grafica-cifra">
-                      <span class="funcionalidades__grafica-cifra-etiqueta">Actual</span>
-                      <span class="funcionalidades__grafica-cifra-valor">76,4 kg</span>
-                    </span>
-                    <span class="funcionalidades__grafica-cifra">
-                      <span class="funcionalidades__grafica-cifra-etiqueta">Cambio</span>
-                      <span class="funcionalidades__grafica-cifra-valor funcionalidades__grafica-cifra-valor--acento">−4,2 kg</span>
-                    </span>
-                    <span class="funcionalidades__grafica-cifra">
-                      <span class="funcionalidades__grafica-cifra-etiqueta">Objetivo</span>
-                      <span class="funcionalidades__grafica-cifra-valor">74,0 kg</span>
-                    </span>
+
+                  <span class="funcionalidades__segmento">
+                    @for (metrica of metricas; track metrica.clave; let indiceMet = $index) {
+                      <button
+                        type="button"
+                        tabindex="-1"
+                        class="funcionalidades__segmento-opcion"
+                        [class.funcionalidades__segmento-opcion--activa]="indiceMet === indiceMetrica()"
+                        (click)="seleccionarMetrica(indiceMet)">
+                        {{ metrica.etiqueta }}
+                      </button>
+                    }
                   </span>
                 </span>
 
+                <span class="funcionalidades__grafica-cabecera">
+                  <span class="funcionalidades__grafica-hero">
+                    <span class="funcionalidades__grafica-valor">
+                      <span class="funcionalidades__grafica-valor-num">{{ metricaActiva().actual }}</span>
+                      <span class="funcionalidades__grafica-valor-unidad">{{ metricaActiva().unidad }}</span>
+                    </span>
+                    <span class="funcionalidades__grafica-delta">
+                      <svg
+                        class="funcionalidades__grafica-delta-icono"
+                        [class.funcionalidades__grafica-delta-icono--sube]="metricaActiva().sube"
+                        viewBox="0 0 12 12"
+                        aria-hidden="true">
+                        <path d="M6 9 L1.6 3.2 H10.4 Z"/>
+                      </svg>
+                      <span class="funcionalidades__grafica-delta-valor">{{ metricaActiva().delta }}</span>
+                      <span class="funcionalidades__grafica-delta-periodo">· {{ metricaActiva().periodo }}</span>
+                    </span>
+                  </span>
+
+                  <span class="funcionalidades__grafica-meta">
+                    <span class="funcionalidades__grafica-meta-cab">
+                      <span class="funcionalidades__grafica-meta-pct">{{ metricaActiva().pctObjetivo }}%</span>
+                      <span class="funcionalidades__grafica-meta-hacia">hacia {{ metricaActiva().objetivoEtiqueta }}</span>
+                    </span>
+                    <span class="funcionalidades__grafica-meta-barra">
+                      <span
+                        class="funcionalidades__grafica-meta-relleno"
+                        [style.width.%]="metricaActiva().pctObjetivo"></span>
+                    </span>
+                    <span class="funcionalidades__grafica-meta-resto">{{ metricaActiva().restante }}</span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__grafica-leyenda">
+                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--peso">{{ metricaActiva().etiqueta }}</span>
+                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--media">Media 7 días</span>
+                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--objetivo">Objetivo</span>
+                </span>
+
                 <span class="funcionalidades__grafica-lienzo" (mouseleave)="restaurarPunto()">
-                  <svg class="funcionalidades__grafica-svg" viewBox="0 0 400 190">
+                  <svg class="funcionalidades__grafica-svg" viewBox="0 0 400 150">
                     <defs>
                       <linearGradient id="gradientePeso" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="var(--naranja-normal)" stop-opacity="0.22"/>
+                        <stop offset="0%" stop-color="var(--naranja-normal)" stop-opacity="0.30"/>
                         <stop offset="100%" stop-color="var(--naranja-normal)" stop-opacity="0"/>
                       </linearGradient>
                     </defs>
 
-                    <line x1="8" y1="55" x2="392" y2="55" class="funcionalidades__grafica-guia"/>
-                    <line x1="8" y1="96" x2="392" y2="96" class="funcionalidades__grafica-guia"/>
-                    <line x1="8" y1="137" x2="392" y2="137" class="funcionalidades__grafica-guia"/>
-                    <text x="2" y="51" class="funcionalidades__grafica-eje">78</text>
-                    <text x="2" y="92" class="funcionalidades__grafica-eje">77</text>
-                    <text x="2" y="133" class="funcionalidades__grafica-eje">76</text>
+                    @for (eje of ejesTrazados(); track eje.valor) {
+                      <line x1="8" [attr.y1]="eje.y" x2="392" [attr.y2]="eje.y" class="funcionalidades__grafica-guia"/>
+                      <text x="2" [attr.y]="eje.y - 4" class="funcionalidades__grafica-eje">{{ eje.valor }}</text>
+                    }
 
-                    <line x1="8" y1="170" x2="392" y2="170" class="funcionalidades__grafica-objetivo"/>
-                    <text x="318" y="164" class="funcionalidades__grafica-eje funcionalidades__grafica-eje--acento">objetivo 74,0</text>
+                    <line x1="8" [attr.y1]="objetivoY()" x2="392" [attr.y2]="objetivoY()" class="funcionalidades__grafica-objetivo"/>
+                    <text
+                      x="390"
+                      [attr.y]="objetivoY() - 5"
+                      text-anchor="end"
+                      class="funcionalidades__grafica-eje funcionalidades__grafica-eje--acento">objetivo {{ metricaActiva().objetivoEtiqueta }}</text>
 
                     @if (indicePuntoActivo() !== null) {
                       <line
@@ -322,19 +365,15 @@
                         [attr.x1]="puntoMostrado().x"
                         [attr.y1]="puntoMostrado().y"
                         [attr.x2]="puntoMostrado().x"
-                        y2="190"/>
+                        y2="150"/>
                     }
 
-                    <path
-                      class="funcionalidades__grafica-area"
-                      d="M8 30 C40 36 60 42 85 50 C115 60 135 68 162 79 C190 90 215 95 239 100 C270 106 292 109 316 112 C342 115 370 118 392 120 L392 190 L8 190 Z"
-                      fill="url(#gradientePeso)"/>
-                    <path
-                      class="funcionalidades__grafica-media"
-                      d="M8 36 C60 46 120 64 180 82 C240 98 320 110 392 115"/>
-                    <path
-                      class="funcionalidades__grafica-linea"
-                      d="M8 30 C40 36 60 42 85 50 C115 60 135 68 162 79 C190 90 215 95 239 100 C270 106 292 109 316 112 C342 115 370 118 392 120"/>
+                    <path class="funcionalidades__grafica-area" [attr.d]="rutaArea()" fill="url(#gradientePeso)"/>
+                    <path class="funcionalidades__grafica-media" [attr.d]="rutaMedia()"/>
+                    <path class="funcionalidades__grafica-linea" [attr.pathLength]="1" [attr.d]="rutaLinea()"/>
+
+                    <circle class="funcionalidades__grafica-actual-halo" [attr.cx]="puntoActual().x" [attr.cy]="puntoActual().y" r="6"/>
+                    <circle class="funcionalidades__grafica-actual" [attr.cx]="puntoActual().x" [attr.cy]="puntoActual().y" r="3.4"/>
 
                     @if (indicePuntoActivo() !== null) {
                       <circle
@@ -344,7 +383,7 @@
                         r="8"/>
                     }
 
-                    @for (punto of puntosGrafica; track punto.mes; let indicePunto = $index) {
+                    @for (punto of puntosTrazados(); track punto.mes; let indicePunto = $index) {
                       <circle
                         class="funcionalidades__grafica-punto"
                         [class.funcionalidades__grafica-punto--activo]="indicePunto === indicePuntoActivo()"
@@ -353,7 +392,7 @@
                         [attr.r]="indicePunto === indicePuntoActivo() ? 4.5 : 2.5"/>
                     }
 
-                    @for (punto of puntosGrafica; track punto.mes; let indicePunto = $index) {
+                    @for (punto of puntosTrazados(); track punto.mes; let indicePunto = $index) {
                       <circle
                         class="funcionalidades__grafica-zona"
                         [attr.cx]="punto.x"
@@ -369,22 +408,22 @@
                     [class.funcionalidades__grafica-tooltip--inicio]="(indicePuntoActivo() ?? 5) <= 1"
                     [class.funcionalidades__grafica-tooltip--fin]="(indicePuntoActivo() ?? 5) >= 4"
                     [style.left.%]="puntoMostrado().x / 4"
-                    [style.top.%]="puntoMostrado().y / 1.9">
+                    [style.top.%]="puntoMostrado().y / 1.5">
                     <span class="funcionalidades__grafica-tooltip-mes">{{ puntoMostrado().etiqueta }}</span>
-                    <span class="funcionalidades__grafica-tooltip-valor">{{ puntoMostrado().peso }} kg</span>
+                    <span class="funcionalidades__grafica-tooltip-valor">{{ comaDecimal(puntoMostrado().valor) }} {{ metricaActiva().unidad }}</span>
                     <span class="funcionalidades__grafica-tooltip-extra">{{ puntoMostrado().cambio }}</span>
                     <span class="funcionalidades__grafica-tooltip-fila">
                       <span>Media 7 días</span>
-                      <span class="funcionalidades__grafica-tooltip-cifra">{{ puntoMostrado().media }} kg</span>
+                      <span class="funcionalidades__grafica-tooltip-cifra">{{ comaDecimal(puntoMostrado().media) }} {{ metricaActiva().unidad }}</span>
                     </span>
                     <span class="funcionalidades__grafica-tooltip-fila">
-                      <span>Hacia 74,0 kg</span>
-                      <span class="funcionalidades__grafica-tooltip-cifra">{{ puntoMostrado().objetivoPct }} %</span>
+                      <span>Hacia {{ metricaActiva().objetivoEtiqueta }}</span>
+                      <span class="funcionalidades__grafica-tooltip-cifra">{{ puntoMostrado().pct }} %</span>
                     </span>
                     <span class="funcionalidades__grafica-tooltip-barra">
                       <span
                         class="funcionalidades__grafica-tooltip-barra-relleno"
-                        [style.width.%]="puntoMostrado().objetivoPct"></span>
+                        [style.width.%]="puntoMostrado().pct"></span>
                     </span>
                   </span>
                 </span>
@@ -392,15 +431,9 @@
                 <span class="funcionalidades__grafica-meses">
                   <span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span>
                 </span>
-
-                <span class="funcionalidades__grafica-leyenda">
-                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--peso">Peso</span>
-                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--media">Media 7 días</span>
-                  <span class="funcionalidades__leyenda-item funcionalidades__leyenda-item--objetivo">Objetivo</span>
-                </span>
               </span>
               <span class="funcionalidades__visual-pie">
-                <span class="funcionalidades__chip funcionalidades__chip--acento">−0,3 kg esta semana</span>
+                <span class="funcionalidades__chip funcionalidades__chip--acento">{{ puntoActual().cambio }} este mes</span>
                 <span class="funcionalidades__visual-dato">Sincronizado hoy a las 08:12</span>
               </span>
             }
@@ -621,18 +654,12 @@
 
                 <span class="funcionalidades__agua-panel">
                   <span class="funcionalidades__agua-stat funcionalidades__agua-stat--racha">
-                    <span class="funcionalidades__agua-stat-icono" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C9 6.5 7.5 8.8 7.5 12a4.5 4.5 0 0 0 9 0c0-1.7-.7-3.2-1.9-4.4-.3 1-1.1 1.7-2.1 1.7A1.9 1.9 0 0 1 10.6 7c0-1.5.6-2.8 1.4-4Z" /></svg>
-                    </span>
                     <span class="funcionalidades__agua-stat-texto">
                       <span class="funcionalidades__agua-stat-valor">9</span>
                       <span class="funcionalidades__agua-stat-label">días de racha</span>
                     </span>
                   </span>
                   <span class="funcionalidades__agua-stat">
-                    <span class="funcionalidades__agua-stat-icono" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z" /></svg>
-                    </span>
                     <span class="funcionalidades__agua-stat-texto">
                       <span class="funcionalidades__agua-stat-valor">2,1 L</span>
                       <span class="funcionalidades__agua-stat-label">media · 7 días</span>
