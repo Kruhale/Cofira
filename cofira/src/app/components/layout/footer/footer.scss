@@ -75,6 +75,9 @@ app-footer {
 
 .pie__cta-newsletter-texto {
   margin: 0;
+  /* Mismo retranqueo que el padding derecho del pill (0.4rem) para que el borde
+     derecho del texto coincida con el botón "Únete", no con el borde del pill. */
+  padding-right: 0.4rem;
   font-size: var(--font-size-sm);
   color: var(--texto-secundario);
 }
@@ -140,6 +143,8 @@ app-footer {
 
 .pie__cta-newsletter-nota {
   margin: 0;
+  /* Alineada con el botón "Únete" (mismo retranqueo que el texto de arriba). */
+  padding-right: 0.4rem;
   font-family: var(--fuente-mono);
   font-size: 0.6875rem; /* 11px */
   letter-spacing: 0.04em;
@@ -187,21 +192,24 @@ app-footer {
   font-size: clamp(3.5rem, 8vw, 6.5rem);
   font-weight: 900;
   letter-spacing: -0.04em;
-  /* Relleno de agua: letras casi llenas de naranja con la parte de arriba negra.
-     Capa 1 y 2: dos olas naranjas que se deslizan a distinta velocidad (mar).
-     Capa 3: base oscura que asoma por el hueco superior. Todo recortado al texto. */
+  /* Naranja liquido glossy (ref #11): filo brillante arriba, banda oscura,
+     cuerpo naranja mojado con reflejo especular que barre y filo abajo.
+     5 capas recortadas al texto: especular + filo superior + 2 olas molten
+     (mar, distinta velocidad) + base oscura. */
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='50' viewBox='0 0 120 50' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='o' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ff8a3c'/%3E%3Cstop offset='1' stop-color='%23e2580c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 8 Q30 0 60 8 T120 8 V50 H0 Z' fill='url(%23o)'/%3E%3Cpath d='M0 8 Q30 0 60 8 T120 8' fill='none' stroke='%23ffe0c0' stroke-width='2.5' opacity='0.72'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50' preserveAspectRatio='none'%3E%3Cpath d='M0 14 Q37 6 75 14 T150 14 V50 H0 Z' fill='%23bf4f0e'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, hsl(18, 35%, 6%) 0%, hsl(20, 45%, 8%) 50%, hsl(26, 70%, 15%) 100%);
-  background-repeat: repeat-x, repeat-x, no-repeat;
-  background-size: 4.5rem 68%, 6rem 60%, 100% 100%;
-  background-position: 0 100%, 0 100%, 0 0;
+    linear-gradient(102deg, transparent 42%, hsla(45, 100%, 97%, 0.4) 49%, hsla(42, 100%, 90%, 0.1) 53%, transparent 61%),
+    linear-gradient(180deg, hsla(40, 100%, 90%, 0.85) 0%, hsla(34, 100%, 78%, 0.3) 3%, transparent 7.5%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffa85a'/%3E%3Cstop offset='0.16' stop-color='%23f5731a'/%3E%3Cstop offset='0.62' stop-color='%23db5410'/%3E%3Cstop offset='0.9' stop-color='%23ec641a'/%3E%3Cstop offset='1' stop-color='%23ffa44e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 10 Q30 4 60 10 T120 10 V60 H0 Z' fill='url(%23m)'/%3E%3Cpath d='M0 10 Q30 4 60 10 T120 10' fill='none' stroke='%23ffe9d0' stroke-width='2.4' opacity='0.8'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='60' viewBox='0 0 150 60' preserveAspectRatio='none'%3E%3Cpath d='M0 16 Q37 9 75 16 T150 16 V60 H0 Z' fill='%23b8480c'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, hsl(20, 35%, 7%) 0%, hsl(20, 45%, 10%) 26%, hsl(24, 60%, 16%) 100%);
+  background-repeat: no-repeat, no-repeat, repeat-x, repeat-x, no-repeat;
+  background-size: 200% 100%, 100% 100%, 4.5rem 70%, 6rem 62%, 100% 100%;
+  background-position: 200% 0, 0 0, 0 100%, 0 100%, 0 0;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0.1rem 0.5rem hsla(24, 100%, 50%, 0.2));
-  animation: pie-cofira-ola 5s linear infinite;
+  filter: drop-shadow(0 0.12rem 0.5rem hsla(22, 100%, 50%, 0.22));
+  animation: pie-cofira-ola 5.5s linear infinite;
   transition: transform var(--duration-base) ease;
 }
 
@@ -691,13 +699,16 @@ app-footer {
 /* ════════════ ANIMACIONES ════════════ */
 @keyframes pie-cofira-ola {
   0% {
-    background-position: 0 100%, 0 100%, 0 0;
+    background-position: 200% 0, 0 0, 0 100%, 0 100%, 0 0;
   }
   50% {
-    background-position: -2.25rem 96%, -3rem 100%, 0 0;
+    background-position: 20% 0, 0 0, -2.25rem 94%, -3rem 100%, 0 0;
+  }
+  75% {
+    background-position: -80% 0, 0 0, -3.375rem 97%, -4.5rem 100%, 0 0;
   }
   100% {
-    background-position: -4.5rem 100%, -6rem 100%, 0 0;
+    background-position: -80% 0, 0 0, -4.5rem 100%, -6rem 100%, 0 0;
   }
 }
 
