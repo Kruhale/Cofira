@@ -584,14 +584,15 @@ app-footer {
   opacity: 0.2;
 }
 
-/* Cometa: segmento brillante que recorre el latido (dasharray + dashoffset), con
-   glow tintado. pathLength=100 → dash(34)+gap(66)=100 = bucle perfecto. */
+/* Cometa: un único segmento brillante que recorre el latido (dasharray + dashoffset),
+   con glow tintado. dash(102)+gap(198)=300 = una sola cabeza viajando por el trazo,
+   y el offset recorre exactamente ese período → bucle sin costura. */
 .pie__pulso-cometa {
   stroke: var(--naranja-normal);
-  stroke-dasharray: 34 66;
+  stroke-dasharray: 102 198;
   filter: drop-shadow(0 0 4px var(--naranja-glow-fuerte))
     drop-shadow(0 0 9px var(--naranja-glow-media));
-  animation: pie-cometa 3.4s linear infinite;
+  animation: pie-cometa 6s linear infinite;
 }
 
 /* En claro la banda va sobre superficie clara: la traza necesita más cuerpo y el
@@ -821,13 +822,14 @@ app-footer {
   }
 }
 
-/* Cometa recorriendo el latido: el dash se desliza por la traza (bucle perfecto). */
+/* Cometa recorriendo el latido: el dash se desliza por la traza (bucle perfecto).
+   Recorre -300 = dash(102)+gap(198), exactamente un período → sin salto al reiniciar. */
 @keyframes pie-cometa {
   from {
     stroke-dashoffset: 0;
   }
   to {
-    stroke-dashoffset: -100;
+    stroke-dashoffset: -300;
   }
 }
 
