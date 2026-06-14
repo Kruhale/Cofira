@@ -521,6 +521,20 @@
     linear-gradient(180deg, var(--superficie-1) 0%, var(--superficie-2) 100%);
 }
 
+/* Los devices (móvil, reloj, tarjetas flotantes) conservan su fondo oscuro literal
+   en modo claro —un móvil es oscuro—, así que su texto debe seguir siendo CLARO.
+   Reescalamos los tokens de texto a sus valores oscuros dentro de cada device para
+   que todo lo que use var(--texto-*) se vea (antes el número salía oscuro sobre
+   fondo oscuro = ilegible: el "lavado" del modo claro). */
+[data-theme='light'] .funcionalidades__wid-movil,
+[data-theme='light'] .funcionalidades__wid-watch,
+[data-theme='light'] .funcionalidades__wid-act,
+[data-theme='light'] .funcionalidades__wid-flotante {
+  --texto-principal: hsl(40, 8%, 96%);
+  --texto-secundario: hsla(40, 8%, 96%, 0.64);
+  --texto-suave: hsla(40, 8%, 96%, 0.40);
+}
+
 /* Fotos: el contenido (textos sueltos, sin fondo) usa literales CLAROS pensados
    para fondo oscuro; en claro hay que oscurecerlos para que contrasten. Las fotos
    y sus etiquetas-sobre-imagen conservan sus literales (van sobre la imagen). */
@@ -2735,7 +2749,7 @@
   font-family: var(--fuente-mono);
   font-size: 0.66rem;
   font-weight: 700;
-  color: hsl(140, 60%, 55%);
+  color: var(--naranja-normal);
 }
 
 .funcionalidades__wid-act-cuerpo {
@@ -3278,6 +3292,13 @@
   color: var(--texto-principal);
 }
 
+.funcionalidades__wid-flotante-u {
+  margin-left: 0.25rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
 .funcionalidades__wid-flotante-progreso {
   height: 0.32rem;
   border-radius: 99px;
@@ -3287,7 +3308,7 @@
 
 .funcionalidades__wid-flotante-relleno {
   display: block;
-  width: 84%;
+  width: 78%;
   height: 100%;
   border-radius: 99px;
   background: linear-gradient(90deg, hsl(30, 96%, 58%), var(--naranja-normal));
