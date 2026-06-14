@@ -2498,7 +2498,12 @@
 .funcionalidades__wid-info {
   position: absolute;
   top: 50%;
-  left: 5rem;
+  /* Pegada al móvil: el móvil está centrado en left:41% (ancho 16.5rem → su borde
+     izquierdo cae en 41% − 8.25rem). La columna (19rem) termina ~1.5rem antes de
+     ese borde, así el hueco es CONSTANTE a cualquier ancho (antes, con left fijo,
+     crecía con la pantalla y rozaba el rastro). max() evita que se salga en anchos
+     estrechos. */
+  left: max(1.5rem, calc(41% - 28.75rem));
   z-index: 2;
   display: flex;
   flex-direction: column;
