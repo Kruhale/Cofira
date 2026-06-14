@@ -179,44 +179,41 @@ app-footer {
   font-size: clamp(3.5rem, 8vw, 6.5rem);
   font-weight: 900;
   letter-spacing: -0.04em;
-  background: linear-gradient(
-    100deg,
-    var(--naranja-normal) 0%,
-    hsl(36, 100%, 70%) 25%,
-    var(--naranja-normal) 50%,
-    hsl(16, 88%, 44%) 75%,
-    var(--naranja-normal) 100%
-  );
-  background-size: 220% 100%;
+  background-image:
+    linear-gradient(105deg, transparent 40%, hsla(45, 100%, 90%, 0.8) 50%, transparent 60%),
+    linear-gradient(180deg, hsl(34, 100%, 63%) 0%, var(--naranja-normal) 52%, hsl(20, 96%, 46%) 100%);
+  background-size: 250% 100%, 100% 100%;
+  background-position: 130% 0, 0 0;
+  background-repeat: no-repeat;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: pie-cofira-brillo 7s linear infinite, pie-letra-flotar 4.5s ease-in-out infinite;
+  animation: pie-cofira-brillo 6s ease-in-out infinite;
   transition: transform var(--duration-base) ease;
 }
 
 .pie__logo-letra:nth-child(1) {
-  animation-delay: 0s, 0s;
+  animation-delay: 0s;
 }
 
 .pie__logo-letra:nth-child(2) {
-  animation-delay: -0.3s, 0.15s;
+  animation-delay: 0.1s;
 }
 
 .pie__logo-letra:nth-child(3) {
-  animation-delay: -0.6s, 0.3s;
+  animation-delay: 0.2s;
 }
 
 .pie__logo-letra:nth-child(4) {
-  animation-delay: -0.9s, 0.45s;
+  animation-delay: 0.3s;
 }
 
 .pie__logo-letra:nth-child(5) {
-  animation-delay: -1.2s, 0.6s;
+  animation-delay: 0.4s;
 }
 
 .pie__logo-letra:nth-child(6) {
-  animation-delay: -1.5s, 0.75s;
+  animation-delay: 0.5s;
 }
 
 .pie__logo:hover .pie__logo-letra {
@@ -483,11 +480,12 @@ app-footer {
 
 .pie__pulso-trazo {
   stroke: var(--naranja-normal);
-  stroke-width: 2;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 4px var(--naranja-glow-fuerte));
+  opacity: 0.5;
+  filter: drop-shadow(0 0 2px var(--naranja-glow-media));
 }
 
 .pie__pulso-semana {
@@ -651,20 +649,11 @@ app-footer {
 
 @keyframes pie-cofira-brillo {
   0% {
-    background-position: 0% 50%;
+    background-position: 130% 0, 0 0;
   }
+  45%,
   100% {
-    background-position: 220% 50%;
-  }
-}
-
-@keyframes pie-letra-flotar {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-0.14em);
+    background-position: -30% 0, 0 0;
   }
 }
 
