@@ -204,7 +204,7 @@ app-footer {
   background-image:
     linear-gradient(100deg, transparent 41%, hsla(40, 100%, 98%, 0.16) 45%, hsla(46, 100%, 99%, 0.55) 49%, hsla(40, 100%, 95%, 0.2) 51%, hsla(46, 100%, 99%, 0.42) 54%, transparent 59%),
     linear-gradient(180deg, hsla(38, 100%, 93%, 0.92) 0%, hsla(32, 100%, 80%, 0.35) 3.5%, transparent 8.5%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff0d8'/%3E%3Cstop offset='0.05' stop-color='%23ffce86'/%3E%3Cstop offset='0.11' stop-color='%23ff963a'/%3E%3Cstop offset='0.21' stop-color='%23e85d12'/%3E%3Cstop offset='0.31' stop-color='%23ffb656'/%3E%3Cstop offset='0.43' stop-color='%23dd5510'/%3E%3Cstop offset='0.55' stop-color='%23ffb050'/%3E%3Cstop offset='0.67' stop-color='%23d6500d'/%3E%3Cstop offset='0.82' stop-color='%23f3681b'/%3E%3Cstop offset='0.92' stop-color='%23ffc064'/%3E%3Cstop offset='1' stop-color='%23ff9c3e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 5 Q30 0 60 5 T120 5 V60 H0 Z' fill='url(%23m)'/%3E%3Cpath d='M0 5 Q30 0 60 5 T120 5' fill='none' stroke='%23fff2dc' stroke-width='2.4' opacity='0.85'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff0d8'/%3E%3Cstop offset='0.05' stop-color='%23ffce86'/%3E%3Cstop offset='0.12' stop-color='%23ff9a3c'/%3E%3Cstop offset='0.21' stop-color='%23f5701c'/%3E%3Cstop offset='0.31' stop-color='%23ffb35a'/%3E%3Cstop offset='0.43' stop-color='%23f4701e'/%3E%3Cstop offset='0.55' stop-color='%23ffb050'/%3E%3Cstop offset='0.67' stop-color='%23ee6516'/%3E%3Cstop offset='0.82' stop-color='%23fa7320'/%3E%3Cstop offset='0.92' stop-color='%23ffc268'/%3E%3Cstop offset='1' stop-color='%23ff9c3e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 5 Q30 0 60 5 T120 5 V60 H0 Z' fill='url(%23m)'/%3E%3Cpath d='M0 5 Q30 0 60 5 T120 5' fill='none' stroke='%23fff2dc' stroke-width='2.4' opacity='0.85'/%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='60' viewBox='0 0 150 60' preserveAspectRatio='none'%3E%3Cpath d='M0 8 Q37 3 75 8 T150 8 V60 H0 Z' fill='%23c85510'/%3E%3C/svg%3E"),
     linear-gradient(180deg, hsl(22, 28%, 6%) 0%, hsl(20, 36%, 8%) 24%, hsl(24, 55%, 14%) 100%);
   background-repeat: no-repeat, no-repeat, repeat-x, repeat-x, no-repeat;
@@ -544,8 +544,8 @@ app-footer {
   /* Degradado "tinta fresca" de monitor EKG en papel: la traza nace brillante en
      el cabezal (derecha ~92%) y se atenúa hacia la izquierda (tinta secándose),
      con ambos extremos fundidos para integrarse en la banda. */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.16) 10%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.92) 86%, #000 92%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.16) 10%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.92) 86%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.32) 8%, rgba(0, 0, 0, 0.62) 50%, rgba(0, 0, 0, 0.95) 85%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.32) 8%, rgba(0, 0, 0, 0.62) 50%, rgba(0, 0, 0, 0.95) 85%, #000 92%, transparent 100%);
 }
 
 /* Graticula de osciloscopio muy sutil tras la traza */
@@ -567,6 +567,8 @@ app-footer {
 }
 
 .pie__pulso-track {
+  position: relative;
+  z-index: 1;
   display: flex;
   width: 200%;
   height: 100%;
@@ -577,7 +579,36 @@ app-footer {
   flex: 1 0 50%;
   width: 50%;
   height: 100%;
-  opacity: 0.85;
+  /* Señal viva: glow tintado naranja (no neón genérico, controlado) */
+  filter: drop-shadow(0 0 3px var(--naranja-glow-media));
+}
+
+/* Cabezal "en vivo" en el borde derecho: donde la traza se está dibujando ahora.
+   Late sincronizado con el punto (2.6s) y deja una columna guía tenue. */
+.pie__pulso-faro {
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  z-index: 2;
+  width: 0.45rem;
+  height: 0.45rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  box-shadow: 0 0 0.45rem var(--naranja-glow-fuerte), 0 0 1rem var(--naranja-glow-media);
+  animation: pie-faro-late 2.6s ease-in-out infinite;
+}
+
+.pie__pulso-faro::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 2.5rem;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(transparent, var(--naranja-glow-media), transparent);
+  opacity: 0.45;
 }
 
 /* Segmento naranja brillante de energía, antes del contador semanal */
@@ -819,6 +850,19 @@ app-footer {
   }
 }
 
+/* Latido del cabezal "en vivo" del monitor EKG */
+@keyframes pie-faro-late {
+  0%,
+  100% {
+    transform: translateY(-50%) scale(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-50%) scale(1.3);
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pie__logo-letra {
     animation: none;
@@ -853,6 +897,10 @@ app-footer {
   }
 
   .pie__pulso-chispa {
+    animation: none;
+  }
+
+  .pie__pulso-faro {
     animation: none;
   }
 }
