@@ -70,6 +70,18 @@
   --radius-full: 9999px;
   --radius-bento: 1.25rem;
 
+  /* ── Layout responsive compartido (rediseño 2026) ──
+     Anchos de contenido: sustituyen los max-width dispersos por página. */
+  --ancho-contenido: 87.5rem;        /* 1400px — secciones anchas (home) */
+  --ancho-contenido-medio: 70rem;    /* 1120px — contacto, sobre, blog */
+  --ancho-contenido-estrecho: 52rem; /* 832px — legal / lectura */
+  --ancho-lectura: 44rem;            /* tope de subtítulos y párrafos sueltos */
+
+  /* Header fijo + shell de página (libra el header al entrar a una página) */
+  --altura-header: 4.5rem;
+  --page-shell-top: calc(var(--altura-header) + var(--spacing-size-xxl));
+  --page-shell-top-movil: calc(var(--altura-header) + var(--spacing-size-l));
+
   /* ════════════════════════════════════════════════════════════
      TOKENS HEREDADOS — se conservan; los de acento ahora apuntan
      a la paleta naranja (recolor global). DEPRECATED: migrar a

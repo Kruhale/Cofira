@@ -586,3 +586,83 @@
   opacity: $opacidad;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='ruido'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ruido)'/%3E%3C/svg%3E");
 }
+
+
+
+/* ════════════════════════════════════════════════════════════
+   CIMIENTOS RESPONSIVE COMPARTIDOS (2026) — contenedor, shell,
+   rejilla de tarjetas y ritmo. Desktop-first con responsive-down.
+   ════════════════════════════════════════════════════════════ */
+
+/* Padding horizontal del contenedor que baja por breakpoints */
+@mixin padding-contenedor {
+  padding-left: 6rem;
+  padding-right: 6rem;
+
+  @include responsive-down('lg') {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  @include responsive-down('sm') {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @include responsive-down('xxs') {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* Centra + limita ancho + padding responsive en una sola llamada */
+@mixin contenedor($ancho: var(--ancho-contenido)) {
+  max-width: $ancho;
+  margin-left: auto;
+  margin-right: auto;
+  @include padding-contenedor;
+}
+
+/* Shell de página: libra el header fijo + padding inferior.
+   Va al contenedor raíz de cada página de contenido. */
+@mixin page-shell {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: var(--page-shell-top);
+  padding-bottom: var(--spacing-size-xxxl);
+
+  @include responsive-down('sm') {
+    padding-top: var(--page-shell-top-movil);
+    padding-bottom: var(--spacing-size-xxl);
+  }
+}
+
+/* Ritmo vertical entre secciones de una misma página */
+@mixin ritmo-seccion($vertical: var(--spacing-size-xxxl)) {
+  padding-top: $vertical;
+  padding-bottom: $vertical;
+
+  @include responsive-down('sm') {
+    padding-top: var(--spacing-size-xxl);
+    padding-bottom: var(--spacing-size-xxl);
+  }
+}
+
+/* Rejilla de tarjetas auto-responsive. El min(...,100%) evita el
+   desbordamiento horizontal en móvil cuando $minimo > ancho de pantalla. */
+@mixin rejilla-tarjetas($minimo: 16rem, $separacion: 1.25rem) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(#{$minimo}, 100%), 1fr));
+  gap: $separacion;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Subtítulo de sección fluido (no desborda en 375px) */
+@mixin texto-seccion {
+  margin: 0;
+  max-width: var(--ancho-lectura);
+  font-family: var(--fuente-cuerpo);
+  font-size: clamp(1rem, 0.95rem + 0.4vw, var(--font-size-lg));
+  line-height: 1.55;
+  color: var(--texto-secundario);
+}
