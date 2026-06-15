@@ -125,12 +125,7 @@
 }
 
 .sobre-nosotros__galeria-lista {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include rejilla-tarjetas(15rem, 1.25rem);
 }
 
 .sobre-nosotros__galeria-elemento {
@@ -179,12 +174,7 @@
 }
 
 .sobre-nosotros__valores-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include rejilla-tarjetas(13rem, 1.25rem);
 }
 
 .sobre-nosotros__valor {
@@ -234,12 +224,7 @@
 }
 
 .sobre-nosotros__estadisticas-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include rejilla-tarjetas(13rem, 1.25rem);
 }
 
 .sobre-nosotros__estadistica {
@@ -254,6 +239,7 @@
   font-family: var(--fuente-display);
   font-size: clamp(2.25rem, 4vw, 3rem);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
   @include texto-gradiente;
 }
 
@@ -375,15 +361,6 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-
-  .sobre-nosotros__galeria-lista {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .sobre-nosotros__valores-grid,
-  .sobre-nosotros__estadisticas-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @include responsive-down('sm') {
@@ -394,12 +371,6 @@
 
   .sobre-nosotros__contenedor {
     padding: 0 1.25rem;
-  }
-
-  .sobre-nosotros__galeria-lista,
-  .sobre-nosotros__valores-grid,
-  .sobre-nosotros__estadisticas-grid {
-    grid-template-columns: 1fr;
   }
 
   .sobre-nosotros__miembro {
