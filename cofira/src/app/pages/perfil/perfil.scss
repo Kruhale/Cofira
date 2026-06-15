@@ -8,7 +8,7 @@
 .perfil {
   max-width: 64rem;
   margin: 0 auto;
-  padding: calc(4.5rem + var(--spacing-size-xl)) 2rem var(--spacing-size-xxxl);
+  padding: var(--page-shell-top) 2rem var(--spacing-size-xxxl);
   min-height: 100vh;
   box-sizing: border-box;
 }
@@ -105,6 +105,7 @@
 
 .perfil__tarjeta {
   @include superficie-bento;
+  @include bento-hover;
   padding: 2rem;
 }
 
@@ -335,7 +336,7 @@
 
 @include responsive-down('sm') {
   .perfil {
-    padding: var(--spacing-size-xl) 1.25rem var(--spacing-size-xxl);
+    padding: var(--page-shell-top-movil) 1.25rem var(--spacing-size-xxl);
   }
 
   .perfil__hero {
@@ -350,8 +351,26 @@
   .perfil__avatar-inicial {
     font-size: 2rem;
   }
+}
+
+@include responsive-down('xs') {
+  .perfil__hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   .perfil__salud-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@include responsive-down('xxs') {
+  .perfil__avatar {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .perfil__avatar-inicial {
+    font-size: 1.75rem;
   }
 }
