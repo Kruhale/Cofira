@@ -6,10 +6,7 @@
 }
 
 .blog {
-  padding-top: calc(4.5rem + var(--spacing-size-xxl));
-  padding-bottom: var(--spacing-size-xxxl);
-  min-height: 100vh;
-  box-sizing: border-box;
+  @include page-shell;
 }
 
 .blog__container {
@@ -84,12 +81,7 @@
 
 /* ── Grid de artículos ── */
 .blog__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
-  gap: 1.5rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include rejilla-tarjetas(20rem, 1.5rem);
 }
 
 .blog__articulo {
@@ -310,20 +302,36 @@
 }
 
 
-/* ── Responsive ── */
-@include responsive-down('sm') {
-  .blog {
-    padding-top: calc(4rem + var(--spacing-size-xl));
+/* ── Post destacado: el primero a lo ancho (imagen + texto) en tablet/desktop ── */
+@include responsive('md') {
+  .blog__articulo--destacado {
+    grid-column: 1 / -1;
+    flex-direction: row;
   }
 
+  .blog__articulo--destacado .blog__articulo-imagen {
+    flex: 1 1 58%;
+    aspect-ratio: auto;
+  }
+
+  .blog__articulo--destacado .blog__articulo-contenido {
+    flex: 1 1 42%;
+    justify-content: center;
+    padding: 2.5rem;
+  }
+
+  .blog__articulo--destacado .blog__articulo-titulo {
+    font-size: var(--font-size-xl);
+  }
+}
+
+
+/* ── Responsive ── */
+@include responsive-down('sm') {
   .blog__header,
   .blog__container {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
-  }
-
-  .blog__grid {
-    grid-template-columns: 1fr;
   }
 
   .blog__newsletter-card {

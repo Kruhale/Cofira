@@ -30,7 +30,7 @@
     <section class="blog__container">
       <ul class="blog__grid">
         @for (articulo of articulosFiltrados; track articulo.titulo) {
-          <li class="blog__articulo">
+          <li class="blog__articulo" [class.blog__articulo--destacado]="$first">
             <figure class="blog__articulo-imagen">
               <picture>
                 <source
