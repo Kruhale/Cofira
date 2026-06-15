@@ -8,12 +8,12 @@
 .alimentacion {
   max-width: 62rem;
   margin: 0 auto;
-  padding: calc(4.5rem + var(--spacing-size-xxl)) 2rem var(--spacing-size-xxxl);
-  min-height: calc(100vh - 4.5rem);
+  padding: var(--page-shell-top) 2rem var(--spacing-size-xxxl);
+  min-height: calc(100vh - var(--altura-header));
   box-sizing: border-box;
 
   @include responsive-down('md') {
-    padding-top: calc(4rem + var(--spacing-size-l));
+    padding-top: calc(var(--altura-header) + var(--spacing-size-l));
   }
 }
 
@@ -131,9 +131,9 @@
 
 .alimentacion__resumen-lista {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem 2.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 1.5rem var(--spacing-size-m);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -154,10 +154,6 @@
   font-size: 1.875rem;
   line-height: 1;
   @include texto-gradiente;
-}
-
-.alimentacion__resumen-item--agua {
-  margin-left: auto;
 }
 
 .alimentacion__agua {
@@ -585,11 +581,7 @@
 /* ── Responsive ── */
 @include responsive-down('sm') {
   .alimentacion {
-    padding: var(--spacing-size-xl) 1.25rem var(--spacing-size-xxl);
-  }
-
-  .alimentacion__resumen-item--agua {
-    margin-left: 0;
+    padding: var(--page-shell-top-movil) 1.25rem var(--spacing-size-xxl);
   }
 
   .alimentacion__comida-titulo {
