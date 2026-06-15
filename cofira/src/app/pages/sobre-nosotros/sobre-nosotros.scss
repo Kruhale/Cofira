@@ -369,11 +369,27 @@
     min-height: 26rem;
   }
 
+  /* El título display es enorme: en móvil deja que encoja y no desborde */
+  .sobre-nosotros__hero-contenido {
+    min-width: 0;
+  }
+
+  .sobre-nosotros__hero-titulo {
+    font-size: 2.75rem;
+    overflow-wrap: break-word;
+  }
+
   .sobre-nosotros__contenedor {
     padding: 0 1.25rem;
   }
 
   .sobre-nosotros__miembro {
     width: 100%;
+  }
+}
+
+@include responsive-down('xxs') {
+  .sobre-nosotros__hero-titulo {
+    font-size: 2.2rem;
   }
 }
