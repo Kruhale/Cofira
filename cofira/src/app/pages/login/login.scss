@@ -14,7 +14,7 @@ $acceso-transicion: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 .acceso-layout {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  min-height: calc(100vh - 4.5rem);
+  min-height: calc(100vh - var(--altura-header));
 }
 
 
@@ -315,12 +315,25 @@ $acceso-transicion: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
 
 /* ── Responsive: el panel visual se reduce y se oculta en móvil ── */
+@include responsive-down('lg') {
+  .acceso-visual {
+    padding: 2.5rem;
+  }
+}
+
 @include responsive-down('md') {
   .acceso-layout {
     grid-template-columns: 1fr;
+    background: var(--gradiente-halo);
   }
 
   .acceso-visual {
     display: none;
+  }
+}
+
+@include responsive-down('sm') {
+  .acceso {
+    padding: var(--spacing-size-xl) var(--spacing-size-l);
   }
 }
