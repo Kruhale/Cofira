@@ -356,29 +356,18 @@
   box-sizing: border-box;
   width: 100%;
   padding: var(--spacing-size-l);
-  overflow-x: auto;
   @include superficie-bento;
 }
 
 .seguimiento__chart-container {
-  min-width: 37.5rem;
-  height: 18.75rem;
+  width: 100%;
   margin: 0;
-
-  @include responsive-down('md') {
-    min-width: 30rem;
-    height: 15rem;
-  }
-
-  @include responsive-down('sm') {
-    min-width: 100%;
-    height: 12.5rem;
-  }
 }
 
 .seguimiento__line-chart {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   overflow: visible;
 }
 
