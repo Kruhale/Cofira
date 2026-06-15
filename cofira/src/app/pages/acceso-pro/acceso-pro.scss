@@ -13,7 +13,7 @@
   justify-content: center;
   max-width: 48rem;
   margin: 0 auto;
-  padding: calc(4.5rem + var(--spacing-size-xxl)) 2rem var(--spacing-size-xxxl);
+  padding: var(--page-shell-top) 2rem var(--spacing-size-xxxl);
   min-height: 100vh;
   box-sizing: border-box;
   isolation: isolate;
@@ -86,12 +86,7 @@
 }
 
 .acceso-pro__beneficios-lista {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include rejilla-tarjetas(15rem, 1.25rem);
 }
 
 .acceso-pro__beneficio {
@@ -395,11 +390,7 @@
 /* ── Responsive ── */
 @include responsive-down('sm') {
   .acceso-pro {
-    padding: calc(4rem + var(--spacing-size-xl)) 1.25rem var(--spacing-size-xxl);
-  }
-
-  .acceso-pro__beneficios-lista {
-    grid-template-columns: 1fr;
+    padding: var(--page-shell-top-movil) 1.25rem var(--spacing-size-xxl);
   }
 
   .acceso-pro__field-row {
