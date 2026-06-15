@@ -107,3 +107,18 @@
   height: 0.875rem;
   color: var(--texto-sobre-acento);
 }
+
+
+
+/* En móvil reduce padding/gap/icono para que el texto no quede apretado */
+@include responsive-down('xs') {
+  .option-card {
+    gap: var(--spacing-size-s);
+    padding: var(--spacing-size-m);
+  }
+
+  .option-card__icono {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
