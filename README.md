@@ -11,7 +11,7 @@
 
 ## URL de producción
 
-**Aplicación desplegada:** [https://cofira.app](https://cofira.app)
+**Aplicación desplegada:** [https://cofira.kruhale.com](https://cofira.kruhale.com)
 
 La aplicación está desplegada en un VPS y es totalmente funcional. Puedes probar todas las funcionalidades, el sistema de temas claro/oscuro, el onboarding completo y navegación responsive.
 
@@ -150,10 +150,10 @@ El proyecto utiliza una arquitectura CSS moderna basada en:
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/Alejandro-Bravo2/proyecto_cofira_2DAW.git
+git clone https://github.com/Kruhale/Cofira.git
 
 # Entrar al directorio
-cd proyecto_cofira_2DAW/cofira
+cd Cofira/cofira
 
 # Instalar dependencias
 npm install

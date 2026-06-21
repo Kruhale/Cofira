@@ -2,7 +2,7 @@
 
 En el punto 5.1 se habla sobre la compresión de las imágenes svg y yo he usado los svg en línea porque me permitía usar el atributo fill y eso me ha ayudado a cambiarlos de color, pero para demostrarte que he comprimido los svg, te he creado una página llamada pruebas que contiene los svg en ficheros comprimidas y se muestra una tabla de comparativas de la diferencia de tamaño sin comprimir y luego de comprimir.
 
-Puedes acceder a ella buscando: **https://cofira.app/pruebas*+
+Puedes acceder a ella buscando: **https://cofira.kruhale.com/pruebas*+
 
 
 
@@ -2880,7 +2880,7 @@ Aquí te muestro capturas de las páginas principales en los tres tamaños más 
 
 He desplegado la aplicación en un vps de ionos para que esté accesible públicamente.
 
-**URL de producción:** [https://cofira.app](https://cofira.app)
+**URL de producción:** [https://cofira.kruhale.com](https://cofira.kruhale.com)
 
 
 Prueba de que funciona en producción:
