@@ -77,7 +77,11 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "allowedHosts": ["cofira.app", "www.cofira.app", "localhost"]
+            "allowedHosts": [
+              "cofira.app",
+              "www.cofira.app",
+              "localhost"
+            ]
           },
           "configurations": {
             "production": {
@@ -110,7 +114,8 @@
             ],
             "styles": [
               "src/styles.scss"
-            ]
+            ],
+            "karmaConfig": "karma.conf.js"
           }
         }
       }

@@ -1,27 +1,85 @@
 # ════════════════════════════════════════════════════════════════
-# GITHUB ACTION - AUTO DEPLOY EN VPS
-# Se ejecuta automáticamente en cada push a la rama main
+# CI/CD — Cofira
+# push a main  →  tests (backend + frontend)  →  si pasan, deploy al VPS
 # ════════════════════════════════════════════════════════════════
-
-name: Deploy a VPS
+name: CI/CD
 
 on:
   push:
     branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  deploy:
+  # ── Tests del backend (Spring Boot / Gradle) ──
+  test-backend:
+    name: Backend · Gradle test
     runs-on: ubuntu-latest
-
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: cofira_test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    defaults:
+      run:
+        working-directory: backend
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          distribution: temurin
+          java-version: "21"
+      - run: chmod +x gradlew
+      - run: ./gradlew test --no-daemon
+
+  # ── Tests + build del frontend (Angular) ──
+  test-frontend:
+    name: Frontend · build + test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cofira
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: cofira/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npx ng test --watch=false --browsers=ChromeHeadlessNoSandbox
+
+  # ── Deploy al VPS: SOLO si los tests pasan y es push a main ──
+  deploy:
+    name: Deploy al VPS
+    needs: [test-backend, test-frontend]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy vía SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /root/repositorios/proyecto_cofira_2daw
-            git pull origin main
-            docker compose down
-            docker compose up -d --build
+            set -e
+            cd /root/repositorios/Cofira
+            git fetch origin main
+            git reset --hard origin/main
+            docker compose up -d --build --remove-orphans
+            docker compose ps
