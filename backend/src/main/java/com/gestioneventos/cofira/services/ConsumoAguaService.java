@@ -63,9 +63,11 @@ public class ConsumoAguaService {
             .toList();
     }
 
-    private Usuario obtenerUsuarioPorEmail(String email) {
-        return usuarioRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + email));
+    private Usuario obtenerUsuarioPorEmail(String username) {
+        // El principal del JWT es el username (no el email), igual que en el
+        // resto de servicios; por eso se busca por username.
+        return usuarioRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + username));
     }
 
     private ConsumoAguaDTO convertirADTO(ConsumoAgua consumo) {
