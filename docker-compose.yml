@@ -48,6 +48,7 @@ services:
       SPRING_SQL_INIT_MODE: always
       SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      DISCORD_CONTACTO_WEBHOOK: ${DISCORD_CONTACTO_WEBHOOK:-}
     depends_on:
       postgres:
         condition: service_healthy
