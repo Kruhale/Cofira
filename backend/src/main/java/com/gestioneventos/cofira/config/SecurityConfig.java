@@ -2,6 +2,7 @@ package com.gestioneventos.cofira.config;
 
 import com.gestioneventos.cofira.security.AuthTokenFilter;
 import com.gestioneventos.cofira.security.UserDetailsServiceImpl;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -58,6 +59,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // El SseEmitter del menú semanal re-despacha la petición como ASYNC al
+                        // completarse; sin esto Spring Security 6 la deniega sin contexto y el
+                        // stream muere a mitad. La petición REQUEST original sigue exigiendo JWT.
+                        .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
                         // Permitir todas las peticiones OPTIONS para CORS preflight
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         // Rutas públicas
