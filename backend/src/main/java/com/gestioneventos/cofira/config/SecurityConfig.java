@@ -67,6 +67,7 @@ public class SecurityConfig {
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         // Rutas públicas
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/contacto").permitAll()  // Formulario de contacto público
                         .requestMatchers("/api/usuarios/email").permitAll()  // Permitir verificación de email para registro
                         .requestMatchers("/api/usuarios/username").permitAll()  // Permitir verificación de username para registro
                         .requestMatchers("/h2-console/**").permitAll()
