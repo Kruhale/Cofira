@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, computed, inject } from '@angular/core';
+import { IdiomaService } from '../../../services/idioma.service';
 
 @Component({
   selector: 'app-notification',
@@ -7,11 +8,18 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
   styleUrl: './notification.scss',
 })
 export class Notification implements OnInit {
+  private readonly idiomaService = inject(IdiomaService);
+
   @Input() tipo: 'success' | 'error' | 'warning' | 'info' = 'info';
   @Input() mensaje: string = '';
   @Input() duracion: number = 3000;
   @Input() puedeCerrarse: boolean = true;
   @Output() alCerrar = new EventEmitter<void>();
+
+  /* Única cadena propia del componente: no justifica un diccionario */
+  readonly ariaCerrar = computed(() =>
+    this.idiomaService.idioma() === 'en' ? 'Close notification' : 'Cerrar notificación',
+  );
 
   estaCerrando: boolean = false;
 

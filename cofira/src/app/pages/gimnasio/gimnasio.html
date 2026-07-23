@@ -1,66 +1,92 @@
 <main class="gimnasio">
 
   <header class="gimnasio__cabecera">
-    <p class="gimnasio__eyebrow">Tu plan de entrenamiento</p>
-    <h1 class="gimnasio__titulo">Tabla semanal<span class="gimnasio__titulo-punto" aria-hidden="true">.</span></h1>
+    <p class="gimnasio__eyebrow">{{ textos().eyebrow }}</p>
+    <h1 class="gimnasio__titulo">{{ textos().titulo }}</h1>
+    <p class="gimnasio__contexto">{{ textos().contextoSemana }} {{ semanaActual() }}</p>
   </header>
 
   @if (isLoading()) {
     <section aria-live="polite" class="gimnasio__estado">
-      <p class="gimnasio__estado-texto">Cargando tu rutina...</p>
+      <p class="gimnasio__estado-etiqueta">
+        <span class="gimnasio__estado-punto" aria-hidden="true"></span>
+        {{ textos().cargandoRutina }}
+      </p>
     </section>
   }
 
   @if (error()) {
     <section class="gimnasio__estado gimnasio__estado--error" role="alert">
-      <p class="gimnasio__estado-texto">{{ error() }}</p>
+      <p class="gimnasio__estado-error-texto">{{ error() }}</p>
     </section>
   }
 
   @if (!tieneRutina() && !isLoading() && !error()) {
-    <section class="gimnasio__estado">
-      <p class="gimnasio__estado-texto">Tu rutina se está preparando</p>
-      <p class="gimnasio__estado-subtexto">Las rutinas se generan automáticamente cada mes. Tu nueva rutina estará lista pronto.</p>
+    <section class="gimnasio__vacio">
+      <p class="gimnasio__estado-etiqueta">
+        <span class="gimnasio__estado-punto" aria-hidden="true"></span>
+        {{ textos().vacioEtiqueta }}
+      </p>
+      <h2 class="gimnasio__vacio-titulo">{{ textos().rutinaPreparandose }}</h2>
+      <p class="gimnasio__vacio-nota">{{ textos().rutinaAvisoMensual }}</p>
+
+      <ul aria-hidden="true" class="gimnasio__esqueleto">
+        <li class="gimnasio__esqueleto-cabeceras">
+          <span class="gimnasio__esqueleto-columna gimnasio__esqueleto-columna--nombre">{{ textos().cabeceraEjercicio }}</span>
+          <span class="gimnasio__esqueleto-columna">{{ textos().cabeceraSeries }}</span>
+          <span class="gimnasio__esqueleto-columna">{{ textos().cabeceraRepeticiones }}</span>
+          <span class="gimnasio__esqueleto-columna">{{ textos().cabeceraPeso }}</span>
+        </li>
+        <li class="gimnasio__esqueleto-fila">
+          <span class="gimnasio__esqueleto-barra gimnasio__esqueleto-barra--nombre"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+        </li>
+        <li class="gimnasio__esqueleto-fila">
+          <span class="gimnasio__esqueleto-barra gimnasio__esqueleto-barra--nombre"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+        </li>
+        <li class="gimnasio__esqueleto-fila">
+          <span class="gimnasio__esqueleto-barra gimnasio__esqueleto-barra--nombre"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+        </li>
+        <li class="gimnasio__esqueleto-fila">
+          <span class="gimnasio__esqueleto-barra gimnasio__esqueleto-barra--nombre"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+          <span class="gimnasio__esqueleto-barra"></span>
+        </li>
+      </ul>
     </section>
   }
 
   @if (tieneRutina() && !isLoading()) {
-  <nav aria-label="Navegación de días" class="gimnasio__dias">
-    <button (click)="diaAnterior()" aria-label="Día anterior" class="gimnasio__dias-boton">
-      <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor" />
-      </svg>
-    </button>
-
-    <span class="gimnasio__dia gimnasio__dia--adyacente">
-      {{ diasSemana[diaActualIndex() - 1] || '' }}
-    </span>
-
-    <h2 class="gimnasio__dia gimnasio__dia--actual">
-      {{ diasSemana[diaActualIndex()] }}
-    </h2>
-
-    <span class="gimnasio__dia gimnasio__dia--adyacente">
-      {{ diasSemana[diaActualIndex() + 1] || '' }}
-    </span>
-
-    <button (click)="diaSiguiente()" aria-label="Día siguiente" class="gimnasio__dias-boton">
-      <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor" />
-      </svg>
-    </button>
+  <nav aria-label="{{ textos().ariaNavegacionDias }}" class="gimnasio__dias">
+    @for (dia of diasSemana(); track $index) {
+      <button (click)="diaActualIndex.set($index)"
+        [attr.aria-current]="diaActualIndex() === $index ? 'true' : null"
+        [class.gimnasio__dias-tab--activa]="diaActualIndex() === $index"
+        class="gimnasio__dias-tab" type="button">
+        {{ dia }}
+      </button>
+    }
   </nav>
 
   <section class="gimnasio__tabla-section gimnasio__tabla-section--escritorio">
     <table class="gimnasio__tabla">
       <thead>
         <tr>
-          <th class="gimnasio__tabla-cabecera">Ejercicio</th>
-          <th class="gimnasio__tabla-cabecera">Repeticiones</th>
-          <th class="gimnasio__tabla-cabecera">Descanso</th>
-          <th class="gimnasio__tabla-cabecera">Series</th>
-          <th class="gimnasio__tabla-cabecera">Peso (kg)</th>
-          <th class="gimnasio__tabla-cabecera">Realizado</th>
+          <th class="gimnasio__tabla-cabecera">{{ textos().cabeceraEjercicio }}</th>
+          <th class="gimnasio__tabla-cabecera">{{ textos().cabeceraRepeticiones }}</th>
+          <th class="gimnasio__tabla-cabecera">{{ textos().cabeceraDescanso }}</th>
+          <th class="gimnasio__tabla-cabecera">{{ textos().cabeceraSeries }}</th>
+          <th class="gimnasio__tabla-cabecera">{{ textos().cabeceraPeso }}</th>
+          <th class="gimnasio__tabla-cabecera">{{ textos().cabeceraRealizado }}</th>
         </tr>
       </thead>
       <tbody>
@@ -68,27 +94,21 @@
           @for (ejercicio of ejerciciosDelDia(); track ejercicio.id) {
           <tr class="gimnasio__tabla-fila">
             <td class="gimnasio__ejercicio gimnasio__tabla-dato">
-              <button (click)="toggleEjercicio(ejercicio)" [attr.aria-expanded]="ejercicio.expandido" aria-label="Expandir ejercicio"
-                class="gimnasio__ejercicio-toggle">
-                <svg aria-hidden="true" class="gimnasio__ejercicio-toggle-svg" [class.gimnasio__ejercicio-toggle-svg--rotado]="ejercicio.expandido" viewBox="0 0 24 24">
-                  <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor" />
-                </svg>
-              </button>
               {{ ejercicio.nombre }}
             </td>
             <td class="gimnasio__tabla-dato">{{ ejercicio.repeticiones }}</td>
             <td class="gimnasio__tabla-dato">{{ ejercicio.descanso }}</td>
             <td class="gimnasio__tabla-dato">{{ ejercicio.series }}</td>
-            <td class="gimnasio__tabla-dato">{{ ejercicio.pesoKg || 0 }}</td>
+            <td class="gimnasio__tabla-dato">{{ comaDecimal(ejercicio.pesoKg || 0) }}</td>
             <td class="gimnasio__acciones gimnasio__tabla-dato">
               <button (click)="marcarRealizado(ejercicio, true)" [class.gimnasio__boton-accion--activo]="ejercicio.realizado === true"
-                aria-label="Marcar como realizado" class="gimnasio__boton-accion gimnasio__boton-accion--ok">
+                aria-label="{{ textos().ariaMarcarRealizado }}" class="gimnasio__boton-accion gimnasio__boton-accion--ok">
                 <svg aria-hidden="true" class="gimnasio__boton-accion-svg" viewBox="0 0 24 24">
                   <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor" />
                 </svg>
               </button>
               <button (click)="marcarRealizado(ejercicio, false)" [class.gimnasio__boton-accion--activo]="ejercicio.realizado === false"
-                aria-label="Marcar como no realizado" class="gimnasio__boton-accion gimnasio__boton-accion--no">
+                aria-label="{{ textos().ariaMarcarNoRealizado }}" class="gimnasio__boton-accion gimnasio__boton-accion--no">
                 <svg aria-hidden="true" class="gimnasio__boton-accion-svg" viewBox="0 0 24 24">
                   <path
                     d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
@@ -101,8 +121,8 @@
         } @else {
           <tr>
             <td colspan="6" class="gimnasio__sin-ejercicios">
-              <p class="gimnasio__sin-ejercicios-titulo">Dia de descanso</p>
-              <span class="gimnasio__sin-ejercicios-subtitulo">No hay ejercicios programados para este dia</span>
+              <p class="gimnasio__sin-ejercicios-titulo">{{ textos().descansoTitulo }}</p>
+              <span class="gimnasio__sin-ejercicios-subtitulo">{{ textos().descansoSubtitulo }}</span>
             </td>
           </tr>
         }
@@ -113,10 +133,10 @@
   <section class="gimnasio__acordeon gimnasio__acordeon--movil">
     @if (ejerciciosDelDia().length > 0) {
       @for (ejercicio of ejerciciosDelDia(); track ejercicio.id) {
-      <article class="gimnasio__acordeon-item" [class.gimnasio__acordeon-item--expandido]="ejercicio.expandido">
+      <article class="gimnasio__acordeon-item">
         <header class="gimnasio__acordeon-header" (click)="toggleEjercicio(ejercicio)">
           <hgroup class="gimnasio__acordeon-info">
-            <button [attr.aria-expanded]="ejercicio.expandido" aria-label="Expandir ejercicio" class="gimnasio__acordeon-toggle">
+            <button [attr.aria-expanded]="ejercicio.expandido" [class.gimnasio__acordeon-toggle--activo]="ejercicio.expandido" aria-label="{{ textos().ariaExpandirEjercicio }}" class="gimnasio__acordeon-toggle">
               <svg aria-hidden="true" class="gimnasio__acordeon-toggle-svg" [class.gimnasio__acordeon-toggle-svg--rotado]="ejercicio.expandido" viewBox="0 0 24 24">
                 <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor" />
               </svg>
@@ -126,8 +146,8 @@
           <menu class="gimnasio__acordeon-acciones">
             <li class="gimnasio__acordeon-acciones-item">
               <button (click)="marcarRealizado(ejercicio, true); $event.stopPropagation()"
-                [class.gimnasio__boton-accion--activo]="ejercicio.realizado === true" aria-label="Marcar como realizado"
-                class="gimnasio__boton-accion gimnasio__boton-accion--ok gimnasio__boton-accion--acordeon">
+                [class.gimnasio__boton-accion--activo]="ejercicio.realizado === true" aria-label="{{ textos().ariaMarcarRealizado }}"
+                class="gimnasio__boton-accion gimnasio__boton-accion--ok">
                 <svg aria-hidden="true" class="gimnasio__boton-accion-svg" viewBox="0 0 24 24">
                   <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor" />
                 </svg>
@@ -135,8 +155,8 @@
             </li>
             <li class="gimnasio__acordeon-acciones-item">
               <button (click)="marcarRealizado(ejercicio, false); $event.stopPropagation()"
-                [class.gimnasio__boton-accion--activo]="ejercicio.realizado === false" aria-label="Marcar como no realizado"
-                class="gimnasio__boton-accion gimnasio__boton-accion--no gimnasio__boton-accion--acordeon">
+                [class.gimnasio__boton-accion--activo]="ejercicio.realizado === false" aria-label="{{ textos().ariaMarcarNoRealizado }}"
+                class="gimnasio__boton-accion gimnasio__boton-accion--no">
                 <svg aria-hidden="true" class="gimnasio__boton-accion-svg" viewBox="0 0 24 24">
                   <path
                     d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
@@ -149,37 +169,55 @@
 
         <section class="gimnasio__acordeon-contenido" [class.gimnasio__acordeon-contenido--expandido]="ejercicio.expandido">
           <dl class="gimnasio__acordeon-detalles">
-            <dt class="gimnasio__acordeon-label">Repeticiones</dt>
+            <dt class="gimnasio__acordeon-label">{{ textos().cabeceraRepeticiones }}</dt>
             <dd class="gimnasio__acordeon-valor">{{ ejercicio.repeticiones }}</dd>
-            <dt class="gimnasio__acordeon-label">Descanso</dt>
+            <dt class="gimnasio__acordeon-label">{{ textos().cabeceraDescanso }}</dt>
             <dd class="gimnasio__acordeon-valor">{{ ejercicio.descanso }}</dd>
-            <dt class="gimnasio__acordeon-label">Series</dt>
+            <dt class="gimnasio__acordeon-label">{{ textos().cabeceraSeries }}</dt>
             <dd class="gimnasio__acordeon-valor">{{ ejercicio.series }}</dd>
-            <dt class="gimnasio__acordeon-label">Peso (kg)</dt>
-            <dd class="gimnasio__acordeon-valor">{{ ejercicio.pesoKg || 0 }}</dd>
+            <dt class="gimnasio__acordeon-label">{{ textos().cabeceraPeso }}</dt>
+            <dd class="gimnasio__acordeon-valor">{{ comaDecimal(ejercicio.pesoKg || 0) }}</dd>
           </dl>
         </section>
       </article>
       }
     } @else {
       <article class="gimnasio__sin-ejercicios gimnasio__sin-ejercicios--acordeon">
-        <p class="gimnasio__sin-ejercicios-titulo">Dia de descanso</p>
-        <span class="gimnasio__sin-ejercicios-subtitulo">No hay ejercicios programados para este dia</span>
+        <p class="gimnasio__sin-ejercicios-titulo">{{ textos().descansoTitulo }}</p>
+        <span class="gimnasio__sin-ejercicios-subtitulo">{{ textos().descansoSubtitulo }}</span>
       </article>
     }
   </section>
 
+  <section class="gimnasio__banda">
+    <p class="gimnasio__banda-dato">
+      <span class="gimnasio__banda-etiqueta">{{ textos().datoDia }}</span>
+      <span class="gimnasio__banda-valor">{{ diasSemana()[diaActualIndex()] }}</span>
+    </p>
+    <p class="gimnasio__banda-dato">
+      <span class="gimnasio__banda-etiqueta">{{ textos().datoEjercicios }}</span>
+      <span class="gimnasio__banda-valor">{{ ejerciciosDelDia().length }}</span>
+    </p>
+    <p class="gimnasio__banda-dato">
+      <span class="gimnasio__banda-etiqueta">{{ textos().datoSemana }}</span>
+      <span class="gimnasio__banda-valor">{{ semanaActual() }}</span>
+    </p>
+  </section>
+
   <section class="gimnasio__feedback">
-    <h2 class="gimnasio__feedback-titulo">Retroalimentación</h2>
+    <header class="gimnasio__feedback-cabecera">
+      <p class="gimnasio__feedback-eyebrow">{{ textos().feedbackEyebrow }}</p>
+      <h2 class="gimnasio__feedback-titulo">{{ textos().feedbackTitulo }}</h2>
+    </header>
 
     <form (ngSubmit)="enviarFeedback()" class="gimnasio__feedback-form">
       <p class="gimnasio__feedback-field">
         <label class="gimnasio__feedback-label" for="ejercicios-dificiles">
-          ¿Cuáles son los ejercicios que más te han costado?
+          {{ textos().preguntaDificiles }}
         </label>
         <textarea [(ngModel)]="feedback.ejerciciosDificiles" class="gimnasio__feedback-textarea"
           id="ejercicios-dificiles" name="ejerciciosDificiles"
-          placeholder="Escribe aquellos ejercicios que te hayan costado y los posibles motivos..." rows="4">
+          placeholder="{{ textos().placeholderDificiles }}" rows="4">
         </textarea>
       </p>
 
@@ -187,26 +225,26 @@
         <label class="gimnasio__feedback-label gimnasio__feedback-label--checkbox">
           <input type="checkbox" [(ngModel)]="feedback.puedeMasPeso" name="puedeMasPeso"
             class="gimnasio__feedback-checkbox">
-          <span>¿Crees que podrías con más peso?</span>
+          <span>{{ textos().preguntaMasPeso }}</span>
         </label>
       </p>
 
       <p class="gimnasio__feedback-field">
         <label class="gimnasio__feedback-label" for="comentarios">
-          Comentarios adicionales
+          {{ textos().etiquetaComentarios }}
         </label>
         <textarea [(ngModel)]="feedback.comentarios" class="gimnasio__feedback-textarea" id="comentarios" name="comentarios"
-          placeholder="Escribe cualquier comentario adicional sobre tu entrenamiento esta semana..."
+          placeholder="{{ textos().placeholderComentarios }}"
           rows="4">
         </textarea>
       </p>
 
       <footer class="gimnasio__feedback-acciones">
         <app-button (click)="cancelarFeedback()" tamanio="mediano" tipo="button" variante="secundario">
-          Cancelar
+          {{ textos().botonCancelar }}
         </app-button>
         <app-button tamanio="mediano" tipo="submit" variante="primario">
-          Enviar
+          {{ textos().botonEnviar }}
         </app-button>
       </footer>
     </form>
@@ -215,12 +253,12 @@
   <section class="gimnasio__progreso">
     <article class="gimnasio__progreso-contenido">
       <header class="gimnasio__progreso-panel">
-        <h2 class="gimnasio__progreso-titulo">Ver mi progreso</h2>
+        <h2 class="gimnasio__progreso-titulo">{{ textos().progresoTitulo }}</h2>
         <p class="gimnasio__progreso-descripcion">
-          ¿Quieres ver tu progreso y cómo has evolucionado durante toda tu estancia en Cofira?
+          {{ textos().progresoDescripcion }}
         </p>
         <app-button enlace="/seguimiento" tamanio="grande" variante="primario" id="gimnasio__progreso-boton">
-          Ver estadísticas
+          {{ textos().botonVerEstadisticas }}
         </app-button>
       </header>
       <figure class="gimnasio__progreso-imagen">
@@ -242,7 +280,7 @@
             sizes="(max-width: 1200px) 50vw, 600px" />
           <img
             class="gimnasio__progreso-imagen-foto"
-            alt="Persona entrenando en el gimnasio"
+            alt="{{ textos().altImagenProgreso }}"
             loading="lazy"
             src="assets/images/imagen_progreso.jpg"
             width="1200"

@@ -125,3 +125,6 @@ coverage/
 # HERRAMIENTAS DE DESARROLLO
 # -------------------------------------
 .claude/
+
+# Capturas temporales de verificacion de diseno
+.capturas-tmp/

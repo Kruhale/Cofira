@@ -1,63 +1,75 @@
 <main class="alimentacion">
 
   <header class="alimentacion__cabecera">
-    <p class="alimentacion__eyebrow">Nutrición · tu plan diario</p>
-    <h1 class="alimentacion__titulo">Menú diario<span class="alimentacion__titulo-punto" aria-hidden="true">.</span></h1>
+    <p class="alimentacion__eyebrow">{{ textos().eyebrow }}</p>
+    <h1 class="alimentacion__titulo">{{ textos().titulo }}</h1>
+    <p class="alimentacion__contexto">{{ textos().contexto }}</p>
   </header>
 
   @if (estaGenerando()) {
-    <section aria-live="polite" class="alimentacion__loading">
-      <figure class="alimentacion__loading-spinner"></figure>
+    <section aria-live="polite" class="alimentacion__generando">
+      <p class="alimentacion__generando-etiqueta">
+        <span class="alimentacion__generando-punto" aria-hidden="true"></span>
+        {{ textos().generandoEtiqueta }}
+      </p>
       @if (progresoGeneracion()) {
-        <p class="alimentacion__loading-texto">
-          Generando día {{ progresoGeneracion()?.diasGenerados }} de {{ progresoGeneracion()?.totalDias }}
+        <p class="alimentacion__generando-cifra">
+          <span class="alimentacion__generando-numero">{{ progresoGeneracion()?.diasGenerados }}</span>
+          <span class="alimentacion__generando-total">{{ textos().generandoDiaConector }} {{ progresoGeneracion()?.totalDias }}</span>
         </p>
-        <aside class="alimentacion__progreso">
-          <figure class="alimentacion__progreso-barra">
-            <span
-              class="alimentacion__progreso-relleno"
-              [style.width.%]="progresoGeneracion()?.porcentaje">
-            </span>
-          </figure>
-          <span class="alimentacion__progreso-porcentaje">{{ progresoGeneracion()?.porcentaje }}%</span>
-        </aside>
-        <button (click)="cancelarGeneracion()" class="alimentacion__boton-cancelar">
-          Cancelar generación
+        <figure class="alimentacion__generando-barra">
+          <span
+            class="alimentacion__generando-relleno"
+            [style.width.%]="progresoGeneracion()?.porcentaje">
+          </span>
+        </figure>
+        <p class="alimentacion__generando-log">
+          <span class="alimentacion__generando-log-texto">
+            {{ textos().generandoDiaPrefijo }} {{ progresoGeneracion()?.diasGenerados }} {{ textos().generandoDiaConector }} {{ progresoGeneracion()?.totalDias }}
+          </span>
+          <span class="alimentacion__generando-porcentaje">{{ progresoGeneracion()?.porcentaje }}%</span>
+        </p>
+        <button (click)="cancelarGeneracion()" class="alimentacion__boton-cancelar" type="button">
+          {{ textos().botonCancelarGeneracion }}
         </button>
       } @else {
-        <p class="alimentacion__loading-texto">Iniciando generación del menú...</p>
+        <p class="alimentacion__generando-iniciando">{{ textos().iniciandoGeneracion }}</p>
       }
     </section>
   } @else if (isLoading()) {
-    <section aria-live="polite" class="alimentacion__loading">
-      <figure class="alimentacion__loading-spinner"></figure>
-      <p class="alimentacion__loading-texto">Cargando...</p>
+    <section aria-live="polite" class="alimentacion__estado">
+      <p class="alimentacion__estado-etiqueta">
+        <span class="alimentacion__estado-punto" aria-hidden="true"></span>
+        {{ textos().cargando }}
+      </p>
     </section>
   } @else {
 
-    <nav aria-label="Navegación de fechas" class="alimentacion__navegacion-fecha">
-      <button
-        (click)="diaAnterior()"
-        aria-label="Día anterior"
-        class="alimentacion__boton-fecha alimentacion__boton-fecha--anterior">
-        <svg aria-hidden="true" class="alimentacion__boton-fecha-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
-        </svg>
-      </button>
-
-      <button (click)="abrirCalendario()" aria-label="Abrir calendario" class="alimentacion__selector-fecha">
+    <nav aria-label="{{ textos().ariaNavegacionFechas }}" class="alimentacion__navegacion-fecha">
+      <button (click)="abrirCalendario()" aria-label="{{ textos().ariaAbrirCalendario }}" class="alimentacion__selector-fecha" type="button">
+        <span class="alimentacion__fecha-texto">{{ fechaActual() }}</span>
         <svg aria-hidden="true" class="alimentacion__icono-calendario" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"
             fill="currentColor"/>
         </svg>
-        <span class="alimentacion__fecha-texto">{{ fechaActual() }}</span>
+      </button>
+
+      <button
+        (click)="diaAnterior()"
+        aria-label="{{ textos().ariaDiaAnterior }}"
+        class="alimentacion__boton-fecha alimentacion__boton-fecha--anterior"
+        type="button">
+        <svg aria-hidden="true" class="alimentacion__boton-fecha-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+        </svg>
       </button>
 
       <button
         (click)="diaSiguiente()"
-        aria-label="Día siguiente"
-        class="alimentacion__boton-fecha alimentacion__boton-fecha--siguiente">
+        aria-label="{{ textos().ariaDiaSiguiente }}"
+        class="alimentacion__boton-fecha alimentacion__boton-fecha--siguiente"
+        type="button">
         <svg aria-hidden="true" class="alimentacion__boton-fecha-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor"/>
         </svg>
@@ -66,83 +78,114 @@
 
     @if (resumenNutricional()) {
       <section class="alimentacion__resumen">
-        <h2 class="alimentacion__resumen-titulo">Resumen del día</h2>
-        <ul class="alimentacion__resumen-lista">
-          <li class="alimentacion__resumen-item">
-            <span class="alimentacion__resumen-label">Calorías</span>
-            <span class="alimentacion__resumen-valor">{{ resumenNutricional()?.caloriasTotal }} kcal</span>
-          </li>
-          <li class="alimentacion__resumen-item">
-            <span class="alimentacion__resumen-label">Proteínas</span>
-            <span class="alimentacion__resumen-valor">{{ resumenNutricional()?.proteinasTotal }}g</span>
-          </li>
-          <li class="alimentacion__resumen-item">
-            <span class="alimentacion__resumen-label">Carbohidratos</span>
-            <span class="alimentacion__resumen-valor">{{ resumenNutricional()?.carbohidratosTotal }}g</span>
-          </li>
-          <li class="alimentacion__resumen-item">
-            <span class="alimentacion__resumen-label">Grasas</span>
-            <span class="alimentacion__resumen-valor">{{ resumenNutricional()?.grasasTotal }}g</span>
-          </li>
-          <li class="alimentacion__resumen-item alimentacion__resumen-item--agua">
-            <span class="alimentacion__resumen-label">Agua</span>
-            <span class="alimentacion__resumen-valor alimentacion__agua">
-              <button
-                (click)="quitarAgua()"
-                [disabled]="aguaConsumida() <= 0 || aguaActualizando()"
-                aria-label="Quitar vaso de agua"
-                class="alimentacion__agua-boton"
-                type="button">
-                <svg aria-hidden="true" class="alimentacion__agua-boton-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 13H5v-2h14v2z" fill="currentColor"/>
-                </svg>
-              </button>
-              <span class="alimentacion__agua-texto">{{ aguaConsumida() | number:'1.1-1' }}L</span>
-              <button
-                (click)="agregarAgua()"
-                [disabled]="aguaActualizando()"
-                aria-label="Añadir vaso de agua"
-                class="alimentacion__agua-boton"
-                type="button">
-                <svg aria-hidden="true" class="alimentacion__agua-boton-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
-                </svg>
-              </button>
-            </span>
-          </li>
-        </ul>
+        <article class="alimentacion__balance">
+          <h2 class="alimentacion__balance-etiqueta">{{ textos().resumenTitulo }}</h2>
+          <p class="alimentacion__balance-cifra">
+            <span class="alimentacion__balance-kcal">{{ resumenNutricional()?.caloriasTotal }}</span>
+            <span class="alimentacion__balance-unidad">kcal</span>
+          </p>
+          <ul class="alimentacion__macros">
+            <li class="alimentacion__macro">
+              <span class="alimentacion__macro-nombre">{{ textos().etiquetaProteinas }}</span>
+              <span class="alimentacion__macro-puntos" aria-hidden="true"></span>
+              <span class="alimentacion__macro-valor">{{ resumenNutricional()?.proteinasTotal }}g</span>
+            </li>
+            <li class="alimentacion__macro">
+              <span class="alimentacion__macro-nombre">{{ textos().etiquetaCarbohidratos }}</span>
+              <span class="alimentacion__macro-puntos" aria-hidden="true"></span>
+              <span class="alimentacion__macro-valor">{{ resumenNutricional()?.carbohidratosTotal }}g</span>
+            </li>
+            <li class="alimentacion__macro">
+              <span class="alimentacion__macro-nombre">{{ textos().etiquetaGrasas }}</span>
+              <span class="alimentacion__macro-puntos" aria-hidden="true"></span>
+              <span class="alimentacion__macro-valor">{{ resumenNutricional()?.grasasTotal }}g</span>
+            </li>
+          </ul>
+        </article>
+
+        <aside class="alimentacion__agua">
+          <h2 class="alimentacion__agua-etiqueta">{{ textos().etiquetaAgua }}</h2>
+          <p class="alimentacion__agua-cifra">
+            <span class="alimentacion__agua-valor">{{ comaDecimal(aguaConsumida()) }}</span>
+            <span class="alimentacion__agua-unidad">L</span>
+            <span class="alimentacion__agua-meta">{{ textos().aguaObjetivoEtiqueta }} {{ aguaObjetivo() }}L</span>
+          </p>
+          <ul aria-hidden="true" class="alimentacion__agua-muescas">
+            @for (muesca of listaMuescasAgua; track muesca) {
+              <li
+                class="alimentacion__agua-muesca"
+                [class.alimentacion__agua-muesca--llena]="muesca < muescasAguaLlenas()">
+              </li>
+            }
+          </ul>
+          <footer class="alimentacion__agua-controles">
+            <button
+              (click)="quitarAgua()"
+              [disabled]="aguaConsumida() <= 0 || aguaActualizando()"
+              aria-label="{{ textos().ariaQuitarAgua }}"
+              class="alimentacion__agua-boton"
+              type="button">
+              <svg aria-hidden="true" class="alimentacion__agua-boton-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 13H5v-2h14v2z" fill="currentColor"/>
+              </svg>
+            </button>
+            <button
+              (click)="agregarAgua()"
+              [disabled]="aguaActualizando()"
+              aria-label="{{ textos().ariaAgregarAgua }}"
+              class="alimentacion__agua-boton"
+              type="button">
+              <svg aria-hidden="true" class="alimentacion__agua-boton-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+              </svg>
+            </button>
+          </footer>
+        </aside>
       </section>
     }
 
     <section class="alimentacion__menu-dia">
 
       @if (!tieneMenuParaFecha()) {
-        <article class="alimentacion__sin-menu">
-          <p class="alimentacion__sin-menu-texto">No hay menú disponible para esta fecha</p>
-          <p class="alimentacion__sin-menu-texto">Los menús se generan para las próximas 2 semanas</p>
-          <button (click)="regenerarMenu()" class="alimentacion__boton-regenerar">
-            <svg aria-hidden="true" class="alimentacion__boton-regenerar-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
-            </svg>
-            Generar menú semanal
-          </button>
+        <article class="alimentacion__vacio">
+          <p class="alimentacion__vacio-etiqueta">{{ textos().vacioEtiqueta }}</p>
+          <h2 class="alimentacion__vacio-titulo">{{ textos().sinMenuFecha }}</h2>
+          <p class="alimentacion__vacio-nota">{{ textos().sinMenuAviso }}</p>
+          <ul aria-hidden="true" class="alimentacion__esqueleto">
+            <li class="alimentacion__esqueleto-fila">
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--tipo"></span>
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--nombre"></span>
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--kcal"></span>
+            </li>
+            <li class="alimentacion__esqueleto-fila">
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--tipo"></span>
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--nombre"></span>
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--kcal"></span>
+            </li>
+            <li class="alimentacion__esqueleto-fila">
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--tipo"></span>
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--nombre"></span>
+              <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--kcal"></span>
+            </li>
+          </ul>
+          <app-button (click)="regenerarMenu()" tamanio="mediano" variante="primario">
+            {{ textos().botonGenerarMenu }}
+          </app-button>
         </article>
       } @else if (comidasDelDia().length === 0) {
-        <article class="alimentacion__sin-menu">
-          <p class="alimentacion__sin-menu-texto">No hay comidas para este día</p>
-          <button (click)="regenerarMenu()" class="alimentacion__boton-regenerar">
-            <svg aria-hidden="true" class="alimentacion__boton-regenerar-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
-            </svg>
-            Regenerar menú semanal
-          </button>
+        <article class="alimentacion__vacio">
+          <p class="alimentacion__vacio-etiqueta">{{ textos().vacioEtiqueta }}</p>
+          <h2 class="alimentacion__vacio-titulo">{{ textos().sinComidasDia }}</h2>
+          <app-button (click)="regenerarMenu()" tamanio="mediano" variante="primario">
+            {{ textos().botonRegenerarMenu }}
+          </app-button>
         </article>
       } @else {
         @for (comida of comidasDelDia(); track comida.id) {
           <article
             class="alimentacion__comida"
             [class.alimentacion__comida--consumida]="estaComidaConsumida(comida)">
-            <header class="alimentacion__comida-header">
+            <header class="alimentacion__comida-linea">
               <label class="alimentacion__comida-checkbox-label">
                 <input
                   type="checkbox"
@@ -157,103 +200,31 @@
                   }
                 </span>
               </label>
-              <figure class="alimentacion__comida-icono">
-                @if (comida.tipo === 'desayuno') {
-                  <svg aria-hidden="true" class="alimentacion__comida-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 3H6C4.9 3 4 3.9 4 5v14c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H6V5h12v14z"
-                          fill="currentColor"/>
-                    <path d="M8 7h8v2H8zm0 4h8v2H8zm0 4h5v2H8z" fill="currentColor"/>
-                  </svg>
-                }
-                @if (comida.tipo === 'almuerzo' || comida.tipo === 'comida' || comida.tipo === 'cena') {
-                  <svg aria-hidden="true" class="alimentacion__comida-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"
-                      fill="currentColor"/>
-                  </svg>
-                }
-                @if (comida.tipo === 'merienda') {
-                  <svg aria-hidden="true" class="alimentacion__comida-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05l-5 2v16l.06-.06zM1 21.99h15.03V5.84L1 21.99zM9 4V2H7v2H5V2H3v4h4v16h2V6h4V4H9z"
-                      fill="currentColor"/>
-                  </svg>
-                }
-              </figure>
-              <h2 class="alimentacion__comida-titulo">{{ comida.nombre }}</h2>
-              <aside class="alimentacion__comida-macros">
-                <span class="alimentacion__comida-macro">{{ comida.caloriasEstimadas }} kcal</span>
-                <span class="alimentacion__comida-macro alimentacion__comida-macro--proteina">P: {{ comida.proteinasGramos }}g</span>
-                <span class="alimentacion__comida-macro alimentacion__comida-macro--carbs">C: {{ comida.carbohidratosGramos }}g</span>
-                <span class="alimentacion__comida-macro alimentacion__comida-macro--grasa">G: {{ comida.grasasGramos }}g</span>
-              </aside>
+              <span class="alimentacion__comida-tipo">{{ textos().tiposComida[comida.tipo] }}</span>
+              <h2 class="alimentacion__comida-nombre">{{ comida.nombre }}</h2>
+              <span class="alimentacion__comida-puntos" aria-hidden="true"></span>
+              <span class="alimentacion__comida-kcal">
+                {{ comida.caloriasEstimadas }}
+                <span class="alimentacion__comida-kcal-unidad">kcal</span>
+              </span>
             </header>
+
+            <p class="alimentacion__comida-macros">
+              {{ textos().abrevProteina }} {{ comida.proteinasGramos }}g · {{ textos().abrevCarbs }} {{ comida.carbohidratosGramos }}g · {{ textos().abrevGrasa }} {{ comida.grasasGramos }}g
+            </p>
 
             <ul class="alimentacion__alimentos">
               @for (alimento of comida.alimentos; track alimento.id) {
                 <li class="alimentacion__alimento">
-                  <figure class="alimentacion__alimento-icono">
-                    @switch (alimento.icono) {
-                      @case ('pan') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12 4C8 4 4 5.5 4 9c0 1.5.5 2.5 1.5 3.5L7 22h10l1.5-9.5c1-1 1.5-2 1.5-3.5 0-3.5-4-5-8-5zm0 2c3 0 6 1 6 3s-3 3-6 3-6-1-6-3 3-3 6-3z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @case ('fruta') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M20 10c-1.5-1.3-3.5-2-5.5-2-.5 0-1 0-1.5.1V6c0-1.7-1.3-3-3-3-.3 0-.6 0-.9.1C8.5 1.8 7.3 1 6 1 4.3 1 3 2.3 3 4c0 .3 0 .6.1.9C1.8 5.5 1 6.7 1 8c0 1.7 1.3 3 3 3h.1c-.1.5-.1 1-.1 1.5C4 17.2 7.8 21 12.5 21c4.1 0 7.5-2.9 8.3-6.8.1-.4.2-.8.2-1.2 0-1.3-.4-2.5-1-3zM6 9c-.6 0-1-.4-1-1s.4-1 1-1c.3 0 .6.1.8.3l.5.5.5-.5c.2-.2.5-.3.8-.3.6 0 1 .4 1 1s-.4 1-1 1h-.3l-.7.7-.7-.7H6z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @case ('verdura') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12 2C9.5 2 7.3 3.2 6 5.2 4.1 5.7 2.5 7.1 2 9c-.6 2.2.2 4.5 2 6l1 9h14l1-9c1.8-1.5 2.6-3.8 2-6-.5-1.9-2.1-3.3-4-3.8C16.7 3.2 14.5 2 12 2zm0 2c1.5 0 2.8.6 3.8 1.5-.6.2-1.2.4-1.8.7-.6-.1-1.3-.2-2-.2s-1.4.1-2 .2c-.6-.3-1.2-.5-1.8-.7C9.2 4.6 10.5 4 12 4z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @case ('proteina') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M18.06 3C15.2 3 12.74 4.42 12 6.33 11.26 4.42 8.8 3 5.94 3 2.27 3 1 5.73 1 8c0 6.5 11 14 11 14s11-7.5 11-14c0-2.27-1.27-5-4.94-5zM12 19.5C8.5 16.5 3 11 3 8c0-1.5.5-3 2.94-3 2.5 0 4.56 1.5 5.06 3.5h2c.5-2 2.56-3.5 5.06-3.5C20.5 5 21 6.5 21 8c0 3-5.5 8.5-9 11.5z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @case ('lacteo') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5 6v15c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V6H5zm4 13H7v-7h2v7zm4 0h-2v-7h2v7zm4 0h-2v-7h2v7zM19 3v2H5V3c0-.55.45-1 1-1h12c.55 0 1 .45 1 1z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @case ('bebida') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M3 2l2 18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2l2-18H3zm9 16c-1.66 0-3-1.34-3-3 0-1.55 1.79-3.95 2.57-4.92.19-.24.56-.24.75 0 .79.98 2.68 3.37 2.68 4.92 0 1.66-1.34 3-3 3zM18.33 8H5.67l-.44-4h13.54l-.44 4z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @case ('cereal') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M2 19h20v3H2v-3zm1-1c0-3.9 3.1-7 7-7 1.9 0 3.7.8 5 2.1 1.3-1.3 3.1-2.1 5-2.1 1.1 0 2.2.3 3.1.7.6.3.9 1 .9 1.7V17H3v-3.5c0-.6.3-1.1.8-1.4.5-.2 1.1-.1 1.5.2C6.4 13.1 7.7 14 10 14c1.1 0 2.1-.2 3-.6.9.4 1.9.6 3 .6 2.3 0 3.6-.9 4.7-1.7.4-.3 1-.4 1.5-.2.5.3.8.8.8 1.4V17H3v-3.5z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @case ('legumbre') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12 2C9 2 6.5 4 5.5 7c-2 .5-3.5 2.5-3.5 4.5C2 14 4 16 6.5 16c1 0 2-.3 2.8-.9.4.6 1 1.1 1.7 1.4V21c0 .6.4 1 1 1s1-.4 1-1v-4.5c.7-.3 1.3-.8 1.7-1.4.8.6 1.8.9 2.8.9 2.5 0 4.5-2 4.5-4.5 0-2-1.5-4-3.5-4.5C17.5 4 15 2 12 2zm0 2c2 0 3.7 1.2 4.5 3H7.5C8.3 5.2 10 4 12 4z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @case ('fruto-seco') {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12 2c-4 0-7 3-7 7 0 1.5.5 3 1.3 4.2L12 22l5.7-8.8c.8-1.2 1.3-2.7 1.3-4.2 0-4-3-7-7-7zm0 10c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z" fill="currentColor"/>
-                        </svg>
-                      }
-                      @default {
-                        <svg aria-hidden="true" class="alimentacion__alimento-icono-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" fill="currentColor"/>
-                        </svg>
-                      }
-                    }
-                  </figure>
                   <span class="alimentacion__alimento-nombre">{{ alimento.descripcion }}</span>
                   @if (alimento.gramos) {
-                    <span class="alimentacion__alimento-gramos">({{ alimento.gramos }}g)</span>
+                    <span class="alimentacion__alimento-gramos">{{ alimento.gramos }}g</span>
                   }
                   <button
                     (click)="verIngredientes(alimento, comida)"
-                    aria-label="Ver detalles de {{ alimento.descripcion }}"
-                    class="alimentacion__boton-info">
+                    aria-label="{{ textos().ariaVerDetalles }} {{ alimento.descripcion }}"
+                    class="alimentacion__boton-info"
+                    type="button">
                     <svg aria-hidden="true" class="alimentacion__boton-info-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
@@ -266,42 +237,29 @@
 
             @if (comida.preparacion) {
               <footer class="alimentacion__comida-preparacion">
-                <h3 class="alimentacion__preparacion-titulo">Preparación</h3>
+                <h3 class="alimentacion__preparacion-titulo">{{ textos().preparacionTitulo }}</h3>
                 <p class="alimentacion__preparacion-texto">{{ comida.preparacion }}</p>
               </footer>
             }
 
             @if (!estaComidaConsumida(comida)) {
               <footer class="alimentacion__comida-acciones">
-                <button
-                  (click)="abrirModalAlternativa(comida)"
-                  class="alimentacion__boton-alternativa"
-                  type="button">
-                  <svg aria-hidden="true" class="alimentacion__boton-alternativa-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
-                  </svg>
-                  Registrar lo que comí
+                <button (click)="abrirModalAlternativa(comida)" class="alimentacion__boton-registro" type="button">
+                  {{ textos().botonRegistrarComida }}
                 </button>
-                <button
-                  (click)="abrirModalImagen(comida)"
-                  class="alimentacion__boton-foto"
-                  type="button">
-                  <svg aria-hidden="true" class="alimentacion__boton-foto-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="currentColor"/>
-                  </svg>
-                  Subir foto
+                <button (click)="abrirModalImagen(comida)" class="alimentacion__boton-registro" type="button">
+                  {{ textos().botonSubirFoto }}
                 </button>
               </footer>
             }
           </article>
         }
 
-        <button (click)="regenerarMenu()" class="alimentacion__boton-regenerar">
-          <svg aria-hidden="true" class="alimentacion__boton-regenerar-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
-          </svg>
-          Regenerar menú semanal
-        </button>
+        <footer class="alimentacion__regenerar">
+          <app-button (click)="regenerarMenu()" tamanio="mediano" variante="secundario">
+            {{ textos().botonRegenerarMenu }}
+          </app-button>
+        </footer>
       }
 
     </section>

@@ -1,9 +1,9 @@
-import {computed, inject, Injectable, NgZone, signal} from '@angular/core';
-import {catchError, Observable, of, tap} from 'rxjs';
+import { computed, inject, Injectable, NgZone, signal } from '@angular/core';
+import { catchError, Observable, of, tap } from 'rxjs';
 
-import {ApiService} from './api.service';
-import {OnboardingService} from './onboarding.service';
-import {environment} from '../../environments/environment';
+import { ApiService } from './api.service';
+import { OnboardingService } from './onboarding.service';
+import { environment } from '../../environments/environment';
 import {
   Alimento,
   Comida,
@@ -20,11 +20,10 @@ import {
   ProgresoGeneracion,
   ResumenNutricional,
   TipoComida,
-  TipoIconoAlimento
+  TipoIconoAlimento,
 } from '../models/alimentacion.model';
 
-
-@Injectable({providedIn: "root"})
+@Injectable({ providedIn: 'root' })
 export class AlimentacionService {
   readonly menuGenerado = signal<MenuGenerado | null>(null);
   readonly comidasPorFecha = signal<ComidasPorFecha>({});
@@ -46,31 +45,26 @@ export class AlimentacionService {
   private readonly api = inject(ApiService);
   private readonly onboardingService = inject(OnboardingService);
   private readonly ngZone = inject(NgZone);
-  private readonly STORAGE_KEY = "cofira_menu_alimentacion";
+  private readonly STORAGE_KEY = 'cofira_menu_alimentacion';
   private readonly SSE_TIMEOUT_MS = 120000;
   private eventoStreamActivo: EventSource | null = null;
   private timeoutSSE: ReturnType<typeof setTimeout> | null = null;
 
   private esMenuSemanalValido(data: unknown): data is MenuGuardado {
-    if (typeof data !== "object" || data === null) return false;
+    if (typeof data !== 'object' || data === null) return false;
 
     const obj = data as Record<string, unknown>;
     return (
-      "fechaInicio" in obj &&
-      "fechaFin" in obj &&
-      "comidasPorFecha" in obj &&
-      typeof obj["fechaInicio"] === "string" &&
-      typeof obj["fechaFin"] === "string"
+      'fechaInicio' in obj &&
+      'fechaFin' in obj &&
+      'comidasPorFecha' in obj &&
+      typeof obj['fechaInicio'] === 'string' &&
+      typeof obj['fechaFin'] === 'string'
     );
   }
 
   private esMenuDiarioValido(data: unknown): boolean {
-    return (
-      typeof data === "object" &&
-      data !== null &&
-      "menu" in data &&
-      "fecha" in data
-    );
+    return typeof data === 'object' && data !== null && 'menu' in data && 'fecha' in data;
   }
 
   constructor() {
@@ -85,26 +79,26 @@ export class AlimentacionService {
     const solicitudMenu = this.construirSolicitudMenu(datosOnboarding);
 
     return this.api.post<MenuGenerado>('/rutinas-alimentacion/generar-menu', solicitudMenu).pipe(
-      tap(menu => {
+      tap((menu) => {
         this.menuGenerado.set(menu);
         const fechaActual = this.obtenerFechaActualString();
         const comidasTransformadas = this.transformarMenuAComidas(menu);
-        this.comidasPorFecha.update(comidas => ({
+        this.comidasPorFecha.update((comidas) => ({
           ...comidas,
           [fechaActual]: {
             comidas: comidasTransformadas,
-            resumenNutricional: menu.resumenNutricional
-          }
+            resumenNutricional: menu.resumenNutricional,
+          },
         }));
         this.guardarMenuEnStorage(menu);
         this.isLoading.set(false);
       }),
-      catchError(errorCapturado => {
-        console.error("Error generando menú:", errorCapturado);
+      catchError((errorCapturado) => {
+        console.error('Error generando menú:', errorCapturado);
         this.isLoading.set(false);
-        this.error.set("No hemos podido generar tu menú. Inténtalo de nuevo en unos minutos.");
+        this.error.set('No hemos podido generar tu menú. Inténtalo de nuevo en unos minutos.');
         throw errorCapturado;
-      })
+      }),
     );
   }
 
@@ -120,21 +114,23 @@ export class AlimentacionService {
     const datosOnboarding = this.onboardingService.formData();
     const solicitudMenu = this.construirSolicitudMenu(datosOnboarding);
 
-    return this.api.post<MenuSemanalGenerado>('/rutinas-alimentacion/generar-menu-semanal', solicitudMenu).pipe(
-      tap(menuSemanal => {
-        this.procesarMenuSemanal(menuSemanal);
-        this.guardarMenuSemanalEnStorage(menuSemanal);
-        this.isLoading.set(false);
-        this.estaGenerando.set(false);
-      }),
-      catchError(errorCapturado => {
-        console.error("Error generando menú semanal:", errorCapturado);
-        this.isLoading.set(false);
-        this.estaGenerando.set(false);
-        this.error.set("No hemos podido generar tu menú. Inténtalo de nuevo en unos minutos.");
-        throw errorCapturado;
-      })
-    );
+    return this.api
+      .post<MenuSemanalGenerado>('/rutinas-alimentacion/generar-menu-semanal', solicitudMenu)
+      .pipe(
+        tap((menuSemanal) => {
+          this.procesarMenuSemanal(menuSemanal);
+          this.guardarMenuSemanalEnStorage(menuSemanal);
+          this.isLoading.set(false);
+          this.estaGenerando.set(false);
+        }),
+        catchError((errorCapturado) => {
+          console.error('Error generando menú semanal:', errorCapturado);
+          this.isLoading.set(false);
+          this.estaGenerando.set(false);
+          this.error.set('No hemos podido generar tu menú. Inténtalo de nuevo en unos minutos.');
+          throw errorCapturado;
+        }),
+      );
   }
 
   generarMenuSemanalConStreaming(): void {
@@ -151,7 +147,7 @@ export class AlimentacionService {
     const datosOnboarding = this.onboardingService.formData();
     const solicitudMenu = this.construirSolicitudMenu(datosOnboarding);
 
-    const token = localStorage.getItem("cofira_token");
+    const token = localStorage.getItem('cofira_token');
     const urlEndpoint = `${environment.apiUrl}/rutinas-alimentacion/generar-menu-semanal-stream`;
 
     if (this.eventoStreamActivo) {
@@ -163,27 +159,40 @@ export class AlimentacionService {
     });
   }
 
-  private async iniciarConexionSSE(urlEndpoint: string, solicitudMenu: GenerarMenuRequest, token: string | null): Promise<void> {
-    const controladorAbort = new AbortController();
-
+  /* Vigilante de INACTIVIDAD, no tope total: la generación completa tarda
+     ~4 min (14 días × ~17s) y un tope fijo de 2 min la abortaba SIEMPRE a
+     mitad (broken pipe en el backend y menú sin guardar). Cada evento
+     recibido rearma el temporizador: 120s de silencio = atascado de verdad. */
+  private armarTimeoutSSE(controladorAbort: AbortController): void {
+    this.limpiarTimeoutSSE();
     this.timeoutSSE = setTimeout(() => {
       controladorAbort.abort();
       this.ngZone.run(() => {
-        this.error.set("La generación del menú tardó demasiado. Inténtalo de nuevo.");
+        this.error.set('La generación del menú tardó demasiado. Inténtalo de nuevo.');
         this.isLoading.set(false);
         this.estaGenerando.set(false);
       });
     }, this.SSE_TIMEOUT_MS);
+  }
+
+  private async iniciarConexionSSE(
+    urlEndpoint: string,
+    solicitudMenu: GenerarMenuRequest,
+    token: string | null,
+  ): Promise<void> {
+    const controladorAbort = new AbortController();
+
+    this.armarTimeoutSSE(controladorAbort);
 
     try {
       const respuesta = await fetch(urlEndpoint, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": token ? `Bearer ${token}` : ""
+          'Content-Type': 'application/json',
+          Authorization: token ? `Bearer ${token}` : '',
         },
         body: JSON.stringify(solicitudMenu),
-        signal: controladorAbort.signal
+        signal: controladorAbort.signal,
       });
 
       if (!respuesta.ok) {
@@ -192,15 +201,18 @@ export class AlimentacionService {
 
       const lectorStream = respuesta.body?.getReader();
       if (!lectorStream) {
-        throw new Error("No se pudo obtener el lector del stream");
+        throw new Error('No se pudo obtener el lector del stream');
       }
 
       const decodificador = new TextDecoder();
-      let bufferDatos = "";
+      let bufferDatos = '';
       let lecturaActiva = true;
 
       while (lecturaActiva) {
         const resultado = await lectorStream.read();
+
+        // Cada trozo recibido rearma el vigilante: mide silencio, no duración
+        this.armarTimeoutSSE(controladorAbort);
 
         if (resultado.done) {
           this.limpiarTimeoutSSE();
@@ -211,9 +223,9 @@ export class AlimentacionService {
           break;
         }
 
-        bufferDatos += decodificador.decode(resultado.value, {stream: true});
-        const lineas = bufferDatos.split("\n");
-        bufferDatos = lineas.pop() || "";
+        bufferDatos += decodificador.decode(resultado.value, { stream: true });
+        const lineas = bufferDatos.split('\n');
+        bufferDatos = lineas.pop() || '';
 
         for (const linea of lineas) {
           this.procesarLineaSSE(linea);
@@ -221,11 +233,11 @@ export class AlimentacionService {
       }
     } catch (errorCapturado) {
       this.limpiarTimeoutSSE();
-      if ((errorCapturado as Error).name === "AbortError") {
+      if ((errorCapturado as Error).name === 'AbortError') {
         return;
       }
       this.ngZone.run(() => {
-        this.error.set("No hemos podido generar tu menú. Inténtalo de nuevo en unos minutos.");
+        this.error.set('No hemos podido generar tu menú. Inténtalo de nuevo en unos minutos.');
         this.isLoading.set(false);
         this.estaGenerando.set(false);
       });
@@ -240,7 +252,7 @@ export class AlimentacionService {
   }
 
   private procesarLineaSSE(linea: string): void {
-    if (linea.startsWith("data:")) {
+    if (linea.startsWith('data:')) {
       const datosJson = linea.substring(5).trim();
       if (!datosJson) {
         return;
@@ -252,7 +264,7 @@ export class AlimentacionService {
           this.procesarEventoSSE(datosParseados);
         });
       } catch (errorParseo) {
-        console.error("Error parseando evento SSE:", errorParseo);
+        console.error('Error parseando evento SSE:', errorParseo);
       }
     }
   }
@@ -260,7 +272,7 @@ export class AlimentacionService {
   private procesarEventoSSE(datos: unknown): void {
     const datosConTipo = datos as { tipo?: string; fecha?: string; numeroDia?: number };
 
-    if (datosConTipo.tipo === "inicio") {
+    if (datosConTipo.tipo === 'inicio') {
       const eventoInicio = datos as EventoInicioStream;
       this.fechaInicio.set(eventoInicio.fechaInicio);
       this.fechaFin.set(eventoInicio.fechaFin);
@@ -268,20 +280,20 @@ export class AlimentacionService {
       this.progresoGeneracion.set({
         diasGenerados: 0,
         totalDias: totalDias,
-        porcentaje: 0
+        porcentaje: 0,
       });
       return;
     }
 
-    if (datosConTipo.tipo === "completado") {
+    if (datosConTipo.tipo === 'completado') {
       this.finalizarGeneracion();
       return;
     }
 
-    if (datosConTipo.tipo === "error") {
+    if (datosConTipo.tipo === 'error') {
       const eventoError = datos as EventoErrorStream;
-      console.error("Error del servidor:", eventoError.mensaje);
-      this.error.set("No hemos podido generar tu menú. Inténtalo de nuevo en unos minutos.");
+      console.error('Error del servidor:', eventoError.mensaje);
+      this.error.set('No hemos podido generar tu menú. Inténtalo de nuevo en unos minutos.');
       this.isLoading.set(false);
       this.estaGenerando.set(false);
       return;
@@ -296,16 +308,16 @@ export class AlimentacionService {
   private procesarMenuDiaRecibido(menuDia: MenuDia): void {
     const menuParaTransformar: MenuGenerado = {
       comidas: menuDia.comidas,
-      resumenNutricional: menuDia.resumenNutricional
+      resumenNutricional: menuDia.resumenNutricional,
     };
     const comidasTransformadas = this.transformarMenuAComidas(menuParaTransformar);
 
-    this.comidasPorFecha.update(comidasActuales => ({
+    this.comidasPorFecha.update((comidasActuales) => ({
       ...comidasActuales,
       [menuDia.fecha]: {
         comidas: comidasTransformadas,
-        resumenNutricional: menuDia.resumenNutricional
-      }
+        resumenNutricional: menuDia.resumenNutricional,
+      },
     }));
 
     const progresoActual = this.progresoGeneracion();
@@ -315,7 +327,7 @@ export class AlimentacionService {
       this.progresoGeneracion.set({
         diasGenerados: diasGenerados,
         totalDias: progresoActual.totalDias,
-        porcentaje: porcentajeCalculado
+        porcentaje: porcentajeCalculado,
       });
     }
   }
@@ -333,11 +345,11 @@ export class AlimentacionService {
       const menuSemanalParaGuardar = {
         fechaInicio: this.fechaInicio(),
         fechaFin: this.fechaFin(),
-        comidasPorFecha: this.comidasPorFecha()
+        comidasPorFecha: this.comidasPorFecha(),
       };
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(menuSemanalParaGuardar));
     } catch (error) {
-      console.error("Error guardando menú en localStorage:", error);
+      console.error('Error guardando menú en localStorage:', error);
     }
   }
 
@@ -346,80 +358,82 @@ export class AlimentacionService {
     const fechaFinActual = this.fechaFin();
     const comidasActuales = this.comidasPorFecha();
 
-    console.log("[DB] Intentando guardar menú en base de datos...");
-    console.log("[DB] fechaInicio:", fechaInicioActual);
-    console.log("[DB] fechaFin:", fechaFinActual);
-    console.log("[DB] Tiene comidas:", Object.keys(comidasActuales).length > 0);
+    console.log('[DB] Intentando guardar menú en base de datos...');
+    console.log('[DB] fechaInicio:', fechaInicioActual);
+    console.log('[DB] fechaFin:', fechaFinActual);
+    console.log('[DB] Tiene comidas:', Object.keys(comidasActuales).length > 0);
 
     if (!fechaInicioActual || !fechaFinActual) {
-      console.warn("[DB] ABORTANDO: No hay fechas disponibles para guardar");
+      console.warn('[DB] ABORTANDO: No hay fechas disponibles para guardar');
       return;
     }
 
     const menuParaGuardar = {
       fechaInicio: fechaInicioActual,
       fechaFin: fechaFinActual,
-      comidasPorFecha: comidasActuales
+      comidasPorFecha: comidasActuales,
     };
     const menuJson = JSON.stringify(menuParaGuardar);
 
     const solicitud = {
       menuJson: menuJson,
       fechaInicio: fechaInicioActual,
-      fechaFin: fechaFinActual
+      fechaFin: fechaFinActual,
     };
 
-    console.log("[DB] Enviando POST /guardar-menu con solicitud:", {
+    console.log('[DB] Enviando POST /guardar-menu con solicitud:', {
       fechaInicio: fechaInicioActual,
       fechaFin: fechaFinActual,
-      menuJsonLength: menuJson.length
+      menuJsonLength: menuJson.length,
     });
 
-    this.api.post<{ mensaje: string }>("/rutinas-alimentacion/guardar-menu", solicitud).subscribe({
-      next: () => console.log("[DB] SUCCESS: Menú guardado en base de datos correctamente"),
+    this.api.post<{ mensaje: string }>('/rutinas-alimentacion/guardar-menu', solicitud).subscribe({
+      next: () => console.log('[DB] SUCCESS: Menú guardado en base de datos correctamente'),
       error: (errorCapturado) => {
-        console.error("[DB] ERROR guardando menú en base de datos:", errorCapturado);
-        console.error("[DB] Status:", errorCapturado.status);
-        console.error("[DB] Message:", errorCapturado.message);
-      }
+        console.error('[DB] ERROR guardando menú en base de datos:', errorCapturado);
+        console.error('[DB] Status:', errorCapturado.status);
+        console.error('[DB] Message:', errorCapturado.message);
+      },
     });
   }
 
   cargarMenuDesdeBaseDeDatos(): void {
-    console.log("[DB] Intentando cargar menú desde base de datos...");
+    console.log('[DB] Intentando cargar menú desde base de datos...');
 
-    this.api.get<{ tieneMenu: boolean; menuJson?: string }>("/rutinas-alimentacion/mi-menu").subscribe({
-      next: (respuesta) => {
-        console.log("[DB] Respuesta del servidor:", respuesta);
+    this.api
+      .get<{ tieneMenu: boolean; menuJson?: string }>('/rutinas-alimentacion/mi-menu')
+      .subscribe({
+        next: (respuesta) => {
+          console.log('[DB] Respuesta del servidor:', respuesta);
 
-        if (respuesta.tieneMenu && respuesta.menuJson) {
-          try {
-            const menuParseado: MenuGuardado = JSON.parse(respuesta.menuJson);
-            this.fechaInicio.set(menuParseado.fechaInicio);
-            this.fechaFin.set(menuParseado.fechaFin);
-            this.comidasPorFecha.set(menuParseado.comidasPorFecha);
-            localStorage.setItem(this.STORAGE_KEY, respuesta.menuJson);
-            console.log("[DB] SUCCESS: Menú cargado desde base de datos");
-            console.log("[DB] Días cargados:", Object.keys(menuParseado.comidasPorFecha).length);
-            this.cargaInicialCompletada.set(true);
-          } catch (errorParseo) {
-            console.error("[DB] ERROR parseando menú:", errorParseo);
+          if (respuesta.tieneMenu && respuesta.menuJson) {
+            try {
+              const menuParseado: MenuGuardado = JSON.parse(respuesta.menuJson);
+              this.fechaInicio.set(menuParseado.fechaInicio);
+              this.fechaFin.set(menuParseado.fechaFin);
+              this.comidasPorFecha.set(menuParseado.comidasPorFecha);
+              localStorage.setItem(this.STORAGE_KEY, respuesta.menuJson);
+              console.log('[DB] SUCCESS: Menú cargado desde base de datos');
+              console.log('[DB] Días cargados:', Object.keys(menuParseado.comidasPorFecha).length);
+              this.cargaInicialCompletada.set(true);
+            } catch (errorParseo) {
+              console.error('[DB] ERROR parseando menú:', errorParseo);
+              this.cargarMenuDesdeLocalStorage();
+              this.cargaInicialCompletada.set(true);
+            }
+          } else {
+            console.log('[DB] No hay menú en base de datos, usando localStorage');
             this.cargarMenuDesdeLocalStorage();
             this.cargaInicialCompletada.set(true);
           }
-        } else {
-          console.log("[DB] No hay menú en base de datos, usando localStorage");
+        },
+        error: (errorCapturado) => {
+          console.error('[DB] ERROR cargando menú:', errorCapturado);
+          console.error('[DB] Status:', errorCapturado.status);
           this.cargarMenuDesdeLocalStorage();
           this.cargaInicialCompletada.set(true);
-        }
-      },
-      error: (errorCapturado) => {
-        console.error("[DB] ERROR cargando menú:", errorCapturado);
-        console.error("[DB] Status:", errorCapturado.status);
-        this.cargarMenuDesdeLocalStorage();
-        this.cargaInicialCompletada.set(true);
-      }
-    });
+        },
+      });
   }
 
   private cargarMenuDesdeLocalStorage(): void {
@@ -455,16 +469,16 @@ export class AlimentacionService {
   private procesarMenuSemanal(menuSemanal: MenuSemanalGenerado): void {
     const nuevasComidasPorFecha: ComidasPorFecha = {};
 
-    menuSemanal.menusPorDia.forEach(menuDia => {
+    menuSemanal.menusPorDia.forEach((menuDia) => {
       const menuParaTransformar: MenuGenerado = {
         comidas: menuDia.comidas,
-        resumenNutricional: menuDia.resumenNutricional
+        resumenNutricional: menuDia.resumenNutricional,
       };
       const comidasTransformadas = this.transformarMenuAComidas(menuParaTransformar);
 
       nuevasComidasPorFecha[menuDia.fecha] = {
         comidas: comidasTransformadas,
-        resumenNutricional: menuDia.resumenNutricional
+        resumenNutricional: menuDia.resumenNutricional,
       };
     });
 
@@ -488,25 +502,25 @@ export class AlimentacionService {
 
     if (diasRestantes <= 5) {
       this.generarMenuSemanal().subscribe({
-        next: () => console.log("Menu semanal regenerado automaticamente por dias restantes"),
-        error: (errorCapturado) => console.error("Error regenerando menu:", errorCapturado)
+        next: () => console.log('Menu semanal regenerado automaticamente por dias restantes'),
+        error: (errorCapturado) => console.error('Error regenerando menu:', errorCapturado),
       });
     }
   }
 
   verificarConexionIA(): Observable<EstadoIA> {
     return this.api.get<EstadoIA>('/rutinas-alimentacion/ia/estado').pipe(
-      tap(estado => {
+      tap((estado) => {
         this.estadoIA.set(estado);
       }),
       catchError(() => {
         const estadoError: EstadoIA = {
           conectado: false,
-          mensaje: "No se puede conectar con el servidor"
+          mensaje: 'No se puede conectar con el servidor',
         };
         this.estadoIA.set(estadoError);
         return of(estadoError);
-      })
+      }),
     );
   }
 
@@ -534,7 +548,7 @@ export class AlimentacionService {
     let totalGrasas = 0;
     let diasConDatos = 0;
 
-    Object.values(comidas).forEach(dia => {
+    Object.values(comidas).forEach((dia) => {
       if (dia.resumenNutricional) {
         totalCalorias += dia.resumenNutricional.caloriasTotal;
         totalProteinas += dia.resumenNutricional.proteinasTotal;
@@ -549,7 +563,7 @@ export class AlimentacionService {
       proteinasTotal: totalProteinas,
       carbohidratosTotal: totalCarbohidratos,
       grasasTotal: totalGrasas,
-      diasConDatos: diasConDatos
+      diasConDatos: diasConDatos,
     };
   }
 
@@ -576,7 +590,7 @@ export class AlimentacionService {
       grasasGramos: nutritionTargets?.fatGrams || 65,
       objetivoPrincipal: objetivoMapeado,
       genero: generoMapeado,
-      edad: edadCalculada
+      edad: edadCalculada,
     };
 
     return solicitud;
@@ -584,12 +598,12 @@ export class AlimentacionService {
 
   private obtenerNutritionTargets(): any {
     try {
-      const saved = localStorage.getItem("cofira_nutrition_targets");
+      const saved = localStorage.getItem('cofira_nutrition_targets');
       if (saved) {
         return JSON.parse(saved);
       }
     } catch (e) {
-      console.error("Error obteniendo nutrition targets:", e);
+      console.error('Error obteniendo nutrition targets:', e);
     }
     return null;
   }
@@ -608,8 +622,8 @@ export class AlimentacionService {
     const diaActual = hoy.getDate();
     const diaNacimiento = nacimiento.getDate();
 
-    const noHaCumplidoAnosEsteAno = mesActual < mesNacimiento ||
-      (mesActual === mesNacimiento && diaActual < diaNacimiento);
+    const noHaCumplidoAnosEsteAno =
+      mesActual < mesNacimiento || (mesActual === mesNacimiento && diaActual < diaNacimiento);
 
     if (noHaCumplidoAnosEsteAno) {
       edadCalculada--;
@@ -620,55 +634,57 @@ export class AlimentacionService {
 
   private mapearTipoDieta(tipoDieta: string | null): string {
     const mapaTipos: Record<string, string> = {
-      "OMNIVORE": "Omnivoro",
-      "VEGETARIAN": "Vegetariano",
-      "VEGAN": "Vegano",
-      "PESCATARIAN": "Pescetariano",
-      "KETO": "Cetogenica",
-      "PALEO": "Paleo",
-      "MEDITERRANEAN": "Mediterranea"
+      OMNIVORE: 'Omnivoro',
+      VEGETARIAN: 'Vegetariano',
+      VEGAN: 'Vegano',
+      PESCATARIAN: 'Pescetariano',
+      KETO: 'Cetogenica',
+      PALEO: 'Paleo',
+      MEDITERRANEAN: 'Mediterranea',
     };
 
-    return mapaTipos[tipoDieta || ""] || "Omnivoro";
+    return mapaTipos[tipoDieta || ''] || 'Omnivoro';
   }
 
   private mapearObjetivo(objetivo: string | null): string {
     const mapaObjetivos: Record<string, string> = {
-      "LOSE_WEIGHT": "Perder grasa",
-      "GAIN_MUSCLE": "Ganar musculo",
-      "MAINTAIN": "Mantener peso",
-      "IMPROVE_HEALTH": "Mejorar salud general"
+      LOSE_WEIGHT: 'Perder grasa',
+      GAIN_MUSCLE: 'Ganar musculo',
+      MAINTAIN: 'Mantener peso',
+      IMPROVE_HEALTH: 'Mejorar salud general',
     };
 
-    return mapaObjetivos[objetivo || ""] || "Mejorar salud general";
+    return mapaObjetivos[objetivo || ''] || 'Mejorar salud general';
   }
 
   private mapearGenero(genero: string | null): string {
     const mapaGeneros: Record<string, string> = {
-      "MALE": "Masculino",
-      "FEMALE": "Femenino",
-      "OTHER": "Otro"
+      MALE: 'Masculino',
+      FEMALE: 'Femenino',
+      OTHER: 'Otro',
     };
 
-    return mapaGeneros[genero || ""] || "Masculino";
+    return mapaGeneros[genero || ''] || 'Masculino';
   }
 
   private transformarMenuAComidas(menu: MenuGenerado): Comida[] {
     let contadorIdGlobal = 1;
     let contadorIdAlimento = 1;
 
-    const comidasTransformadas: Comida[] = menu.comidas.map(comidaGenerada => {
-      const alimentosTransformados: Alimento[] = comidaGenerada.alimentos.map(alimentoGenerado => {
-        const alimentoTransformado: Alimento = {
-          id: contadorIdAlimento++,
-          descripcion: `${alimentoGenerado.cantidad} de ${alimentoGenerado.nombre}`,
-          icono: this.mapearIcono(alimentoGenerado.icono),
-          cantidad: alimentoGenerado.cantidad,
-          gramos: alimentoGenerado.gramos
-        };
+    const comidasTransformadas: Comida[] = menu.comidas.map((comidaGenerada) => {
+      const alimentosTransformados: Alimento[] = comidaGenerada.alimentos.map(
+        (alimentoGenerado) => {
+          const alimentoTransformado: Alimento = {
+            id: contadorIdAlimento++,
+            descripcion: `${alimentoGenerado.cantidad} de ${alimentoGenerado.nombre}`,
+            icono: this.mapearIcono(alimentoGenerado.icono),
+            cantidad: alimentoGenerado.cantidad,
+            gramos: alimentoGenerado.gramos,
+          };
 
-        return alimentoTransformado;
-      });
+          return alimentoTransformado;
+        },
+      );
 
       const comidaTransformada: Comida = {
         id: contadorIdGlobal++,
@@ -679,7 +695,7 @@ export class AlimentacionService {
         carbohidratosGramos: comidaGenerada.carbohidratosGramos,
         grasasGramos: comidaGenerada.grasasGramos,
         alimentos: alimentosTransformados,
-        preparacion: comidaGenerada.preparacion
+        preparacion: comidaGenerada.preparacion,
       };
 
       return comidaTransformada;
@@ -690,36 +706,36 @@ export class AlimentacionService {
 
   private mapearIcono(icono: string): TipoIconoAlimento {
     const mapaIconos: Record<string, TipoIconoAlimento> = {
-      "pan": "pan",
-      "fruta": "fruta",
-      "verdura": "verdura",
-      "proteina": "proteina",
-      "lacteo": "lacteo",
-      "bebida": "bebida",
-      "cereal": "cereal",
-      "legumbre": "legumbre",
-      "fruto-seco": "fruto-seco"
+      pan: 'pan',
+      fruta: 'fruta',
+      verdura: 'verdura',
+      proteina: 'proteina',
+      lacteo: 'lacteo',
+      bebida: 'bebida',
+      cereal: 'cereal',
+      legumbre: 'legumbre',
+      'fruto-seco': 'fruto-seco',
     };
 
-    return mapaIconos[icono] || "plato";
+    return mapaIconos[icono] || 'plato';
   }
 
   private mapearTipoComida(tipo: string): TipoComida {
     const mapaTipos: Record<string, TipoComida> = {
-      "DESAYUNO": "desayuno",
-      "ALMUERZO": "almuerzo",
-      "COMIDA": "comida",
-      "MERIENDA": "merienda",
-      "CENA": "cena"
+      DESAYUNO: 'desayuno',
+      ALMUERZO: 'almuerzo',
+      COMIDA: 'comida',
+      MERIENDA: 'merienda',
+      CENA: 'cena',
     };
 
-    return mapaTipos[tipo] || "comida";
+    return mapaTipos[tipo] || 'comida';
   }
 
   private formatearFecha(fecha: Date): string {
     const ano = fecha.getFullYear();
-    const mes = String(fecha.getMonth() + 1).padStart(2, "0");
-    const dia = String(fecha.getDate()).padStart(2, "0");
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
     return `${ano}-${mes}-${dia}`;
   }
 
@@ -732,11 +748,11 @@ export class AlimentacionService {
       const fechaActual = this.obtenerFechaActualString();
       const menuConFecha = {
         menu: menu,
-        fecha: fechaActual
+        fecha: fechaActual,
       };
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(menuConFecha));
     } catch (error) {
-      console.error("Error guardando menu en localStorage:", error);
+      console.error('Error guardando menu en localStorage:', error);
     }
   }
 
@@ -746,17 +762,17 @@ export class AlimentacionService {
         menusPorDia: menuSemanal.menusPorDia,
         fechaInicio: menuSemanal.fechaInicio,
         fechaFin: menuSemanal.fechaFin,
-        comidasPorFecha: this.comidasPorFecha()
+        comidasPorFecha: this.comidasPorFecha(),
       };
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(menuSemanalParaGuardar));
     } catch (error) {
-      console.error("Error guardando menu semanal en localStorage:", error);
+      console.error('Error guardando menu semanal en localStorage:', error);
     }
   }
 
   private cargarMenuGuardado(): void {
-    const token = localStorage.getItem("cofira_token");
-    const estaAutenticado = token !== null && token !== "";
+    const token = localStorage.getItem('cofira_token');
+    const estaAutenticado = token !== null && token !== '';
 
     if (estaAutenticado) {
       this.cargarMenuDesdeBaseDeDatos();
@@ -791,8 +807,8 @@ export class AlimentacionService {
       this.comidasPorFecha.set({
         [fechaActual]: {
           comidas: comidasTransformadas,
-          resumenNutricional: menuParseado.menu.resumenNutricional
-        }
+          resumenNutricional: menuParseado.menu.resumenNutricional,
+        },
       });
     } else {
       localStorage.removeItem(this.STORAGE_KEY);

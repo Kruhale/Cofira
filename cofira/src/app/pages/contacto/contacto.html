@@ -1,62 +1,61 @@
 <main class="contacto">
-  
+
   <header class="contacto__header">
     <hgroup class="contacto__header-content">
-      <h1 class="contacto__titulo">Contacta con nosotros</h1>
+      <h1 class="contacto__titulo">{{ textos().titulo }}</h1>
       <p class="contacto__subtitulo">
-        ¿Tienes alguna pregunta? Estamos aquí para ayudarte.
-        Respondo en menos de 24 horas.
+        {{ textos().subtitulo }}
       </p>
     </hgroup>
   </header>
 
-  
+
   <section class="contacto__contenido">
       <section class="contacto__grid contacto__container">
-        
+
         <section class="contacto__formulario-wrapper">
-          <h2 class="contacto__seccion-titulo">Envíanos un mensaje</h2>
+          <h2 class="contacto__seccion-titulo">{{ textos().formTitulo }}</h2>
           <form (ngSubmit)="enviarFormulario()" class="contacto__formulario">
             <p class="contacto__campo">
-              <label class="contacto__label" for="nombre">Nombre completo</label>
+              <label class="contacto__label" for="nombre">{{ textos().labelNombre }}</label>
               <input [(ngModel)]="formulario.nombre" class="contacto__input" id="nombre" name="nombre"
-                placeholder="Tu nombre" required type="text" />
+                [placeholder]="textos().placeholderNombre" required type="text" />
             </p>
 
             <p class="contacto__campo">
-              <label class="contacto__label" for="email">Email</label>
+              <label class="contacto__label" for="email">{{ textos().labelEmail }}</label>
               <input [(ngModel)]="formulario.email" class="contacto__input" id="email" name="email"
-                placeholder="tu@email.com" required type="email" />
+                [placeholder]="textos().placeholderEmail" required type="email" />
             </p>
 
             <p class="contacto__campo">
-              <label class="contacto__label" for="asunto">Asunto</label>
+              <label class="contacto__label" for="asunto">{{ textos().labelAsunto }}</label>
               <select [(ngModel)]="formulario.asunto" class="contacto__input contacto__select" id="asunto" name="asunto"
                 required>
-                <option disabled value="">Selecciona un asunto</option>
-                <option value="soporte">Soporte técnico</option>
-                <option value="facturacion">Facturación</option>
-                <option value="sugerencia">Sugerencia</option>
-                <option value="colaboracion">Colaboración</option>
-                <option value="otro">Otro</option>
+                <option disabled value="">{{ textos().opcionAsuntoDefecto }}</option>
+                <option value="soporte">{{ textos().opcionSoporte }}</option>
+                <option value="facturacion">{{ textos().opcionFacturacion }}</option>
+                <option value="sugerencia">{{ textos().opcionSugerencia }}</option>
+                <option value="colaboracion">{{ textos().opcionColaboracion }}</option>
+                <option value="otro">{{ textos().opcionOtro }}</option>
               </select>
             </p>
 
             <p class="contacto__campo">
-              <label class="contacto__label" for="mensaje">Mensaje</label>
+              <label class="contacto__label" for="mensaje">{{ textos().labelMensaje }}</label>
               <textarea [(ngModel)]="formulario.mensaje" class="contacto__input contacto__textarea" id="mensaje"
-                name="mensaje" placeholder="Cuéntanos en qué podemos ayudarte..." required rows="5"></textarea>
+                name="mensaje" [placeholder]="textos().placeholderMensaje" required rows="5"></textarea>
             </p>
 
-            <button class="contacto__boton-enviar" type="submit">Enviar mensaje</button>
+            <button class="contacto__boton-enviar" type="submit">{{ textos().botonEnviar }}</button>
           </form>
         </section>
 
-        
+
         <aside class="contacto__info-wrapper">
-          <h2 class="contacto__seccion-titulo">Información de contacto</h2>
+          <h2 class="contacto__seccion-titulo">{{ textos().infoTitulo }}</h2>
           <ul class="contacto__info-lista">
-            @for (info of infoContacto; track info.titulo) {
+            @for (info of infoContacto(); track info.icono) {
             <li class="contacto__info-item">
               <figure class="contacto__info-icono">
                 @switch (info.icono) {
@@ -105,11 +104,11 @@
             }
           </ul>
 
-          
+
           <section class="contacto__horarios">
-            <h3 class="contacto__horarios-titulo">Horario de atención</h3>
+            <h3 class="contacto__horarios-titulo">{{ textos().horariosTitulo }}</h3>
             <dl class="contacto__horarios-lista">
-              @for (h of horarios; track h.dia) {
+              @for (h of horarios(); track $index) {
               <dt class="contacto__horario-dia">{{ h.dia }}</dt>
               <dd class="contacto__horario-hora">{{ h.horario }}</dd>
               }
@@ -122,9 +121,9 @@
 
   <section class="contacto__faq">
     <section class="contacto__container">
-      <h2 class="contacto__faq-titulo">Preguntas Frecuentes</h2>
+      <h2 class="contacto__faq-titulo">{{ textos().faqTitulo }}</h2>
       <ul class="contacto__faq-grid">
-        @for (faq of faqs; track faq.pregunta) {
+        @for (faq of faqs(); track $index) {
         <li class="contacto__faq-item">
           <h3 class="contacto__faq-pregunta">{{ faq.pregunta }}</h3>
           <p class="contacto__faq-respuesta">{{ faq.respuesta }}</p>

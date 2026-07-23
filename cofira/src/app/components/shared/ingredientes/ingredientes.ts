@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {Modal} from '../modal/modal';
-import {Alimento, TipoIconoAlimento} from '../../../models/alimentacion.model';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
-import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
+import { Component, computed, EventEmitter, inject, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Modal } from '../modal/modal';
+import { Alimento, TipoIconoAlimento } from '../../../models/alimentacion.model';
+import { IdiomaService } from '../../../services/idioma.service';
+import { TEXTOS_INGREDIENTES } from './textos-ingredientes';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   faBreadSlice,
   faAppleWhole,
@@ -14,14 +16,8 @@ import {
   faWheatAwn,
   faSeedling,
   faBowlRice,
-  faUtensils
+  faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
-
-interface IngredienteDetalle {
-  nombre: string;
-  cantidad: string;
-  calorias: number;
-}
 
 @Component({
   selector: 'app-ingredientes',
@@ -36,26 +32,24 @@ export class Ingredientes {
 
   @Output() cerrar = new EventEmitter<void>();
 
-  private readonly mapaIconosAlimento = {
-    "pan": faBreadSlice,
-    "fruta": faAppleWhole,
-    "verdura": faCarrot,
-    "proteina": faDrumstickBite,
-    "lacteo": faCheese,
-    "bebida": faMugHot,
-    "cereal": faWheatAwn,
-    "legumbre": faSeedling,
-    "fruto-seco": faBowlRice,
-    "pizza": faUtensils,
-    "plato": faUtensils
-  } as Record<TipoIconoAlimento, IconDefinition>;
+  private readonly idiomaService = inject(IdiomaService);
 
-  ingredientesDetallados: IngredienteDetalle[] = [
-    {nombre: "Harina de trigo", cantidad: "200g", calorias: 360},
-    {nombre: "Queso mozzarella", cantidad: "150g", calorias: 280},
-    {nombre: "Salsa de tomate", cantidad: "100g", calorias: 30},
-    {nombre: "Aceite de oliva", cantidad: "15ml", calorias: 120},
-  ];
+  /* Textos del modal en el idioma vigente: al cambiar el signal se repinta todo */
+  readonly textos = computed(() => TEXTOS_INGREDIENTES[this.idiomaService.idioma()]);
+
+  private readonly mapaIconosAlimento = {
+    pan: faBreadSlice,
+    fruta: faAppleWhole,
+    verdura: faCarrot,
+    proteina: faDrumstickBite,
+    lacteo: faCheese,
+    bebida: faMugHot,
+    cereal: faWheatAwn,
+    legumbre: faSeedling,
+    'fruto-seco': faBowlRice,
+    pizza: faUtensils,
+    plato: faUtensils,
+  } as Record<TipoIconoAlimento, IconDefinition>;
 
   get iconoActual(): IconDefinition {
     if (!this.alimento?.icono) {
@@ -65,10 +59,7 @@ export class Ingredientes {
   }
 
   get caloriasTotal(): number {
-    return this.ingredientesDetallados.reduce(
-      (total, ing) => total + ing.calorias,
-      0
-    );
+    return this.textos().ingredientes.reduce((total, ing) => total + ing.calorias, 0);
   }
 
   cerrarModal(): void {

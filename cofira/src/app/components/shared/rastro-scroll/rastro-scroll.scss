@@ -39,6 +39,12 @@
   cursor: pointer;
 }
 
+.rastro__ticks:focus-visible {
+  outline: 2px solid var(--naranja-normal);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 .rastro__tick {
   width: 0.55rem;
   height: 2px;
@@ -48,11 +54,13 @@
   will-change: width, background;
 }
 
-/* Etiqueta única que viaja con la ola nombrando la sección actual */
+/* Etiqueta única que viaja con la ola nombrando la sección actual.
+   Vertical y pegada a la regla por fuera: horizontal a la derecha pisaba
+   los eyebrows de las secciones (INICIO sobre "Entrena · Come…"). */
 .rastro__etiqueta {
   position: absolute;
   top: 0;
-  left: 2.9rem;
+  left: -1.15rem;
 
   font-family: var(--fuente-mono);
   font-size: 0.625rem; /* 10px */
@@ -61,8 +69,9 @@
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--naranja-texto);
+  writing-mode: vertical-rl;
 
-  transform: translateY(-50%);
+  transform: translateY(-50%) rotate(180deg);
   pointer-events: none;
   transition: opacity 0.35s ease;
 }

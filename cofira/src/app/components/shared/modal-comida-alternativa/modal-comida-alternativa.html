@@ -2,33 +2,33 @@
   (cerrar)="cerrarModal()"
   [abierto]="abierto"
   [anchoPX]="450"
-  titulo="Registrar comida alternativa">
+  [titulo]="textos().tituloModal">
 
   <section class="modal-alternativa">
     @if (comida) {
       <p class="modal-alternativa__subtitulo">
-        En lugar de: <strong>{{ comida.nombre }}</strong>
+        {{ textos().enLugarDe }} <strong>{{ comida.nombre }}</strong>
       </p>
     }
 
     <form (ngSubmit)="guardarComidaAlternativa()" class="modal-alternativa__formulario">
       <fieldset class="modal-alternativa__campo">
-        <label class="modal-alternativa__label" for="nombreComida">¿Qué comiste?</label>
+        <label class="modal-alternativa__label" for="nombreComida">{{ textos().labelQueComiste }}</label>
         <input
           [(ngModel)]="nombreComida"
           autocomplete="off"
           class="modal-alternativa__input"
           id="nombreComida"
           name="nombreComida"
-          placeholder="Ej: Ensalada César con pollo"
+          [placeholder]="textos().placeholderComida"
           type="text">
       </fieldset>
 
       <fieldset class="modal-alternativa__grupo-macros">
-        <legend class="modal-alternativa__grupo-titulo">Valores nutricionales (estimados)</legend>
+        <legend class="modal-alternativa__grupo-titulo">{{ textos().leyendaMacros }}</legend>
 
         <article class="modal-alternativa__macro">
-          <label class="modal-alternativa__macro-label" for="calorias">Calorías</label>
+          <label class="modal-alternativa__macro-label" for="calorias">{{ textos().labelCalorias }}</label>
           <input
             [(ngModel)]="calorias"
             class="modal-alternativa__macro-input"
@@ -40,7 +40,7 @@
         </article>
 
         <article class="modal-alternativa__macro">
-          <label class="modal-alternativa__macro-label" for="proteinas">Proteínas</label>
+          <label class="modal-alternativa__macro-label" for="proteinas">{{ textos().labelProteinas }}</label>
           <input
             [(ngModel)]="proteinas"
             class="modal-alternativa__macro-input"
@@ -52,7 +52,7 @@
         </article>
 
         <article class="modal-alternativa__macro">
-          <label class="modal-alternativa__macro-label" for="carbohidratos">Carbohidratos</label>
+          <label class="modal-alternativa__macro-label" for="carbohidratos">{{ textos().labelCarbohidratos }}</label>
           <input
             [(ngModel)]="carbohidratos"
             class="modal-alternativa__macro-input"
@@ -64,7 +64,7 @@
         </article>
 
         <article class="modal-alternativa__macro">
-          <label class="modal-alternativa__macro-label" for="grasas">Grasas</label>
+          <label class="modal-alternativa__macro-label" for="grasas">{{ textos().labelGrasas }}</label>
           <input
             [(ngModel)]="grasas"
             class="modal-alternativa__macro-input"
@@ -81,16 +81,16 @@
           (click)="cerrarModal()"
           class="modal-alternativa__boton modal-alternativa__boton--cancelar"
           type="button">
-          Cancelar
+          {{ textos().botonCancelar }}
         </button>
         <button
           [disabled]="guardando"
           class="modal-alternativa__boton modal-alternativa__boton--guardar"
           type="submit">
           @if (guardando) {
-            Guardando...
+            {{ textos().botonGuardando }}
           } @else {
-            Guardar
+            {{ textos().botonGuardar }}
           }
         </button>
       </footer>

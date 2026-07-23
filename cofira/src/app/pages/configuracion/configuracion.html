@@ -1,65 +1,55 @@
 <main class="configuracion">
   <header class="configuracion__cabecera">
-    <h1 class="configuracion__titulo">Configuración</h1>
-    <p class="configuracion__subtitulo">Personaliza tu experiencia en Cofira</p>
+    <p class="configuracion__eyebrow">{{ textos().eyebrow }}</p>
+    <h1 class="configuracion__titulo">{{ textos().titulo }}</h1>
+    <p class="configuracion__subtitulo">{{ textos().subtitulo }}</p>
   </header>
 
   <section class="configuracion__contenido">
-    <nav class="configuracion__menu">
+    <nav aria-label="{{ textos().ariaMenuSecciones }}" class="configuracion__menu">
       <button
         (click)="cambiarSeccion('general')"
+        [attr.aria-current]="seccionActiva() === 'general' ? 'true' : null"
         [class.configuracion__menu-item--activo]="seccionActiva() === 'general'"
         class="configuracion__menu-item"
         type="button">
-        <svg aria-hidden="true" class="configuracion__menu-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-          <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>General</span>
+        <span>{{ textos().menuGeneral }}</span>
       </button>
 
       <button
         (click)="cambiarSeccion('notificaciones')"
+        [attr.aria-current]="seccionActiva() === 'notificaciones' ? 'true' : null"
         [class.configuracion__menu-item--activo]="seccionActiva() === 'notificaciones'"
         class="configuracion__menu-item"
         type="button">
-        <svg aria-hidden="true" class="configuracion__menu-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-          <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Notificaciones</span>
+        <span>{{ textos().menuNotificaciones }}</span>
       </button>
 
       <button
         (click)="cambiarSeccion('privacidad')"
+        [attr.aria-current]="seccionActiva() === 'privacidad' ? 'true' : null"
         [class.configuracion__menu-item--activo]="seccionActiva() === 'privacidad'"
         class="configuracion__menu-item"
         type="button">
-        <svg aria-hidden="true" class="configuracion__menu-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-          <path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Privacidad</span>
+        <span>{{ textos().menuPrivacidad }}</span>
       </button>
 
       <button
         (click)="cambiarSeccion('suscripcion')"
+        [attr.aria-current]="seccionActiva() === 'suscripcion' ? 'true' : null"
         [class.configuracion__menu-item--activo]="seccionActiva() === 'suscripcion'"
         class="configuracion__menu-item"
         type="button">
-        <svg aria-hidden="true" class="configuracion__menu-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-          <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Suscripción</span>
+        <span>{{ textos().menuSuscripcion }}</span>
       </button>
 
       <button
         (click)="cambiarSeccion('cuenta')"
+        [attr.aria-current]="seccionActiva() === 'cuenta' ? 'true' : null"
         [class.configuracion__menu-item--activo]="seccionActiva() === 'cuenta'"
         class="configuracion__menu-item"
         type="button">
-        <svg aria-hidden="true" class="configuracion__menu-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-          <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Cuenta</span>
+        <span>{{ textos().menuCuenta }}</span>
       </button>
     </nav>
 
@@ -67,16 +57,16 @@
       @switch (seccionActiva()) {
         @case ('general') {
           <section class="configuracion__seccion">
-            <h2 class="configuracion__seccion-titulo">Preferencias Generales</h2>
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloGeneral }}</h2>
 
             <fieldset class="configuracion__grupo">
-              <legend class="configuracion__grupo-titulo">Idioma y Región</legend>
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoIdiomaRegion }}</legend>
 
               <article class="configuracion__opcion">
-                <label class="configuracion__label" for="idioma">Idioma de la aplicación</label>
+                <label class="configuracion__label" for="idioma">{{ textos().labelIdiomaApp }}</label>
                 <select
-                  (change)="actualizarPreferencia('idiomaSeleccionado', $any($event.target).value)"
-                  [value]="preferencias().idiomaSeleccionado"
+                  (change)="cambiarIdiomaApp($any($event.target).value)"
+                  [value]="idiomaActual()"
                   class="configuracion__select"
                   id="idioma">
                   @for (idioma of idiomas; track idioma.codigo) {
@@ -87,29 +77,29 @@
             </fieldset>
 
             <fieldset class="configuracion__grupo">
-              <legend class="configuracion__grupo-titulo">Unidades de Medida</legend>
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoUnidades }}</legend>
 
               <article class="configuracion__opcion">
-                <label class="configuracion__label" for="unidadesPeso">Unidades de peso</label>
+                <label class="configuracion__label" for="unidadesPeso">{{ textos().labelUnidadesPeso }}</label>
                 <select
                   (change)="actualizarPreferencia('unidadesPeso', $any($event.target).value)"
                   [value]="preferencias().unidadesPeso"
                   class="configuracion__select"
                   id="unidadesPeso">
-                  @for (unidad of unidadesPesoOpciones; track unidad.codigo) {
+                  @for (unidad of unidadesPesoOpciones(); track unidad.codigo) {
                     <option [value]="unidad.codigo">{{ unidad.nombre }}</option>
                   }
                 </select>
               </article>
 
               <article class="configuracion__opcion">
-                <label class="configuracion__label" for="unidadesAltura">Unidades de altura</label>
+                <label class="configuracion__label" for="unidadesAltura">{{ textos().labelUnidadesAltura }}</label>
                 <select
                   (change)="actualizarPreferencia('unidadesAltura', $any($event.target).value)"
                   [value]="preferencias().unidadesAltura"
                   class="configuracion__select"
                   id="unidadesAltura">
-                  @for (unidad of unidadesAlturaOpciones; track unidad.codigo) {
+                  @for (unidad of unidadesAlturaOpciones(); track unidad.codigo) {
                     <option [value]="unidad.codigo">{{ unidad.nombre }}</option>
                   }
                 </select>
@@ -120,15 +110,15 @@
 
         @case ('notificaciones') {
           <section class="configuracion__seccion">
-            <h2 class="configuracion__seccion-titulo">Notificaciones</h2>
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloNotificaciones }}</h2>
 
             <fieldset class="configuracion__grupo">
-              <legend class="configuracion__grupo-titulo">Canales de Comunicación</legend>
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoCanales }}</legend>
 
               <article class="configuracion__toggle-item">
                 <hgroup class="configuracion__toggle-info">
-                  <h3 class="configuracion__toggle-titulo">Notificaciones por email</h3>
-                  <p class="configuracion__toggle-descripcion">Recibe actualizaciones y consejos en tu correo</p>
+                  <h3 class="configuracion__toggle-titulo">{{ textos().emailTitulo }}</h3>
+                  <p class="configuracion__toggle-descripcion">{{ textos().emailDescripcion }}</p>
                 </hgroup>
                 <button
                   (click)="togglePreferencia('notificacionesEmail')"
@@ -137,14 +127,14 @@
                   type="button"
                   role="switch"
                   [attr.aria-checked]="preferencias().notificacionesEmail">
-                  <span class="configuracion__toggle-circulo"></span>
+                  <span [class.configuracion__toggle-circulo--activo]="preferencias().notificacionesEmail" class="configuracion__toggle-circulo"></span>
                 </button>
               </article>
 
               <article class="configuracion__toggle-item">
                 <hgroup class="configuracion__toggle-info">
-                  <h3 class="configuracion__toggle-titulo">Notificaciones push</h3>
-                  <p class="configuracion__toggle-descripcion">Recibe alertas en tu dispositivo</p>
+                  <h3 class="configuracion__toggle-titulo">{{ textos().pushTitulo }}</h3>
+                  <p class="configuracion__toggle-descripcion">{{ textos().pushDescripcion }}</p>
                 </hgroup>
                 <button
                   (click)="togglePreferencia('notificacionesPush')"
@@ -153,18 +143,18 @@
                   type="button"
                   role="switch"
                   [attr.aria-checked]="preferencias().notificacionesPush">
-                  <span class="configuracion__toggle-circulo"></span>
+                  <span [class.configuracion__toggle-circulo--activo]="preferencias().notificacionesPush" class="configuracion__toggle-circulo"></span>
                 </button>
               </article>
             </fieldset>
 
             <fieldset class="configuracion__grupo">
-              <legend class="configuracion__grupo-titulo">Recordatorios</legend>
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoRecordatorios }}</legend>
 
               <article class="configuracion__toggle-item">
                 <hgroup class="configuracion__toggle-info">
-                  <h3 class="configuracion__toggle-titulo">Recordatorios de entrenamiento</h3>
-                  <p class="configuracion__toggle-descripcion">Te avisamos cuando sea hora de entrenar</p>
+                  <h3 class="configuracion__toggle-titulo">{{ textos().recordatorioEntrenoTitulo }}</h3>
+                  <p class="configuracion__toggle-descripcion">{{ textos().recordatorioEntrenoDescripcion }}</p>
                 </hgroup>
                 <button
                   (click)="togglePreferencia('recordatoriosEntrenamiento')"
@@ -173,14 +163,14 @@
                   type="button"
                   role="switch"
                   [attr.aria-checked]="preferencias().recordatoriosEntrenamiento">
-                  <span class="configuracion__toggle-circulo"></span>
+                  <span [class.configuracion__toggle-circulo--activo]="preferencias().recordatoriosEntrenamiento" class="configuracion__toggle-circulo"></span>
                 </button>
               </article>
 
               <article class="configuracion__toggle-item">
                 <hgroup class="configuracion__toggle-info">
-                  <h3 class="configuracion__toggle-titulo">Recordatorios de comidas</h3>
-                  <p class="configuracion__toggle-descripcion">Te recordamos registrar tus comidas</p>
+                  <h3 class="configuracion__toggle-titulo">{{ textos().recordatorioComidasTitulo }}</h3>
+                  <p class="configuracion__toggle-descripcion">{{ textos().recordatorioComidasDescripcion }}</p>
                 </hgroup>
                 <button
                   (click)="togglePreferencia('recordatoriosComidas')"
@@ -189,7 +179,7 @@
                   type="button"
                   role="switch"
                   [attr.aria-checked]="preferencias().recordatoriosComidas">
-                  <span class="configuracion__toggle-circulo"></span>
+                  <span [class.configuracion__toggle-circulo--activo]="preferencias().recordatoriosComidas" class="configuracion__toggle-circulo"></span>
                 </button>
               </article>
             </fieldset>
@@ -198,40 +188,40 @@
 
         @case ('privacidad') {
           <section class="configuracion__seccion">
-            <h2 class="configuracion__seccion-titulo">Privacidad y Datos</h2>
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloPrivacidad }}</h2>
 
             <fieldset class="configuracion__grupo">
-              <legend class="configuracion__grupo-titulo">Gestión de Datos</legend>
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoGestionDatos }}</legend>
 
               <article class="configuracion__accion-item">
                 <hgroup class="configuracion__accion-info">
-                  <h3 class="configuracion__accion-titulo">Exportar mis datos</h3>
-                  <p class="configuracion__accion-descripcion">Descarga una copia de toda tu información</p>
+                  <h3 class="configuracion__accion-titulo">{{ textos().exportarTitulo }}</h3>
+                  <p class="configuracion__accion-descripcion">{{ textos().exportarDescripcion }}</p>
                 </hgroup>
                 <app-button (click)="exportarDatos()" tamanio="pequeno" variante="secundario">
-                  Exportar
+                  {{ textos().botonExportar }}
                 </app-button>
               </article>
             </fieldset>
 
             <fieldset class="configuracion__grupo">
-              <legend class="configuracion__grupo-titulo">Documentos Legales</legend>
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoLegales }}</legend>
 
               <nav class="configuracion__enlaces">
                 <a class="configuracion__enlace" routerLink="/privacidad">
-                  <span>Política de privacidad</span>
+                  <span>{{ textos().enlacePrivacidad }}</span>
                   <svg aria-hidden="true" class="configuracion__enlace-icono" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </a>
                 <a class="configuracion__enlace" routerLink="/terminos">
-                  <span>Términos y condiciones</span>
+                  <span>{{ textos().enlaceTerminos }}</span>
                   <svg aria-hidden="true" class="configuracion__enlace-icono" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </a>
                 <a class="configuracion__enlace" routerLink="/cookies">
-                  <span>Política de cookies</span>
+                  <span>{{ textos().enlaceCookies }}</span>
                   <svg aria-hidden="true" class="configuracion__enlace-icono" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -243,59 +233,59 @@
 
         @case ('suscripcion') {
           <section class="configuracion__seccion">
-            <h2 class="configuracion__seccion-titulo">Suscripción</h2>
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloSuscripcion }}</h2>
 
             @if (esPro()) {
-              <fieldset class="configuracion__grupo configuracion__grupo--pro">
+              <fieldset class="configuracion__grupo">
                 <legend class="configuracion__grupo-titulo">
                   <mark class="configuracion__badge-pro">PRO</mark>
-                  Estado de tu Suscripción
+                  {{ textos().grupoEstadoSuscripcion }}
                 </legend>
 
                 <article class="configuracion__suscripcion-info">
                   <section class="configuracion__suscripcion-detalle">
-                    <span class="configuracion__suscripcion-etiqueta">Estado</span>
+                    <span class="configuracion__suscripcion-etiqueta">{{ textos().etiquetaEstado }}</span>
                     <span class="configuracion__suscripcion-valor configuracion__suscripcion-valor--activa">
                       @switch (suscripcionActual()?.estadoSuscripcion) {
-                        @case ('activa') { Activa }
-                        @case ('periodo_gracia') { Período de gracia }
-                        @case ('cancelada') { Cancelada }
+                        @case ('activa') { {{ textos().estadoActiva }} }
+                        @case ('periodo_gracia') { {{ textos().estadoGracia }} }
+                        @case ('cancelada') { {{ textos().estadoCancelada }} }
                         @default { -- }
                       }
                     </span>
                   </section>
 
                   <section class="configuracion__suscripcion-detalle">
-                    <span class="configuracion__suscripcion-etiqueta">Fecha de inicio</span>
+                    <span class="configuracion__suscripcion-etiqueta">{{ textos().etiquetaFechaInicio }}</span>
                     <span class="configuracion__suscripcion-valor">
                       {{ formatearFechaSuscripcion(suscripcionActual()?.fechaInicio || '') }}
                     </span>
                   </section>
 
                   <section class="configuracion__suscripcion-detalle">
-                    <span class="configuracion__suscripcion-etiqueta">Próxima renovación</span>
+                    <span class="configuracion__suscripcion-etiqueta">{{ textos().etiquetaRenovacion }}</span>
                     <span class="configuracion__suscripcion-valor">
                       {{ formatearFechaSuscripcion(suscripcionActual()?.fechaExpiracion || '') }}
                     </span>
                   </section>
 
                   <section class="configuracion__suscripcion-detalle">
-                    <span class="configuracion__suscripcion-etiqueta">Días restantes</span>
+                    <span class="configuracion__suscripcion-etiqueta">{{ textos().etiquetaDiasRestantes }}</span>
                     <span class="configuracion__suscripcion-valor">
-                      {{ diasRestantes() }} días
+                      {{ diasRestantes() }} {{ textos().sufijoDias }}
                     </span>
                   </section>
                 </article>
               </fieldset>
 
               <fieldset class="configuracion__grupo">
-                <legend class="configuracion__grupo-titulo">Opciones de Renovación</legend>
+                <legend class="configuracion__grupo-titulo">{{ textos().grupoRenovacion }}</legend>
 
                 <article class="configuracion__toggle-item">
                   <hgroup class="configuracion__toggle-info">
-                    <h3 class="configuracion__toggle-titulo">Renovación automática</h3>
+                    <h3 class="configuracion__toggle-titulo">{{ textos().renovacionTitulo }}</h3>
                     <p class="configuracion__toggle-descripcion">
-                      Tu suscripción se renovará automáticamente cada mes
+                      {{ textos().renovacionDescripcion }}
                     </p>
                   </hgroup>
                   <button
@@ -306,19 +296,19 @@
                     type="button"
                     role="switch"
                     [attr.aria-checked]="renovacionAutomatica()">
-                    <span class="configuracion__toggle-circulo"></span>
+                    <span [class.configuracion__toggle-circulo--activo]="renovacionAutomatica()" class="configuracion__toggle-circulo"></span>
                   </button>
                 </article>
               </fieldset>
 
               <fieldset class="configuracion__grupo configuracion__grupo--peligro">
-                <legend class="configuracion__grupo-titulo configuracion__grupo-titulo--peligro">Cancelar Suscripción</legend>
+                <legend class="configuracion__grupo-titulo configuracion__grupo-titulo--peligro">{{ textos().grupoCancelar }}</legend>
 
                 <article class="configuracion__accion-item configuracion__accion-item--peligro">
                   <hgroup class="configuracion__accion-info">
-                    <h3 class="configuracion__accion-titulo">Cancelar PRO</h3>
+                    <h3 class="configuracion__accion-titulo">{{ textos().cancelarProTitulo }}</h3>
                     <p class="configuracion__accion-descripcion">
-                      Mantendrás acceso hasta que expire tu período actual
+                      {{ textos().cancelarProDescripcion }}
                     </p>
                   </hgroup>
                   <app-button
@@ -327,36 +317,31 @@
                     tamanio="pequeno"
                     variante="peligro">
                     @if (cargandoSuscripcion()) {
-                      Cancelando...
+                      {{ textos().botonCancelando }}
                     } @else {
-                      Cancelar
+                      {{ textos().botonCancelar }}
                     }
                   </app-button>
                 </article>
               </fieldset>
             } @else {
               <fieldset class="configuracion__grupo">
-                <legend class="configuracion__grupo-titulo">Activa Cofira PRO</legend>
+                <legend class="configuracion__grupo-titulo">{{ textos().grupoActivarPro }}</legend>
 
                 <article class="configuracion__suscripcion-promo">
-                  <figure class="configuracion__suscripcion-icono">
-                    <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                      <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </figure>
                   <hgroup class="configuracion__suscripcion-promo-info">
-                    <h3 class="configuracion__suscripcion-promo-titulo">Desbloquea todo el potencial</h3>
+                    <h3 class="configuracion__suscripcion-promo-titulo">{{ textos().promoTitulo }}</h3>
                     <ul class="configuracion__suscripcion-beneficios">
-                      <li>Gimnasio personalizado</li>
-                      <li>Planes de alimentación</li>
-                      <li>Seguimiento de progreso</li>
+                      @for (beneficio of textos().promoBeneficios; track beneficio) {
+                        <li>{{ beneficio }}</li>
+                      }
                     </ul>
                     <p class="configuracion__suscripcion-precio">
-                      <strong>9.99€</strong>/mes
+                      <strong>{{ textos().precio }}</strong>{{ textos().precioPeriodo }}
                     </p>
                   </hgroup>
                   <app-button (click)="activarPro()" tamanio="mediano" variante="primario">
-                    Activar PRO
+                    {{ textos().botonActivarPro }}
                   </app-button>
                 </article>
               </fieldset>
@@ -366,18 +351,18 @@
 
         @case ('cuenta') {
           <section class="configuracion__seccion">
-            <h2 class="configuracion__seccion-titulo">Gestión de Cuenta</h2>
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloCuenta }}</h2>
 
             <fieldset class="configuracion__grupo configuracion__grupo--peligro">
-              <legend class="configuracion__grupo-titulo configuracion__grupo-titulo--peligro">Zona de Peligro</legend>
+              <legend class="configuracion__grupo-titulo configuracion__grupo-titulo--peligro">{{ textos().grupoPeligro }}</legend>
 
               <article class="configuracion__accion-item configuracion__accion-item--peligro">
                 <hgroup class="configuracion__accion-info">
-                  <h3 class="configuracion__accion-titulo">Eliminar cuenta</h3>
-                  <p class="configuracion__accion-descripcion">Esta acción es irreversible. Se eliminarán todos tus datos.</p>
+                  <h3 class="configuracion__accion-titulo">{{ textos().eliminarCuentaTitulo }}</h3>
+                  <p class="configuracion__accion-descripcion">{{ textos().eliminarCuentaDescripcion }}</p>
                 </hgroup>
                 <app-button (click)="eliminarCuenta()" tamanio="pequeno" variante="peligro">
-                  Eliminar
+                  {{ textos().botonEliminar }}
                 </app-button>
               </article>
             </fieldset>
@@ -388,9 +373,9 @@
       <footer class="configuracion__footer">
         <app-button (click)="guardarPreferencias()" [habilitado]="estaCargando()" tamanio="mediano" variante="primario">
           @if (estaCargando()) {
-            Guardando...
+            {{ textos().botonGuardando }}
           } @else {
-            Guardar cambios
+            {{ textos().botonGuardar }}
           }
         </app-button>
       </footer>

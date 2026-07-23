@@ -1,19 +1,19 @@
 <header class="cabecera" [class.cabecera--transparente]="cabeceraTransparente()">
-  <a class="cabecera__logo-enlace" routerLink="/home" aria-label="Cofira - inicio">
+  <a class="cabecera__logo-enlace" routerLink="/home" [attr.aria-label]="textos().ariaLogo">
     <span class="cabecera__logo-texto">Cofira<span class="cabecera__logo-punto" aria-hidden="true">.</span></span>
-    <span class="cabecera__logo-etiqueta" aria-hidden="true">Sistema</span>
+    <span class="cabecera__logo-etiqueta" aria-hidden="true">{{ textos().logoEtiqueta }}</span>
   </a>
 
-  <nav class="cabecera__navegacion cabecera__navegacion--escritorio" aria-label="Navegación principal">
+  <nav class="cabecera__navegacion cabecera__navegacion--escritorio" [attr.aria-label]="textos().ariaNavPrincipal">
     <ul class="cabecera__menu">
-      <li><a class="cabecera__enlace" routerLink="/alimentacion" routerLinkActive="cabecera__enlace--activo">Nutrición</a></li>
-      <li><a class="cabecera__enlace" routerLink="/gimnasio" routerLinkActive="cabecera__enlace--activo">Ejercicio</a></li>
-      <li><a class="cabecera__enlace" routerLink="/seguimiento" routerLinkActive="cabecera__enlace--activo">Seguimiento</a></li>
+      <li><a class="cabecera__enlace" routerLink="/alimentacion" routerLinkActive="cabecera__enlace--activo">{{ textos().navNutricion }}</a></li>
+      <li><a class="cabecera__enlace" routerLink="/gimnasio" routerLinkActive="cabecera__enlace--activo">{{ textos().navEjercicio }}</a></li>
+      <li><a class="cabecera__enlace" routerLink="/seguimiento" routerLinkActive="cabecera__enlace--activo">{{ textos().navSeguimiento }}</a></li>
     </ul>
   </nav>
 
-  <nav class="cabecera__acciones cabecera__acciones--escritorio" aria-label="Acciones de usuario">
-    <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? 'Activar modo claro' : 'Activar modo oscuro'" [attr.aria-pressed]="modoOscuro" class="cabecera__tema-boton">
+  <nav class="cabecera__acciones cabecera__acciones--escritorio" [attr.aria-label]="textos().ariaAcciones">
+    <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? textos().ariaTemaClaro : textos().ariaTemaOscuro" [attr.aria-pressed]="modoOscuro" class="cabecera__tema-boton">
       @if (modoOscuro) {
         <svg aria-hidden="true" class="cabecera__tema-boton-icono" fill="currentColor" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
@@ -37,7 +37,7 @@
     @if (isAuthenticated()) {
         <section class="cabecera__perfil-contenedor">
             <button (click)="toggleMenuCuenta()" [attr.aria-expanded]="menuCuentaAbierto" aria-controls="menu-cuenta" aria-haspopup="true"
-                    aria-label="Menú de cuenta" class="cabecera__perfil">
+                    [attr.aria-label]="textos().ariaMenuCuenta" class="cabecera__perfil">
                 <span class="cabecera__perfil-avatar" aria-hidden="true">{{ inicialUsuario() }}</span>
                 <span class="cabecera__perfil-nombre">{{ userNombre() }}</span>
                 <svg aria-hidden="true" class="cabecera__perfil-chevron" [class.cabecera__perfil-chevron--abierto]="menuCuentaAbierto" fill="none" stroke="currentColor"
@@ -55,7 +55,7 @@
             @if (userEmail() && userEmail() !== userNombre()) {
               <span class="cabecera__cuenta-email">{{ userEmail() }}</span>
             } @else {
-              <span class="cabecera__cuenta-email">Cuenta personal</span>
+              <span class="cabecera__cuenta-email">{{ textos().cuentaPersonal }}</span>
             }
           </span>
           @if (esPro()) {
@@ -63,7 +63,7 @@
           }
         </header>
         <nav class="cabecera__desplegable-navegacion">
-          <span class="cabecera__desplegable-etiqueta" aria-hidden="true">Cuenta</span>
+          <span class="cabecera__desplegable-etiqueta" aria-hidden="true">{{ textos().etiquetaCuenta }}</span>
           <a (click)="cerrarMenuCuenta()" class="cabecera__desplegable-item" routerLink="/perfil">
             <span class="cabecera__desplegable-item-caja" aria-hidden="true">
               <svg class="cabecera__desplegable-item-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -72,8 +72,8 @@
               </svg>
             </span>
             <span class="cabecera__desplegable-item-textos">
-              <span class="cabecera__desplegable-item-titulo">Mi perfil</span>
-              <span class="cabecera__desplegable-item-descripcion">Datos y objetivos</span>
+              <span class="cabecera__desplegable-item-titulo">{{ textos().itemPerfilTitulo }}</span>
+              <span class="cabecera__desplegable-item-descripcion">{{ textos().itemPerfilDescripcion }}</span>
             </span>
             <svg aria-hidden="true" class="cabecera__desplegable-item-flecha" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -88,8 +88,8 @@
               </svg>
             </span>
             <span class="cabecera__desplegable-item-textos">
-              <span class="cabecera__desplegable-item-titulo">Configuración</span>
-              <span class="cabecera__desplegable-item-descripcion">Preferencias y unidades</span>
+              <span class="cabecera__desplegable-item-titulo">{{ textos().itemConfigTitulo }}</span>
+              <span class="cabecera__desplegable-item-descripcion">{{ textos().itemConfigDescripcion }}</span>
             </span>
             <svg aria-hidden="true" class="cabecera__desplegable-item-flecha" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -106,7 +106,7 @@
               </svg>
             </span>
             <span class="cabecera__desplegable-item-textos">
-              <span class="cabecera__desplegable-item-titulo">Cerrar sesión</span>
+              <span class="cabecera__desplegable-item-titulo">{{ textos().cerrarSesion }}</span>
             </span>
           </button>
         </nav>
@@ -118,11 +118,11 @@
       }
         </section>
     } @else {
-      <app-button enlace="/onboarding" variante="primario" tamanio="pequeno">Inscríbete</app-button>
+      <app-button enlace="/onboarding" variante="primario" tamanio="pequeno">{{ textos().inscribete }}</app-button>
     }
   </nav>
 
-  <button (click)="toggleMenu()" [class.cabecera__hamburguesa--abierto]="menuAbierto" [attr.aria-expanded]="menuAbierto" aria-controls="menu-movil" aria-label="Menú"
+  <button (click)="toggleMenu()" [class.cabecera__hamburguesa--abierto]="menuAbierto" [attr.aria-expanded]="menuAbierto" aria-controls="menu-movil" [attr.aria-label]="textos().ariaMenu"
           class="cabecera__hamburguesa">
     <span aria-hidden="true" class="cabecera__hamburguesa-linea"></span>
     <span aria-hidden="true" class="cabecera__hamburguesa-linea"></span>
@@ -130,26 +130,26 @@
   </button>
 </header>
 
-<nav resaltadoDeslizante class="mini-cabecera" [class.mini-cabecera--visible]="miniCabeceraVisible()" aria-label="Navegación rápida">
+<nav resaltadoDeslizante class="mini-cabecera" [class.mini-cabecera--visible]="miniCabeceraVisible()" [attr.aria-label]="textos().ariaNavRapida">
   <span class="mini-cabecera__resaltado" aria-hidden="true"></span>
-  <a class="mini-cabecera__logo" routerLink="/home" aria-label="Cofira - inicio">C<span class="mini-cabecera__logo-punto" aria-hidden="true">.</span></a>
-  <a class="mini-cabecera__enlace" routerLink="/alimentacion" routerLinkActive="mini-cabecera__enlace--activo">Nutrición</a>
-  <a class="mini-cabecera__enlace" routerLink="/gimnasio" routerLinkActive="mini-cabecera__enlace--activo">Ejercicio</a>
-  <a class="mini-cabecera__enlace" routerLink="/seguimiento" routerLinkActive="mini-cabecera__enlace--activo">Seguimiento</a>
+  <a class="mini-cabecera__logo" routerLink="/home" [attr.aria-label]="textos().ariaLogo">C<span class="mini-cabecera__logo-punto" aria-hidden="true">.</span></a>
+  <a class="mini-cabecera__enlace" routerLink="/alimentacion" routerLinkActive="mini-cabecera__enlace--activo">{{ textos().navNutricion }}</a>
+  <a class="mini-cabecera__enlace" routerLink="/gimnasio" routerLinkActive="mini-cabecera__enlace--activo">{{ textos().navEjercicio }}</a>
+  <a class="mini-cabecera__enlace" routerLink="/seguimiento" routerLinkActive="mini-cabecera__enlace--activo">{{ textos().navSeguimiento }}</a>
   @if (isAuthenticated()) {
-    <a class="mini-cabecera__cta" routerLink="/perfil" aria-label="Mi perfil">{{ inicialUsuario() }}</a>
+    <a class="mini-cabecera__cta" routerLink="/perfil" [attr.aria-label]="textos().ariaMiPerfil">{{ inicialUsuario() }}</a>
   } @else {
-    <a class="mini-cabecera__cta mini-cabecera__cta--texto" routerLink="/login">Entrar</a>
+    <a class="mini-cabecera__cta mini-cabecera__cta--texto" routerLink="/login">{{ textos().entrar }}</a>
   }
 </nav>
 
-<section class="menu-movil" [class.menu-movil--abierto]="menuAbierto" id="menu-movil" role="dialog" aria-label="Menú de navegación" tabindex="-1">
+<section class="menu-movil" [class.menu-movil--abierto]="menuAbierto" id="menu-movil" role="dialog" [attr.aria-label]="textos().ariaMenuNavegacion" tabindex="-1">
   <span aria-hidden="true" class="menu-movil__overlay" tabindex="-1" [class.menu-movil__overlay--visible]="menuAbierto" (click)="cerrarMenu()"></span>
 
   <section class="menu-movil__contenido" [class.menu-movil__contenido--visible]="menuAbierto">
     <header class="menu-movil__cabecera">
-      <h2 class="menu-movil__titulo">Menú</h2>
-      <button class="menu-movil__cerrar" (click)="cerrarMenu()" aria-label="Cerrar menú">
+      <h2 class="menu-movil__titulo">{{ textos().menuTitulo }}</h2>
+      <button class="menu-movil__cerrar" (click)="cerrarMenu()" [attr.aria-label]="textos().ariaCerrarMenu">
         <svg aria-hidden="true" class="menu-movil__cerrar-icono" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"
@@ -158,14 +158,14 @@
       </button>
     </header>
 
-    <nav class="menu-movil__navegacion" aria-label="Navegación principal">
+    <nav class="menu-movil__navegacion" [attr.aria-label]="textos().ariaNavPrincipal">
       <a (click)="cerrarMenu()" class="menu-movil__enlace" routerLink="/alimentacion">
         <svg aria-hidden="true" class="menu-movil__enlace-icono" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"
             fill="currentColor"/>
         </svg>
-        <span>Nutrición</span>
+        <span>{{ textos().navNutricion }}</span>
       </a>
 
       <a (click)="cerrarMenu()" class="menu-movil__enlace" routerLink="/gimnasio">
@@ -174,12 +174,12 @@
             d="M20.57 14.86L22 13.43L20.57 12L17 15.57L8.43 7L12 3.43L10.57 2L9.14 3.43L7.71 2L5.57 4.14L4.14 2.71L2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57L3.43 12L7 8.43L15.57 17L12 20.57L13.43 22l1.43-1.43L16.29 22l2.14-2.14l1.43 1.43l1.43-1.43l-1.43-1.43L22 16.29z"
             fill="currentColor"/>
         </svg>
-        <span>Ejercicio</span>
+        <span>{{ textos().navEjercicio }}</span>
       </a>
 
       <a routerLink="/seguimiento" (click)="cerrarMenu()" class="menu-movil__enlace">
           <fa-icon [icon]="iconoGrafico" class="menu-movil__enlace-icono" aria-hidden="true"></fa-icon>
-        <span>Seguimiento</span>
+        <span>{{ textos().navSeguimiento }}</span>
       </a>
     </nav>
 
@@ -190,33 +190,33 @@
             <path
               d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
           </svg>
-          <span>Mi perfil</span>
+          <span>{{ textos().itemPerfilTitulo }}</span>
         </a>
         <a (click)="cerrarMenu()" class="menu-movil__enlace" routerLink="/configuracion">
           <svg aria-hidden="true" class="menu-movil__enlace-icono" fill="currentColor" viewBox="0 0 24 24">
             <path
               d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
           </svg>
-          <span>Configuración</span>
+          <span>{{ textos().itemConfigTitulo }}</span>
         </a>
-          <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? 'Activar modo claro' : 'Activar modo oscuro'" [attr.aria-pressed]="modoOscuro" class="menu-movil__enlace menu-movil__enlace--tema">
+          <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? textos().ariaTemaClaro : textos().ariaTemaOscuro" [attr.aria-pressed]="modoOscuro" class="menu-movil__enlace menu-movil__enlace--tema">
               <fa-icon [icon]="modoOscuro ? iconoSol : iconoLuna" class="menu-movil__enlace-icono"></fa-icon>
-              <span>{{ modoOscuro ? 'Modo claro' : 'Modo oscuro' }}</span>
+              <span>{{ modoOscuro ? textos().modoClaro : textos().modoOscuro }}</span>
           </button>
         <button (click)="logout(); cerrarMenu()" class="menu-movil__cerrar-sesion">
           <svg aria-hidden="true" class="menu-movil__cerrar-sesion-icono" fill="currentColor" viewBox="0 0 24 24">
             <path
               d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
           </svg>
-          <span>Cerrar sesión</span>
+          <span>{{ textos().cerrarSesion }}</span>
         </button>
       } @else {
-          <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? 'Activar modo claro' : 'Activar modo oscuro'" [attr.aria-pressed]="modoOscuro" class="menu-movil__enlace menu-movil__enlace--tema">
+          <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? textos().ariaTemaClaro : textos().ariaTemaOscuro" [attr.aria-pressed]="modoOscuro" class="menu-movil__enlace menu-movil__enlace--tema">
               <fa-icon [icon]="modoOscuro ? iconoSol : iconoLuna" class="menu-movil__enlace-icono"></fa-icon>
-              <span>{{ modoOscuro ? 'Modo claro' : 'Modo oscuro' }}</span>
+              <span>{{ modoOscuro ? textos().modoClaro : textos().modoOscuro }}</span>
         </button>
         <app-button (click)="cerrarMenu()" [anchoCompleto]="true" enlace="/onboarding" tamanio="mediano" variante="primario">
-          Inscríbete
+          {{ textos().inscribete }}
         </app-button>
       }
     </section>

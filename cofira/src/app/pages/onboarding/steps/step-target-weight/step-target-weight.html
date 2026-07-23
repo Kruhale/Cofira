@@ -10,15 +10,15 @@
   }
 
   <header class="step-target-weight__header">
-    <h2 class="step-target-weight__titulo">Cual es tu peso objetivo?</h2>
+    <h2 class="step-target-weight__titulo">{{ textos().titulo }}</h2>
     <p class="step-target-weight__subtitulo">
-      Tu peso actual es de {{ pesoActual() }} kg
+      {{ textos().subtituloPrefijo }} {{ pesoActual() }} kg
     </p>
   </header>
 
   <fieldset class="step-target-weight__form">
     <label class="step-target-weight__input-wrapper">
-      <span class="step-target-weight__label">Peso objetivo</span>
+      <span class="step-target-weight__label">{{ textos().labelPeso }}</span>
       <span class="step-target-weight__input-container">
         <input
           (input)="alCambiarPeso($any($event.target).value)"
@@ -50,7 +50,7 @@
       [habilitado]="!puedeContinuar()"
       tamanio="grande"
       variante="primario">
-      Continuar
+      {{ textos().botonContinuar }}
     </app-button>
   </footer>
 

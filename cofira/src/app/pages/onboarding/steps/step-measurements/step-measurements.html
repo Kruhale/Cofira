@@ -10,9 +10,9 @@
   }
 
   <header class="step-measurements__header">
-    <h2 class="step-measurements__titulo">Tus medidas actuales</h2>
+    <h2 class="step-measurements__titulo">{{ textos().titulo }}</h2>
     <p class="step-measurements__subtitulo">
-      Necesitamos estos datos para calcular tu metabolismo
+      {{ textos().subtitulo }}
     </p>
   </header>
 
@@ -20,7 +20,7 @@
     <section class="step-measurements__input-group">
 
       <label class="step-measurements__input-wrapper">
-        <span class="step-measurements__label">Altura</span>
+        <span class="step-measurements__label">{{ textos().labelAltura }}</span>
         <span class="step-measurements__input-container">
           <input
             (input)="alCambiarAltura($any($event.target).value)"
@@ -37,7 +37,7 @@
       </label>
 
       <label class="step-measurements__input-wrapper">
-        <span class="step-measurements__label">Peso actual</span>
+        <span class="step-measurements__label">{{ textos().labelPeso }}</span>
         <span class="step-measurements__input-container">
           <input
             (input)="alCambiarPeso($any($event.target).value)"
@@ -63,7 +63,7 @@
       [habilitado]="!puedeContinuar()"
       tamanio="grande"
       variante="primario">
-      Continuar
+      {{ textos().botonContinuar }}
     </app-button>
   </footer>
 

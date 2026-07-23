@@ -1,12 +1,13 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
-import { HazDeLuz } from '../../directives/haz-de-luz.directive';
 
 import { GimnasioService } from '../../services/gimnasio.service';
 import { OnboardingService } from '../../services/onboarding.service';
 import { AguaService } from '../../services/agua.service';
 import { ConsumoComidaService } from '../../services/consumo-comida.service';
 import { HistorialEntrenamiento } from '../../models/gimnasio.model';
+import { IdiomaService } from '../../services/idioma.service';
+import { AnimacionesService } from '../../services/animaciones.service';
+import { TEXTOS_SEGUIMIENTO } from './textos-seguimiento';
 
 interface PuntoGrafico {
   x: number;
@@ -18,7 +19,6 @@ interface PuntoGrafico {
 @Component({
   selector: 'app-seguimiento',
   standalone: true,
-  imports: [DecimalPipe, HazDeLuz],
   templateUrl: './seguimiento.html',
   styleUrl: './seguimiento.scss',
 })
@@ -27,6 +27,15 @@ export class Seguimiento implements OnInit {
   private readonly onboardingService = inject(OnboardingService);
   private readonly aguaService = inject(AguaService);
   private readonly consumoComidaService = inject(ConsumoComidaService);
+  private readonly idiomaService = inject(IdiomaService);
+  private readonly animaciones = inject(AnimacionesService);
+
+  /* El punto pulsante del último dato usa SMIL (<animate>), que no obedece
+     el @media prefers-reduced-motion: hay que apagarlo a mano con este signal */
+  readonly movimientoReducido = this.animaciones.movimientoReducido;
+
+  /* Textos de la interfaz en el idioma vigente: cambiar el signal repinta todo */
+  readonly textos = computed(() => TEXTOS_SEGUIMIENTO[this.idiomaService.idioma()]);
 
   readonly caloriasDiarias = signal(2000);
   readonly proteinasObjetivo = signal(120);
@@ -130,33 +139,82 @@ export class Seguimiento implements OnInit {
     };
   });
 
+  /* Rango del lienzo derivado de los datos con margen, como la gráfica de la
+     landing: así un punto de 70kg no queda perdido en un eje que arranca en 0 */
+  readonly rangoPesoGrafico = computed(() => {
+    const historial = this.historialEjercicio();
+    if (historial.length === 0) {
+      return { suelo: 0, techo: 100 };
+    }
+
+    const pesosRegistrados = historial.map((registro) => registro.pesoKg || 0);
+    const pesoMinimo = Math.min(...pesosRegistrados);
+    const pesoMaximo = Math.max(...pesosRegistrados);
+    const margenRango = Math.max((pesoMaximo - pesoMinimo) * 0.25, 2.5);
+
+    const sueloSinRedondear = pesoMinimo - margenRango;
+    const techoSinRedondear = pesoMaximo + margenRango;
+    const suelo = Math.max(Math.floor(sueloSinRedondear / 2.5) * 2.5, 0);
+    const techo = Math.ceil(techoSinRedondear / 2.5) * 2.5;
+
+    return { suelo, techo };
+  });
+
   readonly puntosGrafico = computed(() => {
     const historial = this.historialEjercicio();
     if (historial.length === 0) {
       return [];
     }
 
-    const anchoGrafico = 510;
-    const altoGrafico = 215;
-    const margenIzquierdo = 50;
-    const margenSuperior = 20;
-
-    const pesos = historial.map((h) => h.pesoKg || 0);
-    const pesoMaximo = Math.max(...pesos, 100);
+    const rango = this.rangoPesoGrafico();
+    const amplitudRango = rango.techo - rango.suelo;
 
     const puntos: PuntoGrafico[] = historial.map((registro, indice) => {
-      const x = margenIzquierdo + (indice / Math.max(historial.length - 1, 1)) * anchoGrafico;
-      const y = margenSuperior + altoGrafico - ((registro.pesoKg || 0) / pesoMaximo) * altoGrafico;
+      const pesoRegistro = registro.pesoKg || 0;
+      const proporcionHorizontal = indice / Math.max(historial.length - 1, 1);
+      const proporcionVertical = (pesoRegistro - rango.suelo) / amplitudRango;
+
+      const x = this.margenIzquierdo + proporcionHorizontal * this.anchoGrafico;
+      const y = this.margenSuperior + this.altoGrafico - proporcionVertical * this.altoGrafico;
 
       return {
         x,
         y,
         fecha: this.formatearFechaCorta(registro.fechaEntrenamiento),
-        peso: registro.pesoKg || 0,
+        peso: pesoRegistro,
       };
     });
 
     return puntos;
+  });
+
+  readonly guiasEjeY = computed(() => {
+    const rango = this.rangoPesoGrafico();
+    const totalGuias = 5;
+    const guias: { y: number; peso: number }[] = [];
+
+    for (let indice = 0; indice < totalGuias; indice++) {
+      const fraccion = indice / (totalGuias - 1);
+      const pesoGuia = rango.techo - (rango.techo - rango.suelo) * fraccion;
+      const y = this.margenSuperior + fraccion * this.altoGrafico;
+
+      guias.push({ y, peso: Math.round(pesoGuia * 10) / 10 });
+    }
+
+    return guias;
+  });
+
+  readonly resumenFuerza = computed(() => {
+    const historial = this.historialEjercicio();
+    if (historial.length === 0) {
+      return { ultimoPeso: 0, mejorMarca: 0, sesiones: 0 };
+    }
+
+    const pesosRegistrados = historial.map((registro) => registro.pesoKg || 0);
+    const ultimoPeso = pesosRegistrados[pesosRegistrados.length - 1];
+    const mejorMarca = Math.max(...pesosRegistrados);
+
+    return { ultimoPeso, mejorMarca, sesiones: historial.length };
   });
 
   readonly polylinePoints = computed(() => {
@@ -184,17 +242,11 @@ export class Seguimiento implements OnInit {
     return fechasFiltradas;
   });
 
-  readonly pesoMaximoGrafico = computed(() => {
-    const historial = this.historialEjercicio();
-    if (historial.length === 0) {
-      return 100;
-    }
-
-    const pesos = historial.map((h) => h.pesoKg || 0);
-    return Math.ceil(Math.max(...pesos) / 25) * 25;
-  });
-
-  private readonly circunferencia = 2 * Math.PI * 80;
+  /* Geometría del lienzo SVG de la gráfica de fuerza */
+  private readonly anchoGrafico = 510;
+  private readonly altoGrafico = 215;
+  private readonly margenIzquierdo = 50;
+  private readonly margenSuperior = 20;
 
   constructor() {
     effect(() => {
@@ -211,15 +263,6 @@ export class Seguimiento implements OnInit {
     this.cargarEjerciciosDisponibles();
     this.aguaService.obtenerConsumoHoy().subscribe();
     this.consumoComidaService.obtenerResumenSemanal().subscribe();
-  }
-
-  calcularDashArray(porcentaje: number): string {
-    const longitud = (porcentaje / 100) * this.circunferencia;
-    return `${longitud} ${this.circunferencia}`;
-  }
-
-  calcularDashOffset(porcentajeAcumulado: number): number {
-    return -(porcentajeAcumulado / 100) * this.circunferencia;
   }
 
   seleccionarEjercicio(nombreEjercicio: string): void {
@@ -292,5 +335,11 @@ export class Seguimiento implements OnInit {
     const dia = fechaObj.getDate();
     const mes = fechaObj.getMonth() + 1;
     return `${dia}/${mes}`;
+  }
+
+  // Decimal al estilo del idioma vigente: 62.5 → "62,5" (es) / "62.5" (en)
+  comaDecimal(valor: number): string {
+    const cifra = valor.toFixed(1);
+    return this.idiomaService.idioma() === 'en' ? cifra : cifra.replace('.', ',');
   }
 }

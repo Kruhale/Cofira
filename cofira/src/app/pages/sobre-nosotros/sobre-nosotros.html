@@ -1,41 +1,33 @@
 <main class="sobre-nosotros">
-  
+
   <section class="sobre-nosotros__hero">
     <span class="sobre-nosotros__hero-overlay" aria-hidden="true"></span>
     <hgroup class="sobre-nosotros__hero-contenido">
-      <h1 class="sobre-nosotros__hero-titulo">Transformamos vidas a través del fitness</h1>
+      <h1 class="sobre-nosotros__hero-titulo">{{ textos().heroTitulo }}</h1>
       <p class="sobre-nosotros__hero-subtitulo">
-        En Cofira creemos que cada persona merece las herramientas necesarias para alcanzar
-        su mejor versión física y mental.
+        {{ textos().heroSubtitulo }}
       </p>
     </hgroup>
   </section>
 
-  
+
   <section class="sobre-nosotros__historia">
     <article class="sobre-nosotros__contenedor">
-      <h2 class="sobre-nosotros__seccion-titulo">Nuestra Historia</h2>
+      <h2 class="sobre-nosotros__seccion-titulo">{{ textos().historiaTitulo }}</h2>
       <section class="sobre-nosotros__historia-contenido">
         <article class="sobre-nosotros__historia-texto">
           <p class="sobre-nosotros__historia-parrafo">
-            Cofira nació en 2023 de una idea simple: hacer el fitness accesible y personalizado
-            para todos. Creado por Alejandro Bravo, estudiante de Desarrollo de Aplicaciones Web,
-            este proyecto surgió como trabajo de fin de ciclo con la visión de ayudar a las personas
-            a alcanzar sus objetivos de fitness.
+            {{ textos().historiaParrafo1 }}
           </p>
           <p class="sobre-nosotros__historia-parrafo">
-            Hoy, Cofira es una plataforma integral que combina planificación de entrenamientos,
-            gestión nutricional y seguimiento de progreso en una sola aplicación. Nuestro
-            equipo de desarrolladores, nutricionistas y entrenadores trabaja cada día para
-            ofrecerte la mejor experiencia posible.
+            {{ textos().historiaParrafo2 }}
           </p>
           <p class="sobre-nosotros__historia-parrafo">
-            Nuestra misión es clara: democratizar el acceso a planes de fitness y nutrición
-            de calidad profesional, adaptados a las necesidades únicas de cada usuario.
+            {{ textos().historiaParrafo3 }}
           </p>
         </article>
         <figure class="sobre-nosotros__historia-imagen">
-          <img class="sobre-nosotros__historia-imagen-foto" alt="Gimnasio moderno con equipamiento de fitness" loading="lazy"
+          <img class="sobre-nosotros__historia-imagen-foto" [alt]="textos().historiaImagenAlt" loading="lazy"
             src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop" />
         </figure>
       </section>
@@ -45,81 +37,81 @@
 
   <section class="sobre-nosotros__galeria">
     <article class="sobre-nosotros__contenedor">
-      <h2 class="sobre-nosotros__seccion-titulo">Nuestras Instalaciones</h2>
+      <h2 class="sobre-nosotros__seccion-titulo">{{ textos().galeriaTitulo }}</h2>
       <p class="sobre-nosotros__seccion-descripcion">
-        Espacios diseñados para que alcances tu mejor versión.
+        {{ textos().galeriaDescripcion }}
       </p>
       <ul class="sobre-nosotros__galeria-lista">
         <li class="sobre-nosotros__galeria-elemento">
           <figure class="sobre-nosotros__galeria-figura">
             <img
-              alt="Zona de peso libre con mancuernas organizadas por tamaño"
+              [alt]="textos().galeriaPesoLibreAlt"
               class="sobre-nosotros__galeria-imagen"
               loading="lazy"
               src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop"
               width="600"
               height="400" />
-            <figcaption class="sobre-nosotros__galeria-pie">Zona de peso libre</figcaption>
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaPesoLibrePie }}</figcaption>
           </figure>
         </li>
         <li class="sobre-nosotros__galeria-elemento">
           <figure class="sobre-nosotros__galeria-figura">
             <img
-              alt="Cintas de correr y bicicletas estáticas en la zona cardiovascular"
+              [alt]="textos().galeriaCardioAlt"
               class="sobre-nosotros__galeria-imagen"
               loading="lazy"
               src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=600&h=400&fit=crop"
               width="600"
               height="400" />
-            <figcaption class="sobre-nosotros__galeria-pie">Zona cardiovascular</figcaption>
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaCardioPie }}</figcaption>
           </figure>
         </li>
         <li class="sobre-nosotros__galeria-elemento">
           <figure class="sobre-nosotros__galeria-figura">
             <img
-              alt="Plato equilibrado con proteína, verduras y arroz integral"
+              [alt]="textos().galeriaAlimentacionAlt"
               class="sobre-nosotros__galeria-imagen"
               loading="lazy"
               src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=400&fit=crop"
               width="600"
               height="400" />
-            <figcaption class="sobre-nosotros__galeria-pie">Alimentación equilibrada</figcaption>
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaAlimentacionPie }}</figcaption>
           </figure>
         </li>
         <li class="sobre-nosotros__galeria-elemento">
           <figure class="sobre-nosotros__galeria-figura">
             <img
-              alt="Grupo de personas realizando ejercicios funcionales en sala"
+              [alt]="textos().galeriaClasesAlt"
               class="sobre-nosotros__galeria-imagen"
               loading="lazy"
               src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop"
               width="600"
               height="400" />
-            <figcaption class="sobre-nosotros__galeria-pie">Clases grupales</figcaption>
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaClasesPie }}</figcaption>
           </figure>
         </li>
         <li class="sobre-nosotros__galeria-elemento">
           <figure class="sobre-nosotros__galeria-figura">
             <img
-              alt="Mujer practicando estiramientos sobre esterilla de yoga"
+              [alt]="textos().galeriaEstiramientosAlt"
               class="sobre-nosotros__galeria-imagen"
               loading="lazy"
               src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop"
               width="600"
               height="400" />
-            <figcaption class="sobre-nosotros__galeria-pie">Zona de estiramientos</figcaption>
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaEstiramientosPie }}</figcaption>
           </figure>
         </li>
         <li class="sobre-nosotros__galeria-elemento">
           <figure class="sobre-nosotros__galeria-figura">
             <img
-              alt="Persona midiendo su progreso corporal con cinta métrica"
+              [alt]="textos().galeriaProgresoAlt"
               class="sobre-nosotros__galeria-imagen"
               loading="lazy"
               src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=600&h=400&fit=crop"
               width="600"
               height="400" />
-            <figcaption class="sobre-nosotros__galeria-pie">Seguimiento de progreso</figcaption>
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaProgresoPie }}</figcaption>
           </figure>
         </li>
       </ul>
@@ -129,9 +121,9 @@
 
   <section class="sobre-nosotros__valores">
     <article class="sobre-nosotros__contenedor">
-      <h2 class="sobre-nosotros__seccion-titulo">Nuestros Valores</h2>
+      <h2 class="sobre-nosotros__seccion-titulo">{{ textos().valoresTitulo }}</h2>
       <ul class="sobre-nosotros__valores-grid">
-        @for (valor of valores; track valor.titulo) {
+        @for (valor of valores(); track valor.icono) {
         <li class="sobre-nosotros__valor">
           <figure class="sobre-nosotros__valor-icono">
             @switch (valor.icono) {
@@ -177,11 +169,11 @@
     </article>
   </section>
 
-  
+
   <section class="sobre-nosotros__estadisticas">
     <article class="sobre-nosotros__contenedor">
       <ul class="sobre-nosotros__estadisticas-grid">
-        @for (stat of estadisticas; track stat.etiqueta) {
+        @for (stat of estadisticas(); track stat.valor) {
         <li class="sobre-nosotros__estadistica">
           <span class="sobre-nosotros__estadistica-valor">{{ stat.valor }}</span>
           <span class="sobre-nosotros__estadistica-etiqueta">{{ stat.etiqueta }}</span>
@@ -191,24 +183,24 @@
     </article>
   </section>
 
-  
+
   <section class="sobre-nosotros__equipo">
     <article class="sobre-nosotros__contenedor">
-      <h2 class="sobre-nosotros__seccion-titulo">El Creador</h2>
+      <h2 class="sobre-nosotros__seccion-titulo">{{ textos().equipoTitulo }}</h2>
       <p class="sobre-nosotros__seccion-descripcion">
-        Desarrollador Full Stack apasionado por el fitness y la tecnología.
+        {{ textos().equipoDescripcion }}
       </p>
       <ul class="sobre-nosotros__equipo-grid">
-        @for (miembro of equipo; track miembro.nombre) {
+        @for (miembro of equipo(); track miembro.nombre) {
         <li class="sobre-nosotros__miembro">
           <figure class="sobre-nosotros__miembro-foto">
             <picture>
-              
+
               <source
                 type="image/webp"
                 [srcset]="miembro.fotoWebp.small + ' 200w, ' + miembro.fotoWebp.medium + ' 400w, ' + miembro.fotoWebp.large + ' 600w'"
                 sizes="(max-width: 640px) 200px, (max-width: 900px) 300px, 400px" />
-              
+
               <img
                 class="sobre-nosotros__miembro-foto-img"
                 [alt]="miembro.nombre"
@@ -226,14 +218,14 @@
     </article>
   </section>
 
-  
+
   <section class="sobre-nosotros__cta">
     <article class="sobre-nosotros__contenedor">
-      <h2 class="sobre-nosotros__cta-titulo">¿Listo para empezar tu transformación?</h2>
+      <h2 class="sobre-nosotros__cta-titulo">{{ textos().ctaTitulo }}</h2>
       <p class="sobre-nosotros__cta-texto">
-        Únete a miles de usuarios que ya están alcanzando sus objetivos con Cofira.
+        {{ textos().ctaTexto }}
       </p>
-      <a class="sobre-nosotros__cta-boton" href="/registro">Comenzar gratis</a>
+      <a class="sobre-nosotros__cta-boton" href="/registro">{{ textos().ctaBoton }}</a>
     </article>
   </section>
 </main>

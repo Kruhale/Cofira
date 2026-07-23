@@ -1,21 +1,29 @@
-import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
-import {DecimalPipe} from '@angular/common';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 
-import {Calendario} from '../../components/shared/calendario/calendario';
-import {Ingredientes} from '../../components/shared/ingredientes/ingredientes';
-import {ModalComidaAlternativa} from '../../components/shared/modal-comida-alternativa/modal-comida-alternativa';
-import {ModalSubirImagen} from '../../components/shared/modal-subir-imagen/modal-subir-imagen';
-import {AlimentacionService} from '../../services/alimentacion.service';
-import {NotificacionService} from '../../services/notificacion.service';
-import {AguaService} from '../../services/agua.service';
-import {ConsumoComidaService} from '../../services/consumo-comida.service';
-import {Alimento, Comida, TipoComida} from '../../models/alimentacion.model';
-import {MarcarComidaConsumidaRequest} from '../../models/consumo-comida.model';
+import { Button } from '../../components/shared/button/button';
+import { Calendario } from '../../components/shared/calendario/calendario';
+import { Ingredientes } from '../../components/shared/ingredientes/ingredientes';
+import { ModalComidaAlternativa } from '../../components/shared/modal-comida-alternativa/modal-comida-alternativa';
+import { ModalSubirImagen } from '../../components/shared/modal-subir-imagen/modal-subir-imagen';
+import { AlimentacionService } from '../../services/alimentacion.service';
+import { NotificacionService } from '../../services/notificacion.service';
+import { AguaService } from '../../services/agua.service';
+import { ConsumoComidaService } from '../../services/consumo-comida.service';
+import { Alimento, Comida, TipoComida } from '../../models/alimentacion.model';
+import { MarcarComidaConsumidaRequest } from '../../models/consumo-comida.model';
+import { IdiomaService } from '../../services/idioma.service';
+import { TEXTOS_ALIMENTACION } from './textos-alimentacion';
 
 @Component({
   selector: 'app-alimentacion',
   standalone: true,
-  imports: [Calendario, Ingredientes, ModalComidaAlternativa, ModalSubirImagen, DecimalPipe],
+  imports: [
+    Button,
+    Calendario,
+    Ingredientes,
+    ModalComidaAlternativa,
+    ModalSubirImagen,
+  ],
   templateUrl: './alimentacion.html',
   styleUrl: './alimentacion.scss',
 })
@@ -24,11 +32,23 @@ export class Alimentacion implements OnInit {
   private readonly notificacionService = inject(NotificacionService);
   private readonly aguaService = inject(AguaService);
   private readonly consumoComidaService = inject(ConsumoComidaService);
+  private readonly idiomaService = inject(IdiomaService);
+
+  /* Textos de la interfaz en el idioma vigente: cambiar el signal repinta todo */
+  readonly textos = computed(() => TEXTOS_ALIMENTACION[this.idiomaService.idioma()]);
 
   readonly fechaActualDate = signal(new Date());
   readonly aguaConsumida = this.aguaService.aguaConsumida;
   readonly aguaActualizando = this.aguaService.actualizando;
   readonly aguaObjetivo = signal(3);
+
+  /* 12 vasos de 0.25L: las muescas del panel de agua hasta el objetivo de 3L */
+  readonly listaMuescasAgua = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+  readonly muescasAguaLlenas = computed(() => {
+    const vasosConsumidos = Math.round(this.aguaConsumida() / 0.25);
+    return Math.min(vasosConsumidos, this.listaMuescasAgua.length);
+  });
 
   readonly registrosPorTipo = this.consumoComidaService.registrosPorTipo;
   readonly resumenReal = this.consumoComidaService.resumenReal;
@@ -39,13 +59,16 @@ export class Alimentacion implements OnInit {
   comidaParaRegistrar: Comida | null = null;
 
   constructor() {
-    effect(() => {
-      const mensajeError = this.alimentacionService.error();
-      if (mensajeError) {
-        this.notificacionService.error(mensajeError, 5000);
-        this.alimentacionService.error.set(null);
-      }
-    }, { allowSignalWrites: true });
+    effect(
+      () => {
+        const mensajeError = this.alimentacionService.error();
+        if (mensajeError) {
+          this.notificacionService.error(mensajeError, 5000);
+          this.alimentacionService.error.set(null);
+        }
+      },
+      { allowSignalWrites: true },
+    );
 
     effect(() => {
       const fecha = this.fechaActualDate();
@@ -58,8 +81,6 @@ export class Alimentacion implements OnInit {
   ingredientesAbierto = false;
   alimentoSeleccionado: Alimento | null = null;
   comidaSeleccionada: Comida | null = null;
-
-  readonly diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
   readonly isLoading = this.alimentacionService.isLoading;
   readonly tieneMenu = this.alimentacionService.tieneMenu;
@@ -96,7 +117,7 @@ export class Alimentacion implements OnInit {
 
   readonly fechaActual = computed(() => {
     const fecha = this.fechaActualDate();
-    const diaSemana = this.diasSemana[fecha.getDay()];
+    const diaSemana = this.textos().diasSemana[fecha.getDay()];
     const dia = fecha.getDate();
     return `${diaSemana} ${dia}`;
   });
@@ -122,15 +143,11 @@ export class Alimentacion implements OnInit {
   }
 
   diaAnterior(): void {
-    this.fechaActualDate.update(fecha =>
-      new Date(fecha.getTime() - 24 * 60 * 60 * 1000)
-    );
+    this.fechaActualDate.update((fecha) => new Date(fecha.getTime() - 24 * 60 * 60 * 1000));
   }
 
   diaSiguiente(): void {
-    this.fechaActualDate.update(fecha =>
-      new Date(fecha.getTime() + 24 * 60 * 60 * 1000)
-    );
+    this.fechaActualDate.update((fecha) => new Date(fecha.getTime() + 24 * 60 * 60 * 1000));
   }
 
   abrirCalendario(): void {
@@ -172,7 +189,7 @@ export class Alimentacion implements OnInit {
         if (estado.conectado) {
           this.alimentacionService.generarMenuSemanalConStreaming();
         }
-      }
+      },
     });
   }
 
@@ -197,10 +214,10 @@ export class Alimentacion implements OnInit {
     if (estaConsumida) {
       this.consumoComidaService.desmarcarComida(fechaString, tipoComidaUpperCase).subscribe({
         next: () => {
-          this.notificacionService.exito("Comida desmarcada");
+          this.notificacionService.exito(this.textos().toastDesmarcada);
           this.consumoComidaService.obtenerResumenReal(fechaString).subscribe();
         },
-        error: () => this.notificacionService.error("Error al desmarcar la comida")
+        error: () => this.notificacionService.error(this.textos().toastErrorDesmarcar),
       });
     } else {
       const solicitud: MarcarComidaConsumidaRequest = {
@@ -211,15 +228,15 @@ export class Alimentacion implements OnInit {
         caloriasReales: comida.caloriasEstimadas,
         proteinasReales: comida.proteinasGramos,
         carbohidratosReales: comida.carbohidratosGramos,
-        grasasReales: comida.grasasGramos
+        grasasReales: comida.grasasGramos,
       };
 
       this.consumoComidaService.marcarComidaConsumida(solicitud).subscribe({
         next: () => {
-          this.notificacionService.exito("Comida marcada como consumida");
+          this.notificacionService.exito(this.textos().toastMarcada);
           this.consumoComidaService.obtenerResumenReal(fechaString).subscribe();
         },
-        error: () => this.notificacionService.error("Error al marcar la comida")
+        error: () => this.notificacionService.error(this.textos().toastErrorMarcar),
       });
     }
   }
@@ -252,8 +269,14 @@ export class Alimentacion implements OnInit {
 
   formatearFecha(fecha: Date): string {
     const ano = fecha.getFullYear();
-    const mes = String(fecha.getMonth() + 1).padStart(2, "0");
-    const dia = String(fecha.getDate()).padStart(2, "0");
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
     return `${ano}-${mes}-${dia}`;
+  }
+
+  // Decimal al estilo del idioma vigente: 0.5 → "0,5" (es) / "0.5" (en)
+  comaDecimal(valor: number): string {
+    const cifra = valor.toFixed(1);
+    return this.idiomaService.idioma() === 'en' ? cifra : cifra.replace('.', ',');
   }
 }

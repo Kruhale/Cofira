@@ -1,23 +1,25 @@
 <div class="acceso-layout">
 
   <aside class="acceso-visual" aria-hidden="true">
+    <img class="acceso-visual__imagen" src="/assets/images/hero-fitness-alt.jpg" alt="" loading="lazy">
+    <span class="acceso-visual__velo"></span>
     <span class="acceso-visual__halo"></span>
     <div class="acceso-visual__contenido">
       <p class="acceso-visual__eyebrow">Cofira</p>
-      <p class="acceso-visual__cita">Tu progreso empieza con un solo entreno.<br>Vuelve, registra, repite.</p>
+      <p class="acceso-visual__cita">{{ textos().citaLinea1 }}<br>{{ textos().citaLinea2 }}</p>
     </div>
   </aside>
 
   <article class="acceso">
 
   <header class="acceso__cabecera">
-    <h1 class="acceso__titulo">Bienvenido de nuevo</h1>
-    <p class="acceso__subtitulo">Inicia sesión para continuar</p>
+    <h1 class="acceso__titulo">{{ textos().titulo }}</h1>
+    <p class="acceso__subtitulo">{{ textos().subtitulo }}</p>
   </header>
 
   <form (ngSubmit)="alEnviar()" [formGroup]="formularioLogin" class="acceso__formulario">
     <fieldset class="acceso__grupo-campos">
-      <legend class="sr-only">Datos de acceso</legend>
+      <legend class="sr-only">{{ textos().leyendaCampos }}</legend>
 
       <span class="acceso__campo">
         <span aria-hidden="true" class="acceso__campo-icono">
@@ -27,11 +29,11 @@
           </svg>
         </span>
         <input
-          aria-label="Correo electrónico"
+          [attr.aria-label]="textos().ariaEmail"
           autocomplete="email"
           class="acceso__entrada"
           formControlName="email"
-          placeholder="tu@email.com"
+          [placeholder]="textos().placeholderEmail"
           type="email">
       </span>
 
@@ -44,12 +46,12 @@
         </span>
         <input
           [type]="mostrarContrasena() ? 'text' : 'password'"
-          aria-label="Contraseña"
+          [attr.aria-label]="textos().ariaContrasena"
           autocomplete="current-password"
           class="acceso__entrada acceso__entrada--contrasena"
           formControlName="password"
-          placeholder="Tu contraseña">
-        <button (click)="alternarContrasena()" aria-label="Mostrar u ocultar contraseña" class="acceso__alternar-contrasena" type="button">
+          [placeholder]="textos().placeholderContrasena">
+        <button (click)="alternarContrasena()" [attr.aria-label]="textos().ariaAlternarContrasena" class="acceso__alternar-contrasena" type="button">
           @if (mostrarContrasena()) {
             <svg aria-hidden="true" class="acceso__alternar-contrasena-svg" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" stroke-linecap="round"
@@ -78,16 +80,16 @@
             <svg aria-hidden="true" class="acceso__indicador" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path d="M4 12a8 8 0 018-8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            Entrando...
+            {{ textos().botonEntrando }}
           </span>
         } @else {
-          Iniciar sesión
+          {{ textos().botonEntrar }}
         }
       </app-button>
 
       <p class="acceso__accion-alternativa">
-        ¿No tienes cuenta?
-        <a class="acceso__enlace" routerLink="/onboarding">Crear cuenta</a>
+        {{ textos().sinCuenta }}
+        <a class="acceso__enlace" routerLink="/onboarding">{{ textos().crearCuenta }}</a>
       </p>
     </footer>
   </form>

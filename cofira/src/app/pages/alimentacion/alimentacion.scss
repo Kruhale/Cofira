@@ -6,247 +6,564 @@
 }
 
 .alimentacion {
-  max-width: 62rem;
+  max-width: 60rem; /* 960px */
   margin: 0 auto;
-  padding: var(--page-shell-top) 2rem var(--spacing-size-xxxl);
-  min-height: calc(100vh - var(--altura-header));
   box-sizing: border-box;
+  padding: var(--page-shell-top) var(--spacing-size-xl) var(--spacing-size-xxxl);
 
   @include responsive-down('md') {
-    padding-top: calc(var(--altura-header) + var(--spacing-size-l));
+    padding: var(--page-shell-top-movil) var(--spacing-size-m) var(--spacing-size-xl);
   }
 }
 
+
+
+/* ── Cabecera canónica: eyebrow con regla + display + contexto mono ── */
+
 .alimentacion__cabecera {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-size-xss);
-  margin-bottom: 2rem;
+  @include flex-columna(0.85rem);
+  align-items: flex-start;
+  margin-bottom: var(--spacing-size-xl);
 }
 
 .alimentacion__eyebrow {
-  @include etiqueta-tecnica(var(--naranja-texto));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   margin: 0;
-  text-align: center;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* ~10px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
+}
+
+.alimentacion__eyebrow::before {
+  content: '';
+  width: 1.75rem; /* 28px */
+  height: 1px;
+  background: var(--naranja-normal);
 }
 
 .alimentacion__titulo {
   @include titular-display(var(--display-md));
-  text-align: center;
+}
+
+.alimentacion__contexto {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-suave);
+}
+
+
+
+/* ── Estado generando: contador estilo precarga + barra hairline + log ── */
+
+.alimentacion__generando {
+  @include flex-columna(var(--spacing-size-l));
+  align-items: flex-start;
+  padding-top: var(--spacing-size-xl);
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.alimentacion__generando-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__generando-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: alimentacion-punto-latido 1.9s ease-in-out infinite;
+}
+
+.alimentacion__generando-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
   margin: 0;
 }
 
-.alimentacion__titulo-punto {
-  color: var(--naranja-normal);
+.alimentacion__generando-numero {
+  font-family: var(--fuente-mono);
+  font-size: 6rem; /* 96px, mismo cuerpo que el contador de la precarga */
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 4.5rem; /* 72px */
+  }
+}
+
+.alimentacion__generando-total {
+  font-family: var(--fuente-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__generando-barra {
+  width: 100%;
+  height: 0.2rem;
+  margin: 0;
+  background: var(--superficie-3);
+}
+
+.alimentacion__generando-relleno {
+  display: block;
+  height: 100%;
+  background: var(--naranja-normal);
+  transition: width var(--duration-base) ease;
+}
+
+.alimentacion__generando-log {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-size-m);
+  width: 100%;
+  margin: 0;
+}
+
+.alimentacion__generando-log-texto {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__generando-porcentaje {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.alimentacion__generando-iniciando {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__boton-cancelar {
+  margin-top: var(--spacing-size-s);
+  padding: 0.4rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--borde-medio);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__boton-cancelar:hover {
+  color: var(--peligro-texto);
+  border-color: var(--peligro);
+}
+
+@keyframes alimentacion-punto-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
 }
 
 
-/* ── Navegación de fecha ── */
+
+/* ── Estado cargando: banda con filo y punto vivo ── */
+
+.alimentacion__estado {
+  @include flex-columna(var(--spacing-size-s));
+  padding: var(--spacing-size-l) 0;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.alimentacion__estado-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__estado-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: alimentacion-punto-latido 1.9s ease-in-out infinite;
+}
+
+
+
+/* ── Navegación de fecha: fecha display + flechas hairline ── */
+
 .alimentacion__navegacion-fecha {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: var(--spacing-size-s);
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.alimentacion__selector-fecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--texto-principal);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__selector-fecha:hover {
+  color: var(--naranja-texto);
+}
+
+.alimentacion__fecha-texto {
+  font-family: var(--fuente-display);
+  font-size: 1.5rem; /* 24px */
+  line-height: 1;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+
+  @include responsive-down('sm') {
+    font-size: 1.2rem; /* ~19px */
+  }
+}
+
+.alimentacion__icono-calendario {
+  width: 1rem;
+  height: 1rem;
+  color: var(--texto-suave);
 }
 
 .alimentacion__boton-fecha {
   @include flex-center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 50%;
-  background: var(--superficie-2);
-  border: 1px solid var(--borde-sutil);
-  color: var(--texto-principal);
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
+  color: var(--texto-secundario);
   cursor: pointer;
-  transition: all var(--duration-fast) ease;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__boton-fecha--anterior {
+  margin-left: auto;
 }
 
 .alimentacion__boton-fecha:hover {
   border-color: var(--naranja-normal);
-  color: var(--naranja-normal);
-  transform: translateY(-1px);
+  color: var(--naranja-texto);
 }
 
 .alimentacion__boton-fecha-svg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.alimentacion__selector-fecha {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.4rem;
-  border-radius: var(--radius-full);
-  background: var(--superficie-2);
-  border: 1px solid var(--borde-sutil);
-  color: var(--texto-principal);
-  cursor: pointer;
-  font-family: var(--font-secondary);
-  font-weight: var(--font-weight-semibold);
-  transition: all var(--duration-fast) ease;
-}
-
-.alimentacion__selector-fecha:hover {
-  border-color: var(--naranja-normal);
-}
-
-.alimentacion__icono-calendario {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: var(--naranja-normal);
-}
-
-.alimentacion__fecha-texto {
-  font-size: var(--font-size-md);
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 
-/* ── Resumen del día (bento KPI) ── */
+
+/* ── Resumen: columna balance (kcal héroe + macros con puntos) + agua ── */
+
 .alimentacion__resumen {
-  @include superficie-bento;
-  position: relative;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  overflow: hidden;
+  display: flex;
+  gap: var(--spacing-size-xxl);
+  padding: var(--spacing-size-xl) 0;
+  border-top: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+    gap: var(--spacing-size-l);
+  }
 }
 
-.alimentacion__resumen::before {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  content: '';
-  background: var(--gradiente-halo);
-  pointer-events: none;
+.alimentacion__balance {
+  @include flex-columna(0.6rem);
+  flex: 1;
+  min-width: 0;
 }
 
-.alimentacion__resumen-titulo {
-  position: relative;
-  @include etiqueta-tecnica(var(--naranja-texto));
-  font-size: var(--etiqueta-tecnica);
-  margin: 0 0 1.5rem;
+.alimentacion__balance-etiqueta {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-secundario);
 }
 
-.alimentacion__resumen-lista {
+.alimentacion__balance-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.alimentacion__balance-kcal {
+  font-family: var(--fuente-display);
+  font-size: 3.6rem; /* 57.6px */
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 2.8rem; /* ~45px */
+  }
+}
+
+.alimentacion__balance-unidad {
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
+}
+
+.alimentacion__macros {
+  @include flex-columna(0.65rem);
+  max-width: 24rem;
+  margin: var(--spacing-size-s) 0 0;
+  padding: var(--spacing-size-s) 0 0;
+  border-top: 1px solid var(--borde-sutil);
+  list-style: none;
+}
+
+.alimentacion__macro {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.alimentacion__macro-nombre {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--texto-secundario);
+}
+
+/* Puntos conductores de carta: el borde punteado muere en la línea base */
+.alimentacion__macro-puntos {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
-  gap: 1.5rem var(--spacing-size-m);
+  top: -0.15rem;
+  flex: 1 1 2rem;
+  border-bottom: 1px dotted var(--borde-medio);
+}
+
+.alimentacion__macro-valor {
+  font-family: var(--fuente-mono);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.alimentacion__agua {
+  @include flex-columna(0.75rem);
+  flex: 0 0 17rem;
+  padding-left: var(--spacing-size-xl);
+  border-left: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-basis: auto;
+    padding-left: 0;
+    padding-top: var(--spacing-size-l);
+    border-left: none;
+    border-top: 1px solid var(--borde-sutil);
+  }
+}
+
+.alimentacion__agua-etiqueta {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__agua-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.alimentacion__agua-valor {
+  font-family: var(--fuente-display);
+  font-size: 2rem; /* 32px */
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.alimentacion__agua-unidad {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
+}
+
+.alimentacion__agua-meta {
+  margin-left: auto;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__agua-muescas {
+  display: flex;
+  gap: 0.25rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.alimentacion__resumen-item {
+.alimentacion__agua-muesca {
+  flex: 1;
+  height: 0.5rem; /* 8px */
+  background: var(--superficie-3);
+}
+
+.alimentacion__agua-muesca--llena {
+  background: var(--naranja-normal);
+}
+
+.alimentacion__agua-controles {
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.alimentacion__resumen-label {
-  @include etiqueta-tecnica(var(--texto-suave));
-}
-
-.alimentacion__resumen-valor {
-  font-family: var(--fuente-display);
-  font-size: 1.875rem;
-  line-height: 1;
-  @include texto-gradiente;
-}
-
-.alimentacion__agua {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  -webkit-text-fill-color: var(--texto-principal);
-}
-
-.alimentacion__agua-texto {
-  font-family: var(--fuente-display);
-  font-size: 1.5rem;
-  color: var(--texto-principal);
+  gap: 0.5rem;
 }
 
 .alimentacion__agua-boton {
   @include flex-center;
   width: 2rem;
   height: 2rem;
-  border-radius: 50%;
-  background: var(--naranja-glow-suave);
-  border: 1px solid var(--borde-sutil);
-  color: var(--naranja-normal);
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
+  color: var(--texto-secundario);
   cursor: pointer;
-  transition: all var(--duration-fast) ease;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease;
+  @include foco-visible;
 }
 
 .alimentacion__agua-boton:hover:not(:disabled) {
-  background: var(--naranja-normal);
-  color: var(--texto-sobre-acento);
+  border-color: var(--naranja-normal);
+  color: var(--naranja-texto);
 }
 
 .alimentacion__agua-boton:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
 .alimentacion__agua-boton-svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 
-/* ── Lista de comidas ── */
+
+/* ── Menú del día: minuta editorial con filos 1px ── */
+
 .alimentacion__menu-dia {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  @include flex-columna(0);
+  border-bottom: 1px solid var(--borde-sutil);
 }
 
 .alimentacion__comida {
-  @include superficie-bento;
-  padding: 1.75rem;
-  transition: opacity var(--duration-base) ease, border-color var(--duration-base) ease;
+  @include flex-columna(0.6rem);
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--borde-sutil);
+  transition: opacity var(--duration-base) ease;
+}
+
+/* La variable hereda a los descendientes: así el nombre cambia de color al
+   pasar el ratón por la fila entera sin anidar el selector del hijo */
+.alimentacion__comida:hover {
+  --color-nombre-comida: var(--naranja-texto);
 }
 
 .alimentacion__comida--consumida {
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
-.alimentacion__comida-header {
+.alimentacion__comida-linea {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.9rem;
 }
 
 .alimentacion__comida-checkbox-label {
   display: inline-flex;
-  cursor: pointer;
+  align-self: center;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .alimentacion__comida-checkbox {
   position: absolute;
-  opacity: 0;
   width: 0;
   height: 0;
+  opacity: 0;
 }
 
 .alimentacion__comida-checkbox-custom {
   @include flex-center;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid var(--borde-medio);
   border-radius: var(--radius-sm);
-  border: 2px solid var(--borde-medio);
   color: var(--texto-sobre-acento);
-  transition: all var(--duration-fast) ease;
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
 }
 
 .alimentacion__comida-checkbox:checked + .alimentacion__comida-checkbox-custom {
-  background: var(--gradiente-acento);
-  border-color: transparent;
+  background: var(--naranja-normal);
+  border-color: var(--naranja-normal);
 }
 
 .alimentacion__comida-checkbox:focus-visible + .alimentacion__comida-checkbox-custom {
@@ -255,342 +572,290 @@
 }
 
 .alimentacion__comida-checkbox-svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 0.8rem;
+  height: 0.8rem;
 }
 
-.alimentacion__comida-icono {
-  @include flex-center;
-  width: 2.5rem;
-  height: 2.5rem;
+.alimentacion__comida-tipo {
+  flex: 0 0 auto;
+  min-width: 5rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--texto-suave);
+
+  @include responsive-down('sm') {
+    min-width: 3.5rem;
+  }
+}
+
+.alimentacion__comida-nombre {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   margin: 0;
-  border-radius: var(--radius-md);
-  background: var(--naranja-glow-suave);
-  border: 1px solid var(--borde-sutil);
-  color: var(--naranja-normal);
-  flex-shrink: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.35rem; /* 21.6px */
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-nombre-comida, var(--texto-principal));
+  transition: color var(--duration-fast) ease;
+
+  @include responsive-down('sm') {
+    font-size: 1.1rem; /* ~18px */
+  }
 }
 
-.alimentacion__comida-icono-svg {
-  width: 1.4rem;
-  height: 1.4rem;
+.alimentacion__comida-puntos {
+  position: relative;
+  top: -0.15rem;
+  flex: 1 1 2rem;
+  border-bottom: 1px dotted var(--borde-medio);
 }
 
-.alimentacion__comida-titulo {
-  flex: 1;
-  min-width: 10rem;
-  margin: 0;
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
+.alimentacion__comida-kcal {
+  flex: 0 0 auto;
+  font-family: var(--fuente-display);
+  font-size: 1.35rem; /* 21.6px */
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 1.1rem; /* ~18px */
+  }
+}
+
+.alimentacion__comida-kcal-unidad {
+  font-family: var(--font-secondary);
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
 }
 
 .alimentacion__comida-macros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.alimentacion__comida-macro {
-  padding: 0.3rem 0.7rem;
-  border-radius: var(--radius-full);
-  background: var(--superficie-3);
-  border: 1px solid var(--borde-sutil);
+  margin: 0;
+  /* 2.05rem: checkbox (1.15rem) + hueco, alinea el desglose con el tipo */
+  padding-left: 2.05rem;
   font-family: var(--fuente-mono);
-  font-size: var(--etiqueta-tecnica);
-  font-weight: 500;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-secundario);
-  white-space: nowrap;
 }
 
-.alimentacion__comida-macro--proteina {
-  color: var(--exito-texto);
-  border-color: var(--verde-normal-transparente-012);
-}
-
-.alimentacion__comida-macro--carbs {
-  color: var(--naranja-texto);
-  border-color: var(--naranja-glow-media);
-}
-
-.alimentacion__comida-macro--grasa {
-  color: var(--peligro-texto);
-  border-color: var(--rojo-normal-transparente-012);
-}
-
-
-/* ── Alimentos (ingredientes) ── */
 .alimentacion__alimentos {
-  margin: 1.5rem 0 0;
-  padding: 0;
+  @include flex-columna(0);
+  margin: 0.5rem 0 0;
+  padding: 0 0 0 2.05rem;
   list-style: none;
 }
 
 .alimentacion__alimento {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--borde-sutil);
-}
-
-.alimentacion__alimento:last-child {
-  border-bottom: none;
-}
-
-.alimentacion__alimento-icono {
-  @include flex-center;
-  width: 1.75rem;
-  height: 1.75rem;
-  margin: 0;
-  color: var(--naranja-normal);
-  flex-shrink: 0;
-}
-
-.alimentacion__alimento-icono-svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
 }
 
 .alimentacion__alimento-nombre {
-  flex: 1;
   font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--texto-principal);
+  font-size: 0.92rem;
+  color: var(--texto-secundario);
 }
 
 .alimentacion__alimento-gramos {
   font-family: var(--fuente-mono);
-  font-size: var(--font-size-sm);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-suave);
 }
 
 .alimentacion__boton-info {
   @include flex-center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
+  align-self: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: auto;
+  padding: 0;
   background: transparent;
   border: none;
   color: var(--texto-suave);
   cursor: pointer;
   transition: color var(--duration-fast) ease;
+  @include foco-visible;
 }
 
 .alimentacion__boton-info:hover {
-  color: var(--naranja-normal);
+  color: var(--naranja-texto);
 }
 
 .alimentacion__boton-info-svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
 }
 
-
-/* ── Preparación ── */
 .alimentacion__comida-preparacion {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--borde-sutil);
+  margin-top: 0.4rem;
+  padding-left: 2.05rem;
 }
 
 .alimentacion__preparacion-titulo {
-  @include etiqueta-tecnica(var(--naranja-texto));
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.35rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
 }
 
 .alimentacion__preparacion-texto {
   margin: 0;
+  max-width: 40rem;
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__comida-acciones {
+  display: flex;
+  gap: var(--spacing-size-l);
+  margin-top: 0.5rem;
+  padding-left: 2.05rem;
+}
+
+.alimentacion__boton-registro {
+  padding: 0.4rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--borde-medio);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__boton-registro:hover {
+  color: var(--naranja-texto);
+  border-color: var(--naranja-normal);
+}
+
+.alimentacion__regenerar {
+  display: flex;
+  padding: var(--spacing-size-l) 0;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+
+
+/* ── Estado vacío: etiqueta mono + mensaje + esqueleto de la minuta ── */
+
+.alimentacion__vacio {
+  @include flex-columna(var(--spacing-size-s));
+  align-items: flex-start;
+  padding: var(--spacing-size-xl) 0;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.alimentacion__vacio-etiqueta {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
+}
+
+.alimentacion__vacio-titulo {
+  @include titular-display(var(--font-size-2xl));
+}
+
+.alimentacion__vacio-nota {
+  margin: 0;
+  max-width: 34rem;
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
   line-height: 1.6;
   color: var(--texto-secundario);
 }
 
-
-/* ── Acciones de comida ── */
-.alimentacion__comida-acciones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
-.alimentacion__boton-alternativa,
-.alimentacion__boton-foto {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-full);
-  background: var(--superficie-3);
-  border: 1px solid var(--borde-sutil);
-  color: var(--texto-principal);
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  transition: all var(--duration-fast) ease;
-}
-
-.alimentacion__boton-alternativa:hover,
-.alimentacion__boton-foto:hover {
-  border-color: var(--naranja-normal);
-  color: var(--naranja-texto);
-}
-
-.alimentacion__boton-alternativa-svg,
-.alimentacion__boton-foto-svg {
-  width: 1.1rem;
-  height: 1.1rem;
-}
-
-
-/* ── Regenerar ── */
-.alimentacion__boton-regenerar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  align-self: center;
-  margin-top: 0.5rem;
-  padding: 0.7rem 1.6rem;
-  border-radius: var(--radius-full);
-  background: transparent;
-  border: 1px solid var(--borde-medio);
-  color: var(--texto-principal);
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  transition: all var(--duration-fast) ease;
-}
-
-.alimentacion__boton-regenerar:hover {
-  border-color: var(--naranja-normal);
-  color: var(--naranja-texto);
-}
-
-.alimentacion__boton-regenerar-svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-
-/* ── Estado sin menú ── */
-.alimentacion__sin-menu {
-  @include superficie-bento;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding: var(--spacing-size-xxl);
-  text-align: center;
-}
-
-.alimentacion__sin-menu-texto {
-  margin: 0;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--texto-secundario);
-}
-
-
-/* ── Carga / generación ── */
-.alimentacion__loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-  padding: var(--spacing-size-xxxl) 0;
-}
-
-.alimentacion__loading-spinner {
-  width: 3rem;
-  height: 3rem;
-  margin: 0;
-  border: 3px solid var(--borde-sutil);
-  border-top-color: var(--naranja-normal);
-  border-radius: 50%;
-  animation: alimentacion-girar 0.8s linear infinite;
-}
-
-@keyframes alimentacion-girar {
-  to { transform: rotate(360deg); }
-}
-
-.alimentacion__loading-texto {
-  margin: 0;
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--texto-principal);
-}
-
-.alimentacion__progreso {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.alimentacion__esqueleto {
+  @include flex-columna(0);
   width: 100%;
-  max-width: 22rem;
+  max-width: 34rem;
+  margin: var(--spacing-size-m) 0 var(--spacing-size-s);
+  padding: 0;
+  list-style: none;
 }
 
-.alimentacion__progreso-barra {
-  flex: 1;
-  height: 0.5rem;
-  margin: 0;
-  border-radius: var(--radius-full);
+.alimentacion__esqueleto-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-m);
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.alimentacion__esqueleto-barra {
+  height: 0.5rem; /* 8px */
   background: var(--superficie-3);
-  overflow: hidden;
+  animation: alimentacion-esqueleto-pulso 2.4s ease-in-out infinite;
 }
 
-.alimentacion__progreso-relleno {
-  display: block;
-  height: 100%;
-  border-radius: var(--radius-full);
-  background: var(--gradiente-acento);
-  transition: width var(--duration-base) ease;
+.alimentacion__esqueleto-barra--tipo {
+  flex: 0 0 4rem;
 }
 
-.alimentacion__progreso-porcentaje {
-  font-family: var(--fuente-mono);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--texto-secundario);
+.alimentacion__esqueleto-barra--nombre {
+  flex: 1 1 auto;
 }
 
-.alimentacion__boton-cancelar {
-  margin-top: 0.5rem;
-  padding: 0.6rem 1.4rem;
-  border-radius: var(--radius-full);
-  background: transparent;
-  border: 1px solid var(--rojo-normal-transparente-030);
-  color: var(--peligro-texto);
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  transition: all var(--duration-fast) ease;
+.alimentacion__esqueleto-barra--kcal {
+  flex: 0 0 3rem;
 }
 
-.alimentacion__boton-cancelar:hover {
-  background: var(--rojo-normal-transparente-010);
+/* Cascada: cada fila respira con un pelín de retraso sobre la anterior */
+.alimentacion__esqueleto-fila:nth-child(2) .alimentacion__esqueleto-barra {
+  animation-delay: 0.2s;
+}
+
+.alimentacion__esqueleto-fila:nth-child(3) .alimentacion__esqueleto-barra {
+  animation-delay: 0.4s;
+}
+
+@keyframes alimentacion-esqueleto-pulso {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
 }
 
 
-/* ── Responsive ── */
-@include responsive-down('sm') {
-  .alimentacion {
-    padding: var(--page-shell-top-movil) 1.25rem var(--spacing-size-xxl);
+
+/* ── Movimiento reducido: sin señales pulsantes ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .alimentacion__generando-punto {
+    animation: none;
   }
 
-  .alimentacion__comida-titulo {
-    flex-basis: 100%;
-    order: 3;
+  .alimentacion__estado-punto {
+    animation: none;
   }
 
-  .alimentacion__comida-macros {
-    flex-basis: 100%;
-    order: 4;
+  .alimentacion__esqueleto-barra {
+    animation: none;
+  }
+
+  .alimentacion__generando-relleno {
+    transition: none;
   }
 }

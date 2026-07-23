@@ -3,171 +3,285 @@
 
 
 .gimnasio {
-  --contenido-max-width: 970px;
-  --boton-accion-size: 2.25rem;
-  --boton-nav-size: 1.5rem;
-}
+  --contenido-max-width: 60rem; /* 960px */
 
-
-
-.gimnasio {
   @include flex-columna(var(--spacing-size-xxl));
   align-items: center;
-  width: 100%;
-  box-sizing: border-box;
   position: relative;
   z-index: 0;
-  padding: calc(4.5rem + var(--spacing-size-xxl)) var(--spacing-size-xl) var(--spacing-size-xxxl);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--page-shell-top) var(--spacing-size-xl) var(--spacing-size-xxxl);
   background-color: var(--superficie-fondo);
 
   @include responsive-down('md') {
     gap: var(--spacing-size-l);
-    padding: calc(4rem + var(--spacing-size-l)) var(--spacing-size-m) var(--spacing-size-xl);
+    padding: var(--page-shell-top-movil) var(--spacing-size-m) var(--spacing-size-xl);
   }
 
   @include responsive-down('xs') {
-    gap: var(--spacing-size-m);
-    padding: calc(4rem + var(--spacing-size-m)) var(--spacing-size-s) var(--spacing-size-l);
+    padding: var(--page-shell-top-movil) var(--spacing-size-s) var(--spacing-size-l);
   }
 }
 
 
 
+/* ── Cabecera canónica: eyebrow con regla + display + contexto mono ── */
+
 .gimnasio__cabecera {
-  @include flex-center;
-  flex-direction: column;
-  gap: 0.6rem;
+  @include flex-columna(0.85rem);
+  align-items: flex-start;
   width: 100%;
   max-width: var(--contenido-max-width);
 }
 
 .gimnasio__eyebrow {
-  @include etiqueta-tecnica(var(--naranja-texto));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   margin: 0;
-  text-align: center;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* ~10px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
+}
+
+.gimnasio__eyebrow::before {
+  content: '';
+  width: 1.75rem; /* 28px */
+  height: 1px;
+  background: var(--naranja-normal);
 }
 
 .gimnasio__titulo {
   @include titular-display(var(--display-md));
-  margin: 0;
-  text-align: center;
 }
 
-.gimnasio__titulo-punto {
-  color: var(--naranja-normal);
+.gimnasio__contexto {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-suave);
 }
+
+
+
+/* ── Estados de carga y error: banda con filo, nada de tarjeta ── */
 
 .gimnasio__estado {
-  @include flex-columna(var(--spacing-size-m));
-  @include superficie-bento;
-  align-items: center;
-  justify-content: center;
+  @include flex-columna(var(--spacing-size-s));
   width: 100%;
   max-width: var(--contenido-max-width);
-  min-height: 12rem;
-  padding: var(--spacing-size-xxl);
-  text-align: center;
-
-  @include responsive-down('md') {
-    min-height: 10rem;
-    padding: var(--spacing-size-l);
-  }
+  padding: var(--spacing-size-l) 0;
+  border-top: 1px solid var(--borde-sutil);
 }
 
 .gimnasio__estado--error {
-  border-color: var(--peligro);
+  padding: var(--spacing-size-s) 0 var(--spacing-size-s) var(--spacing-size-m);
+  border-top: none;
+  border-left: 2px solid var(--peligro);
 }
 
-.gimnasio__estado-texto {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--texto-principal);
+.gimnasio__estado-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   margin: 0;
-
-  @include responsive-down('md') {
-    font-size: var(--font-size-lg);
-  }
-}
-
-.gimnasio__estado-subtexto {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--texto-secundario);
-  margin: 0;
+}
 
-  @include responsive-down('md') {
-    font-size: var(--font-size-sm);
-  }
+.gimnasio__estado-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: gimnasio-punto-latido 1.9s ease-in-out infinite;
+}
+
+.gimnasio__estado-error-texto {
+  margin: 0;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  color: var(--peligro-texto);
+}
+
+@keyframes gimnasio-punto-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
 }
 
 
 
-.gimnasio__dias {
-  @include flex-center;
-  gap: var(--spacing-size-xl);
+/* ── Estado vacío: etiqueta viva + esqueleto hairline de la tabla ── */
+
+.gimnasio__vacio {
+  @include flex-columna(var(--spacing-size-s));
+  align-items: flex-start;
   width: 100%;
   max-width: var(--contenido-max-width);
+  padding-top: var(--spacing-size-l);
+  border-top: 1px solid var(--borde-sutil);
+}
 
-  @include responsive-down('md') {
+.gimnasio__vacio-titulo {
+  @include titular-display(var(--font-size-3xl));
+}
+
+.gimnasio__vacio-nota {
+  margin: 0;
+  max-width: 34rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.gimnasio__esqueleto {
+  @include flex-columna(0);
+  width: 100%;
+  margin: var(--spacing-size-l) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gimnasio__esqueleto-cabeceras {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-l);
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
     gap: var(--spacing-size-m);
   }
-
-  @include responsive-down('xs') {
-    gap: var(--spacing-size-s);
-  }
 }
 
-.gimnasio__dias-boton {
-  @include boton-icono(var(--boton-nav-size));
-  color: var(--texto-secundario);
-
-  @include responsive-down('xs') {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-}
-
-.gimnasio__dias-boton:hover {
-  color: var(--naranja-normal);
-}
-
-.gimnasio__dia {
-  font-family: var(--fuente-display);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--texto-principal);
-  margin: 0;
-}
-
-.gimnasio__dia--adyacente {
-  font-size: var(--font-size-lg);
+.gimnasio__esqueleto-columna {
+  flex: 0 0 5rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  text-align: right;
   color: var(--texto-suave);
 
-  @include responsive-down('md') {
-    display: none;
+  @include responsive-down('sm') {
+    flex-basis: 3rem;
   }
 }
 
-.gimnasio__dia--actual {
-  font-size: var(--font-size-3xl);
-  font-weight: 800;
+.gimnasio__esqueleto-columna--nombre {
+  flex: 1 1 auto;
+  text-align: left;
+}
 
-  @include responsive-down('md') {
-    font-size: var(--font-size-2xl);
-  }
+.gimnasio__esqueleto-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-l);
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--borde-sutil);
 
-  @include responsive-down('xs') {
-    font-size: var(--font-size-xl);
+  @include responsive-down('sm') {
+    gap: var(--spacing-size-m);
   }
 }
 
+.gimnasio__esqueleto-barra {
+  flex: 0 0 5rem;
+  height: 0.5rem; /* 8px */
+  background: var(--superficie-3);
+  animation: gimnasio-esqueleto-pulso 2.4s ease-in-out infinite;
 
+  @include responsive-down('sm') {
+    flex-basis: 3rem;
+  }
+}
+
+.gimnasio__esqueleto-barra--nombre {
+  flex: 1 1 auto;
+}
+
+/* Cascada: cada fila respira con un pelín de retraso sobre la anterior */
+.gimnasio__esqueleto-fila:nth-child(3) .gimnasio__esqueleto-barra {
+  animation-delay: 0.2s;
+}
+
+.gimnasio__esqueleto-fila:nth-child(4) .gimnasio__esqueleto-barra {
+  animation-delay: 0.4s;
+}
+
+.gimnasio__esqueleto-fila:nth-child(5) .gimnasio__esqueleto-barra {
+  animation-delay: 0.6s;
+}
+
+@keyframes gimnasio-esqueleto-pulso {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+
+
+/* ── Días como tabs de texto con subrayado (patrón grafica-tab) ── */
+
+.gimnasio__dias {
+  display: flex;
+  gap: 1.6rem;
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  border-bottom: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    gap: 1.1rem;
+    overflow-x: auto;
+  }
+}
+
+.gimnasio__dias-tab {
+  appearance: none;
+  /* -1px: el subrayado activo pisa la línea base de la fila de tabs */
+  margin: 0 0 -1px;
+  padding: 0 0 0.6rem;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--fuente-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  color: var(--texto-secundario);
+  transition: color var(--duration-base) ease, border-color var(--duration-base) ease;
+  @include foco-visible;
+}
+
+.gimnasio__dias-tab:hover {
+  color: var(--texto-principal);
+}
+
+.gimnasio__dias-tab--activa {
+  color: var(--naranja-normal);
+  border-bottom-color: var(--naranja-normal);
+}
+
+
+
+/* ── Tabla editorial hairline: filos 1px, sin tarjeta ── */
 
 .gimnasio__tabla-section {
   width: 100%;
   max-width: var(--contenido-max-width);
-  margin: 0 auto;
 }
 
 .gimnasio__tabla-section--escritorio {
@@ -179,27 +293,29 @@
 }
 
 .gimnasio__tabla {
-  @include superficie-bento;
-  border-collapse: separate;
-  border-spacing: 0;
-  overflow: hidden;
   width: 100%;
+  border-collapse: collapse;
 }
 
 .gimnasio__tabla-cabecera {
+  padding: 0.85rem 0.75rem;
   font-family: var(--fuente-mono);
-  font-size: var(--etiqueta-tecnica);
+  font-size: 0.6rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  text-align: right;
   color: var(--texto-suave);
-  padding: var(--spacing-size-m);
-  text-align: center;
   border-bottom: 1px solid var(--borde-sutil);
 }
 
 .gimnasio__tabla-cabecera:first-child {
+  padding-left: 0;
   text-align: left;
+}
+
+.gimnasio__tabla-cabecera:last-child {
+  padding-right: 0;
 }
 
 .gimnasio__tabla-fila {
@@ -208,78 +324,73 @@
 }
 
 .gimnasio__tabla-fila:hover {
-  background-color: var(--superficie-3);
-}
-
-.gimnasio__tabla-fila:last-child {
-  border-bottom: none;
+  background-color: var(--superficie-1);
 }
 
 .gimnasio__tabla-dato {
+  padding: 1rem 0.75rem;
   font-family: var(--fuente-mono);
-  font-size: 1rem;
-  font-weight: var(--font-weight-regular);
+  font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
-  color: var(--texto-principal);
-  padding: var(--spacing-size-m);
-  text-align: center;
+  text-align: right;
   vertical-align: middle;
+  color: var(--texto-secundario);
+
+  @include responsive-down('md') {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.78rem;
+  }
 }
 
 .gimnasio__tabla-dato:first-child {
-  text-align: left;
+  padding-left: 0;
   font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
+  text-align: left;
+  color: var(--texto-principal);
+}
+
+.gimnasio__tabla-dato:last-child {
+  padding-right: 0;
 }
 
 .gimnasio__ejercicio {
   display: flex;
   align-items: center;
   gap: var(--spacing-size-xs);
-  text-align: left;
 }
 
-.gimnasio__ejercicio-toggle {
-  display: none;
-}
 
-.gimnasio__ejercicio-toggle-svg {
-  transform: rotate(270deg);
-  transition: transform var(--duration-base) ease;
-}
-
-.gimnasio__ejercicio-toggle-svg--rotado {
-  transform: rotate(90deg);
-}
+/* ── Botones ✓/✗: cuadrados sobrios de filo, sin glow ── */
 
 .gimnasio__acciones {
-  @include flex-center;
-  gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .gimnasio__boton-accion {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--boton-accion-size);
-  height: var(--boton-accion-size);
+  width: 2rem;
+  height: 2rem;
   padding: 0;
-  border-radius: 50%;
-  border: 1.5px solid var(--borde-medio);
   background: transparent;
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
   color: var(--texto-suave);
   cursor: pointer;
-  transition: transform var(--duration-fast) ease, background var(--duration-fast) ease,
-    border-color var(--duration-fast) ease, color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
-}
-
-.gimnasio__boton-accion:hover {
-  transform: scale(1.1);
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease,
+    background-color var(--duration-fast) ease;
+  @include foco-visible;
 }
 
 .gimnasio__boton-accion--ok:hover {
   border-color: var(--exito);
-  color: var(--exito);
+  color: var(--exito-texto);
 }
 
 .gimnasio__boton-accion--no:hover {
@@ -288,30 +399,55 @@
 }
 
 .gimnasio__boton-accion--ok.gimnasio__boton-accion--activo {
-  background: var(--exito);
+  background-color: var(--exito);
   border-color: var(--exito);
   color: hsl(0, 0%, 100%);
-  box-shadow: 0 0 0.75rem hsla(150, 65%, 45%, 0.45);
 }
 
 .gimnasio__boton-accion--no.gimnasio__boton-accion--activo {
-  background: var(--peligro);
+  background-color: var(--peligro);
   border-color: var(--peligro);
   color: hsl(0, 0%, 100%);
-  box-shadow: 0 0 0.75rem var(--rojo-normal-transparente-030);
 }
 
 .gimnasio__boton-accion-svg {
-  width: 1rem;
-  height: 1rem;
+  width: 0.9rem;
+  height: 0.9rem;
 }
 
 
 
+/* ── Día de descanso: composición editorial, alineada a la retícula ── */
+
+.gimnasio__sin-ejercicios {
+  padding: var(--spacing-size-xl) 0;
+  text-align: left;
+}
+
+.gimnasio__sin-ejercicios--acordeon {
+  border-top: 1px solid var(--borde-sutil);
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.gimnasio__sin-ejercicios-titulo {
+  @include titular-display(var(--font-size-2xl));
+  margin-bottom: var(--spacing-size-xs);
+}
+
+.gimnasio__sin-ejercicios-subtitulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
+}
+
+
+
+/* ── Acordeón móvil: filas hairline, mismo lenguaje que la tabla ── */
+
 .gimnasio__acordeon {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-size-s);
+  @include flex-columna(0);
   width: 100%;
   max-width: var(--contenido-max-width);
 }
@@ -324,64 +460,35 @@
   }
 }
 
-@media (max-width: 56.25rem) {
-  .gimnasio__tabla-cabecera {
-    padding: var(--spacing-size-xs) var(--spacing-size-s);
-    font-size: 0.875rem;
-  }
-
-  .gimnasio__tabla-dato {
-    padding: var(--spacing-size-xs) var(--spacing-size-s);
-    font-size: 0.875rem;
-  }
-}
-
 .gimnasio__acordeon-item {
-  @include superficie-bento;
-  overflow: hidden;
-  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
+  border-bottom: 1px solid var(--borde-sutil);
 }
 
-.gimnasio__acordeon-item:hover {
-  border-color: var(--borde-medio);
-}
-
-.gimnasio__acordeon-item--expandido {
-  border-color: var(--naranja-normal);
+.gimnasio__acordeon-toggle--activo {
+  color: var(--naranja-normal);
 }
 
 .gimnasio__acordeon-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-size-m) var(--spacing-size-s);
+  gap: var(--spacing-size-s);
+  padding: 0.9rem 0;
   cursor: pointer;
   user-select: none;
-  transition: background-color var(--duration-base) ease;
-}
-
-.gimnasio__acordeon-header:hover {
-  background-color: var(--superficie-3);
 }
 
 .gimnasio__acordeon-info {
-  @include flex-center;
+  display: flex;
+  align-items: center;
   gap: var(--spacing-size-xs);
+  margin: 0;
 }
 
 .gimnasio__acordeon-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  padding: 0;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--texto-suave);
+  @include boton-icono(1.25rem);
   flex-shrink: 0;
-  transition: color var(--duration-fast) ease;
+  color: var(--texto-suave);
 }
 
 .gimnasio__acordeon-toggle-svg {
@@ -403,7 +510,8 @@
 }
 
 .gimnasio__acordeon-acciones {
-  @include flex-center;
+  display: flex;
+  align-items: center;
   gap: var(--spacing-size-xs);
   margin: 0;
   padding: 0;
@@ -414,11 +522,6 @@
   display: contents;
 }
 
-.gimnasio__boton-accion--acordeon {
-  width: 2rem;
-  height: 2rem;
-}
-
 .gimnasio__acordeon-contenido {
   max-height: 0;
   overflow: hidden;
@@ -426,62 +529,104 @@
 }
 
 .gimnasio__acordeon-contenido--expandido {
-  max-height: 200px;
-  padding: 0 var(--spacing-size-s) var(--spacing-size-m);
+  max-height: 12.5rem; /* 200px */
+  padding-bottom: var(--spacing-size-m);
 }
 
 .gimnasio__acordeon-detalles {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-size-s) var(--spacing-size-m);
-  padding-top: var(--spacing-size-s);
-  border-top: 1px solid var(--borde-sutil);
   margin: 0;
+  /* 1.75rem: alinea el desglose bajo el nombre (toggle 1.25rem + hueco) */
+  padding: 0.75rem 0 0 1.75rem;
+  border-top: 1px solid var(--borde-sutil);
 }
 
 .gimnasio__acordeon-label {
-  @include etiqueta-tecnica(var(--texto-suave));
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
 }
 
 .gimnasio__acordeon-valor {
+  margin: 0;
   font-family: var(--fuente-mono);
   font-size: var(--font-size-md);
-  font-weight: var(--font-weight-regular);
   font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
 
 
-.gimnasio__feedback {
-  @include superficie-bento;
+/* ── Banda de datos: etiqueta mono arriba, valor display abajo ── */
+
+.gimnasio__banda {
+  display: flex;
+  gap: 2.75rem;
   width: 100%;
   max-width: var(--contenido-max-width);
-  margin: 0 auto;
-  padding: var(--spacing-size-xxl) var(--spacing-size-xl);
-  box-sizing: border-box;
+  padding-top: var(--spacing-size-m);
+  border-top: 1px solid var(--borde-sutil);
 
-  @include responsive-down('md') {
-    padding: var(--spacing-size-l) var(--spacing-size-m);
+  @include responsive-down('sm') {
+    flex-wrap: wrap;
+    gap: var(--spacing-size-l);
   }
+}
 
-  @include responsive-down('xs') {
-    padding: var(--spacing-size-m) var(--spacing-size-s);
-  }
+.gimnasio__banda-dato {
+  @include flex-columna(0.35rem);
+  margin: 0;
+}
+
+.gimnasio__banda-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.gimnasio__banda-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.15rem; /* 18.4px */
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+
+
+/* ── Feedback: sección con filo superior e inputs del sistema ── */
+
+.gimnasio__feedback {
+  @include flex-columna(var(--spacing-size-l));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  padding-top: var(--spacing-size-xl);
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.gimnasio__feedback-cabecera {
+  @include flex-columna(0.5rem);
+}
+
+.gimnasio__feedback-eyebrow {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-suave);
 }
 
 .gimnasio__feedback-titulo {
   @include titular-display(var(--font-size-2xl));
-  margin: 0 0 var(--spacing-size-l) 0;
-  text-align: left;
-
-  @include responsive-down('md') {
-    margin-bottom: var(--spacing-size-m);
-  }
-
-  @include responsive-down('xs') {
-    margin-bottom: var(--spacing-size-s);
-  }
 }
 
 .gimnasio__feedback-form {
@@ -493,18 +638,18 @@
 }
 
 .gimnasio__feedback-field {
-  border: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  border: none;
 }
 
 .gimnasio__feedback-label {
   display: block;
+  margin-bottom: var(--spacing-size-s);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   color: var(--texto-principal);
-  margin-bottom: var(--spacing-size-s);
 
   @include responsive-down('xs') {
     font-size: var(--font-size-sm);
@@ -544,8 +689,8 @@
   width: 1.5rem;
   height: 1.5rem;
   background-color: var(--superficie-1);
-  border: 2px solid var(--borde-medio);
-  border-radius: var(--radius-xss);
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
   transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
 }
 
@@ -583,21 +728,17 @@
 
 .gimnasio__feedback-textarea {
   width: 100%;
-  min-height: 8.9375rem;
+  min-height: 7rem;
   padding: var(--spacing-size-s) var(--spacing-size-m);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
   color: var(--texto-principal);
   background-color: var(--superficie-1);
   border: 1px solid var(--borde-sutil);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   resize: vertical;
   box-sizing: border-box;
   transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
-
-  @include responsive-down('md') {
-    min-height: 6.25rem;
-  }
 
   @include responsive-down('xs') {
     min-height: 5rem;
@@ -618,22 +759,21 @@
 .gimnasio__feedback-acciones {
   @include flex-fila(var(--spacing-size-m));
   justify-content: flex-end;
-  margin-top: var(--spacing-size-m);
 
   @include responsive-down('xs') {
     gap: var(--spacing-size-xs);
-    margin-top: var(--spacing-size-s);
   }
 }
 
 
+
+/* ── Banner "Ver mi progreso" (foto + CTA, sin cambios de composición) ── */
 
 .gimnasio__progreso {
   position: relative;
   z-index: 1;
   width: 100%;
   max-width: var(--contenido-max-width);
-  margin: 0 auto;
 }
 
 .gimnasio__progreso-contenido {
@@ -641,9 +781,9 @@
   display: flex;
   width: 100%;
   min-height: 20rem;
-  border-radius: var(--radius-bento);
   overflow: hidden;
-  border: 1px solid var(--borde-sutil);
+  border-top: 1px solid var(--borde-sutil);
+  border-bottom: 1px solid var(--borde-sutil);
 
   @include responsive-down('md') {
     flex-direction: column;
@@ -656,21 +796,14 @@
   position: relative;
   z-index: 2;
   width: 45%;
-  padding: var(--spacing-size-xxl);
-  background: linear-gradient(135deg, var(--superficie-2), var(--superficie-1));
-  overflow: hidden;
+  padding: var(--spacing-size-xxl) var(--spacing-size-xxl) var(--spacing-size-xxl) 0;
+  background: var(--superficie-fondo);
   clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
 
   @include responsive-down('md') {
     width: 100%;
-    padding: var(--spacing-size-l) var(--spacing-size-m);
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-  }
-
-  @include responsive-down('xs') {
-    gap: var(--spacing-size-m);
-    padding: var(--spacing-size-m) var(--spacing-size-s);
-    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    padding: var(--spacing-size-l) 0;
+    clip-path: none;
   }
 }
 
@@ -691,41 +824,25 @@
   }
 }
 
-@include responsive-down('xs') {
-  #gimnasio__progreso-boton ::ng-deep .boton {
-    min-width: 0;
-    max-width: 75%;
-  }
-}
-
 .gimnasio__progreso-titulo {
   @include titular-display(var(--font-size-3xl));
 
   @include responsive-down('md') {
     font-size: var(--font-size-2xl);
   }
-
-  @include responsive-down('xs') {
-    font-size: var(--font-size-xl);
-  }
 }
 
 .gimnasio__progreso-descripcion {
+  margin: 0;
+  max-width: 20rem;
   font-family: var(--font-primary);
   font-size: var(--font-size-lg);
-  color: var(--texto-secundario);
-  margin: 0;
   line-height: 1.6;
-  max-width: 20rem;
+  color: var(--texto-secundario);
 
   @include responsive-down('md') {
     font-size: var(--font-size-md);
     max-width: 90%;
-  }
-
-  @include responsive-down('xs') {
-    font-size: var(--font-size-sm);
-    line-height: 1.5;
   }
 }
 
@@ -741,12 +858,10 @@
     position: relative;
     width: 100%;
     height: 15rem;
-    margin-top: -2rem;
   }
 
   @include responsive-down('xs') {
     height: 10rem;
-    margin-top: -1.5rem;
   }
 }
 
@@ -757,60 +872,24 @@
 }
 
 .gimnasio__progreso-imagen-foto {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  display: block;
   filter: grayscale(0.3) contrast(1.05);
-
-  @include responsive-down('md') {
-    object-position: center calc(50% + 3rem);
-  }
-
-  @include responsive-down('xs') {
-    object-position: center calc(50% + 2rem);
-  }
 }
 
 
 
-.gimnasio__sin-ejercicios {
-  padding: var(--spacing-size-xxl) var(--spacing-size-xl);
-  text-align: center;
+/* ── Movimiento reducido: sin señales pulsantes ── */
 
-  @include responsive-down('md') {
-    padding: var(--spacing-size-xl) var(--spacing-size-m);
+@media (prefers-reduced-motion: reduce) {
+  .gimnasio__estado-punto {
+    animation: none;
   }
-}
 
-.gimnasio__sin-ejercicios--acordeon {
-  @include superficie-bento;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 8rem;
-}
-
-.gimnasio__sin-ejercicios-titulo {
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--texto-principal);
-  margin: 0 0 var(--spacing-size-xs) 0;
-
-  @include responsive-down('md') {
-    font-size: var(--font-size-lg);
-  }
-}
-
-.gimnasio__sin-ejercicios-subtitulo {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--texto-suave);
-
-  @include responsive-down('md') {
-    font-size: var(--font-size-sm);
+  .gimnasio__esqueleto-barra {
+    animation: none;
   }
 }

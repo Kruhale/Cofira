@@ -1,26 +1,27 @@
-import {Component, computed, inject, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, computed, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {OnboardingService} from '../../services/onboarding.service';
-import {ProgressBar} from '../../components/shared/progress-bar/progress-bar';
+import { OnboardingService } from '../../services/onboarding.service';
+import { IdiomaService } from '../../services/idioma.service';
+import { ProgressBar } from '../../components/shared/progress-bar/progress-bar';
+import { TEXTOS_ONBOARDING } from './textos-onboarding';
 
-
-import {StepWelcome} from './steps/step-welcome/step-welcome';
-import {StepGoal} from './steps/step-goal/step-goal';
-import {StepGender} from './steps/step-gender/step-gender';
-import {StepBirthdate} from './steps/step-birthdate/step-birthdate';
-import {StepMeasurements} from './steps/step-measurements/step-measurements';
-import {StepTargetWeight} from './steps/step-target-weight/step-target-weight';
-import {StepActivityLevel} from './steps/step-activity-level/step-activity-level';
-import {StepFitnessLevel} from './steps/step-fitness-level/step-fitness-level';
-import {StepTrainingDays} from './steps/step-training-days/step-training-days';
-import {StepDietType} from './steps/step-diet-type/step-diet-type';
-import {StepMeals} from './steps/step-meals/step-meals';
-import {StepAllergies} from './steps/step-allergies/step-allergies';
-import {StepEquipment} from './steps/step-equipment/step-equipment';
-import {StepResults} from './steps/step-results/step-results';
-import {StepRegister} from './steps/step-register/step-register';
-import {StepPayment} from './steps/step-payment/step-payment';
+import { StepWelcome } from './steps/step-welcome/step-welcome';
+import { StepGoal } from './steps/step-goal/step-goal';
+import { StepGender } from './steps/step-gender/step-gender';
+import { StepBirthdate } from './steps/step-birthdate/step-birthdate';
+import { StepMeasurements } from './steps/step-measurements/step-measurements';
+import { StepTargetWeight } from './steps/step-target-weight/step-target-weight';
+import { StepActivityLevel } from './steps/step-activity-level/step-activity-level';
+import { StepFitnessLevel } from './steps/step-fitness-level/step-fitness-level';
+import { StepTrainingDays } from './steps/step-training-days/step-training-days';
+import { StepDietType } from './steps/step-diet-type/step-diet-type';
+import { StepMeals } from './steps/step-meals/step-meals';
+import { StepAllergies } from './steps/step-allergies/step-allergies';
+import { StepEquipment } from './steps/step-equipment/step-equipment';
+import { StepResults } from './steps/step-results/step-results';
+import { StepRegister } from './steps/step-register/step-register';
+import { StepPayment } from './steps/step-payment/step-payment';
 
 @Component({
   selector: 'app-onboarding',
@@ -42,13 +43,17 @@ import {StepPayment} from './steps/step-payment/step-payment';
     StepEquipment,
     StepResults,
     StepRegister,
-    StepPayment
+    StepPayment,
   ],
   templateUrl: './onboarding.html',
-  styleUrl: './onboarding.scss'
+  styleUrl: './onboarding.scss',
 })
 export class Onboarding implements OnInit {
   readonly onboardingService = inject(OnboardingService);
+  private readonly idiomaService = inject(IdiomaService);
+
+  /* Textos de la página en el idioma vigente: al cambiar el signal se repinta todo */
+  readonly textos = computed(() => TEXTOS_ONBOARDING[this.idiomaService.idioma()]);
   readonly currentStep = computed(() => this.onboardingService.currentStep());
   readonly totalSteps = computed(() => this.onboardingService.getTotalSteps());
   readonly canGoBack = computed(() => this.onboardingService.canGoBack());
@@ -57,8 +62,8 @@ export class Onboarding implements OnInit {
   private readonly router = inject(Router);
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const step = parseInt(params["step"] || "0", 10);
+    this.route.queryParams.subscribe((params) => {
+      const step = parseInt(params['step'] || '0', 10);
       if (step !== this.currentStep()) {
         this.onboardingService.goToStep(step);
       }
@@ -83,8 +88,8 @@ export class Onboarding implements OnInit {
   private updateUrl(step: number): void {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {step},
-      queryParamsHandling: "merge"
+      queryParams: { step },
+      queryParamsHandling: 'merge',
     });
   }
 }

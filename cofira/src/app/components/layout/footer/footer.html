@@ -2,18 +2,18 @@
 
   <section class="pie__cta" appRevelarScroll>
     <article class="pie__cta-texto">
-      <p class="pie__cta-eyebrow">Empieza hoy</p>
-      <h2 class="pie__cta-titulo">Tu mejor versión,<br><span class="pie__cta-acento">sin excusas.</span></h2>
+      <p class="pie__cta-eyebrow">{{ textos().ctaEyebrow }}</p>
+      <h2 class="pie__cta-titulo">{{ textos().ctaTitulo }}<br><span class="pie__cta-acento">{{ textos().ctaAcento }}</span></h2>
     </article>
 
     <article class="pie__cta-newsletter">
-      <p class="pie__cta-newsletter-texto">Recibe rutinas y tips cada semana. Sin spam.</p>
+      <p class="pie__cta-newsletter-texto">{{ textos().newsletterTexto }}</p>
       <section class="pie__newsletter">
-        <label class="pie__newsletter-etiqueta" for="pie-newsletter-email">Tu email</label>
-        <input class="pie__newsletter-input" id="pie-newsletter-email" type="email" placeholder="tu@email.com" autocomplete="email">
-        <button class="pie__newsletter-boton" type="button">Únete</button>
+        <label class="pie__newsletter-etiqueta" for="pie-newsletter-email">{{ textos().newsletterEtiqueta }}</label>
+        <input class="pie__newsletter-input" id="pie-newsletter-email" type="email" [placeholder]="textos().newsletterPlaceholder" autocomplete="email">
+        <button class="pie__newsletter-boton" type="button">{{ textos().newsletterBoton }}</button>
       </section>
-      <p class="pie__cta-newsletter-nota">Cancela cuando quieras.</p>
+      <p class="pie__cta-newsletter-nota">{{ textos().newsletterNota }}</p>
     </article>
   </section>
 
@@ -22,7 +22,7 @@
   <section class="pie__principal" appRevelarScroll [escalonado]="true">
 
     <article class="pie__marca" data-revelar-item>
-      <a class="pie__logo" routerLink="/home" aria-label="Cofira - inicio">
+      <a class="pie__logo" routerLink="/home" [attr.aria-label]="textos().ariaLogo">
         <span class="pie__logo-letra">C</span>
         <span class="pie__logo-letra">O</span>
         <span class="pie__logo-letra">F</span>
@@ -32,7 +32,7 @@
       </a>
 
       <p class="pie__descripcion">
-        Tu plataforma integral para entrenamiento, nutrición y seguimiento de progreso. Alcanza tus metas de salud y fitness.
+        {{ textos().descripcion }}
       </p>
 
       <ul class="pie__sociales">
@@ -68,18 +68,18 @@
 
       <ul class="pie__apps">
         <li>
-          <a class="pie__app" href="https://www.apple.com/app-store/" rel="noopener noreferrer" target="_blank" aria-label="Descárgalo en el App Store">
+          <a class="pie__app" href="https://www.apple.com/app-store/" rel="noopener noreferrer" target="_blank" [attr.aria-label]="textos().ariaAppStore">
             <svg aria-hidden="true" class="pie__app-icono" viewBox="0 0 24 24" fill="currentColor" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
               <path d="M17.05 12.04c-.03-2.6 2.13-3.85 2.23-3.91-1.22-1.78-3.11-2.02-3.78-2.05-1.61-.16-3.14.95-3.96.95-.81 0-2.07-.93-3.4-.9-1.75.02-3.36 1.02-4.26 2.58-1.82 3.16-.47 7.84 1.3 10.4.86 1.26 1.89 2.66 3.24 2.61 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.39.81 1.4-.02 2.29-1.28 3.15-2.54.99-1.46 1.4-2.87 1.42-2.94-.03-.01-2.72-1.04-2.75-4.13zM14.53 4.5c.72-.87 1.2-2.08 1.07-3.28-1.03.04-2.28.69-3.02 1.55-.66.77-1.24 2-.09 3.05 1.04.08 2.32-.55 3.06-1.32z"/>
             </svg>
             <span class="pie__app-textos">
-              <span class="pie__app-pre">Descárgalo en</span>
+              <span class="pie__app-pre">{{ textos().appPreApple }}</span>
               <span class="pie__app-tienda">App Store</span>
             </span>
           </a>
         </li>
         <li>
-          <a class="pie__app" href="https://play.google.com/" rel="noopener noreferrer" target="_blank" aria-label="Disponible en Google Play">
+          <a class="pie__app" href="https://play.google.com/" rel="noopener noreferrer" target="_blank" [attr.aria-label]="textos().ariaGooglePlay">
             <svg aria-hidden="true" class="pie__app-icono" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
               <path fill="currentColor" d="M3.6 2.3c-.25.27-.4.69-.4 1.23v16.94c0 .54.15.96.4 1.23l.06.05L13.2 12.1v-.2L3.66 2.25l-.06.05z" opacity="0.85"/>
               <path fill="currentColor" d="M16.4 15.3l-3.2-3.2v-.2l3.2-3.2.07.04 3.79 2.15c1.08.61 1.08 1.62 0 2.24l-3.79 2.15-.07.04z"/>
@@ -87,7 +87,7 @@
               <path fill="currentColor" d="M16.47 8.74L5.2 2.24c-.66-.38-1.24-.32-1.6.06L13.2 12l3.27-3.26z" opacity="0.5"/>
             </svg>
             <span class="pie__app-textos">
-              <span class="pie__app-pre">Disponible en</span>
+              <span class="pie__app-pre">{{ textos().appPreGoogle }}</span>
               <span class="pie__app-tienda">Google Play</span>
             </span>
           </a>
@@ -95,91 +95,93 @@
       </ul>
     </article>
 
-    <nav class="pie__nav pie__nav--producto" aria-label="Producto" data-revelar-item>
-      <h3 class="pie__nav-titulo">Producto</h3>
+    <nav class="pie__nav pie__nav--producto" [attr.aria-label]="textos().navProducto" data-revelar-item>
+      <h3 class="pie__nav-titulo">{{ textos().navProducto }}</h3>
       <ul class="pie__nav-lista">
-        <li><a class="pie__nav-enlace" routerLink="/alimentacion">Nutrición</a></li>
-        <li><a class="pie__nav-enlace" routerLink="/gimnasio">Ejercicio</a></li>
-        <li><a class="pie__nav-enlace" routerLink="/seguimiento">Seguimiento</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/alimentacion">{{ textos().enlaceNutricion }}</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/gimnasio">{{ textos().enlaceEjercicio }}</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/seguimiento">{{ textos().enlaceSeguimiento }}</a></li>
       </ul>
     </nav>
 
-    <nav class="pie__nav pie__nav--compania" aria-label="Compañía" data-revelar-item>
-      <h3 class="pie__nav-titulo">Compañía</h3>
+    <nav class="pie__nav pie__nav--compania" [attr.aria-label]="textos().navCompania" data-revelar-item>
+      <h3 class="pie__nav-titulo">{{ textos().navCompania }}</h3>
       <ul class="pie__nav-lista">
-        <li><a class="pie__nav-enlace" routerLink="/sobre-nosotros">Sobre Nosotros</a></li>
-        <li><a class="pie__nav-enlace" routerLink="/blog">Blog</a></li>
-        <li><a class="pie__nav-enlace" routerLink="/contacto">Contacto</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/sobre-nosotros">{{ textos().enlaceSobreNosotros }}</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/blog">{{ textos().enlaceBlog }}</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/contacto">{{ textos().enlaceContacto }}</a></li>
       </ul>
     </nav>
 
-    <nav class="pie__nav pie__nav--legal" aria-label="Legal" data-revelar-item>
-      <h3 class="pie__nav-titulo">Legal</h3>
+    <nav class="pie__nav pie__nav--legal" [attr.aria-label]="textos().navLegal" data-revelar-item>
+      <h3 class="pie__nav-titulo">{{ textos().navLegal }}</h3>
       <ul class="pie__nav-lista">
-        <li><a class="pie__nav-enlace" routerLink="/privacidad">Privacidad</a></li>
-        <li><a class="pie__nav-enlace" routerLink="/terminos">Términos</a></li>
-        <li><a class="pie__nav-enlace" routerLink="/cookies">Cookies</a></li>
-        <li><a class="pie__nav-enlace" routerLink="/licencias">Licencias</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/privacidad">{{ textos().enlacePrivacidad }}</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/terminos">{{ textos().enlaceTerminos }}</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/cookies">{{ textos().enlaceCookies }}</a></li>
+        <li><a class="pie__nav-enlace" routerLink="/licencias">{{ textos().enlaceLicencias }}</a></li>
       </ul>
     </nav>
 
     <section class="pie__contacto" data-revelar-item>
-      <h3 class="pie__nav-titulo">Hablemos</h3>
+      <h3 class="pie__nav-titulo">{{ textos().contactoTitulo }}</h3>
       <a class="pie__contacto-enlace" routerLink="/contacto">
-        <span class="pie__contacto-enlace-texto">Escríbenos</span>
+        <span class="pie__contacto-enlace-texto">{{ textos().contactoEscribenos }}</span>
         <span class="pie__contacto-enlace-flecha" aria-hidden="true">&#8594;</span>
       </a>
       <address class="pie__contacto-direccion">
         Calle Gran Vía 28<br>
-        28013 Madrid, España
+        {{ textos().contactoDireccionLinea2 }}
       </address>
       <p class="pie__estado">
         <span class="pie__estado-punto" aria-hidden="true"></span>
-        <span class="pie__estado-texto">Soporte en línea</span>
+        <span class="pie__estado-texto">{{ textos().estadoSoporte }}</span>
       </p>
     </section>
 
   </section>
 
-  <section class="pie__pulso" aria-label="Comunidad Cofira en vivo" appRevelarScroll>
+  <section class="pie__pulso" [attr.aria-label]="textos().ariaPulso" appRevelarScroll>
     <article class="pie__pulso-info">
-      <p class="pie__pulso-cifra" aria-hidden="true">
-        <span class="pie__pulso-punto"></span>
-        <span class="pie__pulso-num">{{ entrenandoTexto() }}</span>
-        <span class="pie__pulso-num-sufijo">entrenando ahora</span>
+      <p class="pie__pulso-caption">
+        <span class="pie__pulso-punto" aria-hidden="true"></span>
+        {{ textos().pulsoCaption }}
       </p>
-      <p class="sr-only">Más de 24.000 personas entrenando ahora en la comunidad.</p>
-      <p class="pie__pulso-caption">Comunidad Cofira &middot; En vivo</p>
+      <p class="pie__pulso-cifra" aria-hidden="true">
+        <span class="pie__pulso-num">{{ entrenandoTexto() }}</span>
+      </p>
+      <p class="sr-only">{{ textos().pulsoLector }}</p>
+      <p class="pie__pulso-sub" aria-hidden="true">{{ textos().pulsoSub }}</p>
     </article>
 
     <span class="pie__pulso-linea" aria-hidden="true">
-      <span class="pie__pulso-rejilla"></span>
-      <svg class="pie__pulso-monitor" viewBox="0 0 300 40" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- viewBox 315: el trazado mide ~315 unidades; con 300 el último latido
+           se cortaba a media curva contra el borde derecho -->
+      <svg class="pie__pulso-monitor" viewBox="0 0 315 40" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <path class="pie__pulso-traza" d="M0 20 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
         <path class="pie__pulso-cometa" pathLength="100" d="M0 20 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9 h22 q3 -4 6 0 h3 l2 3 l3 -22 l3 26 l2 -7 q5 -6 10 0 h9" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
       </svg>
     </span>
 
-    <span class="pie__pulso-chispa" aria-hidden="true"></span>
-
     <p class="pie__pulso-semana">
+      <span class="pie__pulso-semana-etiqueta">{{ textos().pulsoSemanaEtiqueta }}</span>
       <span class="pie__pulso-semana-num" appContadorAnimado [valorFinal]="12480" prefijo="+">+12.480</span>
-      <span class="pie__pulso-semana-etiqueta">esta semana</span>
+      <span class="pie__pulso-semana-sub">{{ textos().pulsoSemanaSub }}</span>
     </p>
   </section>
 
   <section class="pie__inferior">
-    <p class="pie__copyright">&copy; {{ anioActual }} Cofira. Todos los derechos reservados.</p>
+    <p class="pie__copyright">&copy; {{ anioActual }} {{ textos().copyright }}</p>
 
-    <nav class="pie__legal" aria-label="Enlaces legales">
-      <a class="pie__legal-enlace" routerLink="/privacidad">Política de Privacidad</a>
-      <a class="pie__legal-enlace" routerLink="/terminos">Términos de Servicio</a>
-      <a class="pie__legal-enlace" routerLink="/cookies">Cookies</a>
+    <nav class="pie__legal" [attr.aria-label]="textos().ariaEnlacesLegales">
+      <a class="pie__legal-enlace" routerLink="/privacidad">{{ textos().legalPrivacidad }}</a>
+      <a class="pie__legal-enlace" routerLink="/terminos">{{ textos().legalTerminos }}</a>
+      <a class="pie__legal-enlace" routerLink="/cookies">{{ textos().legalCookies }}</a>
     </nav>
 
     <menu class="pie__controles">
       <li>
-        <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? 'Activar modo claro' : 'Activar modo oscuro'" [attr.aria-pressed]="modoOscuro" class="pie__tema-boton">
+        <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? textos().ariaTemaClaro : textos().ariaTemaOscuro" [attr.aria-pressed]="modoOscuro" class="pie__tema-boton">
           @if (modoOscuro) {
           <svg aria-hidden="true" class="pie__tema-boton-icono" fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
@@ -200,8 +202,8 @@
         </button>
       </li>
       <li class="pie__idioma">
-        <button (click)="toggleIdiomas()" aria-label="Cambiar idioma" [attr.aria-expanded]="mostrarIdiomas" aria-haspopup="listbox" class="pie__idioma-boton">
-          <span>{{ idiomaActual }}</span>
+        <button (click)="toggleIdiomas()" [attr.aria-label]="textos().ariaCambiarIdioma" [attr.aria-expanded]="mostrarIdiomas" aria-haspopup="listbox" class="pie__idioma-boton">
+          <span>{{ idiomaActual().toUpperCase() }}</span>
           <svg aria-hidden="true" fill="currentColor" height="12" viewBox="0 0 24 24" width="12" xmlns="http://www.w3.org/2000/svg">
             <path d="m7 10 5 5 5-5z" />
           </svg>
@@ -210,8 +212,8 @@
         <ul class="pie__idioma-dropdown" role="listbox">
           @for (idioma of idiomas; track idioma) {
           <li class="pie__idioma-dropdown-item">
-            <button (click)="cambiarIdioma(idioma)" [class.pie__idioma-opcion--activo]="idioma === idiomaActual" [attr.aria-selected]="idioma === idiomaActual" role="option" class="pie__idioma-opcion">
-              {{ idioma }}
+            <button (click)="cambiarIdioma(idioma)" [class.pie__idioma-opcion--activo]="idioma === idiomaActual()" [attr.aria-selected]="idioma === idiomaActual()" role="option" class="pie__idioma-opcion">
+              {{ idioma.toUpperCase() }}
             </button>
           </li>
           }

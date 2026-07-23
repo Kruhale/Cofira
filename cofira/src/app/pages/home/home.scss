@@ -1,6 +1,40 @@
 @import '../../../styles/01-tools/mixins';
 
 /* ════════════════════════════════════════════
+   Precarga: cortina negra con contador 0→100
+   ════════════════════════════════════════════ */
+.precarga {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 2.2rem 2.8rem;
+  background: hsl(240, 7%, 4%);
+}
+
+.precarga__marca {
+  font-family: var(--fuente-display);
+  font-size: 1.4rem; /* 22.4px */
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--texto-principal);
+}
+
+.precarga__punto {
+  color: var(--naranja-normal);
+}
+
+.precarga__numero {
+  font-family: var(--fuente-mono);
+  font-size: 6rem; /* 96px */
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+/* ════════════════════════════════════════════
    Helpers de sección (reutilizados en la home)
    ════════════════════════════════════════════ */
 .seccion__eyebrow {
@@ -545,26 +579,8 @@
 [data-theme='light'] .funcionalidades__comparador-delta-sub {
   color: var(--texto-suave);
 }
-[data-theme='light'] .funcionalidades__comparador-etiqueta {
-  border-left-color: var(--borde-medio);
-}
-[data-theme='light'] .funcionalidades__comparador-etiqueta--despues {
-  border-left-color: var(--naranja-normal);
-}
-[data-theme='light'] .funcionalidades__comparador-fecha {
-  color: var(--texto-suave);
-}
-[data-theme='light'] .funcionalidades__comparador-etiqueta--despues .funcionalidades__comparador-fecha {
-  color: var(--naranja-texto);
-}
-[data-theme='light'] .funcionalidades__comparador-peso {
-  color: var(--texto-principal);
-}
 [data-theme='light'] .funcionalidades__comparador-pista {
   color: var(--texto-suave);
-}
-[data-theme='light'] .funcionalidades__carrete-miniatura {
-  border-color: var(--borde-medio);
 }
 
 .funcionalidades__cabecera {
@@ -732,20 +748,24 @@
   transition: transform var(--duration-base) ease, opacity var(--duration-base) ease;
 }
 
+/* Etiqueta editorial: regla naranja + mono con tracking, sin caja-badge */
 .funcionalidades__visual-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem 0.7rem;
-  border-radius: 99px;
-  border: 1px solid var(--borde-sutil);
-  background: var(--naranja-glow-suave);
+  gap: 0.75rem;
   font-family: var(--fuente-mono);
   font-size: 0.62rem;
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.22em;
   color: var(--naranja-texto);
+}
+
+.funcionalidades__visual-eyebrow::before {
+  content: '';
+  width: 1.75rem;
+  height: 1px;
+  background: var(--naranja-normal);
 }
 
 .funcionalidades__visual--activo .funcionalidades__visual-cabecera {
@@ -780,7 +800,6 @@
 .funcionalidades__grafica,
 .funcionalidades__ayuno,
 .funcionalidades__comparador,
-.funcionalidades__carrete,
 .funcionalidades__anillo,
 .funcionalidades__agua,
 .funcionalidades__comidas {
@@ -792,7 +811,6 @@
 .funcionalidades__visual--activo .funcionalidades__grafica,
 .funcionalidades__visual--activo .funcionalidades__ayuno,
 .funcionalidades__visual--activo .funcionalidades__comparador,
-.funcionalidades__visual--activo .funcionalidades__carrete,
 .funcionalidades__visual--activo .funcionalidades__anillo,
 .funcionalidades__visual--activo .funcionalidades__agua,
 .funcionalidades__visual--activo .funcionalidades__comidas {
@@ -815,7 +833,6 @@
 .funcionalidades__visual-pie,
 .funcionalidades__grafica,
 .funcionalidades__comparador,
-.funcionalidades__carrete,
 .funcionalidades__comidas {
   width: 100%;
   max-width: 54rem;
@@ -845,23 +862,29 @@
   color: var(--texto-secundario);
 }
 
+/* Etiqueta editorial del pie: mono en mayúsculas con filo separador,
+   sustituye a la antigua píldora redondeada (patrón vetado por el usuario) */
 .funcionalidades__chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.3rem 0.7rem;
-  border-radius: 99px;
-  border: 1px solid var(--borde-sutil);
-  background: var(--superficie-1);
+  gap: 0.85rem;
   font-family: var(--fuente-mono);
-  font-size: var(--font-size-xs);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
+.funcionalidades__chip::after {
+  width: 1px;
+  height: 0.85rem;
+  background: var(--borde-medio);
+  content: '';
+}
+
 .funcionalidades__chip--acento {
-  border-color: transparent;
-  background: var(--naranja-glow-suave);
-  color: var(--naranja-normal);
+  color: var(--naranja-texto);
 }
 
 /* Mockup: gráfica de evolución de peso */
@@ -872,18 +895,29 @@
    ════════════════════════════════════════════════════════════════════════ */
 .funcionalidades__grafica {
   display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
+  align-items: center;
+  gap: 3rem;
   width: 100%;
-  max-width: 44rem;
+  /* 4rem: libra el rótulo vertical FUNCIONES del raíl (llega a ~142px) */
+  padding-left: 4rem;
 }
 
-/* ── Barra superior: identidad + segmented control ─────────────────────── */
-.funcionalidades__grafica-barra {
+.funcionalidades__visual--datos .funcionalidades__visual-cabecera {
+  padding-left: 4rem;
+}
+
+.funcionalidades__visual--datos .funcionalidades__visual-pie {
+  padding-left: 4rem;
+}
+
+/* ── Columna editorial izquierda: identidad, tabs, número héroe, objetivo ── */
+.funcionalidades__grafica-lado {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.4rem;
+  width: 16.5rem;
+  flex-shrink: 0;
 }
 
 .funcionalidades__grafica-resumen {
@@ -921,50 +955,39 @@
   color: var(--texto-suave);
 }
 
-.funcionalidades__segmento {
-  display: inline-flex;
-  gap: 0.15rem;
-  padding: 0.25rem;
-  border-radius: 99px;
-  background: var(--superficie-2);
-  border: 1px solid var(--borde-sutil);
+/* ── Tabs de texto: sin píldora, subrayado fino naranja (estilo editorial) ── */
+.funcionalidades__grafica-tabs {
+  display: flex;
+  gap: 1.4rem;
+  width: 100%;
+  border-bottom: 1px solid var(--borde-sutil);
 }
 
-.funcionalidades__segmento-opcion {
+.funcionalidades__grafica-tab {
   appearance: none;
-  margin: 0;
+  /* -1px: el subrayado activo pisa la línea base de la fila de tabs */
+  margin: 0 0 -1px;
   border: 0;
+  border-bottom: 1px solid transparent;
   cursor: pointer;
-  padding: 0.42rem 0.95rem;
-  border-radius: 99px;
+  padding: 0 0 0.55rem;
   background: transparent;
   color: var(--texto-secundario);
   font-family: var(--fuente-mono);
   font-size: 0.64rem;
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  transition: color var(--duration-base) ease, background var(--duration-base) ease;
+  letter-spacing: 0.14em;
+  transition: color var(--duration-base) ease, border-color var(--duration-base) ease;
 }
 
-.funcionalidades__segmento-opcion:hover {
+.funcionalidades__grafica-tab:hover {
   color: var(--texto-principal);
 }
 
-.funcionalidades__segmento-opcion--activa {
-  color: var(--texto-sobre-acento);
-  background: var(--naranja-normal);
-  box-shadow: 0 0.4rem 0.9rem -0.35rem var(--naranja-glow-fuerte);
-}
-
-/* ── Banda héroe: número gigante + progreso al objetivo ────────────────── */
-.funcionalidades__grafica-cabecera {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.75rem;
-  padding-bottom: 1.1rem;
-  border-bottom: 1px solid var(--borde-sutil);
+.funcionalidades__grafica-tab--activa {
+  color: var(--naranja-normal);
+  border-bottom-color: var(--naranja-normal);
 }
 
 .funcionalidades__grafica-hero {
@@ -981,7 +1004,7 @@
 
 .funcionalidades__grafica-valor-num {
   font-family: var(--fuente-display);
-  font-size: 3.6rem; /* 57.6px */
+  font-size: 4.6rem; /* 73.6px */
   font-weight: var(--font-weight-bold);
   line-height: 0.86;
   letter-spacing: -0.04em;
@@ -1025,8 +1048,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  width: 13.5rem;
-  flex-shrink: 0;
+  width: 100%;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--borde-sutil);
 }
 
 .funcionalidades__grafica-meta-cab {
@@ -1077,7 +1101,15 @@
   color: var(--texto-secundario);
 }
 
-/* ── Lienzo de la gráfica ──────────────────────────────────────────────── */
+/* ── Zona derecha: la gráfica manda (lienzo + meses + leyenda) ─────────── */
+.funcionalidades__grafica-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 0;
+}
+
 .funcionalidades__grafica-lienzo {
   position: relative;
   display: block;
@@ -1159,6 +1191,12 @@
   transition-delay: 0.25s;
 }
 
+/* Reinicio al cambiar de métrica: oculta el trazo un frame para redibujarlo */
+.funcionalidades__visual--activo .funcionalidades__grafica-linea--reinicio {
+  stroke-dashoffset: 1;
+  transition: none;
+}
+
 /* Marcador del dato vigente (último punto): núcleo + halo que respira */
 .funcionalidades__grafica-actual {
   fill: var(--naranja-normal);
@@ -1217,11 +1255,11 @@
   cursor: pointer;
 }
 
-/* Etiquetas de mes bajo la gráfica */
+/* Etiquetas de mes bajo la gráfica (el 6% alinea "Ene" con el arranque de la curva) */
 .funcionalidades__grafica-meses {
   display: flex;
   justify-content: space-between;
-  padding: 0 0.1rem;
+  padding: 0 0 0 6%;
   font-family: var(--fuente-mono);
   font-size: 0.6rem;
   text-transform: uppercase;
@@ -1361,6 +1399,39 @@
   opacity: 0.45;
 }
 
+/* Banda de datos de la serie: tres lecturas separadas por la línea superior */
+.funcionalidades__grafica-datos {
+  display: flex;
+  gap: 2.75rem;
+  margin-top: 0.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.funcionalidades__grafica-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.funcionalidades__grafica-dato-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  /* secundario: gemela de la banda de comidas, mismo suelo de contraste */
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__grafica-dato-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.15rem; /* 18.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
 /* Móvil/tablet: la sección se des-pinea (≤lg) y la visual deja de estar
    absoluta-centrada en los paneles de DATOS (Gráficos y Comidas), así el panel
    crece con su contenido y la tarjeta no se recorta. */
@@ -1370,33 +1441,31 @@
   }
 }
 
-/* Pantallas estrechas: la cabecera (número + progreso) se apila, el selector
-   puede saltar de línea y el título baja de tamaño para que nada se desborde. */
+/* Pantallas medias: la composición lado+gráfica se apila en columna */
+@include responsive-down('md') {
+  .funcionalidades__grafica {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.75rem;
+  }
+
+  .funcionalidades__grafica-lado {
+    width: 100%;
+  }
+}
+
+/* Pantallas estrechas: el número baja de tamaño para que nada se desborde */
 @include responsive-down('xs') {
   .funcionalidades__visual-titulo {
     font-size: 1.9rem; /* 30.4px */
   }
 
-  .funcionalidades__grafica-barra {
-    flex-wrap: wrap;
-  }
-
-  .funcionalidades__grafica-cabecera {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1.25rem;
-  }
-
   .funcionalidades__grafica-valor-num {
-    font-size: 3rem; /* 48px */
+    font-size: 3.2rem; /* 51.2px */
   }
 
-  .funcionalidades__grafica-meta {
-    width: 100%;
-  }
-
-  .funcionalidades__segmento-opcion {
-    padding: 0.6rem 1.1rem; /* tap target cómodo en táctil */
+  .funcionalidades__grafica-tab {
+    padding: 0.6rem 0; /* tap target cómodo en táctil */
   }
 }
 
@@ -1420,8 +1489,8 @@
   position: absolute;
   top: 10%;
   bottom: 13%;
-  left: 22%;
-  width: 39%;
+  left: 29%;
+  width: 35%;
   display: block;
   overflow: hidden;
   border: 1px solid hsla(40, 8%, 88%, 0.14);
@@ -1501,20 +1570,41 @@
   animation: funcionalidades-respira-suave 5.5s ease-in-out infinite;
 }
 
-/* Delta protagonista: el dato que vende la transformación */
-.funcionalidades__comparador-delta {
+/* Timeline vertical: la narrativa del progreso; rellena la columna izquierda
+   y da a las fotos semanales el protagonismo que antes no tenían. */
+.funcionalidades__comparador-timeline {
   position: absolute;
-  top: 10%;
-  left: 4%;
+  top: 50%;
+  /* 10rem libra el raíl fijo de navegación y su rótulo FUNCIONES (llega a ~142px) */
+  left: 10rem;
+  z-index: 3;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.7rem;
+  width: 17%;
+  transform: translateY(-50%);
+}
+
+/* Delta protagonista: el dato que vende la transformación (cabecera del timeline) */
+.funcionalidades__comparador-delta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   pointer-events: none;
+}
+
+.funcionalidades__comparador-delta-eyebrow {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: hsla(28, 92%, 66%, 0.9);
 }
 
 .funcionalidades__comparador-delta-valor {
   font-family: var(--fuente-display);
-  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  font-size: 3rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -1531,130 +1621,152 @@
   color: hsla(40, 8%, 88%, 0.62);
 }
 
-/* Pesos antes/después: datos desnudos con tick lateral, sin pills */
-.funcionalidades__comparador-etiqueta {
-  position: absolute;
-  bottom: 25%;
+/* Lista de hitos: eje vertical conector + foto + semana/peso por cada semana */
+.funcionalidades__comparador-hitos {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  padding-left: 0.75rem;
-  border-left: 2px solid hsla(40, 8%, 88%, 0.35);
-  pointer-events: none;
+  gap: 1rem;
+  padding-left: 1.6rem;
 }
 
-.funcionalidades__comparador-etiqueta--antes {
-  left: 4%;
+/* Eje que une los hitos (la línea del progreso) */
+.funcionalidades__comparador-hitos::before {
+  content: '';
+  position: absolute;
+  top: 1.6rem;
+  bottom: 1.6rem;
+  left: 0.33rem;
+  width: 2px;
+  background: hsla(40, 8%, 88%, 0.16);
 }
 
-.funcionalidades__comparador-etiqueta--despues {
-  left: 63.5%;
-  border-left-color: hsl(28, 100%, 58%);
+.funcionalidades__comparador-hito {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  opacity: 0.55;
+  transition: opacity var(--duration-base) ease;
 }
 
-.funcionalidades__comparador-fecha {
+.funcionalidades__comparador-hito:hover {
+  opacity: 0.85;
+}
+
+/* Punto sobre el eje */
+.funcionalidades__comparador-hito::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -1.6rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: hsl(240, 6%, 12%);
+  border: 2px solid hsla(40, 8%, 88%, 0.35);
+}
+
+.funcionalidades__comparador-hito-imagen {
+  flex-shrink: 0;
+  width: 4rem;
+  height: 3rem;
+  overflow: hidden;
+  border: 1px solid hsla(40, 8%, 88%, 0.2);
+  border-radius: 0.3rem;
+}
+
+.funcionalidades__comparador-hito-foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 16%;
+  filter: grayscale(0.5) brightness(0.82);
+  transition: filter var(--duration-base) ease;
+}
+
+.funcionalidades__comparador-hito-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.funcionalidades__comparador-hito-semana {
   font-family: var(--fuente-mono);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: hsla(40, 8%, 88%, 0.6);
 }
 
-.funcionalidades__comparador-etiqueta--despues .funcionalidades__comparador-fecha {
-  color: hsl(28, 100%, 62%);
-}
-
-.funcionalidades__comparador-peso {
+.funcionalidades__comparador-hito-peso {
   font-family: var(--fuente-display);
-  font-size: 1.7rem;
+  font-size: 1.3rem;
   font-weight: 700;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
   color: hsl(40, 18%, 96%);
 }
 
+/* Hito activo: naranja, foto a color, protagonismo pleno */
+.funcionalidades__comparador-hito--activo {
+  opacity: 1;
+}
+
+.funcionalidades__comparador-hito--activo::before {
+  background: hsl(28, 100%, 58%);
+  border-color: hsl(28, 100%, 58%);
+  box-shadow: 0 0 12px hsla(28, 100%, 55%, 0.6);
+}
+
+.funcionalidades__comparador-hito--activo .funcionalidades__comparador-hito-imagen {
+  border-color: hsl(28, 100%, 58%);
+}
+
+.funcionalidades__comparador-hito--activo .funcionalidades__comparador-hito-foto {
+  filter: grayscale(0) brightness(1);
+}
+
+/* Hito HOY: el destino, siempre destacado y no seleccionable */
+.funcionalidades__comparador-hito--hoy {
+  opacity: 1;
+  cursor: default;
+}
+
+.funcionalidades__comparador-hito--hoy::before {
+  background: hsl(28, 100%, 58%);
+  border-color: hsl(28, 100%, 58%);
+}
+
+.funcionalidades__comparador-hito--hoy .funcionalidades__comparador-hito-imagen {
+  border-color: hsl(28, 100%, 58%);
+}
+
+.funcionalidades__comparador-hito--hoy .funcionalidades__comparador-hito-foto {
+  filter: none;
+}
+
+.funcionalidades__comparador-hito--hoy .funcionalidades__comparador-hito-semana {
+  color: hsl(28, 100%, 62%);
+}
+
 .funcionalidades__comparador-pista {
   position: absolute;
-  bottom: 8%;
-  left: 63.5%;
+  bottom: 6%;
+  left: 42%;
+  transform: translateX(-50%);
   font-family: var(--fuente-mono);
   font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: hsla(40, 8%, 88%, 0.5);
   pointer-events: none;
-}
-
-/* Carrete: filmstrip integrado en la esquina inferior del revelado */
-.funcionalidades__carrete {
-  position: absolute;
-  left: 4%;
-  bottom: 6.5%;
-  width: auto;
-  max-width: none;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-.funcionalidades__carrete-miniatura {
-  position: relative;
-  flex: 0 0 auto;
-  display: flex;
-  width: 5.2rem;
-  height: 3.6rem;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid hsla(40, 8%, 88%, 0.18);
-  background: hsl(240, 6%, 6%);
-  cursor: pointer;
-  opacity: 0.5;
-  transition: opacity var(--duration-base) ease, border-color var(--duration-base) ease,
-    transform var(--duration-base) ease;
-}
-
-.funcionalidades__carrete-miniatura:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-}
-
-.funcionalidades__carrete-miniatura--activa {
-  border-color: hsl(28, 100%, 58%);
-  opacity: 1;
-}
-
-.funcionalidades__carrete-miniatura--hoy {
-  border-color: hsl(28, 100%, 58%);
-  opacity: 1;
-  cursor: default;
-}
-
-.funcionalidades__carrete-imagen {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 14%;
-}
-
-.funcionalidades__carrete-fecha {
-  position: absolute;
-  inset: auto 0 0 0;
-  padding: 0.18rem 0.3rem;
-  background: hsla(240, 6%, 4%, 0.78);
-  font-family: var(--fuente-mono);
-  font-size: 0.54rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  text-align: center;
-  color: hsla(40, 8%, 88%, 0.75);
-}
-
-.funcionalidades__carrete-vs {
-  font-family: var(--fuente-mono);
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: hsla(40, 8%, 88%, 0.45);
 }
 
 /* Mockup: ayuno — secuencia metabólica 3D (hélice WebGL + instrumento temporal).
@@ -2371,47 +2483,29 @@
 }
 
 
-/* HUD editorial sobre la escena 3D (mismo lenguaje que la secuencia de ayuno) */
-.funcionalidades__agua-rotulo {
+/* Consola de hidratación: columna de datos (izquierda) + vaso héroe (derecha)
+   como una sola unidad, centrada verticalmente en el área libre del raíl. */
+.funcionalidades__agua-consola {
   position: absolute;
-  top: 13%;
-  left: 5%;
+  inset: 0;
   z-index: 3;
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding-left: 0.85rem;
-  border-left: 2px solid hsla(196, 85%, 62%, 0.7);
-}
-
-.funcionalidades__agua-rotulo-titulo {
-  font-family: var(--fuente-mono);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: hsla(196, 88%, 80%, 0.92);
-}
-
-.funcionalidades__agua-rotulo-sub {
-  font-family: var(--fuente-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  color: hsla(40, 10%, 86%, 0.5);
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  padding: 0 26rem 0 8rem;
 }
 
 /* Vaso de cristal que se llena de agua segun el progreso de hidratacion */
 .funcionalidades__vaso {
-  position: absolute;
-  top: 45%;
-  left: 50%;
+  position: relative;
   z-index: 3;
   display: block;
-  width: 13rem;
-  height: 21rem;
+  flex-shrink: 0;
+  width: 14rem;
+  height: 22rem;
   margin: 0;
   overflow: hidden;
-  transform: translate(-50%, -50%);
   background: linear-gradient(165deg, hsla(200, 60%, 75%, 0.07), hsla(212, 45%, 55%, 0.02));
   border: 1.5px solid hsla(196, 65%, 74%, 0.3);
   border-radius: 0.7rem 0.7rem 1.7rem 1.7rem;
@@ -2569,41 +2663,24 @@
   100% { transform: translateY(-9rem); opacity: 0; }
 }
 
-/* Stats de hidratacion en franja horizontal centrada bajo el vaso. */
-.funcionalidades__agua-panel {
-  position: absolute;
-  bottom: 3.4rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2.6rem;
-}
-
-.funcionalidades__agua-lectura {
-  display: none; /* dos figuras: el agua que las llena ya marca el progreso (la barra lineal sobraba) */
-}
-
+/* Columna de datos: espina cian a la izquierda, lenguaje HUD (sin caja). */
 .funcionalidades__agua-datos {
-  position: absolute;
-  top: 50%;
-  left: 37%;
-  transform: translateY(-50%);
-  z-index: 3;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  width: min(20rem, 30%);
-  padding: 1.6rem 1.7rem;
-  background: linear-gradient(165deg, hsla(210, 24%, 12%, 0.66), hsla(216, 28%, 8%, 0.6));
-  border: 1px solid hsla(196, 40%, 60%, 0.16);
-  border-radius: 1.25rem;
-  box-shadow:
-    0 1.5rem 3rem hsla(220, 30%, 2%, 0.45),
-    inset 0 1px 0 hsla(196, 90%, 80%, 0.08);
-  backdrop-filter: blur(8px);
+  gap: 0.8rem;
+  width: 21rem;
+  flex-shrink: 0;
+  padding-left: 1.5rem;
+  border-left: 2px solid hsla(196, 85%, 62%, 0.5);
+}
+
+/* Porcentaje del objetivo, bajo la barra de progreso */
+.funcionalidades__agua-progreso {
+  font-family: var(--fuente-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: hsla(196, 85%, 78%, 0.8);
 }
 
 .funcionalidades__agua-eyebrow {
@@ -2620,7 +2697,7 @@
   align-items: baseline;
   gap: 0.35rem;
   font-family: var(--fuente-display);
-  font-size: clamp(3.2rem, 5vw, 4.6rem);
+  font-size: 3.7rem;
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.03em;
@@ -2838,8 +2915,15 @@
 }
 
 /* ---------- Bandeja de registro: vasos ---------- */
+/* Registro interactivo: toca un vaso y litros/%/vaso/semana se actualizan en vivo.
+   Separado de la gráfica semanal con un divisor: historial arriba, acción abajo. */
 .funcionalidades__agua-registro {
-  display: none; /* vasos ocultos con dos figuras: el llenado de los cuerpos ya marca el progreso */
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.7rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid hsla(196, 40%, 60%, 0.14);
 }
 
 .funcionalidades__agua-pista {
@@ -2861,7 +2945,7 @@
 .funcionalidades__agua-vaso {
   position: relative;
   flex: 1;
-  height: 3.4rem;
+  height: 3.8rem;
   padding: 0;
   overflow: hidden;
   isolation: isolate;
@@ -4014,105 +4098,48 @@
   .funcionalidades__wid-linea-area { opacity: 1; }
 }
 
-/* Mockup: registro de comidas — superficie centrada y responsive (mismo patron
-   robusto que la grafica de progreso: vive en la caja con padding que reserva el
-   rail de pasos a la derecha y el rastro a la izquierda, asi NUNCA se solapa).
-   Dos columnas que se apilan solas en pantallas estrechas (flex-wrap): foto-heroe
-   de la ultima comida con barrido de analisis + columna de resumen, macros y lista. */
+/* Mockup: registro de comidas — minuta editorial tipo carta de restaurante.
+   Sin tarjetas ni fotos: balance del día (kcal héroe + macros) a la izquierda
+   y la carta del día (hora · plato · puntos conductores · kcal) a la derecha,
+   cerradas por la banda de datos inferior. Se apilan solas con flex-wrap. */
 .funcionalidades__comidas {
   display: flex;
   flex-direction: column;
+  /* 4rem: mismo indent que la gráfica para librar el rótulo FUNCIONES del raíl */
+  padding-left: 4rem;
 }
 
-/* Cuerpo: foto-héroe a la izquierda + panel del día a la derecha.
-   flex-wrap: apilan solos cuando no caben, sin media queries. */
-.funcionalidades__comidas-cuerpo {
+/* Cabecera del día: etiqueta mono a la izquierda + estado IA a la derecha */
+.funcionalidades__comidas-cabecera {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.6rem;
-  align-items: stretch;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--borde-sutil);
 }
 
-/* HÉROE: foto de la última comida con barrido de análisis IA */
-.funcionalidades__destacada {
-  position: relative;
-  flex: 1 1 17rem;
-  min-height: 19rem;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--borde-sutil);
-  box-shadow:
-    0 24px 60px -28px hsla(24, 80%, 14%, 0.85),
-    inset 0 1px 0 hsla(40, 60%, 96%, 0.08);
+.funcionalidades__comidas-dia {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-secundario);
 }
 
-.funcionalidades__destacada-foto {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.04);
-  animation: funcionalidades-destacada-zoom 20s ease-in-out infinite alternate;
-}
-
-@keyframes funcionalidades-destacada-zoom {
-  from { transform: scale(1.04); }
-  to { transform: scale(1.14); }
-}
-
-.funcionalidades__destacada-velo {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(195deg, transparent 22%, hsla(24, 32%, 4%, 0.55) 58%, hsla(24, 38%, 3%, 0.94) 100%);
-}
-
-/* Barrido de análisis recorriendo la foto en bucle (gated a --activo) */
-.funcionalidades__destacada-barrido {
-  position: absolute;
-  top: -38%;
-  left: 0;
-  width: 100%;
-  height: 38%;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent, hsla(24, 100%, 70%, 0.06) 40%, hsla(42, 100%, 86%, 0.55) 50%, hsla(24, 100%, 70%, 0.06) 60%, transparent);
-  mix-blend-mode: screen;
-  opacity: 0;
-}
-
-.funcionalidades__visual--activo .funcionalidades__destacada-barrido {
-  animation: funcionalidades-destacada-barrido 4.2s ease-in-out 0.5s infinite;
-}
-
-@keyframes funcionalidades-destacada-barrido {
-  0% { transform: translateY(0); opacity: 0; }
-  14% { opacity: 1; }
-  86% { opacity: 1; }
-  100% { transform: translateY(360%); opacity: 0; }
-}
-
-/* Badge "Analizado por IA · 98%" arriba-izquierda */
-.funcionalidades__destacada-marca {
-  position: absolute;
-  top: 0.85rem;
-  left: 0.85rem;
+.funcionalidades__comidas-ia {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.34rem 0.62rem;
-  border-radius: 99px;
-  background: hsla(24, 28%, 6%, 0.86);
-  backdrop-filter: blur(5px);
-  border: 1px solid hsla(40, 60%, 90%, 0.14);
+  gap: 0.45rem;
   font-family: var(--fuente-mono);
-  font-size: 0.55rem;
-  font-weight: var(--font-weight-semibold);
+  font-size: 0.58rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: hsl(40, 40%, 96%);
+  letter-spacing: 0.12em;
+  color: var(--naranja-texto);
 }
 
-.funcionalidades__destacada-marca-punto {
+.funcionalidades__comidas-ia-punto {
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
@@ -4121,136 +4148,103 @@
   animation: funcionalidades-comidas-latido 1.9s ease-in-out infinite;
 }
 
-@keyframes funcionalidades-comidas-latido {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.6); }
+/* Cuerpo: balance del día a la izquierda, minuta a la derecha.
+   flex-wrap: apilan solos cuando no caben, sin media queries. */
+.funcionalidades__comidas-cuerpo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 2.5rem;
+  /* 1.1rem abajo: mismo compás que el padding de las filas de la minuta */
+  padding: 0.8rem 0 1.1rem;
 }
 
-.funcionalidades__destacada-info {
-  position: absolute;
-  right: 1.1rem;
-  bottom: 1.05rem;
-  left: 1.1rem;
+/* BALANCE: kcal héroe con la misma voz que el número de la gráfica */
+.funcionalidades__balance {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.6rem;
+  flex: 0 1 15.5rem;
+  min-width: 13rem;
 }
 
-.funcionalidades__destacada-cuando {
-  font-family: var(--fuente-mono);
-  font-size: 0.56rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: hsla(40, 30%, 92%, 0.82);
-  text-shadow: 0 2px 10px hsla(24, 30%, 3%, 0.9);
-}
-
-.funcionalidades__destacada-nombre {
-  font-family: var(--fuente-display);
-  font-size: 1.35rem; /* 21.6px */
-  font-weight: var(--font-weight-bold);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  color: hsl(40, 32%, 98%);
-  text-shadow: 0 2px 14px hsla(24, 30%, 3%, 0.92);
-}
-
-/* PANEL DEL DÍA: consumidas + macros + menú */
-.funcionalidades__panel-dia {
-  flex: 1 1 22rem;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
-}
-
-.funcionalidades__resumen {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.funcionalidades__resumen-eyebrow {
+.funcionalidades__balance-etiqueta {
   font-family: var(--fuente-mono);
   font-size: 0.58rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: var(--texto-suave);
+  /* secundario: suave se queda en ~3,5:1 y esto es dato, no adorno */
+  color: var(--texto-secundario);
 }
 
-.funcionalidades__resumen-cifra {
+.funcionalidades__balance-cifra {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
-.funcionalidades__resumen-kcal {
+.funcionalidades__balance-kcal {
   font-family: var(--fuente-display);
-  font-size: 3.2rem; /* 51px */
-  font-weight: 900;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
+  font-size: 4.6rem; /* 73.6px, mismo cuerpo que el héroe de la gráfica */
+  font-weight: var(--font-weight-bold);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
-.funcionalidades__resumen-meta {
-  font-family: var(--fuente-mono);
-  font-size: 0.95rem;
-  font-variant-numeric: tabular-nums;
+.funcionalidades__balance-unidad {
+  font-family: var(--font-secondary);
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-semibold);
   color: var(--texto-suave);
 }
 
-.funcionalidades__resumen-barra {
+.funcionalidades__balance-meta {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+/* Hairline técnica de esquinas vivas, no píldora redondeada */
+.funcionalidades__balance-barra {
   position: relative;
-  height: 0.34rem;
-  border-radius: 99px;
+  height: 0.2rem;
+  margin-top: 0.35rem;
   background: var(--superficie-3);
   overflow: hidden;
 }
 
-.funcionalidades__resumen-relleno {
+.funcionalidades__balance-relleno {
   position: absolute;
   inset: 0;
-  border-radius: 99px;
   background: linear-gradient(90deg, var(--naranja-glow-media), var(--naranja-normal));
-  box-shadow: 0 0 14px -2px var(--naranja-normal);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.funcionalidades__visual--activo .funcionalidades__resumen-relleno {
+.funcionalidades__visual--activo .funcionalidades__balance-relleno {
   transform: scaleX(var(--relleno));
   transition-delay: 0.35s;
 }
 
-.funcionalidades__resumen-pie {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.6rem;
+@keyframes funcionalidades-comidas-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
 }
 
-.funcionalidades__resumen-restante {
-  font-family: var(--fuente-mono);
-  font-size: 0.62rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--naranja-texto);
-}
-
-.funcionalidades__resumen-objetivo {
-  font-family: var(--fuente-mono);
-  font-size: 0.62rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--texto-suave);
-}
-
-/* Macros en filas legibles con hairline de progreso */
+/* Macros como líneas técnicas cerrando la columna del balance */
 .funcionalidades__macros {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.8rem;
+  /* auto: empuja los macros al suelo de la columna estirada */
+  margin-top: auto;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--borde-sutil);
 }
 
 .funcionalidades__macros-item {
@@ -4269,10 +4263,13 @@
 .funcionalidades__macros-nombre {
   display: inline-flex;
   align-items: center;
-  gap: 0.42rem;
-  font-family: var(--font-secondary);
-  font-size: 0.78rem;
-  font-weight: var(--font-weight-medium);
+  gap: 0.45rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  /* nowrap: en la fila de tres macros "CARBOHIDRATOS" no debe partirse */
+  white-space: nowrap;
   color: var(--texto-secundario);
 }
 
@@ -4300,8 +4297,7 @@
 
 .funcionalidades__macros-barra {
   position: relative;
-  height: 0.2rem;
-  border-radius: 99px;
+  height: 0.14rem;
   background: var(--superficie-3);
   overflow: hidden;
 }
@@ -4309,9 +4305,7 @@
 .funcionalidades__macros-relleno {
   position: absolute;
   inset: 0;
-  border-radius: 99px;
   background: var(--tono);
-  box-shadow: 0 0 9px -2px var(--tono);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
@@ -4333,216 +4327,288 @@
   transition-delay: 0.74s;
 }
 
-/* Cabecera del menú: etiqueta + hairline + recuento */
-.funcionalidades__menu-cab {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin-top: 0.1rem;
-}
-
-.funcionalidades__menu-titulo {
-  flex: 0 0 auto;
-  font-family: var(--fuente-mono);
-  font-size: 0.58rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--texto-suave);
-}
-
-.funcionalidades__menu-linea {
-  flex: 1;
-  height: 1px;
-  background: var(--borde-sutil);
-}
-
-.funcionalidades__menu-cuenta {
-  flex: 0 0 auto;
-  font-family: var(--fuente-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  color: var(--texto-suave);
-}
-
-/* LISTA del día: filas con divisores, entran escalonadas */
-.funcionalidades__diario {
+/* MINUTA: el día contado como una carta de restaurante — hora, plato,
+   puntos conductores y kcal en la misma línea base. Sin cajas ni fotos. */
+.funcionalidades__minuta {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 26rem;
+  min-width: 0;
+  padding-left: 2.5rem;
+  border-left: 1px solid var(--borde-sutil);
 }
 
-.funcionalidades__registro {
+.funcionalidades__minuta-fila {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--borde-sutil);
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.1rem 0;
+  overflow: hidden;
   opacity: 0;
   transform: translateY(0.5rem);
   transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.funcionalidades__visual--activo .funcionalidades__registro {
+.funcionalidades__minuta-fila + .funcionalidades__minuta-fila {
+  border-top: 1px solid var(--borde-sutil);
+}
+
+/* Sin padding en los extremos: la primera hora arranca a la altura de
+   CONSUMIDO HOY y la última fila muere donde muere el balance */
+.funcionalidades__minuta-fila:first-child {
+  padding-top: 0;
+}
+
+.funcionalidades__minuta-fila:last-child {
+  padding-bottom: 0;
+}
+
+.funcionalidades__visual--activo .funcionalidades__minuta-fila {
   opacity: 1;
   transform: translateY(0);
 }
 
-.funcionalidades__visual--activo .funcionalidades__diario > *:nth-child(1) {
+.funcionalidades__visual--activo .funcionalidades__minuta > *:nth-child(1) {
   transition-delay: 0.42s;
 }
 
-.funcionalidades__visual--activo .funcionalidades__diario > *:nth-child(2) {
+.funcionalidades__visual--activo .funcionalidades__minuta > *:nth-child(2) {
   transition-delay: 0.54s;
 }
 
-.funcionalidades__visual--activo .funcionalidades__diario > *:nth-child(3) {
+.funcionalidades__visual--activo .funcionalidades__minuta > *:nth-child(3) {
   transition-delay: 0.66s;
 }
 
-.funcionalidades__visual--activo .funcionalidades__diario > *:nth-child(4) {
-  transition-delay: 0.78s;
-}
-
-.funcionalidades__registro-foto {
-  flex: 0 0 auto;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: var(--radius-md);
-  object-fit: cover;
-  border: 1px solid var(--borde-sutil);
-  transition: transform var(--duration-base) ease, border-color var(--duration-base) ease;
-}
-
-.funcionalidades__registro:hover .funcionalidades__registro-foto {
-  transform: scale(1.06);
-  border-color: var(--naranja-normal);
-}
-
-.funcionalidades__registro:hover .funcionalidades__registro-nombre {
-  color: var(--naranja-texto);
-}
-
-.funcionalidades__registro-cuerpo {
-  flex: 1;
+.funcionalidades__minuta-linea {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  min-width: 0;
+  align-items: baseline;
+  gap: 0.9rem;
 }
 
-.funcionalidades__registro-nombre {
+.funcionalidades__minuta-hora {
+  flex: 0 0 3rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__minuta-nombre {
+  flex: 0 1 auto;
+  min-width: 0;
   overflow: hidden;
-  font-family: var(--font-secondary);
-  font-size: 0.88rem;
-  font-weight: var(--font-weight-semibold);
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-family: var(--fuente-display);
+  font-size: 1.45rem; /* 23.2px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: -0.01em;
   color: var(--texto-principal);
   transition: color var(--duration-fast) ease;
 }
 
-.funcionalidades__registro-cuando {
-  font-family: var(--fuente-mono);
-  font-size: 0.56rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--texto-suave);
+.funcionalidades__minuta-fila:hover .funcionalidades__minuta-nombre {
+  color: var(--naranja-texto);
 }
 
-.funcionalidades__registro-kcal {
+/* Puntos conductores de carta impresa: el span vacío en un flex con línea
+   base deja su borde inferior justo sobre la baseline del texto */
+.funcionalidades__minuta-puntos {
+  position: relative;
+  top: -0.15rem;
+  flex: 1 1 2rem;
+  border-bottom: 1px dotted var(--borde-medio);
+}
+
+.funcionalidades__minuta-kcal {
   flex: 0 0 auto;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.25rem;
   font-family: var(--fuente-display);
-  font-size: 1.3rem;
+  font-size: 1.45rem; /* 23.2px */
   font-weight: var(--font-weight-bold);
   line-height: 1;
   font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
-.funcionalidades__registro-u {
-  font-family: var(--fuente-mono);
-  font-size: 0.52rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--texto-suave);
-}
-
-/* Fila "Añadir otra comida" */
-.funcionalidades__anadir {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.7rem 0 0.1rem;
-  font-family: var(--font-secondary);
-  font-size: 0.82rem;
-  font-weight: var(--font-weight-medium);
-  color: var(--texto-secundario);
-  opacity: 0;
-  transform: translateY(0.5rem);
-  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.funcionalidades__visual--activo .funcionalidades__anadir {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.funcionalidades__anadir-mas {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 50%;
-  border: 1px dashed var(--borde-medio);
-  font-family: var(--fuente-mono);
-  font-size: 0.95rem;
-  line-height: 1;
-  color: var(--naranja-normal);
-  transition: border-color var(--duration-base) ease, background var(--duration-base) ease;
-}
-
-.funcionalidades__anadir:hover .funcionalidades__anadir-mas {
-  border-color: var(--naranja-normal);
-  background: var(--naranja-glow-suave);
-}
-
-/* Pie: cámara naranja + CTA "Fotografía tu plato" */
-.funcionalidades__camara {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: var(--naranja-normal);
-  color: hsl(24, 45%, 10%);
-  box-shadow: 0 8px 22px -8px var(--naranja-normal);
-}
-
-.funcionalidades__pie-texto {
+.funcionalidades__minuta-detalle {
   display: flex;
   align-items: baseline;
-  gap: 0.4rem;
+  justify-content: space-between;
+  gap: 0.9rem;
+  /* 3.9rem: alinea el desglose bajo el nombre (hora 3rem + hueco 0.9rem) */
+  padding-left: 3.9rem;
 }
 
-.funcionalidades__pie-fuerte {
-  font-family: var(--font-secondary);
-  font-size: 0.92rem;
-  font-weight: var(--font-weight-semibold);
+.funcionalidades__minuta-macros {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__minuta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--naranja-texto);
+}
+
+.funcionalidades__minuta-tag-punto {
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  box-shadow: 0 0 6px var(--naranja-normal);
+  animation: funcionalidades-comidas-latido 1.9s ease-in-out infinite;
+}
+
+/* Destello de análisis: un brillo sesgado recorre la fila recién analizada.
+   El skew evita que un fotograma congelado parezca un rectángulo. */
+.funcionalidades__minuta-fila--analizada::after {
+  position: absolute;
+  top: 0;
+  left: -26%;
+  width: 26%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, hsla(42, 100%, 86%, 0.07) 50%, transparent);
+  pointer-events: none;
+  content: '';
+}
+
+.funcionalidades__visual--activo .funcionalidades__minuta-fila--analizada::after {
+  animation: funcionalidades-minuta-destello 5s ease-in-out 1.2s infinite;
+}
+
+/* 485%: (100% de fila + 26% propio) / 26% de ancho propio → cruza entera */
+@keyframes funcionalidades-minuta-destello {
+  0% { transform: translateX(0) skewX(-14deg); opacity: 0; }
+  12% { opacity: 1; }
+  55% { transform: translateX(485%) skewX(-14deg); opacity: 1; }
+  60% { opacity: 0; }
+  100% { transform: translateX(485%) skewX(-14deg); opacity: 0; }
+}
+
+/* Banda de datos inferior: espejo de la banda de la gráfica. La primera
+   columna calza con el balance y la segunda arranca en el filo vertical
+   del cuerpo, así la banda hereda la retícula de arriba. */
+.funcionalidades__comidas-datos {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.funcionalidades__comidas-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1 1 auto;
+}
+
+/* 16rem + 2rem de gap = 18rem: el mismo ancho que balance + hueco, así
+   la segunda columna cae exactamente sobre el filo vertical */
+.funcionalidades__comidas-dato:first-child {
+  flex: 0 0 16rem;
+}
+
+/* La última no crece: su texto remata contra el borde derecho del marco */
+.funcionalidades__comidas-dato:last-child {
+  flex: 0 0 auto;
+}
+
+.funcionalidades__comidas-dato-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__comidas-dato-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.15rem; /* 18.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
-.funcionalidades__pie-suave {
-  font-family: var(--font-secondary);
-  font-size: 0.92rem;
-  color: var(--texto-suave);
+/* Al apilarse el cuerpo (la minuta baja bajo el balance) el filo vertical
+   izquierdo deja de tener columna a la que separar */
+@include responsive-down('md') {
+  .funcionalidades__minuta {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  /* Apilado: el balance ocupa todo el ancho y los macros se tumban en fila
+     para no dejar media pantalla vacía a la derecha del número */
+  .funcionalidades__balance {
+    flex: 1 1 100%;
+  }
+
+  .funcionalidades__macros {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .funcionalidades__macros-item {
+    flex: 1;
+  }
+
+  .funcionalidades__comidas-datos {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 1.1rem 2.4rem;
+  }
 }
+
+@include responsive-down('sm') {
+  /* Columna otra vez: entre 641-680px la fila de tres macros con
+     "CARBOHIDRATOS/265g" en nowrap se queda sin colchón lateral */
+  .funcionalidades__macros {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  /* El plato salta de línea como en una carta impresa: la elipsis junto a
+     los puntos conductores parecía un doble punteado roto */
+  .funcionalidades__minuta-nombre {
+    font-size: 1.15rem;
+    line-height: 1.15;
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .funcionalidades__minuta-kcal {
+    font-size: 1.15rem;
+  }
+
+  /* 40%: dos columnas reales por fila, con la segunda columna alineada */
+  .funcionalidades__comidas-dato {
+    flex: 1 1 40%;
+  }
+
+  /* Apilado sin filo vertical: los extremos pierden su ancho especial */
+  .funcionalidades__comidas-dato:first-child {
+    flex: 1 1 40%;
+  }
+
+  .funcionalidades__comidas-dato:last-child {
+    flex: 1 1 40%;
+  }
+}
+
 
 
 /* ════════════════════════════════════════════
@@ -5181,12 +5247,14 @@
   .funcionalidades__zona { display: none; }
   .funcionalidades__inspector { display: none; }
   .funcionalidades__ayuno-rotulo { display: none; }
-  .funcionalidades__agua-rotulo { display: none; }
-  .funcionalidades__agua-panel { display: none; }
-  .funcionalidades__agua-lectura { display: none; }
   .funcionalidades__agua-registro { display: none; }
   .funcionalidades__paso-texto { max-height: none; padding-bottom: 1.5rem; opacity: 1; }
   .funcionalidades__paso-titulo { color: var(--texto-principal); }
+  /* Sin el raíl fijo (oculto en ≤lg) el indent de 4rem solo roba ancho */
+  .funcionalidades__grafica { padding-left: 0; }
+  .funcionalidades__comidas { padding-left: 0; }
+  .funcionalidades__visual--datos .funcionalidades__visual-cabecera { padding-left: 0; }
+  .funcionalidades__visual--datos .funcionalidades__visual-pie { padding-left: 0; }
 }
 
 @include responsive-down('sm') {
@@ -5223,11 +5291,11 @@
   .funcionalidades__comparador-imagen,
   .funcionalidades__comparador-delta-valor,
   .funcionalidades__comparador-tirador { animation: none; }
-  .funcionalidades__destacada-marca-punto { animation: none; }
-  .funcionalidades__destacada-foto { animation: none; }
-  .funcionalidades__destacada-barrido { animation: none; }
-  .funcionalidades__registro { opacity: 1; transform: none; transition: none; }
-  .funcionalidades__anadir { opacity: 1; transform: none; transition: none; }
-  .funcionalidades__resumen-relleno { transform: scaleX(var(--relleno)); transition: none; }
+  .funcionalidades__comidas-ia-punto { animation: none; }
+  .funcionalidades__minuta-tag-punto { animation: none; }
+  .funcionalidades__minuta-fila--analizada::after { animation: none; }
+  .funcionalidades__minuta-fila { opacity: 1; transform: none; transition: none; }
+  .funcionalidades__balance-relleno { transform: scaleX(var(--relleno)); transition: none; }
   .funcionalidades__macros-relleno { transform: scaleX(var(--relleno)); transition: none; }
 }
+

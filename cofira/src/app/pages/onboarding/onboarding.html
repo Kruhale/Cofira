@@ -6,7 +6,7 @@
         @if (canGoBack()) {
           <button
             (click)="previousStep()"
-            aria-label="Volver al paso anterior"
+            [attr.aria-label]="textos().ariaVolver"
             class="onboarding__boton-back"
             type="button">
             <svg aria-hidden="true" class="onboarding__boton-back-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

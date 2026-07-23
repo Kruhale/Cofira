@@ -462,14 +462,17 @@ app-footer {
   animation: pie-sonar 2.6s ease-out infinite;
 }
 
-/* ════════════ COMUNIDAD EN VIVO (banda EKG) ════════════ */
+/* ════════════ COMUNIDAD EN VIVO (banda EKG) ════════════
+   Tríptico de telemetría: dato vivo | monitor | dato semanal, con
+   separadores 1px — la estructura la dan los filos, no las cajas. */
 .pie__pulso {
   position: relative;
   z-index: 1;
   display: flex;
-  align-items: center;
-  gap: var(--spacing-size-l);
-  padding: var(--spacing-size-l) 0;
+  /* stretch: las dos columnas de datos comparten techo y suelo (líneas alineadas) */
+  align-items: stretch;
+  gap: 2.5rem;
+  padding: 2.2rem 0;
   border-top: 1px solid var(--borde-sutil);
   border-bottom: 1px solid var(--borde-sutil);
 }
@@ -477,14 +480,15 @@ app-footer {
 .pie__pulso-info {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
   flex-shrink: 0;
+  padding-right: 2.5rem;
+  border-right: 1px solid var(--borde-medio);
 }
 
 .pie__pulso-cifra {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
   margin: 0;
 }
 
@@ -495,6 +499,8 @@ app-footer {
   flex-shrink: 0;
   background: var(--naranja-normal);
   border-radius: 50%;
+  /* Mismo glow que los picos del EKG: una sola señal viva, no dos acabados */
+  box-shadow: 0 0 0.6rem var(--naranja-glow-fuerte);
   animation: pie-punto-respira 2.6s ease-in-out infinite;
 }
 
@@ -518,22 +524,31 @@ app-footer {
 }
 
 .pie__pulso-num {
+  display: inline-block;
   font-family: var(--fuente-display);
-  font-size: var(--font-size-2xl);
+  font-size: 3.1rem; /* 49.6px */
   font-weight: var(--font-weight-bold);
-  letter-spacing: -0.02em;
-  line-height: 1;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
   transform-origin: left center;
 }
 
-.pie__pulso-num-sufijo {
-  font-size: var(--font-size-sm);
+.pie__pulso-sub {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem; /* 9.6px */
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: var(--texto-secundario);
 }
 
 .pie__pulso-caption {
-  @include etiqueta-tecnica(var(--texto-suave));
+  @include etiqueta-tecnica(var(--naranja-texto));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   margin: 0;
 }
 
@@ -541,31 +556,14 @@ app-footer {
 .pie__pulso-linea {
   position: relative;
   flex: 1;
+  align-self: center;
   min-width: 4rem;
-  height: 3rem;
+  height: 4.5rem;
   overflow: hidden;
   color: var(--naranja-normal);
   /* Funde los dos extremos: la señal entra y sale de la banda sin corte seco. */
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
-}
-
-/* Graticula de osciloscopio muy sutil tras la traza */
-.pie__pulso-rejilla {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(90deg, var(--borde-sutil) 1px, transparent 1px),
-    linear-gradient(
-      transparent calc(50% - 0.5px),
-      var(--borde-medio) calc(50% - 0.5px),
-      var(--borde-medio) calc(50% + 0.5px),
-      transparent calc(50% + 0.5px)
-    );
-  background-size: 2.4rem 100%, 100% 100%;
-  opacity: 0.55;
 }
 
 /* Monitor de constantes de la comunidad: una traza tenue persistente + un cometa
@@ -581,15 +579,15 @@ app-footer {
 /* Traza persistente: la onda completa, tenue (la "historia" en la pantalla) */
 .pie__pulso-traza {
   stroke: var(--naranja-normal);
-  opacity: 0.2;
+  opacity: 0.32;
 }
 
-/* Cometa: un único segmento brillante que recorre el latido (dasharray + dashoffset),
-   con glow tintado. dash(102)+gap(198)=300 = una sola cabeza viajando por el trazo,
-   y el offset recorre exactamente ese período → bucle sin costura. */
+/* Cometa: cabeza CORTA de luz que recorre el latido (dasharray + dashoffset).
+   dash(30)+gap(270)=300 casa con el período del offset → bucle sin costura.
+   Con dash largo parecía una cortina que borraba el trazo, no un pulso. */
 .pie__pulso-cometa {
   stroke: var(--naranja-normal);
-  stroke-dasharray: 102 198;
+  stroke-dasharray: 30 270;
   filter: drop-shadow(0 0 4px var(--naranja-glow-fuerte))
     drop-shadow(0 0 9px var(--naranja-glow-media));
   animation: pie-cometa 6s linear infinite;
@@ -606,33 +604,44 @@ app-footer {
   filter: drop-shadow(0 0 2px var(--naranja-glow-media));
 }
 
-/* Segmento naranja brillante de energía, antes del contador semanal */
-.pie__pulso-chispa {
-  width: 2.75rem;
-  height: 0.3rem;
-  flex-shrink: 0;
-  border-radius: var(--radius-full);
-  background: var(--gradiente-acento);
-  box-shadow: 0 0 0.75rem var(--naranja-glow-fuerte);
-  animation: pie-chispa-late 2.6s ease-in-out infinite;
-}
-
+/* Columna semanal: espejo del dato vivo, alineada al filo derecho.
+   El número va en blanco: el naranja se reserva para la señal EN VIVO. */
 .pie__pulso-semana {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.6rem;
   margin: 0;
   flex-shrink: 0;
+  padding-left: 2.5rem;
+  border-left: 1px solid var(--borde-medio);
+  text-align: right;
+}
+
+.pie__pulso-semana-etiqueta {
   font-family: var(--fuente-mono);
-  font-size: var(--font-size-sm);
-  letter-spacing: 0.08em;
+  font-size: 0.6rem; /* 9.6px */
   text-transform: uppercase;
-  color: var(--texto-suave);
+  letter-spacing: 0.18em;
+  color: var(--texto-secundario);
 }
 
 .pie__pulso-semana-num {
-  font-weight: var(--font-weight-semibold);
-  color: var(--naranja-texto);
+  font-family: var(--fuente-display);
+  font-size: 1.9rem; /* 30.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.pie__pulso-semana-sub {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem; /* 9.6px */
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--texto-secundario);
 }
 
 /* ════════════ INFERIOR ════════════ */
@@ -833,19 +842,6 @@ app-footer {
   }
 }
 
-/* Latido de la chispa de energía */
-@keyframes pie-chispa-late {
-  0%,
-  100% {
-    transform: scaleX(0.9);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scaleX(1.05);
-    opacity: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .pie__logo-letra {
     animation: none;
@@ -872,10 +868,6 @@ app-footer {
   }
 
   .pie__pulso-punto::after {
-    animation: none;
-  }
-
-  .pie__pulso-chispa {
     animation: none;
   }
 
@@ -951,9 +943,19 @@ app-footer {
   .pie__pulso-linea {
     flex: none;
     width: 100%;
+    height: 3rem;
   }
 
-  .pie__pulso-chispa {
-    display: none;
+  /* En columna los filos laterales pierden el sentido: fuera separadores */
+  .pie__pulso-info {
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .pie__pulso-semana {
+    align-items: flex-start;
+    padding-left: 0;
+    border-left: none;
+    text-align: left;
   }
 }

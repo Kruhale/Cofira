@@ -1,20 +1,25 @@
-import {Component, EventEmitter, inject, Output, signal} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
+import { Component, computed, EventEmitter, inject, Output, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 
-import {AuthService} from '../../../../services/auth.service';
-import {OnboardingService} from '../../../../services/onboarding.service';
-import {NotificacionService} from '../../../../services/notificacion.service';
-import {Button} from '../../../../components/shared/button/button';
-import {checkPasswordRequirements, passwordStrengthValidator} from '../../../../validators/password-strength.validator';
-import {emailAvailableValidator} from '../../../../validators/email.validator';
+import { AuthService } from '../../../../services/auth.service';
+import { OnboardingService } from '../../../../services/onboarding.service';
+import { NotificacionService } from '../../../../services/notificacion.service';
+import { IdiomaService } from '../../../../services/idioma.service';
+import { Button } from '../../../../components/shared/button/button';
+import {
+  checkPasswordRequirements,
+  passwordStrengthValidator,
+} from '../../../../validators/password-strength.validator';
+import { emailAvailableValidator } from '../../../../validators/email.validator';
+import { TEXTOS_ONBOARDING } from '../../textos-onboarding';
 
 @Component({
   selector: 'app-step-register',
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink, Button],
   templateUrl: './step-register.html',
-  styleUrl: './step-register.scss'
+  styleUrl: './step-register.scss',
 })
 export class StepRegister {
   @Output() continuar = new EventEmitter<void>();
@@ -23,20 +28,26 @@ export class StepRegister {
   readonly mostrarConfirmacionContrasena = signal(false);
   private readonly authService = inject(AuthService);
   private readonly notificacionService = inject(NotificacionService);
+  private readonly idiomaService = inject(IdiomaService);
+
+  /* Textos del paso en el idioma vigente: al cambiar el signal se repinta todo */
+  readonly textos = computed(() => TEXTOS_ONBOARDING[this.idiomaService.idioma()].registro);
+
   readonly formularioRegistro = new FormGroup({
-    nombre: new FormControl("", [Validators.required, Validators.minLength(2)]),
-    email: new FormControl("",
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    email: new FormControl(
+      '',
       [Validators.required, Validators.email],
-      [emailAvailableValidator(this.authService)]
+      [emailAvailableValidator(this.authService)],
     ),
-    password: new FormControl("", [Validators.required, passwordStrengthValidator()]),
-    confirmPassword: new FormControl("", [Validators.required])
+    password: new FormControl('', [Validators.required, passwordStrengthValidator()]),
+    confirmPassword: new FormControl('', [Validators.required]),
   });
   private readonly onboardingService = inject(OnboardingService);
   private readonly router = inject(Router);
 
   get valorContrasena(): string {
-    return this.formularioRegistro.get("password")?.value || "";
+    return this.formularioRegistro.get('password')?.value || '';
   }
 
   get requisitosContrasena() {
@@ -45,30 +56,32 @@ export class StepRegister {
 
   get todosRequisitosCompletados(): boolean {
     const req = this.requisitosContrasena;
-    return req.hasUpperCase && req.hasLowerCase && req.hasNumeric && req.hasSpecial && req.isLongEnough;
+    return (
+      req.hasUpperCase && req.hasLowerCase && req.hasNumeric && req.hasSpecial && req.isLongEnough
+    );
   }
 
-  get estadoEmail(): "valid" | "invalid-format" | "taken" | "checking" | null {
-    const emailControl = this.formularioRegistro.get("email");
+  get estadoEmail(): 'valid' | 'invalid-format' | 'taken' | 'checking' | null {
+    const emailControl = this.formularioRegistro.get('email');
     if (!emailControl?.value) return null;
-    if (emailControl.pending) return "checking";
-    if (emailControl.hasError("email")) return "invalid-format";
-    if (emailControl.hasError("emailTaken")) return "taken";
-    if (emailControl.valid) return "valid";
+    if (emailControl.pending) return 'checking';
+    if (emailControl.hasError('email')) return 'invalid-format';
+    if (emailControl.hasError('emailTaken')) return 'taken';
+    if (emailControl.valid) return 'valid';
     return null;
   }
 
   alternarContrasena(): void {
-    this.mostrarContrasena.update(v => !v);
+    this.mostrarContrasena.update((v) => !v);
   }
 
   alternarConfirmacionContrasena(): void {
-    this.mostrarConfirmacionContrasena.update(v => !v);
+    this.mostrarConfirmacionContrasena.update((v) => !v);
   }
 
   contrasenasCoinciden(): boolean {
-    const password = this.formularioRegistro.get("password")?.value;
-    const confirm = this.formularioRegistro.get("confirmPassword")?.value;
+    const password = this.formularioRegistro.get('password')?.value;
+    const confirm = this.formularioRegistro.get('confirmPassword')?.value;
     return password === confirm;
   }
 
@@ -85,21 +98,23 @@ export class StepRegister {
 
     const valorFormulario = this.formularioRegistro.value;
 
-    this.authService.register({
-      nombre: valorFormulario.nombre!,
-      username: valorFormulario.email!,
-      email: valorFormulario.email!,
-      password: valorFormulario.password!
-    }).subscribe({
-      next: () => {
-        this.notificacionService.exito("¡Cuenta creada con éxito!");
-        this.completarOnboarding();
-      },
-      error: () => {
-        this.estaCargando.set(false);
-        this.notificacionService.error("No se pudo crear la cuenta. Inténtalo de nuevo.");
-      }
-    });
+    this.authService
+      .register({
+        nombre: valorFormulario.nombre!,
+        username: valorFormulario.email!,
+        email: valorFormulario.email!,
+        password: valorFormulario.password!,
+      })
+      .subscribe({
+        next: () => {
+          this.notificacionService.exito(this.textos().exitoCuentaCreada);
+          this.completarOnboarding();
+        },
+        error: () => {
+          this.estaCargando.set(false);
+          this.notificacionService.error(this.textos().errorCrearCuenta);
+        },
+      });
   }
 
   private completarOnboarding(): void {
@@ -113,27 +128,30 @@ export class StepRegister {
     }
 
     this.onboardingService.completeOnboarding().subscribe({
-      next: function(this: StepRegister) {
+      next: function (this: StepRegister) {
         this.estaCargando.set(false);
         this.navegarAlPago();
       }.bind(this),
-      error: function(this: StepRegister, error: unknown) {
+      error: function (this: StepRegister, error: unknown) {
         this.estaCargando.set(false);
-        console.error("Error al completar onboarding:", error);
+        console.error('Error al completar onboarding:', error);
         const errorObj = error as { error?: { message?: string; errors?: string } };
-        const mensajeError = errorObj?.error?.message || errorObj?.error?.errors || "Error desconocido";
-        console.error("Detalles del error:", mensajeError);
-        this.notificacionService.error("No se pudieron guardar todos los datos, pero tu cuenta ha sido creada.");
+        const mensajeError =
+          errorObj?.error?.message || errorObj?.error?.errors || 'Error desconocido';
+        console.error('Detalles del error:', mensajeError);
+        this.notificacionService.error(this.textos().avisoDatosNoGuardados);
         this.navegarAlPago();
-      }.bind(this)
+      }.bind(this),
     });
   }
 
   private navegarAlPago(): void {
-    this.router.navigate(["/onboarding"], { queryParams: { step: 15 } });
+    this.router.navigate(['/onboarding'], { queryParams: { step: 15 } });
   }
 
-  private tieneDataMinimaOnboarding(data: Partial<import('../../../../models/onboarding.model').OnboardingData>): boolean {
+  private tieneDataMinimaOnboarding(
+    data: Partial<import('../../../../models/onboarding.model').OnboardingData>,
+  ): boolean {
     const tieneDataBasica = !!(
       data.gender &&
       data.currentWeightKg &&

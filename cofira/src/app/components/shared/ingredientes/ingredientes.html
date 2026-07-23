@@ -2,7 +2,7 @@
   (cerrar)="cerrarModal()"
   [abierto]="abierto"
   [anchoPX]="500"
-  [titulo]="alimento?.descripcion || 'Ingredientes'">
+  [titulo]="alimento?.descripcion || textos().tituloModal">
 
   @if (alimento) {
     <article class="ingredientes">
@@ -12,15 +12,15 @@
         </figure>
 
         <p class="ingredientes__calorias">
-          <strong>Total de calorías:</strong> {{ caloriasTotal }} kcal
+          <strong>{{ textos().totalCalorias }}</strong> {{ caloriasTotal }} kcal
         </p>
       </header>
 
       <section class="ingredientes__lista">
-        <h3 class="ingredientes__subtitulo">Ingredientes detallados</h3>
+        <h3 class="ingredientes__subtitulo">{{ textos().subtituloLista }}</h3>
 
         <ul class="ingredientes__items">
-          @for (ingrediente of ingredientesDetallados; track ingrediente.nombre) {
+          @for (ingrediente of textos().ingredientes; track ingrediente.nombre) {
             <li class="ingredientes__item">
               <span class="ingredientes__nombre">{{ ingrediente.nombre }}</span>
               <span class="ingredientes__cantidad">{{ ingrediente.cantidad }}</span>

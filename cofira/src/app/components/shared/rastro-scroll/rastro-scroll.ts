@@ -76,6 +76,27 @@ export class RastroScroll {
     }
   }
 
+  /* Equivalente de teclado del carril: flechas/Enter recorren las secciones */
+  alTeclear(evento: KeyboardEvent): void {
+    const teclasAvance = ['Enter', ' ', 'ArrowDown', 'ArrowRight'];
+    const teclasRetroceso = ['ArrowUp', 'ArrowLeft'];
+
+    let indiceDestino: number | null = null;
+    if (teclasAvance.includes(evento.key)) {
+      indiceDestino = Math.min(this.indiceActivo() + 1, this.secciones.length - 1);
+    } else if (teclasRetroceso.includes(evento.key)) {
+      indiceDestino = Math.max(this.indiceActivo() - 1, 0);
+    }
+
+    if (indiceDestino === null) {
+      return;
+    }
+
+    evento.preventDefault();
+    const seccionDestino = this.secciones[indiceDestino];
+    this.animaciones.desplazarHasta(seccionDestino.objetivo);
+  }
+
   private inicializar(): void {
     const raiz = this.elementoRaiz.nativeElement as HTMLElement;
     this.elementosTick = Array.from(raiz.querySelectorAll<HTMLElement>('.rastro__tick'));

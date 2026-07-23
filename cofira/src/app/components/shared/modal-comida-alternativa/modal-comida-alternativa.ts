@@ -1,12 +1,14 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { Component, computed, EventEmitter, inject, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import {Modal} from '../modal/modal';
-import {Comida, TipoComida} from '../../../models/alimentacion.model';
-import {ComidaAlternativa} from '../../../models/consumo-comida.model';
-import {ConsumoComidaService} from '../../../services/consumo-comida.service';
-import {NotificacionService} from '../../../services/notificacion.service';
+import { Modal } from '../modal/modal';
+import { Comida, TipoComida } from '../../../models/alimentacion.model';
+import { ComidaAlternativa } from '../../../models/consumo-comida.model';
+import { ConsumoComidaService } from '../../../services/consumo-comida.service';
+import { NotificacionService } from '../../../services/notificacion.service';
+import { IdiomaService } from '../../../services/idioma.service';
+import { TEXTOS_COMIDA_ALTERNATIVA } from './textos-comida-alternativa';
 
 @Component({
   selector: 'app-modal-comida-alternativa',
@@ -18,15 +20,19 @@ import {NotificacionService} from '../../../services/notificacion.service';
 export class ModalComidaAlternativa {
   @Input() abierto = false;
   @Input() comida: Comida | null = null;
-  @Input() fecha = "";
+  @Input() fecha = '';
 
   @Output() cerrar = new EventEmitter<void>();
   @Output() guardado = new EventEmitter<void>();
 
   private readonly consumoComidaService = inject(ConsumoComidaService);
   private readonly notificacionService = inject(NotificacionService);
+  private readonly idiomaService = inject(IdiomaService);
 
-  nombreComida = "";
+  /* Textos del modal en el idioma vigente: al cambiar el signal se repinta todo */
+  readonly textos = computed(() => TEXTOS_COMIDA_ALTERNATIVA[this.idiomaService.idioma()]);
+
+  nombreComida = '';
   calorias = 0;
   proteinas = 0;
   carbohidratos = 0;
@@ -40,12 +46,12 @@ export class ModalComidaAlternativa {
 
   guardarComidaAlternativa(): void {
     if (!this.nombreComida.trim()) {
-      this.notificacionService.error("El nombre de la comida es obligatorio");
+      this.notificacionService.error(this.textos().errorNombreObligatorio);
       return;
     }
 
     if (!this.comida) {
-      this.notificacionService.error("No se ha seleccionado una comida");
+      this.notificacionService.error(this.textos().errorSinComida);
       return;
     }
 
@@ -59,12 +65,12 @@ export class ModalComidaAlternativa {
       carbohidratos: this.carbohidratos,
       grasas: this.grasas,
       fecha: this.fecha,
-      tipoComida: tipoComidaUpperCase
+      tipoComida: tipoComidaUpperCase,
     };
 
     this.consumoComidaService.registrarComidaAlternativa(comidaAlternativa).subscribe({
       next: () => {
-        this.notificacionService.exito("Comida alternativa registrada");
+        this.notificacionService.exito(this.textos().exitoRegistrada);
         this.consumoComidaService.obtenerResumenReal(this.fecha).subscribe();
         this.guardando = false;
         this.limpiarFormulario();
@@ -72,14 +78,14 @@ export class ModalComidaAlternativa {
         this.cerrar.emit();
       },
       error: () => {
-        this.notificacionService.error("Error al registrar la comida");
+        this.notificacionService.error(this.textos().errorRegistrar);
         this.guardando = false;
-      }
+      },
     });
   }
 
   private limpiarFormulario(): void {
-    this.nombreComida = "";
+    this.nombreComida = '';
     this.calorias = 0;
     this.proteinas = 0;
     this.carbohidratos = 0;

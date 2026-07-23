@@ -1,486 +1,526 @@
-@import '../../../styles/00-settings/css-variables';
 @import '../../../styles/01-tools/mixins';
 
-
+:host {
+  display: block;
+  background-color: var(--superficie-fondo);
+}
 
 .seguimiento {
   box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-size-xxl);
-  min-height: calc(100vh - 10.5rem);
-  padding: calc(4.5rem + var(--spacing-size-xxl)) var(--spacing-size-m) var(--spacing-size-xxxl);
-  background-color: var(--superficie-fondo);
-
-  @include responsive-down('md') {
-    padding-top: calc(4rem + var(--spacing-size-xl));
-    gap: var(--spacing-size-l);
-  }
+  max-width: 64rem;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: var(--page-shell-top) 2rem var(--spacing-size-xxxl);
 }
 
-
-
+/* ── Cabecera canónica: eyebrow con regla + display + contexto mono ── */
 .seguimiento__cabecera {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-size-xss);
-  width: 100%;
-  max-width: 60.625rem;
-  text-align: center;
+  align-items: flex-start;
+  gap: 0.75rem; /* 12px */
+  margin-bottom: 3.5rem; /* 56px */
 }
 
 .seguimiento__eyebrow {
-  @include etiqueta-tecnica(var(--naranja-texto));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* ~10px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
+}
+
+.seguimiento__eyebrow::before {
+  content: '';
+  width: 1.75rem; /* 28px */
+  height: 1px;
+  background: var(--naranja-normal);
 }
 
 .seguimiento__titulo {
   @include titular-display(var(--display-md));
-  text-align: center;
 }
 
-.seguimiento__titulo-punto {
-  color: var(--naranja-normal);
+.seguimiento__contexto {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* 10px */
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
 }
 
-
-
-.seguimiento__macronutrientes {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 60.625rem;
-}
-
-.seguimiento__card-macros {
-  position: relative;
-  overflow: hidden;
+/* ── Macros: dos columnas editoriales separadas por filos, sin tarjeta ── */
+.seguimiento__macros {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-size-xxl);
-  padding: var(--spacing-size-xl);
-  @include superficie-bento;
-
-  @include responsive-down('lg') {
-    flex-direction: column;
-    gap: var(--spacing-size-l);
-    padding: var(--spacing-size-l);
-  }
-
-  @include responsive-down('md') {
-    padding: var(--spacing-size-m);
-  }
+  align-items: stretch;
+  gap: 3rem;
+  padding-top: 2.5rem; /* 40px */
+  border-top: 1px solid var(--borde-sutil);
 }
 
-/* Momento de firma: el haz va por encima del contenido con mezcla "screen",
-   así enciende los números que tiene debajo sobre el fondo oscuro. */
-.seguimiento__haz {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0;
-  background: radial-gradient(16rem 16rem at var(--haz-x, 32%) var(--haz-y, 26%), var(--naranja-glow-fuerte), transparent 62%);
-  transition: opacity var(--duration-base) ease;
-}
-
-.haz--activo .seguimiento__haz {
-  opacity: 1;
-}
-
-.haz--estatico .seguimiento__haz {
-  opacity: 0.85;
-}
-
-.seguimiento__macros-info {
-  position: relative;
-  z-index: 1;
+.seguimiento__consumo {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-m);
+  gap: 1.5rem;
 }
 
-.seguimiento__macros-etiqueta {
+.seguimiento__consumo-etiqueta {
   @include etiqueta-tecnica(var(--texto-suave));
   margin: 0;
 }
 
-.seguimiento__macros-calorias {
+.seguimiento__kcal {
   display: flex;
   align-items: baseline;
-  gap: var(--spacing-size-xss);
+  gap: 0.55rem;
   margin: 0;
 }
 
-.seguimiento__calorias-valor {
+.seguimiento__kcal-valor {
   font-family: var(--fuente-display);
-  font-size: var(--display-md);
+  font-size: 4.6rem; /* 73.6px, mismo cuerpo héroe que la landing */
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
-.seguimiento__calorias-objetivo {
+.seguimiento__kcal-objetivo {
   font-family: var(--fuente-mono);
-  font-size: var(--font-size-sm);
+  font-size: 0.72rem; /* 11.5px */
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-suave);
 }
 
-.seguimiento__macros-lista {
+.seguimiento__macro-lista {
   list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-size-xs);
+  gap: 1.1rem;
+  margin: 0;
+  padding: 1.25rem 0 0; /* 20px */
+  border-top: 1px solid var(--borde-sutil);
 }
 
-.seguimiento__macro-item {
+.seguimiento__macro {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-size-s);
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.seguimiento__macro-indicador {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  flex-shrink: 0;
+.seguimiento__macro-fila {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
 }
 
-.seguimiento__macro-indicador--proteinas {
-  background-color: var(--naranja-normal);
-}
-
-.seguimiento__macro-indicador--carbohidratos {
-  background-color: var(--ambar);
-}
-
-.seguimiento__macro-indicador--grasas {
-  background-color: hsl(40, 7%, 56%); /* neutro cálido */
-}
-
-.seguimiento__macro-texto {
-  flex: 1;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
+.seguimiento__macro-nombre {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem; /* 9.6px */
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
   color: var(--texto-secundario);
+}
+
+/* Puntos conductores de carta impresa: el borde punteado del span vacío
+   queda justo sobre la línea base del texto */
+.seguimiento__macro-puntos {
+  position: relative;
+  top: -0.15rem;
+  flex: 1 1 2rem;
+  border-bottom: 1px dotted var(--borde-medio);
 }
 
 .seguimiento__macro-cifra {
   font-family: var(--fuente-mono);
-  font-size: var(--font-size-sm);
+  font-size: 0.74rem; /* 11.8px */
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
-.seguimiento__extras {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: start;
-  gap: var(--spacing-size-xss) var(--spacing-size-m);
-  margin: var(--spacing-size-xss) 0 0;
-  padding-top: var(--spacing-size-m);
+/* Barra plana hairline de esquinas vivas, sin radius ni glow */
+.seguimiento__macro-barra {
+  position: relative;
+  display: block;
+  height: 0.14rem; /* 2.2px */
+  background: var(--superficie-3);
+  overflow: hidden;
+}
+
+.seguimiento__macro-relleno {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(var(--relleno, 0));
+  transform-origin: left center;
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.seguimiento__macro-relleno--proteinas {
+  background: var(--naranja-normal);
+}
+
+.seguimiento__macro-relleno--carbohidratos {
+  background: var(--ambar);
+}
+
+.seguimiento__macro-relleno--grasas {
+  background: hsl(40, 7%, 56%); /* neutro cálido, mismo tono que la landing */
+}
+
+/* ── Columna derecha: banda de fibra, agua y registros con filos ── */
+.seguimiento__complementos {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  width: 14rem; /* 224px */
+  padding-left: 2.5rem;
+  border-left: 1px solid var(--borde-sutil);
+}
+
+.seguimiento__banda-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding-top: 1.4rem;
   border-top: 1px solid var(--borde-sutil);
 }
 
-.seguimiento__extra-label {
-  @include etiqueta-tecnica(var(--texto-suave));
+.seguimiento__banda-dato:first-of-type {
+  padding-top: 0;
+  border-top: 0;
 }
 
-.seguimiento__extra-valor {
-  margin: 0;
+.seguimiento__banda-etiqueta {
   font-family: var(--fuente-mono);
-  font-size: var(--font-size-sm);
+  font-size: 0.56rem; /* 9px */
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.seguimiento__banda-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.5rem; /* 24px */
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
-
-
-.seguimiento__grafico-circular {
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-  width: 15rem;
-  height: 15rem;
-  max-width: 100%;
-  margin: 0;
-
-  @include responsive-down('lg') {
-    width: 14rem;
-    height: 14rem;
-  }
-
-  @include responsive-down('md') {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
-
-  @include responsive-down('sm') {
-    width: 11rem;
-    height: 11rem;
-  }
-}
-
-.seguimiento__pie-chart {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.seguimiento__pie-pista {
-  stroke: var(--borde-sutil);
-}
-
-.seguimiento__pie-segmento {
-  transition: stroke-dasharray var(--duration-slow) ease;
-}
-
-.seguimiento__pie-segmento--proteinas {
-  stroke: var(--naranja-normal);
-  filter: drop-shadow(0 0 5px var(--naranja-glow-media));
-}
-
-.seguimiento__pie-segmento--carbohidratos {
-  stroke: var(--ambar);
-}
-
-.seguimiento__pie-segmento--grasas {
-  stroke: hsl(40, 7%, 56%);
-}
-
-.seguimiento__pie-centro-valor {
-  font-family: var(--fuente-display);
-  font-size: 30px;
-  font-weight: 800;
-  fill: var(--texto-principal);
-}
-
-.seguimiento__pie-centro-label {
-  font-family: var(--fuente-mono);
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  fill: var(--texto-suave);
-}
-
-
-
+/* ── Fuerza: tabs subrayados + gráfica de rango ajustado + banda de datos ── */
 .seguimiento__fuerza {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 60.625rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-size-l);
+  gap: 1.75rem;
+  margin-top: 4rem; /* 64px */
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--borde-sutil);
 }
 
 .seguimiento__fuerza-cabecera {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-size-xss);
-  text-align: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.seguimiento__fuerza-eyebrow {
+  @include etiqueta-tecnica(var(--texto-suave));
+  margin: 0;
 }
 
 .seguimiento__fuerza-titulo {
   @include titular-display(var(--font-size-2xl));
-  text-align: center;
 }
 
-
-
-.seguimiento__selector-ejercicio {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  max-width: 100%;
+.seguimiento__tabs {
   overflow-x: auto;
-  padding-bottom: var(--spacing-size-xs);
   scrollbar-width: thin;
 }
 
-.seguimiento__lista-chips {
+.seguimiento__tabs-lista {
   display: flex;
-  gap: var(--spacing-size-xs);
+  gap: 1.4rem;
   list-style: none;
-  padding: 0;
+  /* max-content: con scroll horizontal la línea base cubre todos los tabs */
+  min-width: max-content;
   margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--borde-sutil);
 }
 
-.seguimiento__chip-item {
-  flex-shrink: 0;
+.seguimiento__tabs-item {
+  display: flex;
+  /* -1px: el subrayado activo pisa la línea base de la fila de tabs */
+  margin-bottom: -1px;
 }
 
-.seguimiento__chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem 1.1rem;
-  background-color: var(--superficie-2);
-  border: 1px solid var(--borde-sutil);
-  border-radius: var(--radius-full);
+.seguimiento__tab {
+  appearance: none;
+  margin: 0;
+  padding: 0 0 0.55rem;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
   font-family: var(--fuente-mono);
-  font-size: var(--font-size-sm);
+  font-size: 0.64rem; /* 10.2px */
   font-weight: 500;
-  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
   color: var(--texto-secundario);
   cursor: pointer;
-  transition: all var(--duration-fast) ease;
-  white-space: nowrap;
+  transition: color var(--duration-base) ease, border-color var(--duration-base) ease;
 }
 
-.seguimiento__chip:hover {
-  border-color: var(--naranja-normal);
+.seguimiento__tab:hover {
   color: var(--texto-principal);
 }
 
-.seguimiento__chip--activo {
-  background: var(--gradiente-acento);
-  border-color: transparent;
-  color: var(--texto-sobre-acento);
-  font-weight: 600;
+.seguimiento__tab--activa {
+  color: var(--naranja-normal);
+  border-bottom-color: var(--naranja-normal);
 }
 
-.seguimiento__chip--activo:hover {
-  color: var(--texto-sobre-acento);
+.seguimiento__grafica {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-
-
-.seguimiento__grafico-lineas {
-  box-sizing: border-box;
-  width: 100%;
-  padding: var(--spacing-size-l);
-  @include superficie-bento;
-}
-
-.seguimiento__chart-container {
-  width: 100%;
+.seguimiento__grafica-lienzo {
   margin: 0;
 }
 
-.seguimiento__line-chart {
+.seguimiento__grafica-svg {
   display: block;
   width: 100%;
   height: auto;
   overflow: visible;
 }
 
-.seguimiento__eje {
+.seguimiento__grafica-guia {
+  stroke: var(--borde-sutil);
+  stroke-width: 1;
+  stroke-dasharray: 2 6;
+}
+
+.seguimiento__grafica-base {
   stroke: var(--borde-medio);
   stroke-width: 1;
 }
 
-.seguimiento__linea-guia {
-  stroke: var(--borde-sutil);
-  stroke-width: 1;
-  stroke-dasharray: 3 7;
-}
-
-.seguimiento__chart-label {
-  font-family: var(--fuente-mono);
-  font-size: 12px;
-  fill: var(--texto-suave);
-}
-
-.seguimiento__chart-label-axis {
+.seguimiento__grafica-eje {
   font-family: var(--fuente-mono);
   font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   fill: var(--texto-suave);
 }
 
-.seguimiento__parada-inicio {
-  stop-color: var(--naranja-normal);
-}
-
-.seguimiento__parada-fin {
-  stop-color: var(--ambar);
-}
-
-.seguimiento__linea-progreso {
-  stroke: url(#gradienteFuerza);
+.seguimiento__grafica-linea {
+  fill: none;
+  stroke: var(--naranja-normal);
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 5px var(--naranja-glow-media));
+  filter: drop-shadow(0 2px 5px var(--naranja-glow-media));
 }
 
-.seguimiento__punto {
+.seguimiento__grafica-punto {
   fill: var(--naranja-normal);
-  stroke: var(--superficie-1);
+  stroke: var(--superficie-fondo);
   stroke-width: 2;
 }
 
-.seguimiento__punto--ultimo {
+.seguimiento__grafica-punto--ultimo {
   filter: drop-shadow(0 0 6px var(--naranja-glow-fuerte));
 }
 
+/* Banda de datos con filo superior: etiqueta mono arriba, valor display abajo */
+.seguimiento__grafica-datos {
+  display: flex;
+  gap: 2.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--borde-sutil);
+}
 
-
-.seguimiento__sin-datos {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--texto-suave);
-  text-align: center;
+.seguimiento__grafica-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
   margin: 0;
+}
+
+.seguimiento__dato-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem; /* 9px */
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.seguimiento__dato-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.15rem; /* 18.4px */
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+/* ── Estados vacíos: etiqueta mono + mensaje + esqueleto hairline ── */
+.seguimiento__consumo-vacio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.seguimiento__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding: 1.5rem 0;
+}
+
+.seguimiento__vacio-etiqueta {
+  @include etiqueta-tecnica(var(--texto-secundario));
+  margin: 0;
+}
+
+.seguimiento__vacio-mensaje {
+  margin: 0;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+}
+
+.seguimiento__vacio-ayuda {
+  margin: 0;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
+}
+
+.seguimiento__vacio-esqueleto {
+  width: 100%;
+  height: 1px;
+  margin-top: 1.25rem; /* 20px, imita el paso de las guías del lienzo */
+  background: var(--borde-sutil);
+}
+
+.seguimiento__vacio-esqueleto--corto {
+  width: 60%;
 }
 
 .seguimiento__cargando {
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 12.5rem;
+  gap: 0.6rem;
+  min-height: 10rem; /* 160px, reserva el alto del lienzo para no saltar */
+}
+
+.seguimiento__cargando-punto {
+  width: 0.5rem; /* 8px */
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: seguimiento-latido 1.4s ease-in-out infinite;
+}
+
+.seguimiento__cargando-texto {
+  margin: 0;
   font-family: var(--fuente-mono);
   font-size: var(--font-size-sm);
   color: var(--texto-suave);
 }
 
-.seguimiento__sin-datos-grafico {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 12.5rem;
-  gap: var(--spacing-size-s);
-  text-align: center;
-  padding: var(--spacing-size-l);
+@keyframes seguimiento-latido {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.6);
+  }
 }
 
-.seguimiento__sin-datos-grafico__mensaje {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-md);
-  color: var(--texto-secundario);
-  margin: 0;
+@media (prefers-reduced-motion: reduce) {
+  .seguimiento__cargando-punto {
+    animation: none;
+  }
+
+  .seguimiento__macro-relleno {
+    transition: none;
+  }
 }
 
-.seguimiento__ayuda {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  color: var(--texto-suave);
-  margin: 0;
+@include responsive-down('md') {
+  .seguimiento {
+    padding: var(--page-shell-top-movil) 1.25rem var(--spacing-size-xxl);
+  }
+
+  .seguimiento__cabecera {
+    margin-bottom: 2.5rem;
+  }
+
+  .seguimiento__macros {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .seguimiento__complementos {
+    flex-direction: row;
+    gap: 2.75rem;
+    width: 100%;
+    padding-left: 0;
+    padding-top: 1.25rem;
+    border-left: 0;
+    border-top: 1px solid var(--borde-sutil);
+  }
+
+  .seguimiento__banda-dato {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .seguimiento__fuerza {
+    margin-top: 3rem;
+  }
 }
 
-.seguimiento__sin-datos-circular {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  gap: var(--spacing-size-xs);
-}
+@include responsive-down('sm') {
+  .seguimiento__kcal-valor {
+    font-size: 3.2rem; /* 51.2px */
+  }
 
-.seguimiento__sin-datos-circular p {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  color: var(--texto-suave);
-  margin: 0;
+  .seguimiento__complementos {
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+  }
+
+  .seguimiento__grafica-datos {
+    flex-wrap: wrap;
+    gap: 1.25rem 2rem;
+  }
+
+  .seguimiento__tab {
+    padding-bottom: 0.6rem; /* tap target algo mayor en táctil */
+  }
 }

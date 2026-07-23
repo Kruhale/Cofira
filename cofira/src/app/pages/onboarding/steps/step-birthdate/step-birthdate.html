@@ -1,15 +1,15 @@
 <article class="step-birthdate">
 
   <header class="step-birthdate__header">
-    <h2 class="step-birthdate__titulo">Cuando naciste?</h2>
+    <h2 class="step-birthdate__titulo">{{ textos().titulo }}</h2>
     <p class="step-birthdate__subtitulo">
-      Tu edad nos ayuda a calcular tu metabolismo basal
+      {{ textos().subtitulo }}
     </p>
   </header>
 
   <fieldset class="step-birthdate__form">
     <label class="step-birthdate__input-wrapper">
-      <span class="step-birthdate__label">Fecha de nacimiento</span>
+      <span class="step-birthdate__label">{{ textos().labelFecha }}</span>
       <input
         (change)="alCambiarFecha($any($event.target).value)"
         [max]="maxDate"
@@ -27,7 +27,7 @@
       [habilitado]="!canContinue()"
       tamanio="grande"
       variante="primario">
-      Continuar
+      {{ textos().botonContinuar }}
     </app-button>
   </footer>
 

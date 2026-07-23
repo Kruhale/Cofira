@@ -1,5 +1,11 @@
 <nav class="rastro" aria-label="Recorrido de la página">
-  <div class="rastro__ticks" (click)="alPulsar($event)">
+  <div
+    class="rastro__ticks"
+    role="button"
+    tabindex="0"
+    aria-label="Recorrer las secciones de la página"
+    (click)="alPulsar($event)"
+    (keydown)="alTeclear($event)">
     @for (tick of ticks; track tick) {
       <span aria-hidden="true" class="rastro__tick"></span>
     }

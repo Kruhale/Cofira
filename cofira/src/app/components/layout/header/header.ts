@@ -15,6 +15,8 @@ import { Button } from '../../shared/button/button';
 import { ResaltadoDeslizante } from '../../../directives/resaltado-deslizante.directive';
 import { AuthService } from '../../../services/auth.service';
 import { ThemeService } from '../../../services/theme.service';
+import { IdiomaService } from '../../../services/idioma.service';
+import { TEXTOS_CABECERA } from './textos-cabecera';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +29,10 @@ export class Header {
   private readonly authService = inject(AuthService);
   private readonly themeService = inject(ThemeService);
   private readonly router = inject(Router);
+  private readonly idiomaService = inject(IdiomaService);
+
+  /* Textos de la cabecera en el idioma vigente */
+  readonly textos = computed(() => TEXTOS_CABECERA[this.idiomaService.idioma()]);
 
   readonly isAuthenticated = this.authService.isAuthenticated;
   readonly userNombre = this.authService.userNombre;

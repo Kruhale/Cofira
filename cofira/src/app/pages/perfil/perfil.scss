@@ -6,193 +6,260 @@
 }
 
 .perfil {
-  max-width: 64rem;
-  margin: 0 auto;
-  padding: var(--page-shell-top) 2rem var(--spacing-size-xxxl);
+  --contenido-max-width: 60rem; /* 960px */
+
+  @include flex-columna(var(--spacing-size-xxl));
+  align-items: center;
+  width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
+  padding: var(--page-shell-top) var(--spacing-size-xl) var(--spacing-size-xxxl);
+  background-color: var(--superficie-fondo);
+
+  @include responsive-down('md') {
+    gap: var(--spacing-size-l);
+    padding: var(--page-shell-top-movil) var(--spacing-size-m) var(--spacing-size-xl);
+  }
+
+  @include responsive-down('xs') {
+    padding: var(--page-shell-top-movil) var(--spacing-size-s) var(--spacing-size-l);
+  }
 }
 
 
-/* ── Hero asimétrico con avatar ── */
-.perfil__hero {
+
+/* ── Cabecera canónica: eyebrow con regla + display + identidad mono ── */
+
+.perfil__cabecera {
+  @include flex-columna(0.85rem);
+  align-items: flex-start;
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.perfil__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* ~10px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
+}
+
+.perfil__eyebrow::before {
+  content: '';
+  width: 1.75rem; /* 28px */
+  height: 1px;
+  background: var(--naranja-normal);
+}
+
+.perfil__titulo {
+  @include titular-display(var(--display-md));
+  word-break: break-word;
+}
+
+.perfil__contexto {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--texto-secundario);
+  overflow-wrap: anywhere;
+}
+
+.perfil__etiquetas {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
-  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin: 0.35rem 0 0;
+}
+
+.perfil__etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-principal);
+}
+
+.perfil__etiqueta::after {
+  content: '';
+  width: 1px;
+  height: 0.85rem;
+  background: var(--borde-medio);
+}
+
+.perfil__etiqueta:last-child::after {
+  display: none;
+}
+
+.perfil__etiqueta--acento {
+  color: var(--naranja-texto);
+}
+
+
+
+/* ── Retícula editorial: identidad y salud separadas por filos ── */
+
+.perfil__reticula {
+  display: flex;
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  border-top: 1px solid var(--borde-sutil);
+
+  @include responsive-down('md') {
+    flex-direction: column;
+  }
+}
+
+.perfil__identidad {
+  @include flex-columna(var(--spacing-size-l));
+  flex: 1.5;
+  min-width: 0;
+  padding: var(--spacing-size-xl) var(--spacing-size-xl) 0 0;
+
+  @include responsive-down('md') {
+    padding: var(--spacing-size-l) 0 var(--spacing-size-l);
+  }
+}
+
+.perfil__salud {
+  @include flex-columna(var(--spacing-size-l));
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: var(--spacing-size-xl) 0 0 var(--spacing-size-xl);
+  border-left: 1px solid var(--borde-sutil);
+
+  @include responsive-down('md') {
+    padding: var(--spacing-size-l) 0 0;
+    border-left: none;
+    border-top: 1px solid var(--borde-sutil);
+  }
+}
+
+.perfil__seccion-cabecera {
+  @include flex-between;
+  gap: var(--spacing-size-m);
+  width: 100%;
+}
+
+.perfil__seccion-titulo {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-suave);
+}
+
+
+
+/* ── Identidad: avatar cuadrado-suave + filas dato → puntos → valor ── */
+
+.perfil__identidad-cuerpo {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-size-l);
+
+  @include responsive-down('xs') {
+    flex-direction: column;
+  }
 }
 
 .perfil__avatar {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5.5rem;
-  height: 5.5rem;
+  width: 4.25rem; /* 68px */
+  height: 4.25rem;
   margin: 0;
   flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--superficie-2);
-  background-clip: padding-box;
-  border: 3px solid transparent;
-}
-
-.perfil__avatar::before {
-  position: absolute;
-  inset: -3px;
-  z-index: -1;
-  content: '';
-  border-radius: 50%;
-  background: var(--gradiente-acento);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
 }
 
 .perfil__avatar-inicial {
   font-family: var(--fuente-display);
-  font-size: 2.5rem;
+  font-size: 2rem;
   line-height: 1;
   text-transform: uppercase;
   color: var(--texto-principal);
 }
 
-.perfil__eyebrow {
-  @include etiqueta-tecnica(var(--naranja-texto));
-  margin: 0 0 0.5rem;
-}
-
-.perfil__titulo {
-  @include titular-display(var(--display-md));
-  margin: 0;
-  word-break: break-word;
-}
-
-.perfil__hero-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.85rem;
-}
-
-.perfil__chip {
-  padding: 0.3rem 0.85rem;
-  border-radius: var(--radius-full);
-  background: var(--superficie-2);
-  border: 1px solid var(--borde-sutil);
-  font-family: var(--fuente-mono);
-  font-size: var(--etiqueta-tecnica);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--texto-secundario);
-}
-
-.perfil__chip--pro {
-  background: var(--gradiente-acento);
-  border-color: transparent;
-  color: var(--texto-sobre-acento);
-  font-weight: 700;
-}
-
-
-/* ── Bento asimétrico ── */
-.perfil__contenido {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  grid-template-areas:
-    'info salud'
-    'info actividad';
-  gap: 1.25rem;
-}
-
-.perfil__tarjeta {
-  @include superficie-bento;
-  @include bento-hover;
-  padding: 2rem;
-}
-
-.perfil__tarjeta--info {
-  grid-area: info;
-}
-
-.perfil__tarjeta--salud {
-  grid-area: salud;
-}
-
-.perfil__tarjeta--actividad {
-  grid-area: actividad;
-}
-
-.perfil__tarjeta-cabecera {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.75rem;
-}
-
-.perfil__tarjeta-titulo {
-  margin: 0;
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--texto-principal);
-}
-
-.perfil__boton-editar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-full);
-  background: transparent;
-  border: 1px solid var(--borde-medio);
-  color: var(--texto-secundario);
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  transition: all var(--duration-fast) ease;
-}
-
-.perfil__boton-editar:hover {
-  border-color: var(--naranja-normal);
-  color: var(--naranja-texto);
-}
-
-.perfil__boton-editar-icono {
-  width: 1rem;
-  height: 1rem;
-}
-
-
-/* ── Formulario ── */
 .perfil__formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  @include flex-columna(0);
+  flex: 1;
+  min-width: 0;
+  width: 100%;
 }
 
-.perfil__campo {
+.perfil__fila {
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+  align-items: baseline;
+  gap: 0.9rem;
   margin: 0;
-  padding: 0;
+  padding: 0.85rem 0;
   border: none;
+  border-bottom: 1px solid var(--borde-sutil);
 }
 
-.perfil__etiqueta {
-  @include etiqueta-tecnica(var(--texto-suave));
+.perfil__fila:first-child {
+  /* -0.2rem: la primera línea de texto queda a ras del borde del avatar */
+  padding-top: 0;
+  margin-top: -0.2rem;
 }
 
-.perfil__valor {
+.perfil__fila--edicion {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.perfil__fila-dato {
+  flex-shrink: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
+}
+
+/* Puntos conductores de carta: el filo punteado muere en la baseline */
+.perfil__fila-puntos {
+  position: relative;
+  top: -0.15rem;
+  flex: 1 1 2rem;
+  border-bottom: 1px dotted var(--borde-medio);
+}
+
+.perfil__fila-valor {
   margin: 0;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-lg);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
   color: var(--texto-principal);
 }
 
-.perfil__valor--email {
-  color: var(--naranja-texto);
+.perfil__fila-valor--email {
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: var(--texto-secundario);
 }
 
 .perfil__input {
@@ -203,9 +270,9 @@
   color: var(--texto-principal);
   background: var(--superficie-1);
   border: 1px solid var(--borde-sutil);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   box-sizing: border-box;
-  transition: all var(--duration-fast) ease;
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
 }
 
 .perfil__input:focus-visible {
@@ -217,52 +284,63 @@
 .perfil__acciones {
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-
-/* ── Datos de salud (mini-bento) ── */
-.perfil__salud-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.perfil__salud-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding: 1.1rem;
+  gap: var(--spacing-size-m);
   margin: 0;
-  border-radius: var(--radius-md);
-  background: var(--superficie-1);
-  border: 1px solid var(--borde-sutil);
+  padding-top: var(--spacing-size-m);
 }
 
-.perfil__salud-etiqueta {
-  @include etiqueta-tecnica(var(--texto-suave));
+
+
+/* ── Datos de salud: banda de datos, etiqueta mono + valor display ── */
+
+.perfil__banda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-size-l) 2.5rem;
 }
 
-.perfil__salud-valor {
+.perfil__banda-dato {
+  @include flex-columna(0.35rem);
+  margin: 0;
+}
+
+.perfil__banda-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.perfil__banda-valor {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.5rem;
   font-family: var(--fuente-display);
-  font-size: 1.5rem;
-  line-height: 1.1;
+  font-size: 1.35rem; /* 21.6px */
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
-.perfil__imc-estado {
-  padding: 0.15rem 0.55rem;
-  border-radius: var(--radius-full);
-  background: var(--superficie-3);
+.perfil__banda-valor--texto {
+  font-size: 1.15rem; /* 18.4px */
+}
+
+.perfil__banda-vacio {
   font-family: var(--fuente-mono);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: 1rem;
+  color: var(--texto-suave);
+}
+
+.perfil__imc-estado {
+  background: transparent;
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--texto-secundario);
 }
@@ -271,47 +349,76 @@
   color: var(--exito-texto);
 }
 
-.perfil__imc-estado--bajo,
-.perfil__imc-estado--alto {
+.perfil__imc-estado--bajo {
   color: var(--peligro-texto);
 }
 
-
-/* ── Nivel de actividad ── */
-.perfil__actividad {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
+.perfil__imc-estado--sobrepeso {
+  color: var(--peligro-texto);
 }
 
-.perfil__actividad-icono {
+.perfil__imc-estado--obesidad {
+  color: var(--peligro-texto);
+}
+
+.perfil__banda-nota {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 3.25rem;
-  height: 3.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin: 0;
-  flex-shrink: 0;
-  border-radius: var(--radius-md);
-  background: var(--naranja-glow-suave);
-  border: 1px solid var(--borde-sutil);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.7;
+  color: var(--texto-suave);
+}
+
+.perfil__banda-nota-enlace {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--naranja-texto);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+  @include foco-visible;
+}
+
+.perfil__banda-nota-enlace:hover {
   color: var(--naranja-normal);
 }
 
-.perfil__actividad-icono svg {
-  width: 1.6rem;
-  height: 1.6rem;
+
+
+/* ── Nivel de actividad: fila editorial con filo superior ── */
+
+.perfil__actividad {
+  @include flex-columna(0.4rem);
+  padding-top: var(--spacing-size-l);
+  border-top: 1px solid var(--borde-sutil);
 }
 
-.perfil__actividad-info {
-  margin: 0;
+.perfil__actividad-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
 }
 
 .perfil__actividad-nivel {
-  margin: 0 0 0.25rem;
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.35rem; /* 21.6px */
+  font-weight: 900;
+  line-height: 1;
   color: var(--texto-principal);
 }
 
@@ -319,58 +426,6 @@
   margin: 0;
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
+  line-height: 1.5;
   color: var(--texto-secundario);
-}
-
-
-/* ── Responsive ── */
-@include responsive-down('md') {
-  .perfil__contenido {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'info'
-      'salud'
-      'actividad';
-  }
-}
-
-@include responsive-down('sm') {
-  .perfil {
-    padding: var(--page-shell-top-movil) 1.25rem var(--spacing-size-xxl);
-  }
-
-  .perfil__hero {
-    gap: 1.25rem;
-  }
-
-  .perfil__avatar {
-    width: 4.5rem;
-    height: 4.5rem;
-  }
-
-  .perfil__avatar-inicial {
-    font-size: 2rem;
-  }
-}
-
-@include responsive-down('xs') {
-  .perfil__hero {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .perfil__salud-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@include responsive-down('xxs') {
-  .perfil__avatar {
-    width: 4rem;
-    height: 4rem;
-  }
-
-  .perfil__avatar-inicial {
-    font-size: 1.75rem;
-  }
 }

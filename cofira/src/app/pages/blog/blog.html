@@ -1,19 +1,18 @@
 <main class="blog">
-  
+
   <header class="blog__header">
     <hgroup class="blog__header-content">
-      <h1 class="blog__titulo">Blog de Cofira</h1>
+      <h1 class="blog__titulo">{{ textos().titulo }}</h1>
       <p class="blog__subtitulo">
-        Consejos, guías y artículos sobre fitness, nutrición y bienestar para ayudarte
-        a alcanzar tus objetivos.
+        {{ textos().subtitulo }}
       </p>
     </hgroup>
   </header>
 
-  
+
   <section class="blog__filtros">
-      <nav aria-label="Filtrar por categoría" class="blog__categorias blog__container">
-        @for (cat of categorias; track cat.id) {
+      <nav [attr.aria-label]="textos().ariaFiltrar" class="blog__categorias blog__container">
+        @for (cat of categorias(); track cat.id) {
           <button
             (click)="filtrarPorCategoria(cat.id)"
             [ngClass]="{'blog__categoria-boton--activo': categoriaActiva === cat.id}"
@@ -25,11 +24,11 @@
       </nav>
   </section>
 
-  
+
   <section class="blog__contenido">
     <section class="blog__container">
       <ul class="blog__grid">
-        @for (articulo of articulosFiltrados; track articulo.titulo) {
+        @for (articulo of articulosFiltrados; track articulo.id) {
           <li class="blog__articulo" [class.blog__articulo--destacado]="$first">
             <figure class="blog__articulo-imagen">
               <picture>
@@ -58,14 +57,14 @@
               <header class="blog__articulo-meta">
                 <span class="blog__articulo-fecha">{{ articulo.fecha }}</span>
                 <span class="blog__articulo-separador">·</span>
-                <span class="blog__articulo-tiempo">{{ articulo.tiempoLectura }} lectura</span>
+                <span class="blog__articulo-tiempo">{{ articulo.tiempoLectura }} {{ textos().sufijoLectura }}</span>
               </header>
               <h2 class="blog__articulo-titulo">{{ articulo.titulo }}</h2>
               <p class="blog__articulo-extracto">{{ articulo.extracto }}</p>
               <footer class="blog__articulo-footer">
-                <span class="blog__articulo-autor">Por {{ articulo.autor }}</span>
-                <a [attr.aria-label]="'Leer más sobre ' + articulo.titulo" class="blog__articulo-leer" href="#">
-                  Leer más
+                <span class="blog__articulo-autor">{{ textos().prefijoAutor }} {{ articulo.autor }}</span>
+                <a [attr.aria-label]="textos().ariaLeerMas + articulo.titulo" class="blog__articulo-leer" href="#">
+                  {{ textos().leerMas }}
                   <svg aria-hidden="true" class="blog__articulo-leer-svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                        stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5 12h14"/>
@@ -78,9 +77,9 @@
         }
       </ul>
 
-      
+
       @if (articulosFiltrados.length === 0) {
-        <p class="blog__sin-resultados">No hay artículos en esta categoría todavía.</p>
+        <p class="blog__sin-resultados">{{ textos().sinResultados }}</p>
       }
     </section>
   </section>
@@ -89,20 +88,19 @@
   <section class="blog__newsletter">
       <aside class="blog__newsletter-card blog__container">
         <hgroup class="blog__newsletter-contenido">
-          <h2 class="blog__newsletter-titulo">Mantente al día</h2>
+          <h2 class="blog__newsletter-titulo">{{ textos().newsletterTitulo }}</h2>
           <p class="blog__newsletter-texto">
-            Suscríbete a nuestra newsletter y recibe los mejores consejos de fitness
-            y nutrición directamente en tu bandeja de entrada.
+            {{ textos().newsletterTexto }}
           </p>
         </hgroup>
         <form (submit)="$event.preventDefault()" class="blog__newsletter-form">
           <input
-            aria-label="Email para newsletter"
+            [attr.aria-label]="textos().ariaNewsletter"
             class="blog__newsletter-input"
-            placeholder="tu@email.com"
+            [placeholder]="textos().newsletterPlaceholder"
             type="email"
           />
-          <button class="blog__newsletter-boton" type="submit">Suscribirse</button>
+          <button class="blog__newsletter-boton" type="submit">{{ textos().newsletterBoton }}</button>
         </form>
       </aside>
   </section>

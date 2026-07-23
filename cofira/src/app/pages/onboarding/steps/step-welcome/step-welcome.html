@@ -1,12 +1,11 @@
 <section class="welcome">
 
-  <span class="welcome__marca">Cofira <span class="welcome__marca-sub">Sistema</span></span>
+  <span class="welcome__marca">Cofira <span class="welcome__marca-sub">{{ textos().marcaSub }}</span></span>
 
   <header class="welcome__header">
-    <h1 class="welcome__titulo">Come mejor, <em class="welcome__acento">obtén resultados.</em></h1>
+    <h1 class="welcome__titulo">{{ textos().titulo }} <em class="welcome__acento">{{ textos().tituloAcento }}</em></h1>
     <p class="welcome__subtitulo">
-      Tu plan de nutrición y entrenamiento, hecho a tu medida. Responde unas
-      preguntas y lo construimos contigo en cinco minutos.
+      {{ textos().subtitulo }}
     </p>
   </header>
 
@@ -19,8 +18,8 @@
         </svg>
       </span>
       <span class="welcome__feature-cuerpo">
-        <span class="welcome__feature-titulo">Plan de alimentación</span>
-        <span class="welcome__feature-sub">Macros y comidas que de verdad te apetecen</span>
+        <span class="welcome__feature-titulo">{{ textos().featureAlimentacionTitulo }}</span>
+        <span class="welcome__feature-sub">{{ textos().featureAlimentacionSub }}</span>
       </span>
     </li>
     <li class="welcome__feature">
@@ -31,8 +30,8 @@
         </svg>
       </span>
       <span class="welcome__feature-cuerpo">
-        <span class="welcome__feature-titulo">Rutinas de ejercicio</span>
-        <span class="welcome__feature-sub">Adaptadas a tu nivel y a tu material</span>
+        <span class="welcome__feature-titulo">{{ textos().featureRutinasTitulo }}</span>
+        <span class="welcome__feature-sub">{{ textos().featureRutinasSub }}</span>
       </span>
     </li>
     <li class="welcome__feature">
@@ -43,8 +42,8 @@
         </svg>
       </span>
       <span class="welcome__feature-cuerpo">
-        <span class="welcome__feature-titulo">Seguimiento de progreso</span>
-        <span class="welcome__feature-sub">Gráficas reales y ajustes sobre la marcha</span>
+        <span class="welcome__feature-titulo">{{ textos().featureSeguimientoTitulo }}</span>
+        <span class="welcome__feature-sub">{{ textos().featureSeguimientoSub }}</span>
       </span>
     </li>
   </ul>
@@ -55,7 +54,7 @@
       [anchoCompleto]="true"
       tamanio="grande"
       variante="primario">
-      Comenzar ahora
+      {{ textos().botonComenzar }}
     </app-button>
 
     <p class="welcome__meta">
@@ -64,11 +63,11 @@
           <circle cx="12" cy="12" r="10"/>
           <path d="M12 6v6l4 2"/>
         </svg>
-        Solo te toma 5 minutos
+        {{ textos().tiempoEstimado }}
       </span>
       <span class="welcome__login">
-        ¿Ya tienes cuenta?
-        <a class="welcome__login-link" routerLink="/login">Inicia sesión</a>
+        {{ textos().yaTienesCuenta }}
+        <a class="welcome__login-link" routerLink="/login">{{ textos().iniciaSesion }}</a>
       </span>
     </p>
   </footer>

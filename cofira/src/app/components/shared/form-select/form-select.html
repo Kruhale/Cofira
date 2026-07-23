@@ -4,7 +4,7 @@
   </label>
 
   <select [id]="nombre" [name]="nombre" class="formulario-seleccion__campo">
-    <option value="" disabled selected>Selecciona una opción</option>
+    <option value="" disabled selected>{{ textoOpcionVacia() }}</option>
     @for (opcion of opciones; track opcion) {
     <option [value]="opcion">{{ opcion }}</option>
     }

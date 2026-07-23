@@ -1,132 +1,102 @@
 <main class="legal">
   <header class="legal__header">
-    <h1 class="legal__titulo">Política de Privacidad</h1>
-    <p class="legal__fecha">Última actualización: {{ fechaActualizacion }}</p>
+    <h1 class="legal__titulo">{{ textos().tituloPagina }}</h1>
+    <p class="legal__fecha">{{ textos().etiquetaFecha }} {{ fechaActualizacion() }}</p>
   </header>
 
   <article class="legal__contenido">
 
     <section class="legal__seccion">
-      <h2 class="legal__subtitulo">1. Introducción</h2>
-      <p class="legal__texto">
-        En Cofira, nos comprometemos a proteger tu privacidad y tus datos personales. Esta política
-        describe cómo recopilamos, utilizamos, almacenamos y protegemos la información que nos
-        proporcionas al usar nuestra plataforma de fitness y nutrición.
-      </p>
-      <p class="legal__texto">
-        Al utilizar Cofira, aceptas las prácticas descritas en esta política. Te recomendamos leerla
-        detenidamente para entender cómo tratamos tu información.
-      </p>
+      <h2 class="legal__subtitulo">{{ textos().introTitulo }}</h2>
+      <p class="legal__texto">{{ textos().introParrafo1 }}</p>
+      <p class="legal__texto">{{ textos().introParrafo2 }}</p>
     </section>
 
     <section class="legal__seccion">
-      <h2 class="legal__subtitulo">2. Datos que Recopilamos</h2>
-      <p class="legal__texto">Recopilamos diferentes tipos de información para proporcionarte nuestros servicios:</p>
+      <h2 class="legal__subtitulo">{{ textos().datosTitulo }}</h2>
+      <p class="legal__texto">{{ textos().datosIntro }}</p>
 
-      <h3 class="legal__subtitulo-menor">Información de perfil</h3>
+      <h3 class="legal__subtitulo-menor">{{ textos().perfilTitulo }}</h3>
       <ul class="legal__lista">
-        <li class="legal__lista-item">Nombre y apellidos</li>
-        <li class="legal__lista-item">Dirección de correo electrónico</li>
-        <li class="legal__lista-item">Fecha de nacimiento</li>
-        <li class="legal__lista-item">Género</li>
-        <li class="legal__lista-item">Foto de perfil (opcional)</li>
+        @for (punto of textos().perfilPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
       </ul>
 
-      <h3 class="legal__subtitulo-menor">Métricas de salud y fitness</h3>
+      <h3 class="legal__subtitulo-menor">{{ textos().saludTitulo }}</h3>
       <ul class="legal__lista">
-        <li class="legal__lista-item">Peso y altura</li>
-        <li class="legal__lista-item">Objetivos de fitness (pérdida de peso, ganancia muscular, etc.)</li>
-        <li class="legal__lista-item">Historial de ejercicios y entrenamientos</li>
-        <li class="legal__lista-item">Registros de alimentación y calorías</li>
-        <li class="legal__lista-item">Medidas corporales</li>
-        <li class="legal__lista-item">Fotos de progreso (si las subes)</li>
+        @for (punto of textos().saludPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
       </ul>
 
-      <h3 class="legal__subtitulo-menor">Información técnica</h3>
+      <h3 class="legal__subtitulo-menor">{{ textos().tecnicaTitulo }}</h3>
       <ul class="legal__lista">
-        <li class="legal__lista-item">Dirección IP</li>
-        <li class="legal__lista-item">Tipo de navegador y dispositivo</li>
-        <li class="legal__lista-item">Páginas visitadas y tiempo de uso</li>
-        <li class="legal__lista-item">Preferencias de la aplicación</li>
+        @for (punto of textos().tecnicaPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
       </ul>
     </section>
 
     <section class="legal__seccion">
-      <h2 class="legal__subtitulo">3. Cómo Usamos tus Datos</h2>
-      <p class="legal__texto">Utilizamos tu información para:</p>
+      <h2 class="legal__subtitulo">{{ textos().usoTitulo }}</h2>
+      <p class="legal__texto">{{ textos().usoIntro }}</p>
       <ul class="legal__lista">
-        <li class="legal__lista-item"><strong>Personalizar tu experiencia:</strong> Crear planes de entrenamiento y nutrición adaptados a tus
-          objetivos.
-        </li>
-        <li class="legal__lista-item"><strong>Seguimiento de progreso:</strong> Generar gráficos y estadísticas sobre tu evolución.</li>
-        <li class="legal__lista-item"><strong>Comunicaciones:</strong> Enviarte recordatorios, actualizaciones y contenido relevante.</li>
-        <li class="legal__lista-item"><strong>Mejora del servicio:</strong> Analizar el uso de la plataforma para implementar mejoras.</li>
-        <li class="legal__lista-item"><strong>Soporte técnico:</strong> Resolver dudas y problemas que puedas tener.</li>
+        @for (punto of textos().usoPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
       </ul>
     </section>
 
     <section class="legal__seccion">
-      <h2 class="legal__subtitulo">4. Almacenamiento y Seguridad</h2>
-      <p class="legal__texto">
-        Tus datos se almacenan en servidores seguros ubicados en la Unión Europea. Implementamos
-        medidas de seguridad técnicas y organizativas para proteger tu información:
-      </p>
+      <h2 class="legal__subtitulo">{{ textos().seguridadTitulo }}</h2>
+      <p class="legal__texto">{{ textos().seguridadIntro }}</p>
       <ul class="legal__lista">
-        <li class="legal__lista-item">Encriptación SSL/TLS para todas las comunicaciones</li>
-        <li class="legal__lista-item">Contraseñas hasheadas con algoritmos seguros</li>
-        <li class="legal__lista-item">Acceso restringido al personal autorizado</li>
-        <li class="legal__lista-item">Copias de seguridad regulares</li>
-        <li class="legal__lista-item">Monitorización continua de seguridad</li>
+        @for (punto of textos().seguridadPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
       </ul>
-      <p class="legal__texto">
-        Conservamos tus datos mientras mantengas tu cuenta activa. Si decides eliminar tu cuenta,
-        borraremos tu información en un plazo máximo de 30 días.
-      </p>
+      <p class="legal__texto">{{ textos().seguridadConservacion }}</p>
     </section>
 
     <section class="legal__seccion">
-      <h2 class="legal__subtitulo">5. Tus Derechos (RGPD)</h2>
-      <p class="legal__texto">
-        Conforme al Reglamento General de Protección de Datos (RGPD), tienes los siguientes derechos:
-      </p>
+      <h2 class="legal__subtitulo">{{ textos().derechosTitulo }}</h2>
+      <p class="legal__texto">{{ textos().derechosIntro }}</p>
       <ul class="legal__lista">
-        <li class="legal__lista-item"><strong>Acceso:</strong> Solicitar una copia de todos tus datos personales.</li>
-        <li class="legal__lista-item"><strong>Rectificación:</strong> Corregir datos inexactos o incompletos.</li>
-        <li class="legal__lista-item"><strong>Supresión:</strong> Solicitar la eliminación de tus datos ("derecho al olvido").</li>
-        <li class="legal__lista-item"><strong>Portabilidad:</strong> Recibir tus datos en un formato estructurado y legible.</li>
-        <li class="legal__lista-item"><strong>Oposición:</strong> Oponerte al tratamiento de tus datos para ciertos fines.</li>
-        <li class="legal__lista-item"><strong>Limitación:</strong> Solicitar la restricción del tratamiento de tus datos.</li>
+        @for (punto of textos().derechosPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
       </ul>
       <p class="legal__texto">
-        Para ejercer cualquiera de estos derechos, contacta con nosotros en
+        {{ textos().derechosEjercicio }}
         <a class="legal__enlace" href="mailto:privacidad@cofira.com">privacidad&#64;cofira.com</a>.
       </p>
     </section>
 
     <section class="legal__seccion">
-      <h2 class="legal__subtitulo">6. Compartición de Datos</h2>
-      <p class="legal__texto">
-        No vendemos ni alquilamos tus datos personales a terceros. Solo compartimos información en
-        los siguientes casos:
-      </p>
+      <h2 class="legal__subtitulo">{{ textos().comparticionTitulo }}</h2>
+      <p class="legal__texto">{{ textos().comparticionIntro }}</p>
       <ul class="legal__lista">
-        <li class="legal__lista-item">Con proveedores de servicios que nos ayudan a operar la plataforma (hosting, análisis)</li>
-        <li class="legal__lista-item">Cuando sea requerido por ley o autoridades competentes</li>
-        <li class="legal__lista-item">Con tu consentimiento explícito</li>
+        @for (punto of textos().comparticionPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
       </ul>
     </section>
 
     <section class="legal__seccion">
-      <h2 class="legal__subtitulo">7. Contacto</h2>
-      <p class="legal__texto">
-        Si tienes preguntas sobre esta política de privacidad o sobre el tratamiento de tus datos,
-        puedes contactarnos en:
-      </p>
+      <h2 class="legal__subtitulo">{{ textos().contactoTitulo }}</h2>
+      <p class="legal__texto">{{ textos().contactoIntro }}</p>
       <ul class="legal__lista legal__lista--sin-estilo">
-        <li class="legal__lista-item"><strong>Email:</strong> <a class="legal__enlace" href="mailto:privacidad@cofira.com">privacidad&#64;cofira.com</a>
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoEmailEtiqueta }}</strong>
+          <a class="legal__enlace" href="mailto:privacidad@cofira.com">privacidad&#64;cofira.com</a>
         </li>
-        <li class="legal__lista-item"><strong>Dirección:</strong> Calle Fitness 123, 28001 Madrid, España</li>
-        <li class="legal__lista-item"><strong>Delegado de Protección de Datos:</strong> <a class="legal__enlace" href="mailto:dpo@cofira.com">dpo&#64;cofira.com</a>
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoDireccionEtiqueta }}</strong> {{ textos().contactoDireccion }}
+        </li>
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoDpoEtiqueta }}</strong>
+          <a class="legal__enlace" href="mailto:dpo@cofira.com">dpo&#64;cofira.com</a>
         </li>
       </ul>
     </section>

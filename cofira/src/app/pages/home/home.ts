@@ -18,85 +18,17 @@ import { HazDeLuz } from '../../directives/haz-de-luz.directive';
 import { HeliceAdn } from '../../directives/helice-adn.directive';
 import { CuerpoAgua } from '../../directives/cuerpo-agua.directive';
 import { AnimacionesService } from '../../services/animaciones.service';
-import { RastroScroll, SeccionRastro } from '../../components/shared/rastro-scroll/rastro-scroll';
+import { RastroScroll } from '../../components/shared/rastro-scroll/rastro-scroll';
 import { CintaMarquee } from '../../components/shared/cinta-marquee/cinta-marquee';
-
-interface PalabraManifiesto {
-  texto: string;
-  clave: boolean;
-}
-
-interface Funcionalidad {
-  titulo: string;
-  descripcion: string;
-  categoria: string;
-}
-
-interface ComidaRegistro {
-  foto: string;
-  nombre: string;
-  hora: string;
-  kcal: number;
-  desglose: string;
-}
-
-interface MacroComida {
-  nombre: string;
-  gramos: number;
-  objetivo: number;
-  pct: number;
-  color: string;
-}
-
-interface PuntoMetrica {
-  mes: string;
-  etiqueta: string;
-  valor: number;
-  media: number;
-  cambio: string;
-  pct: number;
-}
-
-interface MetricaProgreso {
-  clave: string;
-  etiqueta: string;
-  unidad: string;
-  actual: string;
-  delta: string;
-  sube: boolean;
-  periodo: string;
-  objetivo: number;
-  objetivoEtiqueta: string;
-  pctObjetivo: number;
-  restante: string;
-  rangoMin: number;
-  rangoMax: number;
-  ejes: number[];
-  puntos: PuntoMetrica[];
-}
+import { RevelarLineasDirective } from '../../directives/revelar-lineas.directive';
+import { IdiomaService } from '../../services/idioma.service';
+import { MetricaProgreso, PuntoMetrica, TEXTOS_HOME, ZonaAyuno } from './textos-home';
 
 // Punto de la serie ya proyectado al lienzo SVG (x, y derivados del valor real)
 interface PuntoTrazado extends PuntoMetrica {
   x: number;
   y: number;
   yMedia: number;
-}
-
-interface Paso {
-  numero: string;
-  titulo: string;
-  descripcion: string;
-}
-
-interface ZonaAyuno {
-  clave: string;
-  titulo: string;
-  rango: string;
-  descripcion: string;
-  color: string;
-  min: number;
-  max: number;
-  datos: { etiqueta: string; valor: string }[];
 }
 
 /* Regla temporal del ayuno con escala NO lineal: las 12 h de glucógeno se
@@ -153,6 +85,7 @@ function formatearDuracion(milisegundos: number): string {
     CuerpoAgua,
     RastroScroll,
     CintaMarquee,
+    RevelarLineasDirective,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
@@ -163,222 +96,56 @@ export class Home {
   private readonly zona = inject(NgZone);
   private readonly destroyRef = inject(DestroyRef);
   private readonly animaciones = inject(AnimacionesService);
+  private readonly idiomaService = inject(IdiomaService);
 
   private contexto: gsap.Context | null = null;
 
-  seccionesRastro: SeccionRastro[] = [
-    { etiqueta: 'Inicio', objetivo: '.hero' },
-    { etiqueta: 'Manifiesto', objetivo: '.manifiesto' },
-    { etiqueta: 'Cómo funciona', objetivo: '.proceso' },
-    { etiqueta: 'Pilares', objetivo: '.pilares' },
-    { etiqueta: 'Planes', objetivo: '#seccion-planes' },
-    { etiqueta: 'Funciones', objetivo: '.funcionalidades' },
-    { etiqueta: 'FAQ', objetivo: '.faq' },
-    { etiqueta: 'Únete', objetivo: '.cta-final' },
-  ];
+  /* Idioma y textos vigentes: todo el contenido de la página deriva de estos
+     dos computed, así el cambio de idioma repinta la home entera. */
+  readonly idioma = computed(() => this.idiomaService.idioma());
+  readonly textos = computed(() => TEXTOS_HOME[this.idiomaService.idioma()]);
 
-  /* Manifiesto: troceado en palabras una sola vez al construir para que el
-     reveal palabra a palabra sea solo CSS + un único ScrollTrigger */
-  palabrasManifiesto: PalabraManifiesto[] =
-    'No vendemos motivación. Vendemos un sistema. Tu único trabajo: aparecer.'
-      .split(' ')
-      .map((texto) => ({
-        texto,
-        clave: ['motivación.', 'sistema.', 'aparecer.'].includes(texto),
-      }));
+  /* Precarga con contador 0→100 (una vez por sesión y solo con movimiento):
+     tapa la carga y desemboca en la intro del hero sin corte. */
+  mostrarPrecarga = signal(
+    !this.animaciones.movimientoReducido() && sessionStorage.getItem('cofira-precarga') === null,
+  );
+  contadorPrecarga = signal(0);
 
-  pasos: Paso[] = [
-    {
-      numero: '01',
-      titulo: 'Cuéntanos tu objetivo',
-      descripcion:
-        'Un onboarding rápido capta tu nivel, tus medidas y tus metas para diseñar un plan a tu medida.',
-    },
-    {
-      numero: '02',
-      titulo: 'Recibe tu plan',
-      descripcion:
-        'Generamos tu rutina semanal y tu menú con macros calculados al gramo, listos para empezar hoy.',
-    },
-    {
-      numero: '03',
-      titulo: 'Sigue tu progreso',
-      descripcion:
-        'Registra entrenos, comidas y agua. Visualiza tu evolución con gráficas y ajusta sobre la marcha.',
-    },
-  ];
+  readonly seccionesRastro = computed(() => this.textos().rastro);
 
-  funcionalidades: Funcionalidad[] = [
-    {
-      titulo: 'Gráficos de progreso',
-      descripcion: 'Visualiza peso, fuerza y macros con gráficas claras que cuentan tu evolución.',
-      categoria: 'Seguimiento',
-    },
-    {
-      titulo: 'Fotos de progreso',
-      descripcion: 'Compara tu transformación mes a mes con un timeline visual privado.',
-      categoria: 'Seguimiento',
-    },
-    {
-      titulo: 'Ayuno intermitente',
-      descripcion: 'Controla tus ventanas de ayuno y sincronízalas con tu plan nutricional.',
-      categoria: 'Nutrición',
-    },
-    {
-      titulo: 'Registro de agua',
-      descripcion: 'Mantén tu hidratación al día con un objetivo diario y recordatorios.',
-      categoria: 'Hidratación',
-    },
-    {
-      titulo: 'Widgets',
-      descripcion: 'Lleva tus métricas clave siempre a la vista, allá donde estés.',
-      categoria: 'Sistema',
-    },
-    {
-      titulo: 'Registro de comidas',
-      descripcion: 'Apunta lo que comes con análisis por foto y base de alimentos.',
-      categoria: 'Nutrición',
-    },
-  ];
+  readonly palabrasManifiesto = computed(() => this.textos().manifiesto.palabras);
+
+  readonly pasos = computed(() => this.textos().proceso.pasos);
+
+  readonly funcionalidades = computed(() => this.textos().funcionalidades.lista);
 
   indiceFuncionalidadActiva = signal(0);
 
-  /* Registro de comidas: el desglose por comida y los gramos de macrosComida
-     suman ~las kcal del día (datos coherentes, no inventados). */
-  registroComidas: ComidaRegistro[] = [
-    {
-      foto: '/assets/images/comida-avena.png',
-      nombre: 'Avena con fruta y nueces',
-      hora: '08:15',
-      kcal: 418,
-      desglose: 'P 23 · C 61 · G 9',
-    },
-    {
-      foto: '/assets/images/comida-pollo.png',
-      nombre: 'Pollo a la plancha con arroz',
-      hora: '14:05',
-      kcal: 676,
-      desglose: 'P 58 · C 70 · G 18',
-    },
-    {
-      foto: '/assets/images/comida-salmon.png',
-      nombre: 'Salmón con verduras asadas',
-      hora: '21:10',
-      kcal: 542,
-      desglose: 'P 44 · C 30 · G 27',
-    },
-  ];
+  // Pin del carrusel de funcionalidades. Guardar la referencia permite que al
+  // clicar una viñeta el scroll salte a ese panel; si solo se fija el índice, el
+  // onUpdate del pin lo revierte al instante (de ahí el "salto que no cambia").
+  private disparadorFuncionalidades: ScrollTrigger | null = null;
 
-  comidaDestacada = this.registroComidas[this.registroComidas.length - 1];
+  readonly registroComidas = computed(() => this.textos().comidas.registro);
 
-  totalesComida = {
-    consumidas: '1.636',
-    objetivo: '2.450',
-    restante: '814',
-    pct: 67,
-  };
+  /* La última comida del día es la recién analizada por foto */
+  readonly indiceComidaAnalizada = computed(() => this.registroComidas().length - 1);
 
-  macrosComida: MacroComida[] = [
-    { nombre: 'Proteína', gramos: 125, objetivo: 150, pct: 83, color: 'hsl(24, 95%, 56%)' },
-    { nombre: 'Carbohidratos', gramos: 161, objetivo: 265, pct: 61, color: 'hsl(38, 95%, 56%)' },
-    { nombre: 'Grasas', gramos: 54, objetivo: 80, pct: 68, color: 'hsl(43, 70%, 78%)' },
-  ];
+  readonly totalesComida = computed(() => this.textos().comidas.totales);
+
+  readonly macrosComida = computed(() => this.textos().comidas.macros);
 
   /* Métricas del showcase "Gráficos de progreso". Cada pestaña (Peso/Fuerza/
      Cintura) trae su serie real de 6 meses; la geometría del SVG (x, y y las
      curvas suaves) se DERIVA de los valores, así las tres pestañas son datos de
      verdad y no maquetas dibujadas a mano. */
-  metricas: MetricaProgreso[] = [
-    {
-      clave: 'peso',
-      etiqueta: 'Peso',
-      unidad: 'kg',
-      actual: '76,4',
-      delta: '−2,2 kg',
-      sube: false,
-      periodo: '6 meses',
-      objetivo: 74,
-      objetivoEtiqueta: '74,0 kg',
-      pctObjetivo: 48,
-      restante: 'Te faltan 2,4 kg',
-      rangoMin: 73.4,
-      rangoMax: 79,
-      ejes: [78, 77, 76],
-      puntos: [
-        { mes: 'Ene', etiqueta: 'Enero', valor: 78.6, media: 78.6, cambio: 'inicio', pct: 0 },
-        { mes: 'Feb', etiqueta: 'Febrero', valor: 78.1, media: 78.3, cambio: '−0,5 kg', pct: 11 },
-        { mes: 'Mar', etiqueta: 'Marzo', valor: 77.4, media: 77.7, cambio: '−0,7 kg', pct: 26 },
-        { mes: 'Abr', etiqueta: 'Abril', valor: 76.9, media: 77.1, cambio: '−0,5 kg', pct: 37 },
-        { mes: 'May', etiqueta: 'Mayo', valor: 76.6, media: 76.8, cambio: '−0,3 kg', pct: 43 },
-        {
-          mes: 'Jun',
-          etiqueta: 'Junio · hoy',
-          valor: 76.4,
-          media: 76.5,
-          cambio: '−0,2 kg',
-          pct: 48,
-        },
-      ],
-    },
-    {
-      clave: 'fuerza',
-      etiqueta: 'Fuerza',
-      unidad: 'kg',
-      actual: '81,0',
-      delta: '+18,5 kg',
-      sube: true,
-      periodo: '6 meses',
-      objetivo: 90,
-      objetivoEtiqueta: '90,0 kg',
-      pctObjetivo: 67,
-      restante: 'Te faltan 9,0 kg',
-      rangoMin: 60,
-      rangoMax: 92,
-      ejes: [82, 72, 62],
-      puntos: [
-        { mes: 'Ene', etiqueta: 'Enero', valor: 62.5, media: 62.5, cambio: 'inicio', pct: 0 },
-        { mes: 'Feb', etiqueta: 'Febrero', valor: 66, media: 64.5, cambio: '+3,5 kg', pct: 13 },
-        { mes: 'Mar', etiqueta: 'Marzo', valor: 70.5, media: 68, cambio: '+4,5 kg', pct: 29 },
-        { mes: 'Abr', etiqueta: 'Abril', valor: 74, media: 72, cambio: '+3,5 kg', pct: 42 },
-        { mes: 'May', etiqueta: 'Mayo', valor: 78, media: 76, cambio: '+4,0 kg', pct: 56 },
-        { mes: 'Jun', etiqueta: 'Junio · hoy', valor: 81, media: 79.2, cambio: '+3,0 kg', pct: 67 },
-      ],
-    },
-    {
-      clave: 'cintura',
-      etiqueta: 'Cintura',
-      unidad: 'cm',
-      actual: '84,5',
-      delta: '−7,5 cm',
-      sube: false,
-      periodo: '6 meses',
-      objetivo: 82,
-      objetivoEtiqueta: '82,0 cm',
-      pctObjetivo: 75,
-      restante: 'Te faltan 2,5 cm',
-      rangoMin: 81,
-      rangoMax: 93,
-      ejes: [92, 88, 84],
-      puntos: [
-        { mes: 'Ene', etiqueta: 'Enero', valor: 92, media: 92, cambio: 'inicio', pct: 0 },
-        { mes: 'Feb', etiqueta: 'Febrero', valor: 90.2, media: 91, cambio: '−1,8 cm', pct: 18 },
-        { mes: 'Mar', etiqueta: 'Marzo', valor: 88.4, media: 89.4, cambio: '−1,8 cm', pct: 36 },
-        { mes: 'Abr', etiqueta: 'Abril', valor: 86.8, media: 87.6, cambio: '−1,6 cm', pct: 52 },
-        { mes: 'May', etiqueta: 'Mayo', valor: 85.5, media: 86.2, cambio: '−1,3 cm', pct: 65 },
-        {
-          mes: 'Jun',
-          etiqueta: 'Junio · hoy',
-          valor: 84.5,
-          media: 85.1,
-          cambio: '−1,0 cm',
-          pct: 75,
-        },
-      ],
-    },
-  ];
+  readonly metricas = computed(() => this.textos().grafica.metricas);
 
-  // Geometría del lienzo (viewBox 0 0 400 150): X regular por mes, Y proyectada
-  private readonly ejeX = [8, 84.8, 161.6, 238.4, 315.2, 392];
+  // Geometría del lienzo (viewBox 0 0 400 150): X regular por mes, Y proyectada.
+  // Arranca en 30 para que los números del eje queden fuera de la curva.
+  private readonly ejeX = [30, 102.4, 174.8, 247.2, 319.6, 392];
+  private readonly lienzoIzquierda = 30;
   private readonly lienzoArriba = 22;
   private readonly lienzoAbajo = 116;
   private readonly lienzoPiso = 146;
@@ -386,11 +153,22 @@ export class Home {
   indiceMetrica = signal(0);
   indicePuntoActivo = signal<number | null>(null);
 
-  metricaActiva = computed(() => this.metricas[this.indiceMetrica()]);
+  /* Al cambiar de métrica la curva debe volver a dibujarse: un frame con el
+     trazo oculto y sin transición, y al siguiente se anima de nuevo. */
+  reinicioTrazo = signal(false);
+
+  metricaActiva = computed(() => this.metricas()[this.indiceMetrica()]);
 
   seleccionarMetrica(indiceMetrica: number): void {
+    if (indiceMetrica === this.indiceMetrica()) {
+      return;
+    }
     this.indiceMetrica.set(indiceMetrica);
     this.indicePuntoActivo.set(null);
+    this.reinicioTrazo.set(true);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => this.reinicioTrazo.set(false));
+    });
   }
 
   private redondear1(valor: number): number {
@@ -445,7 +223,44 @@ export class Home {
     this.trazarCurva(this.puntosTrazados().map((punto) => ({ x: punto.x, y: punto.y }))),
   );
 
-  rutaArea = computed(() => `${this.rutaLinea()} L392 ${this.lienzoPiso} L8 ${this.lienzoPiso} Z`);
+  rutaArea = computed(
+    () =>
+      `${this.rutaLinea()} L392 ${this.lienzoPiso} L${this.lienzoIzquierda} ${this.lienzoPiso} Z`,
+  );
+
+  /* Banda de datos bajo la gráfica: lectura rápida de la serie completa */
+  estadisticasMetrica = computed(() => {
+    const metrica = this.metricaActiva();
+    const puntos = metrica.puntos;
+
+    const cambioTotal = puntos[puntos.length - 1].valor - puntos[0].valor;
+    const ritmoMensual = cambioTotal / (puntos.length - 1);
+
+    const cambiosMensuales = puntos
+      .slice(1)
+      .map((punto, indice) => punto.valor - puntos[indice].valor);
+    const mejorCambio = metrica.sube
+      ? Math.max(...cambiosMensuales)
+      : Math.min(...cambiosMensuales);
+    const indiceMejor = cambiosMensuales.indexOf(mejorCambio);
+    const mesMejor = puntos[indiceMejor + 1].mes;
+
+    return {
+      total: this.formatearConSigno(cambioTotal, metrica.unidad),
+      ritmo: this.formatearConSigno(
+        ritmoMensual,
+        `${metrica.unidad}${this.textos().grafica.porMes}`,
+      ),
+      mejor: `${this.formatearConSigno(mejorCambio, metrica.unidad)} · ${mesMejor}`,
+    };
+  });
+
+  // −0.5 → "−0,5 kg" / +3.5 → "+3,5 kg" (signo tipográfico + decimal del idioma)
+  private formatearConSigno(valor: number, unidad: string): string {
+    const signo = valor < 0 ? '−' : '+';
+    const cifra = this.comaDecimal(Math.abs(valor));
+    return `${signo}${cifra} ${unidad}`;
+  }
 
   rutaMedia = computed(() =>
     this.trazarCurva(this.puntosTrazados().map((punto) => ({ x: punto.x, y: punto.yMedia }))),
@@ -481,23 +296,20 @@ export class Home {
     this.indicePuntoActivo.set(null);
   }
 
-  // Número decimal con coma (es-ES) para el tooltip: 76.4 → "76,4"
+  // Decimal al estilo del idioma vigente: 76.4 → "76,4" (es) / "76.4" (en)
   comaDecimal(valor: number): string {
-    return valor.toFixed(1).replace('.', ',');
+    const cifra = valor.toFixed(1);
+    return this.idioma() === 'en' ? cifra : cifra.replace('.', ',');
   }
 
-  fotosAntes = [
-    { fecha: 'Semana 1', peso: '94,8 kg', imagen: '/assets/images/transformacion-enero.png' },
-    { fecha: 'Semana 6', peso: '88,1 kg', imagen: '/assets/images/transformacion-marzo.png' },
-    { fecha: 'Semana 12', peso: '82,4 kg', imagen: '/assets/images/transformacion-mayo.png' },
-  ];
+  readonly fotosAntes = computed(() => this.textos().comparador.fotos);
 
   indiceFotoAntes = signal(0);
 
   posicionComparador = signal(56);
 
   fotoAntes() {
-    return this.fotosAntes[this.indiceFotoAntes()];
+    return this.fotosAntes()[this.indiceFotoAntes()];
   }
 
   seleccionarFotoAntes(indiceFoto: number): void {
@@ -574,69 +386,55 @@ export class Home {
   estaAyunando = computed(() => this.segundosEnAyuno() < 16 * 3600);
 
   estadoAyuno = computed(() => {
+    const textosAyuno = this.textos().ayuno;
     const horas = this.segundosEnAyuno() / 3600;
     if (horas >= 16) {
-      return { fase: 'Ventana de comida', detalle: 'ayuno completado · vuelves a las 20:00' };
+      return { fase: textosAyuno.faseVentana, detalle: textosAyuno.detalleVentana };
     }
     if (horas >= 12) {
       return {
-        fase: 'Cetosis activa',
-        detalle: `quemando grasa · hora ${Math.floor(horas)} de 16`,
+        fase: textosAyuno.faseCetosis,
+        detalle: `${textosAyuno.detalleCetosis} ${Math.floor(horas)} ${textosAyuno.de16}`,
       };
     }
     return {
-      fase: 'Fase glucógeno',
-      detalle: `gastando reservas · hora ${Math.floor(horas)} de 16`,
+      fase: textosAyuno.faseGlucogeno,
+      detalle: `${textosAyuno.detalleGlucogeno} ${Math.floor(horas)} ${textosAyuno.de16}`,
     };
   });
 
   rotuloAyuno = computed(() => {
+    const textosAyuno = this.textos().ayuno;
     if (!this.estaAyunando()) {
-      return 'ventana de comida · el ayuno vuelve a las 20:00';
+      return textosAyuno.rotuloVentana;
     }
-    return `en ayuno desde las 20:00 · llevas ${this.tiempoAyunoCorto()}`;
+    return `${textosAyuno.rotuloEnAyuno} ${this.tiempoAyunoCorto()}`;
   });
 
   // Subtítulos de las notas de fase: «estás aquí» solo en la fase real
   subGlucogeno = computed(() => {
+    const textosAyuno = this.textos().ayuno;
     const horas = this.segundosEnAyuno() / 3600;
     if (horas < 12) {
-      return `estás aquí · h ${this.puntoActualAyuno()}`;
+      return `${textosAyuno.estasAqui} ${this.puntoActualAyuno()}`;
     }
-    return 'hora 0 – 12 · completado';
+    return textosAyuno.glucogenoHecho;
   });
 
   subCetosis = computed(() => {
+    const textosAyuno = this.textos().ayuno;
     const horas = this.segundosEnAyuno() / 3600;
     if (horas >= 12 && horas < 16) {
-      return `estás aquí · h ${this.puntoActualAyuno()}`;
+      return `${textosAyuno.estasAqui} ${this.puntoActualAyuno()}`;
     }
-    return 'hora 12 – 16';
+    return textosAyuno.cetosisRango;
   });
 
   // Plan fijo del día; la fila «próxima» y su cuenta atrás se calculan en vivo
-  private eventosPlan = [
-    {
-      hora: 12,
-      etiqueta: '12:00',
-      nombre: 'Romper ayuno',
-      detalle: 'primera comida',
-      esComida: true,
-    },
-    { hora: 16, etiqueta: '16:00', nombre: 'Comida 2', detalle: '480 kcal', esComida: true },
-    { hora: 19.5, etiqueta: '19:30', nombre: 'Última comida', detalle: '540 kcal', esComida: true },
-    {
-      hora: 20,
-      etiqueta: '20:00',
-      nombre: 'Empieza el ayuno',
-      detalle: 'objetivo 16 h',
-      esComida: false,
-    },
-  ];
-
   filasPlan = computed(() => {
+    const textosAyuno = this.textos().ayuno;
     const ahora = this.ahoraMs();
-    const conLlegada = this.eventosPlan.map((evento) => ({
+    const conLlegada = textosAyuno.eventos.map((evento) => ({
       ...evento,
       llegadaMs: proximaOcurrenciaMs(evento.hora, ahora),
     }));
@@ -646,7 +444,7 @@ export class Home {
       esProxima: evento.llegadaMs === llegadaMinima,
       detalle:
         evento.llegadaMs === llegadaMinima
-          ? `en ${formatearDuracion(evento.llegadaMs - ahora)}`
+          ? `${textosAyuno.enPrefijo} ${formatearDuracion(evento.llegadaMs - ahora)}`
           : evento.detalle,
     }));
   });
@@ -697,50 +495,7 @@ export class Home {
   fraccionAyuno = computed(() => mapearHoraARegla(this.segundosEnAyuno() / 3600));
 
   // Fases inspeccionables al pasar el ratón: encienden su tramo de la hélice
-  zonasAyuno: ZonaAyuno[] = [
-    {
-      clave: 'glucogeno',
-      titulo: 'Fase 1 · Glucógeno',
-      rango: 'hora 0 – 12',
-      descripcion: 'El cuerpo gasta sus reservas de azúcar y la insulina cae.',
-      color: 'hsl(196, 70%, 62%)',
-      min: 0,
-      max: 0.3,
-      datos: [
-        { etiqueta: 'glucosa', valor: '72 mg/dl' },
-        { etiqueta: 'insulina', valor: '−45 %' },
-        { etiqueta: 'glucógeno', valor: '18 %' },
-      ],
-    },
-    {
-      clave: 'quema',
-      titulo: 'Fase 2 · Quema de grasa',
-      rango: 'hora 12 – 16',
-      descripcion: 'Sin azúcar disponible, la grasa pasa a ser el combustible.',
-      color: 'hsl(28, 100%, 60%)',
-      min: 0.3,
-      max: 0.78,
-      datos: [
-        { etiqueta: 'cetonas', valor: '0,6 mmol/L' },
-        { etiqueta: 'lipólisis', valor: '+150 %' },
-        { etiqueta: 'h. crecimiento', valor: '+300 %' },
-      ],
-    },
-    {
-      clave: 'autofagia',
-      titulo: 'Fase 3 · Autofagia',
-      rango: 'hora 16 – 18+',
-      descripcion: 'Las células reciclan componentes dañados y se reparan.',
-      color: 'hsl(276, 80%, 70%)',
-      min: 0.78,
-      max: 1,
-      datos: [
-        { etiqueta: 'cetonas', valor: '1,1 mmol/L' },
-        { etiqueta: 'mitocondrias', valor: '+15 %' },
-        { etiqueta: 'inflamación (PCR)', valor: '−20 %' },
-      ],
-    },
-  ];
+  readonly zonasAyuno = computed(() => this.textos().ayuno.zonas);
 
   zonaInspeccionada = signal<ZonaAyuno | null>(null);
 
@@ -840,10 +595,7 @@ export class Home {
 
   vasosBebidos = signal(5);
 
-  litrosAgua = computed(() => {
-    const litros = this.vasosBebidos() * 0.3;
-    return litros.toFixed(1).replace('.', ',');
-  });
+  litrosAgua = computed(() => this.comaDecimal(this.vasosBebidos() * 0.3));
 
   porcentajeAgua = computed(() => Math.round((this.vasosBebidos() / this.vasosAgua.length) * 100));
 
@@ -852,29 +604,22 @@ export class Home {
   nivelAgua = computed(() => Math.round(this.porcentajeAgua() * 0.8));
 
   estadoHidratacion = computed(() => {
+    const textosAgua = this.textos().agua;
     const pct = this.porcentajeAgua();
-    if (pct >= 100) return 'Objetivo cumplido';
-    if (pct >= 75) return 'Casi lo tienes';
-    if (pct >= 45) return 'Vas muy bien';
-    if (pct >= 20) return 'Vas por buen camino';
-    return 'Empieza a beber';
+    if (pct >= 100) return textosAgua.estadoCumplido;
+    if (pct >= 75) return textosAgua.estadoCasi;
+    if (pct >= 45) return textosAgua.estadoMuyBien;
+    if (pct >= 20) return textosAgua.estadoBuenCamino;
+    return textosAgua.estadoEmpieza;
   });
 
   // Historial de la semana (6 días fijos); el día de hoy se calcula en vivo
   // desde los vasos para que la última barra siga al registro.
-  private readonly historialAgua = [
-    { dia: 'L', litros: 2.4 },
-    { dia: 'M', litros: 2.1 },
-    { dia: 'X', litros: 2.6 },
-    { dia: 'J', litros: 1.9 },
-    { dia: 'V', litros: 2.3 },
-    { dia: 'S', litros: 2.0 },
-  ];
-
   semanaAgua = computed(() => {
+    const textosAgua = this.textos().agua;
     const tope = 3;
-    const dias = this.historialAgua.map((dia) => ({ ...dia, hoy: false }));
-    dias.push({ dia: 'D', litros: this.vasosBebidos() * 0.3, hoy: true });
+    const dias = textosAgua.historial.map((dia) => ({ ...dia, hoy: false }));
+    dias.push({ dia: textosAgua.diaHoy, litros: this.vasosBebidos() * 0.3, hoy: true });
     return dias.map((dia) => ({
       ...dia,
       altura: Math.min(100, Math.round((dia.litros / tope) * 100)),
@@ -902,35 +647,19 @@ export class Home {
       .slice(0, this.vasosBebidos())
       .map((hora, indice) => ({
         hora,
-        acumulado: ((indice + 1) * 0.3).toFixed(1).replace('.', ','),
+        acumulado: this.comaDecimal((indice + 1) * 0.3),
       }))
       .slice(-4),
   );
 
   litrosRestantes = computed(() => {
     const restante = Math.max(0, 2.4 - this.vasosBebidos() * 0.3);
-    return restante.toFixed(1).replace('.', ',');
+    return this.comaDecimal(restante);
   });
 
   /* ===== Widgets: "tu pantalla de inicio, en directo" =====
      Todo deriva del mismo tick de ahoraMs que mueve el ayuno, para que el
      reloj, la fecha, el saludo y el marcador "ahora" de la regla estén vivos. */
-  private readonly diasWidget = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
-  private readonly mesesWidget = [
-    'ene',
-    'feb',
-    'mar',
-    'abr',
-    'may',
-    'jun',
-    'jul',
-    'ago',
-    'sep',
-    'oct',
-    'nov',
-    'dic',
-  ];
-
   widgetHora = computed(() => {
     const fecha = new Date(this.ahoraMs());
     const dosDigitos = (valor: number) => String(valor).padStart(2, '0');
@@ -938,8 +667,9 @@ export class Home {
   });
 
   widgetFecha = computed(() => {
+    const textosWidgets = this.textos().widgets;
     const fecha = new Date(this.ahoraMs());
-    return `${this.diasWidget[fecha.getDay()]} ${fecha.getDate()} ${this.mesesWidget[fecha.getMonth()]}`;
+    return `${textosWidgets.dias[fecha.getDay()]} ${fecha.getDate()} ${textosWidgets.meses[fecha.getMonth()]}`;
   });
 
   estadoFaqAbierto: Record<number, boolean> = {};
@@ -981,7 +711,22 @@ export class Home {
   }
 
   seleccionarFuncionalidad(indiceFuncionalidad: number): void {
-    this.indiceFuncionalidadActiva.set(indiceFuncionalidad);
+    const disparador = this.disparadorFuncionalidades;
+
+    // Sin pin activo (móvil): basta con fijar el índice.
+    if (!disparador) {
+      this.indiceFuncionalidadActiva.set(indiceFuncionalidad);
+      return;
+    }
+
+    // Con el pin activo hay que MOVER el scroll a la posición de ese panel; así el
+    // onUpdate aterriza en el índice y el snap lo mantiene (fijar el índice a secas
+    // lo revierte el onUpdate al instante). El paso i vive en el progreso i/(n-1).
+    const totalPasos = this.funcionalidades().length;
+    const progresoDestino = indiceFuncionalidad / (totalPasos - 1);
+    const recorrido = disparador.end - disparador.start;
+    const posicionDestino = disparador.start + progresoDestino * recorrido;
+    this.animaciones.desplazarHastaPosicion(posicionDestino);
   }
 
   navegarAPlanes(): void {
@@ -996,6 +741,7 @@ export class Home {
 
     this.zona.runOutsideAngular(() => {
       this.contexto = gsap.context(() => {
+        this.animarPrecarga();
         this.animarHero();
         this.animarManifiesto();
         this.animarProceso();
@@ -1012,8 +758,41 @@ export class Home {
     this.destroyRef.onDestroy(() => this.contexto?.revert());
   }
 
+  private animarPrecarga(): void {
+    if (!this.mostrarPrecarga()) {
+      return;
+    }
+    sessionStorage.setItem('cofira-precarga', '1');
+
+    // Rescate: si el timeline muere (error de JS, pestaña en segundo plano),
+    // la cortina jamás debe quedarse tapando la página.
+    setTimeout(() => this.mostrarPrecarga.set(false), 4000);
+
+    const progreso = { valor: 0 };
+    const salida = gsap.timeline();
+    salida
+      .to(progreso, {
+        valor: 100,
+        duration: 1.3,
+        ease: 'power2.inOut',
+        onUpdate: () => this.contadorPrecarga.set(Math.round(progreso.valor)),
+      })
+      .to(
+        '.precarga',
+        {
+          yPercent: -100,
+          duration: 0.75,
+          ease: 'power4.inOut',
+          onComplete: () => this.mostrarPrecarga.set(false),
+        },
+        '+=0.15',
+      );
+  }
+
   private animarHero(): void {
-    const entrada = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    // Con precarga la intro espera a que la cortina se levante
+    const retrasoIntro = this.mostrarPrecarga() ? 1.7 : 0;
+    const entrada = gsap.timeline({ delay: retrasoIntro, defaults: { ease: 'power3.out' } });
     entrada
       .from('.hero__eyebrow', { y: 24, autoAlpha: 0, duration: 0.6 })
       .from('.hero__titulo', { y: 44, autoAlpha: 0, duration: 0.85 }, '-=0.35')
@@ -1176,13 +955,21 @@ export class Home {
     const medios = gsap.matchMedia();
 
     medios.add('(min-width: 1025px)', () => {
-      const totalPasos = this.funcionalidades.length;
+      const totalPasos = this.funcionalidades().length;
 
-      ScrollTrigger.create({
+      this.disparadorFuncionalidades = ScrollTrigger.create({
         trigger: '.funcionalidades__escena',
         start: 'top top',
         end: () => `+=${totalPasos * 320}`,
         pin: true,
+        // El scroll se asienta en el panel más cercano al soltar: atrapa la inercia
+        // de Lenis para que no vuele saltándose paneles ni se salga del pin.
+        snap: {
+          snapTo: 1 / (totalPasos - 1),
+          duration: { min: 0.15, max: 0.4 },
+          ease: 'power2.inOut',
+          directional: false,
+        },
         onUpdate: (disparador) => {
           const indiceCalculado = Math.floor(disparador.progress * totalPasos);
           const indiceLimitado = Math.min(totalPasos - 1, indiceCalculado);

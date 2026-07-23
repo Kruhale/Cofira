@@ -13,8 +13,10 @@ import { RouterLink } from '@angular/router';
 
 import { ThemeService } from '../../../services/theme.service';
 import { AnimacionesService } from '../../../services/animaciones.service';
+import { CodigoIdioma, IdiomaService } from '../../../services/idioma.service';
 import { RevelarScrollDirective } from '../../../directives/revelar-scroll.directive';
 import { ContadorAnimadoDirective } from '../../../directives/contador-animado.directive';
+import { TEXTOS_PIE } from './textos-pie';
 
 @Component({
   selector: 'app-footer',
@@ -29,10 +31,17 @@ export class Footer {
   private readonly elementRef = inject(ElementRef);
   private readonly animaciones = inject(AnimacionesService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly idiomaService = inject(IdiomaService);
+
+  /* Textos del pie en el idioma vigente: al cambiar el signal se repinta todo */
+  readonly textos = computed(() => TEXTOS_PIE[this.idiomaService.idioma()]);
 
   /** Personas entrenando ahora: sube EN VIVO para que la comunidad se sienta viva. */
   readonly entrenando = signal(24819);
-  readonly entrenandoTexto = computed(() => this.entrenando().toLocaleString('es-ES'));
+  readonly entrenandoTexto = computed(() => {
+    const localeNumerico = this.idiomaService.idioma() === 'en' ? 'en-US' : 'es-ES';
+    return this.entrenando().toLocaleString(localeNumerico);
+  });
   private temporizadorVivo = 0;
   private elementoNumero: HTMLElement | null = null;
 
@@ -77,16 +86,9 @@ export class Footer {
 
   anioActual = new Date().getFullYear();
 
-  socialLinks = [
-    { name: 'YouTube', url: 'https://youtube.com/cofira' },
-    { name: 'Facebook', url: 'https://facebook.com/cofira' },
-    { name: 'Twitter', url: 'https://twitter.com/cofira' },
-    { name: 'Instagram', url: 'https://instagram.com/cofira' },
-    { name: 'LinkedIn', url: 'https://linkedin.com/company/cofira' },
-  ];
-
-  idiomaActual = 'ES';
-  idiomas = ['ES', 'EN', 'FR', 'DE'];
+  /* Solo los idiomas con traducción real; el botón los muestra en mayúsculas */
+  readonly idiomaActual = computed(() => this.idiomaService.idioma());
+  idiomas: CodigoIdioma[] = ['es', 'en'];
   mostrarIdiomas = false;
 
   get modoOscuro(): boolean {
@@ -97,8 +99,8 @@ export class Footer {
     this.themeService.toggle();
   }
 
-  cambiarIdioma(idioma: string): void {
-    this.idiomaActual = idioma;
+  cambiarIdioma(idioma: CodigoIdioma): void {
+    this.idiomaService.cambiarIdioma(idioma);
     this.mostrarIdiomas = false;
   }
 

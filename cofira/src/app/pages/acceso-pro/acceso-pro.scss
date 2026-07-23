@@ -6,175 +6,345 @@
 }
 
 .acceso-pro {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  --contenido-max-width: 48rem; /* 768px */
+
+  @include flex-columna(var(--spacing-size-xxl));
   align-items: center;
-  justify-content: center;
-  max-width: 48rem;
-  margin: 0 auto;
-  padding: var(--page-shell-top) 2rem var(--spacing-size-xxxl);
+  width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  isolation: isolate;
-  overflow: hidden;
+  padding: var(--page-shell-top) var(--spacing-size-xl) var(--spacing-size-xxxl);
+  background-color: var(--superficie-fondo);
+
+  @include responsive-down('md') {
+    padding: var(--page-shell-top-movil) var(--spacing-size-m) var(--spacing-size-xl);
+  }
 }
 
-.acceso-pro::before {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 60rem;
-  height: 40rem;
-  z-index: -1;
-  content: '';
-  transform: translateX(-50%);
-  background: var(--gradiente-halo);
-  pointer-events: none;
+.acceso-pro__venta {
+  @include flex-columna(var(--spacing-size-xl));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.acceso-pro__pro-activo {
+  @include flex-columna(var(--spacing-size-xl));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.acceso-pro__pago {
+  @include flex-columna(var(--spacing-size-xl));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.acceso-pro__exito {
+  @include flex-columna(var(--spacing-size-s));
+  align-items: flex-start;
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  padding-top: var(--spacing-size-l);
 }
 
 
-/* ── Estado por defecto (venta) ── */
-.acceso-pro__contenido {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+
+/* ── Cabecera canónica: eyebrow con regla + display + contexto mono ── */
+
+.acceso-pro__cabecera {
+  @include flex-columna(0.85rem);
+  align-items: flex-start;
   width: 100%;
 }
 
-.acceso-pro__icono {
-  display: flex;
+.acceso-pro__eyebrow {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 4.5rem;
-  height: 4.5rem;
-  margin: 0 0 1.75rem;
-  border-radius: var(--radius-lg);
-  background: var(--naranja-glow-suave);
-  border: 1px solid var(--borde-sutil);
-  color: var(--naranja-normal);
+  gap: 0.75rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* ~10px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
 }
 
-.acceso-pro__icono svg {
-  width: 2.25rem;
-  height: 2.25rem;
+.acceso-pro__eyebrow::before {
+  content: '';
+  width: 1.75rem; /* 28px */
+  height: 1px;
+  background: var(--naranja-normal);
 }
 
 .acceso-pro__titulo {
-  @include titular-display(var(--display-lg));
-  margin: 0 0 1rem;
+  @include titular-display(var(--display-md));
 }
 
-.acceso-pro__subtitulo {
-  margin: 0 0 3rem;
-  max-width: 32rem;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-lg);
-  line-height: 1.5;
+.acceso-pro__contexto {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-suave);
+}
+
+
+
+/* ── Señales de estado: etiqueta mono con punto vivo ── */
+
+.acceso-pro__estado-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--texto-secundario);
 }
 
-.acceso-pro__beneficios {
+.acceso-pro__estado-etiqueta--exito {
+  color: var(--exito-texto);
+}
+
+.acceso-pro__estado-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: acceso-pro-punto-latido 1.9s ease-in-out infinite;
+}
+
+.acceso-pro__estado-punto--exito {
+  background: var(--verde-normal);
+}
+
+@keyframes acceso-pro-punto-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+.acceso-pro__exito-texto {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  color: var(--texto-secundario);
+}
+
+
+
+/* ── Banda de datos: etiqueta mono arriba + valor display abajo ── */
+
+.acceso-pro__datos {
+  display: flex;
+  gap: 2.75rem;
   width: 100%;
-  margin-bottom: 2.5rem;
+  padding-top: var(--spacing-size-l);
+  border-top: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-wrap: wrap;
+    gap: var(--spacing-size-l);
+  }
 }
 
-.acceso-pro__beneficios-titulo {
-  @include etiqueta-tecnica(var(--naranja-texto));
-  margin: 0 0 1.5rem;
+.acceso-pro__dato {
+  @include flex-columna(0.45rem);
 }
 
-.acceso-pro__beneficios-lista {
-  @include rejilla-tarjetas(15rem, 1.25rem);
+.acceso-pro__dato-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
 }
 
-.acceso-pro__beneficio {
-  @include superficie-bento;
-  @include bento-hover;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.75rem;
-  text-align: left;
-}
-
-.acceso-pro__beneficio-icono {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  margin: 0;
-  border-radius: var(--radius-md);
-  background: var(--naranja-glow-suave);
-  border: 1px solid var(--borde-sutil);
-  color: var(--naranja-normal);
-}
-
-.acceso-pro__beneficio-icono svg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.acceso-pro__beneficio-texto {
-  margin: 0;
-}
-
-.acceso-pro__beneficio-titulo {
-  margin: 0 0 0.4rem;
-  font-family: var(--font-secondary);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
+.acceso-pro__dato-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.6rem; /* 25.6px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
 }
 
-.acceso-pro__beneficio-descripcion {
+.acceso-pro__dato-valor--vivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.acceso-pro__pro-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-l);
+}
+
+.acceso-pro__gestionar {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  color: var(--naranja-texto);
+  border-bottom: 1px solid var(--naranja-normal);
+  padding-bottom: 0.2rem;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.acceso-pro__gestionar:hover {
+  opacity: 0.75;
+}
+
+
+
+/* ── Beneficios: lista editorial con puntos conductores ── */
+
+.acceso-pro__beneficios {
+  @include flex-columna(var(--spacing-size-m));
+  width: 100%;
+}
+
+.acceso-pro__beneficios-titulo {
+  @include etiqueta-tecnica(var(--texto-suave));
   margin: 0;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
-  line-height: 1.5;
+}
+
+.acceso-pro__beneficios-lista {
+  @include flex-columna(0);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.acceso-pro__beneficio {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+  }
+}
+
+.acceso-pro__beneficio-indice {
+  flex: 0 0 1.5rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
   color: var(--texto-secundario);
 }
 
-
-/* ── Precio ── */
-.acceso-pro__precio-seccion,
-.acceso-pro__precio {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 0.4rem;
-  margin-bottom: 2rem;
+.acceso-pro__beneficio-titulo {
+  flex: 0 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.45rem; /* 23.2px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-titulo-beneficio, var(--texto-principal));
+  transition: color var(--duration-fast) ease;
 }
 
-.acceso-pro__precio-cantidad {
+/* La variable hereda a los descendientes: así el título cambia de color al
+   pasar el ratón por la fila entera sin anidar el selector del hijo */
+.acceso-pro__beneficio:hover {
+  --color-titulo-beneficio: var(--naranja-texto);
+}
+
+/* Puntos conductores de carta impresa: el span vacío en un flex con línea
+   base deja su borde inferior justo sobre la baseline del texto */
+.acceso-pro__beneficio-puntos {
+  position: relative;
+  top: -0.15rem;
+  flex: 1 1 2rem;
+  border-bottom: 1px dotted var(--borde-medio);
+
+  @include responsive-down('sm') {
+    display: none;
+  }
+}
+
+.acceso-pro__beneficio-detalle {
+  flex: 0 0 auto;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--texto-secundario);
+
+  @include responsive-down('sm') {
+    /* 2.4rem: alinea el detalle bajo el título (índice 1.5rem + hueco 0.9rem) */
+    flex: 1 1 100%;
+    padding-left: 2.4rem;
+  }
+}
+
+
+
+/* ── Banda de suscripción: precio + CTA sobre filo superior ── */
+
+.acceso-pro__banda {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-size-l);
+  width: 100%;
+  padding-top: var(--spacing-size-l);
+  border-top: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.acceso-pro__precio-valor {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
   font-family: var(--fuente-display);
-  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-size: 2.4rem; /* 38.4px */
+  font-weight: var(--font-weight-bold);
   line-height: 1;
-  @include texto-gradiente;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
 }
 
 .acceso-pro__precio-periodo {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-lg);
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
   color: var(--texto-secundario);
 }
 
 .acceso-pro__acciones {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: var(--spacing-size-l);
 }
 
 .acceso-pro__volver {
+  padding: 0;
   background: transparent;
   border: none;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: var(--texto-secundario);
-  font-family: var(--font-primary);
-  font-size: var(--font-size-sm);
   cursor: pointer;
   transition: color var(--duration-fast) ease;
 }
@@ -184,33 +354,22 @@
 }
 
 
-/* ── Formulario de pago ── */
-.acceso-pro__pago {
-  @include superficie-bento;
-  width: 100%;
-  max-width: 30rem;
-  padding: 2.25rem;
-}
 
-.acceso-pro__pago-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
+/* ── Formulario de pago: composición de filos, sin tarjeta ── */
 
 .acceso-pro__pago-cerrar {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-bottom: 0.5rem;
   border: 1px solid var(--borde-sutil);
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--texto-secundario);
   cursor: pointer;
-  transition: all var(--duration-fast) ease;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease;
 }
 
 .acceso-pro__pago-cerrar:hover {
@@ -219,48 +378,44 @@
 }
 
 .acceso-pro__pago-cerrar svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.acceso-pro__pago-titulo {
-  margin: 0;
-  font-family: var(--fuente-display);
-  font-size: var(--font-size-2xl);
-  font-weight: 400;
-  text-transform: uppercase;
-  color: var(--texto-principal);
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .acceso-pro__form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
+  @include flex-columna(var(--spacing-size-xl));
+  width: 100%;
+  max-width: 32rem;
 }
 
 .acceso-pro__fieldset {
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
+  @include flex-columna(1.1rem);
   margin: 0;
-  padding: 0;
+  padding: var(--spacing-size-l) 0 0;
   border: none;
+  border-top: 1px solid var(--borde-sutil);
 }
 
 .acceso-pro__legend {
-  @include etiqueta-tecnica(var(--naranja-texto));
+  @include etiqueta-tecnica(var(--texto-suave));
   padding: 0;
   margin-bottom: 0.5rem;
 }
 
 .acceso-pro__field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
+  @include flex-columna(0.45rem);
+}
+
+.acceso-pro__field--mitad {
+  flex: 1 1 0;
 }
 
 .acceso-pro__field-label {
-  @include etiqueta-tecnica(var(--texto-suave));
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
 }
 
 .acceso-pro__input {
@@ -268,24 +423,27 @@
   padding: var(--spacing-size-s) var(--spacing-size-m);
   font-family: var(--font-primary);
   font-size: var(--font-size-md);
+  font-variant-numeric: tabular-nums;
   color: var(--texto-principal);
   background: var(--superficie-1);
   border: 1px solid var(--borde-sutil);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   box-sizing: border-box;
-  transition: all var(--duration-fast) ease;
+  transition: border-color var(--duration-fast) ease;
 }
 
 .acceso-pro__input:focus-visible {
   outline: none;
   border-color: var(--naranja-normal);
-  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
 }
 
 .acceso-pro__field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  display: flex;
+  gap: var(--spacing-size-m);
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+  }
 }
 
 .acceso-pro__checkbox-field {
@@ -309,65 +467,25 @@
 
 .acceso-pro__form-footer {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-size-l);
+  padding-top: var(--spacing-size-l);
+  border-top: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .acceso-pro__aviso {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--texto-suave);
-}
-
-.acceso-pro__aviso-icono {
-  width: 1rem;
-  height: 1rem;
-}
-
-.acceso-pro__aviso-texto {
-  font-family: var(--fuente-mono);
-  font-size: var(--font-size-sm);
-}
-
-
-/* ── Estado de éxito ── */
-.acceso-pro__exito {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.acceso-pro__exito-icono {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 5rem;
-  height: 5rem;
-  margin: 0 0 1.5rem;
-  border-radius: 50%;
-  background: var(--verde-normal-transparente-012);
-  border: 1px solid var(--verde-normal-transparente-012);
-  color: var(--exito-texto);
-}
-
-.acceso-pro__exito-icono svg {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-.acceso-pro__exito-titulo {
-  @include titular-display(var(--display-md));
-  margin: 0 0 0.75rem;
-}
-
-.acceso-pro__exito-texto {
   margin: 0;
-  font-family: var(--font-primary);
-  font-size: var(--font-size-lg);
-  color: var(--texto-secundario);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texto-suave);
 }
 
 .acceso-pro__loading {
@@ -387,13 +505,15 @@
 }
 
 
-/* ── Responsive ── */
-@include responsive-down('sm') {
-  .acceso-pro {
-    padding: var(--page-shell-top-movil) 1.25rem var(--spacing-size-xxl);
+
+/* ── Movimiento reducido: sin señales pulsantes ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .acceso-pro__estado-punto {
+    animation: none;
   }
 
-  .acceso-pro__field-row {
-    grid-template-columns: 1fr;
+  .acceso-pro__spinner {
+    animation: none;
   }
 }

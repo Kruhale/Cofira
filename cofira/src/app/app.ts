@@ -6,6 +6,7 @@ import { Header } from './components/layout/header/header';
 import { Footer } from './components/layout/footer/footer';
 import { NotificationContainer } from './components/shared/notification-container/notification-container';
 import { AnimacionesService } from './services/animaciones.service';
+import { IdiomaService } from './services/idioma.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,12 @@ export class App {
   protected readonly title = signal('cofira');
   private readonly animaciones = inject(AnimacionesService);
   private readonly router = inject(Router);
+  private readonly idiomaService = inject(IdiomaService);
+
+  /* Única cadena visible de la shell: no justifica un diccionario propio */
+  protected readonly textoSaltar = computed(() =>
+    this.idiomaService.idioma() === 'en' ? 'Skip to main content' : 'Saltar al contenido principal',
+  );
 
   private readonly urlActual = toSignal(
     this.router.events.pipe(

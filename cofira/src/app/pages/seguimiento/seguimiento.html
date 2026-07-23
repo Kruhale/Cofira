@@ -1,160 +1,170 @@
 <main class="seguimiento">
 
   <header class="seguimiento__cabecera">
-    <p class="seguimiento__eyebrow">Seguimiento · tu evolución</p>
-    <h1 class="seguimiento__titulo">Tu progreso<span class="seguimiento__titulo-punto" aria-hidden="true">.</span></h1>
+    <p class="seguimiento__eyebrow">{{ textos().eyebrow }}</p>
+    <h1 class="seguimiento__titulo">{{ textos().titulo }}</h1>
+    <p class="seguimiento__contexto">{{ textos().contexto }}</p>
   </header>
 
-  <section class="seguimiento__macronutrientes">
-    <article class="seguimiento__card-macros" hazDeLuz>
-      <span class="seguimiento__haz" aria-hidden="true"></span>
+  <section class="seguimiento__macros">
+    <article class="seguimiento__consumo">
+      <p class="seguimiento__consumo-etiqueta">{{ textos().macrosEtiqueta }}</p>
 
-      <header class="seguimiento__macros-info">
-        <p class="seguimiento__macros-etiqueta">Macronutrientes · hoy</p>
+      <p class="seguimiento__kcal">
+        <span class="seguimiento__kcal-valor">{{ macrosConsumo().calorias.consumido }}</span>
+        <span class="seguimiento__kcal-objetivo">/ {{ macrosConsumo().calorias.objetivo }} kcal</span>
+      </p>
 
-        <p class="seguimiento__macros-calorias">
-          <span class="seguimiento__calorias-valor">{{ macrosConsumo().calorias.consumido }}</span>
-          <span class="seguimiento__calorias-objetivo">/ {{ macrosConsumo().calorias.objetivo }} kcal</span>
-        </p>
+      @if (macrosConsumo().diasConDatos === 0) {
+        <aside class="seguimiento__consumo-vacio">
+          <p class="seguimiento__vacio-etiqueta">{{ textos().sinDatosAlimentacion }}</p>
+          <p class="seguimiento__vacio-ayuda">{{ textos().ayudaGenerarMenu }}</p>
+        </aside>
+      }
 
-        <ul class="seguimiento__macros-lista">
-          <li class="seguimiento__macro-item">
-            <span aria-hidden="true" class="seguimiento__macro-indicador seguimiento__macro-indicador--proteinas"></span>
-            <span class="seguimiento__macro-texto">Proteínas</span>
-            <span class="seguimiento__macro-cifra">{{ macrosConsumo().proteinas.consumido }}g · {{ macrosConsumo().proteinas.porcentajeGrafica }}%</span>
-          </li>
-          <li class="seguimiento__macro-item">
-            <span aria-hidden="true" class="seguimiento__macro-indicador seguimiento__macro-indicador--carbohidratos"></span>
-            <span class="seguimiento__macro-texto">Carbohidratos</span>
-            <span class="seguimiento__macro-cifra">{{ macrosConsumo().carbohidratos.consumido }}g · {{ macrosConsumo().carbohidratos.porcentajeGrafica }}%</span>
-          </li>
-          <li class="seguimiento__macro-item">
-            <span aria-hidden="true" class="seguimiento__macro-indicador seguimiento__macro-indicador--grasas"></span>
-            <span class="seguimiento__macro-texto">Grasas</span>
-            <span class="seguimiento__macro-cifra">{{ macrosConsumo().grasas.consumido }}g · {{ macrosConsumo().grasas.porcentajeGrafica }}%</span>
-          </li>
-        </ul>
-
-        <dl class="seguimiento__extras">
-          <dt class="seguimiento__extra-label">Fibra objetivo</dt>
-          <dd class="seguimiento__extra-valor">{{ fibraObjetivo() }}g</dd>
-          <dt class="seguimiento__extra-label">Agua hoy</dt>
-          <dd class="seguimiento__extra-valor">{{ aguaConsumida() | number:'1.1-1' }}L / {{ aguaObjetivo() }}L</dd>
-        </dl>
-      </header>
-
-      <figure class="seguimiento__grafico-circular">
-        @if (macrosConsumo().diasConDatos > 0) {
-          <svg aria-label="Gráfico circular de macronutrientes" class="seguimiento__pie-chart" role="img" viewBox="0 0 200 200">
-            <circle class="seguimiento__pie-pista" cx="100" cy="100" r="80" fill="transparent" stroke-width="34" transform="rotate(-90 100 100)"/>
-            <circle class="seguimiento__pie-segmento seguimiento__pie-segmento--proteinas"
-              [attr.stroke-dasharray]="calcularDashArray(macrosConsumo().proteinas.porcentajeGrafica)"
-              [attr.stroke-dashoffset]="calcularDashOffset(0)"
-              cx="100" cy="100" r="80" fill="transparent" stroke-width="34" transform="rotate(-90 100 100)"/>
-            <circle class="seguimiento__pie-segmento seguimiento__pie-segmento--carbohidratos"
-              [attr.stroke-dasharray]="calcularDashArray(macrosConsumo().carbohidratos.porcentajeGrafica)"
-              [attr.stroke-dashoffset]="calcularDashOffset(macrosConsumo().proteinas.porcentajeGrafica)"
-              cx="100" cy="100" r="80" fill="transparent" stroke-width="34" transform="rotate(-90 100 100)"/>
-            <circle class="seguimiento__pie-segmento seguimiento__pie-segmento--grasas"
-              [attr.stroke-dasharray]="calcularDashArray(macrosConsumo().grasas.porcentajeGrafica)"
-              [attr.stroke-dashoffset]="calcularDashOffset(macrosConsumo().proteinas.porcentajeGrafica + macrosConsumo().carbohidratos.porcentajeGrafica)"
-              cx="100" cy="100" r="80" fill="transparent" stroke-width="34" transform="rotate(-90 100 100)"/>
-            <text class="seguimiento__pie-centro-valor" x="100" y="98" text-anchor="middle">{{ macrosConsumo().calorias.consumido }}</text>
-            <text class="seguimiento__pie-centro-label" x="100" y="120" text-anchor="middle">KCAL</text>
-          </svg>
-        } @else {
-          <aside class="seguimiento__sin-datos-circular">
-            <p>Sin datos de alimentación</p>
-            <p class="seguimiento__ayuda">Genera tu menú semanal para ver tus macros</p>
-          </aside>
-        }
-      </figure>
+      <ul class="seguimiento__macro-lista">
+        <li class="seguimiento__macro">
+          <span class="seguimiento__macro-fila">
+            <span class="seguimiento__macro-nombre">{{ textos().etiquetaProteinas }}</span>
+            <span aria-hidden="true" class="seguimiento__macro-puntos"></span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().proteinas.consumido }}g · {{ macrosConsumo().proteinas.porcentaje }}%</span>
+          </span>
+          <span class="seguimiento__macro-barra">
+            <span class="seguimiento__macro-relleno seguimiento__macro-relleno--proteinas" [style.--relleno]="macrosConsumo().proteinas.porcentaje / 100"></span>
+          </span>
+        </li>
+        <li class="seguimiento__macro">
+          <span class="seguimiento__macro-fila">
+            <span class="seguimiento__macro-nombre">{{ textos().etiquetaCarbohidratos }}</span>
+            <span aria-hidden="true" class="seguimiento__macro-puntos"></span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().carbohidratos.consumido }}g · {{ macrosConsumo().carbohidratos.porcentaje }}%</span>
+          </span>
+          <span class="seguimiento__macro-barra">
+            <span class="seguimiento__macro-relleno seguimiento__macro-relleno--carbohidratos" [style.--relleno]="macrosConsumo().carbohidratos.porcentaje / 100"></span>
+          </span>
+        </li>
+        <li class="seguimiento__macro">
+          <span class="seguimiento__macro-fila">
+            <span class="seguimiento__macro-nombre">{{ textos().etiquetaGrasas }}</span>
+            <span aria-hidden="true" class="seguimiento__macro-puntos"></span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().grasas.consumido }}g · {{ macrosConsumo().grasas.porcentaje }}%</span>
+          </span>
+          <span class="seguimiento__macro-barra">
+            <span class="seguimiento__macro-relleno seguimiento__macro-relleno--grasas" [style.--relleno]="macrosConsumo().grasas.porcentaje / 100"></span>
+          </span>
+        </li>
+      </ul>
     </article>
+
+    <aside class="seguimiento__complementos">
+      <p class="seguimiento__banda-dato">
+        <span class="seguimiento__banda-etiqueta">{{ textos().etiquetaFibraObjetivo }}</span>
+        <span class="seguimiento__banda-valor">{{ fibraObjetivo() }}g</span>
+      </p>
+      <p class="seguimiento__banda-dato">
+        <span class="seguimiento__banda-etiqueta">{{ textos().etiquetaAguaHoy }}</span>
+        <span class="seguimiento__banda-valor">{{ comaDecimal(aguaConsumida()) }}L / {{ aguaObjetivo() }}L</span>
+      </p>
+      <p class="seguimiento__banda-dato">
+        <span class="seguimiento__banda-etiqueta">{{ textos().etiquetaRegistros }}</span>
+        <span class="seguimiento__banda-valor">{{ macrosConsumo().diasConDatos }}</span>
+      </p>
+    </aside>
   </section>
 
   <section class="seguimiento__fuerza">
     <header class="seguimiento__fuerza-cabecera">
-      <p class="seguimiento__eyebrow">Fuerza · evolución</p>
-      <h2 class="seguimiento__fuerza-titulo">Ganancia de fuerza</h2>
+      <p class="seguimiento__fuerza-eyebrow">{{ textos().fuerzaEyebrow }}</p>
+      <h2 class="seguimiento__fuerza-titulo">{{ textos().fuerzaTitulo }}</h2>
     </header>
 
-    <nav class="seguimiento__selector-ejercicio">
-      @if (ejerciciosDisponibles().length > 0) {
-        <ul class="seguimiento__lista-chips">
+    @if (ejerciciosDisponibles().length > 0) {
+      <nav class="seguimiento__tabs">
+        <ul class="seguimiento__tabs-lista">
           @for (ejercicio of ejerciciosDisponibles(); track ejercicio) {
-            <li class="seguimiento__chip-item">
+            <li class="seguimiento__tabs-item">
               <button
-                [class.seguimiento__chip--activo]="ejercicioSeleccionado() === ejercicio"
+                [attr.aria-current]="ejercicioSeleccionado() === ejercicio ? 'true' : null"
+                [class.seguimiento__tab--activa]="ejercicioSeleccionado() === ejercicio"
                 (click)="seleccionarEjercicio(ejercicio)"
-                class="seguimiento__chip"
+                class="seguimiento__tab"
                 type="button">
                 {{ ejercicio }}
               </button>
             </li>
           }
         </ul>
-      } @else {
-        <p class="seguimiento__sin-datos">No hay ejercicios registrados</p>
-      }
-    </nav>
+      </nav>
 
-    <article class="seguimiento__grafico-lineas">
-      @if (cargandoGrafico()) {
-        <aside aria-live="polite" class="seguimiento__cargando">
-          <p>Cargando datos...</p>
-        </aside>
-      } @else if (puntosGrafico().length === 0) {
-        <aside class="seguimiento__sin-datos-grafico">
-          <p class="seguimiento__sin-datos-grafico__mensaje">No hay datos de peso registrados para este ejercicio.</p>
-          <p class="seguimiento__ayuda">Registra el peso levantado en tus entrenamientos para ver tu progreso aquí.</p>
-        </aside>
-      } @else {
-        <figure class="seguimiento__chart-container">
-          <svg aria-label="Gráfico de evolución de fuerza" class="seguimiento__line-chart" role="img" viewBox="-30 0 630 300">
-            <defs>
-              <linearGradient id="gradienteFuerza" x1="0" y1="0" x2="0" y2="1">
-                <stop class="seguimiento__parada-inicio" offset="0"/>
-                <stop class="seguimiento__parada-fin" offset="1"/>
-              </linearGradient>
-            </defs>
+      <article class="seguimiento__grafica">
+        @if (cargandoGrafico()) {
+          <aside aria-live="polite" class="seguimiento__cargando">
+            <span aria-hidden="true" class="seguimiento__cargando-punto"></span>
+            <p class="seguimiento__cargando-texto">{{ textos().cargandoDatos }}</p>
+          </aside>
+        } @else if (puntosGrafico().length === 0) {
+          <aside class="seguimiento__vacio">
+            <p class="seguimiento__vacio-etiqueta">{{ ejercicioSeleccionado() }}</p>
+            <p class="seguimiento__vacio-mensaje">{{ textos().sinDatosPeso }}</p>
+            <p class="seguimiento__vacio-ayuda">{{ textos().ayudaRegistrarPeso }}</p>
+            <span aria-hidden="true" class="seguimiento__vacio-esqueleto"></span>
+            <span aria-hidden="true" class="seguimiento__vacio-esqueleto"></span>
+            <span aria-hidden="true" class="seguimiento__vacio-esqueleto seguimiento__vacio-esqueleto--corto"></span>
+          </aside>
+        } @else {
+          <figure class="seguimiento__grafica-lienzo">
+            <svg aria-label="{{ textos().ariaGraficoFuerza }}" class="seguimiento__grafica-svg" role="img" viewBox="0 0 590 275">
+              @for (guia of guiasEjeY(); track guia.y) {
+                <line class="seguimiento__grafica-guia" x1="50" x2="560" [attr.y1]="guia.y" [attr.y2]="guia.y"/>
+                <text class="seguimiento__grafica-eje" text-anchor="end" x="40" [attr.y]="guia.y + 4">{{ comaDecimal(guia.peso) }}kg</text>
+              }
 
-            <line class="seguimiento__eje" x1="50" x2="50" y1="20" y2="250"/>
-            <line class="seguimiento__eje" x1="50" x2="580" y1="250" y2="250"/>
+              <line class="seguimiento__grafica-base" x1="50" x2="560" y1="235" y2="235"/>
 
-            <text class="seguimiento__chart-label" text-anchor="end" x="40" y="35">{{ pesoMaximoGrafico() }}kg</text>
-            <text class="seguimiento__chart-label" text-anchor="end" x="40" y="90">{{ pesoMaximoGrafico() * 0.75 | number:'1.0-0' }}kg</text>
-            <text class="seguimiento__chart-label" text-anchor="end" x="40" y="145">{{ pesoMaximoGrafico() * 0.5 | number:'1.0-0' }}kg</text>
-            <text class="seguimiento__chart-label" text-anchor="end" x="40" y="200">{{ pesoMaximoGrafico() * 0.25 | number:'1.0-0' }}kg</text>
-            <text class="seguimiento__chart-label" text-anchor="end" x="40" y="255">0kg</text>
+              @for (punto of fechasEjeX(); track punto.fecha) {
+                <text class="seguimiento__grafica-eje" text-anchor="middle" [attr.x]="punto.x" y="255">{{ punto.fecha }}</text>
+              }
 
-            <line class="seguimiento__linea-guia" x1="50" x2="580" y1="35" y2="35"/>
-            <line class="seguimiento__linea-guia" x1="50" x2="580" y1="90" y2="90"/>
-            <line class="seguimiento__linea-guia" x1="50" x2="580" y1="145" y2="145"/>
-            <line class="seguimiento__linea-guia" x1="50" x2="580" y1="200" y2="200"/>
+              @if (polylinePoints()) {
+                <polyline class="seguimiento__grafica-linea" fill="none" [attr.points]="polylinePoints()"/>
+              }
 
-            @for (punto of fechasEjeX(); track punto.fecha) {
-              <text class="seguimiento__chart-label" text-anchor="middle" [attr.x]="punto.x" y="270">{{ punto.fecha }}</text>
-            }
+              @for (punto of puntosGrafico(); track punto.fecha; let ultimo = $last) {
+                <circle class="seguimiento__grafica-punto" [class.seguimiento__grafica-punto--ultimo]="ultimo" [attr.cx]="punto.x" [attr.cy]="punto.y" r="4.5">
+                  <title>{{ punto.fecha }}: {{ comaDecimal(punto.peso) }}kg</title>
+                  @if (ultimo && !movimientoReducido()) {
+                    <animate attributeName="r" dur="1.4s" repeatCount="indefinite" values="4.5;6.5;4.5"/>
+                  }
+                </circle>
+              }
+            </svg>
+          </figure>
 
-            <text class="seguimiento__chart-label-axis" text-anchor="middle" x="315" y="295">Fecha</text>
-            <text class="seguimiento__chart-label-axis" text-anchor="middle" transform="rotate(-90 -10 145)" x="-10" y="145">Peso (kg)</text>
-
-            @if (polylinePoints()) {
-              <polyline class="seguimiento__linea-progreso" fill="none" [attr.points]="polylinePoints()"/>
-            }
-
-            @for (punto of puntosGrafico(); track punto.fecha; let ultimo = $last) {
-              <circle class="seguimiento__punto" [class.seguimiento__punto--ultimo]="ultimo" [attr.cx]="punto.x" [attr.cy]="punto.y" r="5">
-                @if (ultimo) {
-                  <animate attributeName="r" dur="1.4s" repeatCount="indefinite" values="5;7.5;5"/>
-                }
-              </circle>
-              <title>{{ punto.fecha }}: {{ punto.peso }}kg</title>
-            }
-          </svg>
-        </figure>
-      }
-    </article>
+          <footer class="seguimiento__grafica-datos">
+            <p class="seguimiento__grafica-dato">
+              <span class="seguimiento__dato-etiqueta">{{ textos().datoUltimoPeso }}</span>
+              <span class="seguimiento__dato-valor">{{ comaDecimal(resumenFuerza().ultimoPeso) }}kg</span>
+            </p>
+            <p class="seguimiento__grafica-dato">
+              <span class="seguimiento__dato-etiqueta">{{ textos().datoMejorMarca }}</span>
+              <span class="seguimiento__dato-valor">{{ comaDecimal(resumenFuerza().mejorMarca) }}kg</span>
+            </p>
+            <p class="seguimiento__grafica-dato">
+              <span class="seguimiento__dato-etiqueta">{{ textos().datoSesiones }}</span>
+              <span class="seguimiento__dato-valor">{{ resumenFuerza().sesiones }}</span>
+            </p>
+          </footer>
+        }
+      </article>
+    } @else {
+      <aside class="seguimiento__vacio">
+        <p class="seguimiento__vacio-etiqueta">{{ textos().sinEjerciciosRegistrados }}</p>
+        <p class="seguimiento__vacio-ayuda">{{ textos().ayudaRegistrarPeso }}</p>
+        <span aria-hidden="true" class="seguimiento__vacio-esqueleto"></span>
+        <span aria-hidden="true" class="seguimiento__vacio-esqueleto"></span>
+        <span aria-hidden="true" class="seguimiento__vacio-esqueleto seguimiento__vacio-esqueleto--corto"></span>
+      </aside>
+    }
   </section>
 
 </main>
