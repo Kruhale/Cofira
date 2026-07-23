@@ -115,7 +115,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "karmaConfig": "karma.conf.js"
+            "karmaConfig": "karma.conf.js",
+            "polyfills": [
+              "src/test-setup.ts"
+            ]
           }
         }
       }
