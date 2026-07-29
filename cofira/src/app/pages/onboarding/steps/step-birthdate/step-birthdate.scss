@@ -1,0 +1,93 @@
+@import '../../../../../styles/00-settings/css-variables';
+@import '../../../../../styles/01-tools/mixins';
+
+.step-birthdate {
+  @include flex-center;
+  flex-direction: column;
+  gap: var(--spacing-size-xl);
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: var(--spacing-size-xl);
+}
+
+
+
+.step-birthdate__header {
+  text-align: center;
+}
+
+.step-birthdate__titulo {
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-size-s) 0;
+
+  @include responsive-down('md') {
+    font-size: var(--font-size-xl);
+  }
+}
+
+.step-birthdate__subtitulo {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+
+
+.step-birthdate__form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.step-birthdate__input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-xs);
+  width: 100%;
+}
+
+.step-birthdate__label {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.step-birthdate__input {
+  width: 100%;
+  padding: var(--spacing-size-m);
+  background-color: var(--superficie-2);
+  border: var(--border-width-normal) solid var(--borde-medio);
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-primary);
+  transition: border-color var(--duration-fast) ease;
+}
+
+.step-birthdate__input:focus-visible {
+  border-color: var(--amarillo-normal);
+  box-shadow: 0 0 0 3px var(--amarillo-normal-transparente-025);
+}
+
+.step-birthdate__input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.5);
+}
+
+
+
+.step-birthdate__footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: var(--spacing-size-l);
+}

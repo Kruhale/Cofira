@@ -1,0 +1,426 @@
+@import '../../../../../styles/00-settings/css-variables';
+@import '../../../../../styles/01-tools/mixins';
+
+.step-payment {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 29rem;
+  margin: 0 auto;
+  padding: var(--spacing-size-xl);
+}
+
+/* ── Cabecera editorial: eyebrow mono con regla + display + subtítulo ── */
+.step-payment__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.step-payment__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--naranja-texto);
+}
+
+.step-payment__eyebrow::before {
+  width: 1.75rem;
+  height: 1px;
+  background: var(--naranja-normal);
+  content: '';
+}
+
+.step-payment__titulo {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 2.4rem; /* 38.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 2rem; /* 32px */
+  }
+}
+
+.step-payment__subtitulo {
+  margin: 0;
+  max-width: 24rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+/* ── Beneficios: filas hairline (sin tarjetas ni cajas de icono) ── */
+.step-payment__beneficios {
+  width: 100%;
+}
+
+.step-payment__beneficios-lista {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.step-payment__beneficio {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--borde-sutil);
+  opacity: 0;
+  transform: translateY(0.5rem);
+  animation: pago-entra 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Cascada con stagger: las tres ventajas asientan una tras otra */
+.step-payment__beneficio:nth-child(1) {
+  animation-delay: 0.06s;
+}
+
+.step-payment__beneficio:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.step-payment__beneficio:nth-child(3) {
+  animation-delay: 0.22s;
+}
+
+.step-payment__beneficio-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  color: var(--naranja-normal);
+  margin: 0;
+}
+
+.step-payment__beneficio-icono svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.step-payment__beneficio-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.step-payment__beneficio-titulo {
+  margin: 0;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-principal);
+}
+
+.step-payment__beneficio-descripcion {
+  margin: 0;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+}
+
+/* ── Formulario de pago: campos editoriales, sin tarjeta contenedora ── */
+.step-payment__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-l);
+  width: 100%;
+}
+
+.step-payment__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+  border: none;
+  padding: 1.25rem 0 0;
+  margin: 0;
+}
+
+/* Legend con la MISMA gramática que el eyebrow (regla antes del texto) para
+   que la línea se lea igual en toda la pantalla */
+.step-payment__legend {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0;
+  margin-bottom: 0.85rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.step-payment__legend::before {
+  width: 1.75rem;
+  height: 1px;
+  background: var(--borde-medio);
+  content: '';
+}
+
+.step-payment__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.step-payment__field--mitad {
+  flex: 1;
+}
+
+.step-payment__field-row {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.step-payment__field-label {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--texto-suave);
+}
+
+.step-payment__input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-md);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+}
+
+.step-payment__input::placeholder {
+  color: var(--texto-suave);
+}
+
+.step-payment__input:hover {
+  border-color: var(--texto-suave);
+}
+
+.step-payment__input:focus-visible {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+/* ── Checkbox de renovación ── */
+.step-payment__checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0; /* amplía el área táctil de la fila a ≥24px */
+  cursor: pointer;
+}
+
+.step-payment__checkbox {
+  width: 1.4rem;
+  height: 1.4rem;
+  accent-color: var(--naranja-normal);
+  cursor: pointer;
+
+  @include foco-visible;
+}
+
+.step-payment__checkbox-label {
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+}
+
+/* ── Pie: precio + CTA + omitir + aviso ── */
+.step-payment__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-m);
+  width: 100%;
+}
+
+.step-payment__precio {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.step-payment__precio-cantidad {
+  font-family: var(--fuente-display);
+  font-size: 2.75rem; /* 44px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.step-payment__precio-periodo {
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
+}
+
+.step-payment__omitir {
+  align-self: center;
+  padding: 0.4rem 0.75rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--texto-secundario);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--duration-fast) ease;
+
+  @include foco-visible;
+}
+
+.step-payment__omitir:hover {
+  color: var(--texto-principal);
+}
+
+.step-payment__aviso {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
+  color: var(--texto-suave);
+}
+
+.step-payment__aviso-icono {
+  flex-shrink: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.step-payment__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.step-payment__spinner {
+  width: 1.2rem;
+  height: 1.2rem;
+  animation: pago-girar 0.8s linear infinite;
+}
+
+/* ── Estado de éxito: acento contenido, sin círculo verde chillón ── */
+.step-payment__exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-size-l);
+  padding: var(--spacing-size-xxl) 0;
+  animation: pago-entra 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-payment__exito-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin: 0;
+  color: var(--exito-texto);
+  border: 1px solid var(--exito);
+  border-radius: 50%;
+}
+
+.step-payment__exito-icono svg {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.step-payment__exito-titulo {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 2rem; /* 32px */
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  color: var(--texto-principal);
+}
+
+.step-payment__exito-texto {
+  margin: 0;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-md);
+  color: var(--texto-secundario);
+}
+
+@keyframes pago-girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pago-entra {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-payment__beneficio {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .step-payment__exito {
+    animation: none;
+  }
+
+  .step-payment__spinner {
+    animation: none;
+  }
+}
+
+@include responsive-down('sm') {
+  .step-payment {
+    padding: var(--spacing-size-m);
+    gap: var(--spacing-size-l);
+  }
+
+  .step-payment__field-row {
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .step-payment__field--mitad {
+    flex: none;
+    width: 100%;
+  }
+}
