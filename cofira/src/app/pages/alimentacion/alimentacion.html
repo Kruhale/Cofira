@@ -1,0 +1,364 @@
+<main class="alimentacion">
+
+  <header class="alimentacion__cabecera">
+    <section class="alimentacion__cabecera-textos">
+      <p class="alimentacion__eyebrow">{{ textos().eyebrow }}</p>
+      <h1 class="alimentacion__titulo">{{ textos().titulo }} <em class="alimentacion__titulo-acento">{{ textos().tituloAcento }}</em></h1>
+    </section>
+
+    <aside class="alimentacion__cabecera-meta">
+      <p class="alimentacion__saludo">{{ saludoPersonal() }}</p>
+      <p class="alimentacion__contexto">{{ textos().contexto }}</p>
+      @if (rangoPlanTexto()) {
+        <p class="alimentacion__meta-plan">
+          <span class="alimentacion__meta-punto" aria-hidden="true"></span>
+          {{ textos().metaPlanActivo }} · {{ rangoPlanTexto() }}
+        </p>
+      } @else {
+        <p class="alimentacion__meta-plan alimentacion__meta-plan--vacio">{{ textos().metaSinPlan }}</p>
+      }
+    </aside>
+  </header>
+
+  @if (esDemo()) {
+    <app-banner-pro></app-banner-pro>
+  }
+
+  @if (estaGenerando()) {
+    <section aria-live="polite" class="alimentacion__generando">
+      <p class="alimentacion__generando-etiqueta">
+        <span class="alimentacion__generando-punto" aria-hidden="true"></span>
+        {{ textos().generandoEtiqueta }}
+      </p>
+      @if (progresoGeneracion()) {
+        <p class="alimentacion__generando-cifra">
+          <span class="alimentacion__generando-numero">{{ progresoGeneracion()?.diasGenerados }}</span>
+          <span class="alimentacion__generando-total">{{ textos().generandoDiaConector }} {{ progresoGeneracion()?.totalDias }}</span>
+        </p>
+        <figure class="alimentacion__generando-barra">
+          <span
+            class="alimentacion__generando-relleno"
+            [style.width.%]="progresoGeneracion()?.porcentaje">
+          </span>
+        </figure>
+        <p class="alimentacion__generando-log">
+          <span class="alimentacion__generando-log-texto">
+            {{ textos().generandoDiaPrefijo }} {{ progresoGeneracion()?.diasGenerados }} {{ textos().generandoDiaConector }} {{ progresoGeneracion()?.totalDias }}
+          </span>
+          <span class="alimentacion__generando-porcentaje">{{ progresoGeneracion()?.porcentaje }}%</span>
+        </p>
+        <button (click)="cancelarGeneracion()" class="alimentacion__boton-cancelar" type="button">
+          {{ textos().botonCancelarGeneracion }}
+        </button>
+      } @else {
+        <p class="alimentacion__generando-iniciando">{{ textos().iniciandoGeneracion }}</p>
+      }
+    </section>
+  } @else if (isLoading()) {
+    <section aria-live="polite" class="alimentacion__estado">
+      <p class="alimentacion__estado-etiqueta">
+        <span class="alimentacion__estado-punto" aria-hidden="true"></span>
+        {{ textos().cargando }}
+      </p>
+    </section>
+  } @else {
+
+    <section class="alimentacion__cuerpo">
+
+      <section class="alimentacion__principal">
+
+        <nav aria-label="{{ textos().ariaNavegacionFechas }}" class="alimentacion__navegacion-fecha">
+          @if (listaDiasMenu().length > 0) {
+            <ul class="alimentacion__dias">
+              @for (dia of listaDiasMenu(); track dia.fecha) {
+                <li class="alimentacion__dias-item">
+                  <button
+                    (click)="seleccionarDia(dia.fecha)"
+                    [attr.aria-label]="textos().ariaSeleccionarDia + ' ' + dia.etiquetaAria"
+                    [attr.aria-current]="esDiaActivo(dia.fecha) ? 'true' : null"
+                    [class.alimentacion__dia--activo]="esDiaActivo(dia.fecha)"
+                    [class.alimentacion__dia--hoy]="dia.esHoy"
+                    class="alimentacion__dia"
+                    type="button">
+                    <span class="alimentacion__dia-letra">{{ dia.letraDia }}</span>
+                    <span class="alimentacion__dia-numero">{{ dia.numeroDia }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="alimentacion__fecha-texto">{{ fechaActual() }}</p>
+          }
+
+          <section class="alimentacion__navegacion-controles">
+            <button
+              (click)="diaAnterior()"
+              aria-label="{{ textos().ariaDiaAnterior }}"
+              class="alimentacion__boton-fecha"
+              type="button">
+              <svg aria-hidden="true" class="alimentacion__boton-fecha-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+              </svg>
+            </button>
+            <button
+              (click)="diaSiguiente()"
+              aria-label="{{ textos().ariaDiaSiguiente }}"
+              class="alimentacion__boton-fecha"
+              type="button">
+              <svg aria-hidden="true" class="alimentacion__boton-fecha-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor"/>
+              </svg>
+            </button>
+            <button
+              (click)="abrirCalendario()"
+              aria-label="{{ textos().ariaAbrirCalendario }}"
+              class="alimentacion__boton-fecha alimentacion__boton-fecha--calendario"
+              type="button">
+              <svg aria-hidden="true" class="alimentacion__boton-fecha-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"
+                  fill="currentColor"/>
+              </svg>
+            </button>
+          </section>
+        </nav>
+
+        <section class="alimentacion__menu-dia">
+
+          @if (!tieneMenuParaFecha()) {
+            <article class="alimentacion__vacio">
+              <p class="alimentacion__vacio-etiqueta">{{ textos().vacioEtiqueta }}</p>
+              <h2 class="alimentacion__vacio-titulo">{{ textos().sinMenuFecha }}</h2>
+              <p class="alimentacion__vacio-nota">{{ textos().sinMenuAviso }}</p>
+              <ul aria-hidden="true" class="alimentacion__esqueleto">
+                <li class="alimentacion__esqueleto-fila">
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--tipo"></span>
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--nombre"></span>
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--kcal"></span>
+                </li>
+                <li class="alimentacion__esqueleto-fila">
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--tipo"></span>
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--nombre"></span>
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--kcal"></span>
+                </li>
+                <li class="alimentacion__esqueleto-fila">
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--tipo"></span>
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--nombre"></span>
+                  <span class="alimentacion__esqueleto-barra alimentacion__esqueleto-barra--kcal"></span>
+                </li>
+              </ul>
+              <app-button (click)="regenerarMenu()" tamanio="mediano" variante="primario">
+                {{ textos().botonGenerarMenu }}
+              </app-button>
+            </article>
+          } @else if (comidasDelDia().length === 0) {
+            <article class="alimentacion__vacio">
+              <p class="alimentacion__vacio-etiqueta">{{ textos().vacioEtiqueta }}</p>
+              <h2 class="alimentacion__vacio-titulo">{{ textos().sinComidasDia }}</h2>
+              <app-button (click)="regenerarMenu()" tamanio="mediano" variante="primario">
+                {{ textos().botonRegenerarMenu }}
+              </app-button>
+            </article>
+          } @else {
+            @for (comida of comidasDelDia(); track comida.id) {
+              <article
+                class="alimentacion__comida"
+                [class.alimentacion__comida--consumida]="estaComidaConsumida(comida)">
+                <header class="alimentacion__comida-linea">
+                  <label class="alimentacion__comida-checkbox-label">
+                    <span class="sr-only">{{ textos().ariaMarcarConsumida }} {{ comida.nombre }}</span>
+                    <input
+                      type="checkbox"
+                      class="alimentacion__comida-checkbox"
+                      [checked]="estaComidaConsumida(comida)"
+                      (change)="toggleComidaConsumida(comida)">
+                    <span class="alimentacion__comida-checkbox-custom">
+                      @if (estaComidaConsumida(comida)) {
+                        <svg aria-hidden="true" class="alimentacion__comida-checkbox-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+                        </svg>
+                      }
+                    </span>
+                  </label>
+                  <span class="alimentacion__comida-tipo">{{ textos().tiposComida[comida.tipo] }}</span>
+                  <h2 class="alimentacion__comida-nombre">{{ comida.nombre }}</h2>
+                  <span class="alimentacion__comida-kcal">
+                    {{ comida.caloriasEstimadas }}
+                    <span class="alimentacion__comida-kcal-unidad">kcal</span>
+                  </span>
+                </header>
+
+                <ul class="alimentacion__comida-macros">
+                  <li class="alimentacion__pildora-macro">{{ textos().abrevProteina }} {{ comida.proteinasGramos }}g</li>
+                  <li class="alimentacion__pildora-macro">{{ textos().abrevCarbs }} {{ comida.carbohidratosGramos }}g</li>
+                  <li class="alimentacion__pildora-macro">{{ textos().abrevGrasa }} {{ comida.grasasGramos }}g</li>
+                </ul>
+
+                <ul class="alimentacion__alimentos">
+                  @for (alimento of comida.alimentos; track alimento.id) {
+                    <li class="alimentacion__alimento">
+                      <span class="alimentacion__alimento-nombre">{{ alimento.descripcion }}</span>
+                      @if (alimento.gramos) {
+                        <span class="alimentacion__alimento-gramos">{{ alimento.gramos }}g</span>
+                      }
+                      <button
+                        (click)="verIngredientes(alimento, comida)"
+                        aria-label="{{ textos().ariaVerDetalles }} {{ alimento.descripcion }}"
+                        class="alimentacion__boton-info"
+                        type="button">
+                        <svg aria-hidden="true" class="alimentacion__boton-info-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                            fill="currentColor"/>
+                        </svg>
+                      </button>
+                    </li>
+                  }
+                </ul>
+
+                @if (comida.preparacion) {
+                  <footer class="alimentacion__comida-preparacion">
+                    <h3 class="alimentacion__preparacion-titulo">{{ textos().preparacionTitulo }}</h3>
+                    @if (pasosPreparacion(comida).length > 0) {
+                      <ol class="alimentacion__pasos">
+                        @for (paso of pasosPreparacion(comida); track $index) {
+                          <li class="alimentacion__paso">{{ paso }}</li>
+                        }
+                      </ol>
+                    } @else {
+                      <p class="alimentacion__preparacion-texto">{{ comida.preparacion }}</p>
+                    }
+                  </footer>
+                }
+
+                @if (!estaComidaConsumida(comida)) {
+                  <footer class="alimentacion__comida-acciones">
+                    <button (click)="abrirModalAlternativa(comida)" class="alimentacion__boton-registro" type="button">
+                      {{ textos().botonRegistrarComida }}
+                    </button>
+                    <button (click)="abrirModalImagen(comida)" class="alimentacion__boton-registro" type="button">
+                      {{ textos().botonSubirFoto }}
+                    </button>
+                  </footer>
+                }
+              </article>
+            }
+
+            <footer class="alimentacion__regenerar">
+              <app-button (click)="regenerarMenu()" tamanio="mediano" variante="secundario">
+                {{ textos().botonRegenerarMenu }}
+              </app-button>
+            </footer>
+          }
+
+        </section>
+
+      </section>
+
+      <aside class="alimentacion__lateral">
+
+        @if (resumenNutricional()) {
+          <article class="alimentacion__balance">
+            <h2 class="alimentacion__balance-etiqueta">{{ textos().resumenTitulo }} · {{ fechaActual() }}</h2>
+            <figure class="alimentacion__anillo">
+              <svg aria-hidden="true" class="alimentacion__anillo-svg" viewBox="0 0 120 120">
+                <circle class="alimentacion__anillo-fondo" cx="60" cy="60" r="52"/>
+                <circle class="alimentacion__anillo-progreso" cx="60" cy="60" r="52" [style.stroke-dashoffset]="anilloDashoffset()"/>
+              </svg>
+              <figcaption class="alimentacion__anillo-centro">
+                <span appContadorAnimado class="alimentacion__balance-kcal" [valorFinal]="resumenNutricional()?.caloriasTotal || 0">{{ resumenNutricional()?.caloriasTotal }}</span>
+                <span class="alimentacion__balance-unidad">kcal</span>
+              </figcaption>
+            </figure>
+            <ul class="alimentacion__macros">
+              <li class="alimentacion__macro">
+                <span class="alimentacion__macro-nombre">{{ textos().etiquetaProteinas }}</span>
+                <span class="alimentacion__macro-valor">{{ resumenNutricional()?.proteinasTotal }}g</span>
+              </li>
+              <li class="alimentacion__macro">
+                <span class="alimentacion__macro-nombre">{{ textos().etiquetaCarbohidratos }}</span>
+                <span class="alimentacion__macro-valor">{{ resumenNutricional()?.carbohidratosTotal }}g</span>
+              </li>
+              <li class="alimentacion__macro">
+                <span class="alimentacion__macro-nombre">{{ textos().etiquetaGrasas }}</span>
+                <span class="alimentacion__macro-valor">{{ resumenNutricional()?.grasasTotal }}g</span>
+              </li>
+            </ul>
+          </article>
+        }
+
+        <article class="alimentacion__agua">
+          <h2 class="alimentacion__agua-etiqueta">{{ textos().etiquetaAgua }}</h2>
+          <p aria-live="polite" class="alimentacion__agua-cifra">
+            <span class="alimentacion__agua-valor">{{ comaDecimal(aguaConsumida()) }}</span>
+            <span class="alimentacion__agua-unidad">L</span>
+            <span class="alimentacion__agua-meta">{{ textos().aguaObjetivoEtiqueta }} {{ aguaObjetivo() }}L</span>
+          </p>
+          <ul aria-hidden="true" class="alimentacion__agua-muescas">
+            @for (muesca of listaMuescasAgua; track muesca) {
+              <li
+                class="alimentacion__agua-muesca"
+                [class.alimentacion__agua-muesca--llena]="muesca < muescasAguaLlenas()">
+              </li>
+            }
+          </ul>
+          <footer class="alimentacion__agua-controles">
+            <button
+              (click)="quitarAgua()"
+              [disabled]="aguaConsumida() <= 0 || aguaActualizando()"
+              aria-label="{{ textos().ariaQuitarAgua }}"
+              class="alimentacion__agua-boton"
+              type="button">
+              <svg aria-hidden="true" class="alimentacion__agua-boton-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 13H5v-2h14v2z" fill="currentColor"/>
+              </svg>
+            </button>
+            <button
+              (click)="agregarAgua()"
+              [disabled]="aguaActualizando()"
+              aria-label="{{ textos().ariaAgregarAgua }}"
+              class="alimentacion__agua-boton"
+              type="button">
+              <svg aria-hidden="true" class="alimentacion__agua-boton-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+              </svg>
+            </button>
+          </footer>
+        </article>
+
+      </aside>
+
+    </section>
+
+  }
+
+  <app-calendario
+    (cerrar)="cerrarCalendario()"
+    (seleccionarFecha)="seleccionarFechaCalendario($event)"
+    [abierto]="calendarioAbierto"
+    [fechaInicial]="fechaActualDate()">
+  </app-calendario>
+
+  <app-ingredientes
+    (cerrar)="cerrarIngredientes()"
+    [abierto]="ingredientesAbierto"
+    [alimento]="alimentoSeleccionado">
+  </app-ingredientes>
+
+  <app-modal-comida-alternativa
+    (cerrar)="cerrarModalAlternativa()"
+    (guardado)="refrescarDatosConsumo()"
+    [abierto]="modalAlternativaAbierto"
+    [comida]="comidaParaRegistrar"
+    [fecha]="formatearFecha(fechaActualDate())">
+  </app-modal-comida-alternativa>
+
+  <app-modal-subir-imagen
+    (cerrar)="cerrarModalImagen()"
+    (guardado)="refrescarDatosConsumo()"
+    [abierto]="modalImagenAbierto"
+    [comida]="comidaParaRegistrar"
+    [fecha]="formatearFecha(fechaActualDate())">
+  </app-modal-subir-imagen>
+
+</main>
