@@ -1,0 +1,663 @@
+@import '../../../styles/01-tools/mixins';
+
+:host {
+  display: block;
+  background-color: var(--superficie-fondo);
+}
+
+.acceso-pro {
+  --contenido-max-width: 48rem; /* 768px */
+
+  @include atmosfera-app;
+  @include flex-columna(var(--spacing-size-xxl));
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: var(--page-shell-top) var(--spacing-size-xl) var(--spacing-size-xxxl);
+  background-color: var(--superficie-fondo);
+
+  @include responsive-down('md') {
+    padding: var(--page-shell-top-movil) var(--spacing-size-m) var(--spacing-size-xl);
+  }
+}
+
+.acceso-pro__venta {
+  @include flex-columna(var(--spacing-size-xl));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.acceso-pro__pro-activo {
+  @include flex-columna(var(--spacing-size-xl));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.acceso-pro__pago {
+  @include flex-columna(var(--spacing-size-xl));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.acceso-pro__exito {
+  @include flex-columna(var(--spacing-size-s));
+  align-items: flex-start;
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  padding-top: var(--spacing-size-l);
+}
+
+
+
+/* ── Cabecera canónica: eyebrow con regla + display + contexto mono ── */
+
+.acceso-pro__cabecera {
+  @include flex-columna(0.85rem);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.acceso-pro__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* ~10px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
+}
+
+.acceso-pro__eyebrow::before {
+  content: '';
+  width: 1.75rem; /* 28px */
+  height: 1px;
+  background: var(--naranja-normal);
+}
+
+.acceso-pro__titulo {
+  @include titular-display(var(--display-md));
+}
+
+/* La palabra clave del titular en itálica naranja: el gesto editorial firma */
+.acceso-pro__titulo-acento {
+  @include acento-italica;
+  color: var(--naranja-texto);
+}
+
+.acceso-pro__contexto {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-suave);
+}
+
+
+
+/* ── Señales de estado: etiqueta mono con punto vivo ── */
+
+.acceso-pro__estado-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.acceso-pro__estado-etiqueta--exito {
+  color: var(--exito-texto);
+}
+
+.acceso-pro__estado-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: acceso-pro-punto-latido 1.9s ease-in-out infinite;
+}
+
+.acceso-pro__estado-punto--exito {
+  background: var(--verde-normal);
+}
+
+@keyframes acceso-pro-punto-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+.acceso-pro__exito-texto {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  color: var(--texto-secundario);
+}
+
+
+
+/* ── Banda de datos: etiqueta mono arriba + valor display abajo ── */
+
+.acceso-pro__datos {
+  display: flex;
+  gap: 2.75rem;
+  width: 100%;
+  padding-top: var(--spacing-size-l);
+  border-top: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-wrap: wrap;
+    gap: var(--spacing-size-l);
+  }
+}
+
+.acceso-pro__dato {
+  @include flex-columna(0.45rem);
+}
+
+.acceso-pro__dato-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.acceso-pro__dato-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.6rem; /* 25.6px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.acceso-pro__dato-valor--vivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.acceso-pro__pro-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-l);
+}
+
+.acceso-pro__gestionar {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  color: var(--naranja-texto);
+  border-bottom: 1px solid var(--naranja-normal);
+  padding-bottom: 0.2rem;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.acceso-pro__gestionar:hover {
+  opacity: 0.75;
+}
+
+
+
+/* ── Tarjeta de membresía: superficie bento con sombra tintada ── */
+
+.acceso-pro__tarjeta {
+  @include flex-columna(var(--spacing-size-l));
+  padding: var(--spacing-size-l) var(--spacing-size-xl);
+  background-color: var(--superficie-1);
+  background-image: linear-gradient(135deg, var(--naranja-glow-suave), transparent 42%);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 40px -28px var(--naranja-glow-media);
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.1s;
+
+  @include responsive-down('sm') {
+    padding: var(--spacing-size-m);
+  }
+}
+
+.acceso-pro__tarjeta-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-size-m);
+  padding-bottom: var(--spacing-size-m);
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.acceso-pro__tarjeta-marca {
+  font-family: var(--fuente-display);
+  font-size: 1.5rem; /* 24px */
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  color: var(--texto-principal);
+}
+
+.acceso-pro__tarjeta-marca-acento {
+  font-style: italic;
+  color: var(--naranja-texto);
+}
+
+.acceso-pro__tarjeta-datos {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-size-l);
+  max-width: 34rem; /* 544px: reparte sin dispersarse por toda la tarjeta */
+
+  @include responsive-down('sm') {
+    flex-wrap: wrap;
+    gap: var(--spacing-size-l);
+  }
+}
+
+/* Los días restantes mandan: cifra héroe frente a los datos secundarios */
+.acceso-pro__tarjeta-dias {
+  font-family: var(--fuente-display);
+  font-size: 3rem; /* 48px */
+  text-shadow: 0 0 2.5rem var(--glow-cifra-heroe);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.acceso-pro__tarjeta-pie {
+  display: flex;
+  padding-top: var(--spacing-size-s);
+}
+
+
+
+/* ── Tus apps PRO: filas hairline con flecha que se desplaza ── */
+
+.acceso-pro__apps {
+  @include flex-columna(var(--spacing-size-s));
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.2s;
+}
+
+.acceso-pro__apps-titulo {
+  @include etiqueta-tecnica(var(--texto-suave));
+  margin: 0;
+}
+
+.acceso-pro__apps-lista {
+  @include flex-columna(0);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.acceso-pro__app {
+  --flecha-desplazamiento: translateX(0);
+  --flecha-color: var(--texto-suave);
+
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-size-m);
+  padding: 1.1rem 0.25rem;
+  border-top: 1px solid var(--borde-sutil);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+/* Las variables heredan al hijo: la flecha reacciona sin anidar selectores */
+.acceso-pro__app:hover {
+  --flecha-desplazamiento: translateX(4px);
+  --flecha-color: var(--naranja-texto);
+
+  background: var(--superficie-1);
+}
+
+.acceso-pro__app-nombre {
+  flex-shrink: 0;
+  min-width: 9rem;
+  font-family: var(--fuente-display);
+  font-size: 1.2rem; /* ~19px */
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    min-width: 6.5rem;
+    font-size: 1.05rem;
+  }
+}
+
+.acceso-pro__app-desc {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-primary);
+  font-size: 0.88rem;
+  color: var(--texto-secundario);
+}
+
+.acceso-pro__app-flecha {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  color: var(--flecha-color);
+  transform: var(--flecha-desplazamiento);
+  transition: transform var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+
+
+/* ── Beneficios: lista editorial con puntos conductores ── */
+
+.acceso-pro__beneficios {
+  @include flex-columna(var(--spacing-size-m));
+  width: 100%;
+}
+
+.acceso-pro__beneficios-titulo {
+  @include etiqueta-tecnica(var(--texto-suave));
+  margin: 0;
+}
+
+/* Beneficios como rejilla de tarjetas: cuadrícula real 2D, Grid permitido */
+.acceso-pro__beneficios-lista {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-size-m);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include responsive-down('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.acceso-pro__beneficio {
+  @include superficie-bento;
+  @include bento-hover;
+  @include flex-columna(0.5rem);
+  padding: var(--spacing-size-l);
+}
+
+.acceso-pro__beneficio-indice {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: var(--naranja-texto);
+}
+
+.acceso-pro__beneficio-titulo {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.35rem; /* ~22px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--color-titulo-beneficio, var(--texto-principal));
+  transition: color var(--duration-fast) ease;
+}
+
+/* La variable hereda a los descendientes: así el título cambia de color al
+   pasar el ratón por la tarjeta entera sin anidar el selector del hijo */
+.acceso-pro__beneficio:hover {
+  --color-titulo-beneficio: var(--naranja-texto);
+}
+
+.acceso-pro__beneficio-detalle {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+
+
+/* ── Banda de suscripción: precio + CTA sobre filo superior ── */
+
+.acceso-pro__banda {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-size-l);
+  width: 100%;
+  padding-top: var(--spacing-size-l);
+  border-top: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.acceso-pro__precio-valor {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-family: var(--fuente-display);
+  font-size: 2.4rem; /* 38.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.acceso-pro__precio-periodo {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--texto-secundario);
+}
+
+.acceso-pro__acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-l);
+}
+
+.acceso-pro__volver {
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease;
+}
+
+.acceso-pro__volver:hover {
+  color: var(--naranja-texto);
+}
+
+
+
+/* ── Formulario de pago: composición de filos, sin tarjeta ── */
+
+.acceso-pro__pago-cerrar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.acceso-pro__pago-cerrar:hover {
+  border-color: var(--naranja-normal);
+  color: var(--naranja-normal);
+}
+
+.acceso-pro__pago-cerrar svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.acceso-pro__form {
+  @include flex-columna(var(--spacing-size-xl));
+  width: 100%;
+  max-width: 32rem;
+}
+
+.acceso-pro__fieldset {
+  @include flex-columna(1.1rem);
+  margin: 0;
+  padding: var(--spacing-size-l) 0 0;
+  border: none;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.acceso-pro__legend {
+  @include etiqueta-tecnica(var(--texto-suave));
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.acceso-pro__field {
+  @include flex-columna(0.45rem);
+}
+
+.acceso-pro__field--mitad {
+  flex: 1 1 0;
+}
+
+.acceso-pro__field-label {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.acceso-pro__input {
+  width: 100%;
+  padding: var(--spacing-size-s) var(--spacing-size-m);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-sm);
+  box-sizing: border-box;
+  transition: border-color var(--duration-fast) ease;
+}
+
+.acceso-pro__input:focus-visible {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+.acceso-pro__field-row {
+  display: flex;
+  gap: var(--spacing-size-m);
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+  }
+}
+
+.acceso-pro__checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.acceso-pro__checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--naranja-normal);
+}
+
+.acceso-pro__checkbox-label {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+}
+
+.acceso-pro__form-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-size-l);
+  padding-top: var(--spacing-size-l);
+  border-top: 1px solid var(--borde-sutil);
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.acceso-pro__aviso {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texto-suave);
+}
+
+.acceso-pro__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.acceso-pro__spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  animation: acceso-pro-girar 0.8s linear infinite;
+}
+
+@keyframes acceso-pro-girar {
+  to { transform: rotate(360deg); }
+}
+
+
+
+/* ── Movimiento reducido: sin señales pulsantes ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .acceso-pro__estado-punto {
+    animation: none;
+  }
+
+  .acceso-pro__spinner {
+    animation: none;
+  }
+
+  .acceso-pro__tarjeta {
+    animation: none;
+  }
+
+  .acceso-pro__apps {
+    animation: none;
+  }
+
+  .acceso-pro__app-flecha {
+    transition: none;
+  }
+}
