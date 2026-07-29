@@ -1,0 +1,124 @@
+@import '../01-tools/mixins';
+
+
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 0.0625rem solid var(--gris-normal);
+  border-radius: var(--radius-xss);
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  transition: border-color var(--duration-fast);
+}
+
+.input::placeholder {
+  color: var(--text-light);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--negro-normal);
+  outline-offset: 2px;
+  border-color: var(--amarillo-normal);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--gris-dark);
+}
+
+
+
+.entrada--busqueda {
+  padding-left: 3rem;
+  border-radius: var(--radius-l);
+  border: 0;
+}
+
+.entrada--error {
+  border-color: var(--button-red);
+}
+
+.entrada--error:focus {
+  border-color: var(--button-red-hover);
+}
+
+.entrada--exito {
+  border-color: var(--amarillo-normal);
+}
+
+.entrada--exito:focus {
+  border-color: var(--amarillo-normal-hover);
+}
+
+
+
+.grupo-entrada {
+  position: relative;
+  width: 100%;
+}
+
+.grupo-entrada__icono {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+.grupo-entrada__icono--derecha {
+  left: auto;
+  right: 1rem;
+}
+
+.entrada--con-icono {
+  padding-left: 3rem;
+}
+
+.entrada--con-icono-derecha {
+  padding-left: 1rem;
+  padding-right: 3rem;
+}
+
+
+
+.textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 0.0625rem solid var(--gris-normal);
+  border-radius: var(--radius-xss);
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  transition: border-color var(--duration-fast);
+  min-height: 8rem;
+  resize: vertical;
+}
+
+
+
+.select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 0.0625rem solid var(--gris-normal);
+  border-radius: var(--radius-xss);
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  transition: border-color var(--duration-fast);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 3rem;
+}

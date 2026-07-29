@@ -1,0 +1,218 @@
+@import '../01-tools/mixins';
+
+
+
+.navegacion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-size-s) var(--spacing-size-m);
+  background-color: var(--gris-normal);
+}
+
+
+
+.navegacion__logo {
+  @include tipografia-titulo;
+  font-size: var(--font-size-xl);
+  color: var(--amarillo-normal);
+  text-decoration: none;
+}
+
+.navegacion__logo:hover {
+  color: var(--amarillo-normal-hover);
+}
+
+.navegacion__logo:focus {
+  outline: 0.125rem solid var(--amarillo-normal);
+  outline-offset: 0.125rem;
+}
+
+.navegacion__contenido {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-l);
+}
+
+.navegacion__lista {
+  display: flex;
+  list-style: none;
+  gap: var(--spacing-size-m);
+  margin: 0;
+  padding: 0;
+}
+
+.navegacion__item {
+}
+
+.navegacion__enlace {
+  @include tipografia-texto;
+  color: var(--text-dark);
+  text-decoration: none;
+  padding: var(--spacing-size-xss) var(--spacing-size-s);
+  border-radius: var(--radius-xss);
+  transition: all var(--duration-fast);
+}
+
+.navegacion__enlace:hover {
+  color: var(--amarillo-normal);
+  background-color: var(--gris-dark);
+}
+
+.navegacion__enlace:focus {
+  outline: 0.125rem solid var(--amarillo-normal);
+  outline-offset: 0.125rem;
+}
+
+.navegacion__enlace--activo {
+  color: var(--amarillo-normal);
+  font-weight: var(--font-weight-semibold);
+}
+
+.navegacion__acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-s);
+}
+
+
+
+.navegacion__buscador {
+  position: relative;
+}
+
+.navegacion__buscador-input {
+  @include input-base;
+  width: 18.75rem;
+  padding-left: var(--spacing-size-l);
+  border-radius: var(--radius-l);
+  border: none;
+
+  @include responsive-down('md') {
+    width: 12.5rem;
+  }
+}
+
+.navegacion__buscador-icono {
+  position: absolute;
+  left: var(--spacing-size-s);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: var(--gris-normal);
+}
+
+
+
+.navegacion__hamburguesa {
+  display: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: var(--spacing-size-xss);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  @include responsive-down('md') {
+    display: flex;
+  }
+}
+
+.navegacion__hamburguesa:focus {
+  outline: 0.125rem solid var(--amarillo-normal);
+  outline-offset: 0.125rem;
+}
+
+.navegacion__hamburguesa-linea {
+  width: 1.5rem;
+  height: 0.1875rem;
+  background-color: var(--blanco-normal);
+  border-radius: 0.125rem;
+  transition: all var(--duration-base);
+}
+
+
+
+.navegacion-movil {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  max-width: 18.75rem;
+  height: 100vh;
+  background-color: var(--gris-dark);
+  z-index: var(--z-modal);
+  transition: right var(--duration-base);
+}
+
+.navegacion-movil--abierto {
+  right: 0;
+}
+
+.navegacion-movil__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--negro-puro-transparente-050);
+  z-index: var(--z-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-base);
+}
+
+.navegacion-movil__overlay--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.navegacion-movil__cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-size-m);
+  border-bottom: 0.0625rem solid var(--gris-normal);
+}
+
+.navegacion-movil__cerrar {
+  background: transparent;
+  border: none;
+  color: var(--text-dark);
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+}
+
+.navegacion-movil__cerrar:focus {
+  outline: 0.125rem solid var(--amarillo-normal);
+  outline-offset: 0.125rem;
+}
+
+.navegacion-movil__lista {
+  list-style: none;
+  padding: var(--spacing-size-m);
+  margin: 0;
+}
+
+.navegacion-movil__enlace {
+  display: block;
+  @include tipografia-texto;
+  color: var(--text-dark);
+  text-decoration: none;
+  padding: var(--spacing-size-s);
+  border-radius: var(--radius-xss);
+}
+
+.navegacion-movil__enlace:hover {
+  background-color: var(--gris-normal);
+  color: var(--amarillo-normal);
+}
+
+.navegacion-movil__enlace:focus {
+  outline: 0.125rem solid var(--amarillo-normal);
+  outline-offset: -0.125rem;
+}
+
+
+

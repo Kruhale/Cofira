@@ -1,0 +1,18 @@
+
+
+a {
+  font-family: var(--font-primary);
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+  cursor: pointer;
+}
+
+a:hover {
+  color: var(--amarillo-normal);
+}
+
+
+a:active {
+  color: var(--amarillo-normal-active);
+}

@@ -1,0 +1,402 @@
+[data-theme="dark"] {
+
+  /* ══════════════════════════════════════════════════════════
+     SISTEMA DE DISEÑO 2026 — overrides del TEMA OSCURO (protagonista).
+     Único lugar donde el oscuro redefine los tokens semánticos nuevos.
+     ══════════════════════════════════════════════════════════ */
+  --superficie-fondo: hsl(240, 6%, 4%);
+  --superficie-1: hsl(240, 6%, 7%);
+  --superficie-2: hsl(240, 7%, 9%);
+  --superficie-3: hsl(240, 7%, 12.5%);
+
+  --naranja-normal: hsl(24, 100%, 55%);
+  --naranja-hover: hsl(24, 100%, 61%);
+  --naranja-active: hsl(24, 100%, 48%);
+  --naranja-texto: hsl(28, 100%, 64%);
+  --ambar: hsl(38, 100%, 55%);
+
+  --texto-principal: hsl(40, 8%, 96%);
+  --texto-secundario: hsla(40, 8%, 96%, 0.64);
+  /* 0.52: sube el texto atenuado a ≥4.5:1 sobre el fondo oscuro (antes 0.40 ≈ 3.6:1) */
+  --texto-suave: hsla(40, 8%, 96%, 0.52);
+  --texto-sobre-acento: hsl(240, 6%, 4%);
+
+  --borde-sutil: hsla(0, 0%, 100%, 0.08);
+  --borde-medio: hsla(0, 0%, 100%, 0.14);
+
+  --exito-texto: hsl(150, 65%, 60%);
+  --peligro-texto: hsl(4, 90%, 70%);
+
+  --gradiente-acento: linear-gradient(135deg, hsl(24, 100%, 55%) 0%, hsl(38, 100%, 55%) 100%);
+  --gradiente-overlay-foto: linear-gradient(180deg, hsla(0, 0%, 0%, 0.2) 0%, hsla(240, 6%, 4%, 0.92) 100%);
+  --vidrio-fondo: hsla(240, 6%, 4%, 0.62);
+
+  --sombra-bento: 0 1px 0 hsla(0, 0%, 100%, 0.04) inset, 0 1rem 2.5rem hsla(0, 0%, 0%, 0.45);
+  --glow-interior: inset 0 1px 0 hsla(0, 0%, 100%, 0.06), inset 0 0 3.75rem hsla(24, 100%, 50%, 0.05);
+  /* Las cifras héroe brillan solo en oscuro (en claro el halo ensucia) */
+  --glow-cifra-heroe: var(--naranja-glow-media);
+  --atmosfera-foto-opacidad: 0.16;
+
+
+  --oscuro-pagina-fondo: var(--oscuro-fondo-oscuro);
+
+
+  --oscuro-superficie-fondo: var(--oscuro-fondo-medio);
+
+
+  --oscuro-input-fondo: var(--oscuro-fondo-oscuro);
+
+
+  --oscuro-hover-fondo: var(--oscuro-fondo-medio-claro);
+
+
+  --oscuro-seccion-alt-fondo: var(--oscuro-fondo-muy-oscuro);
+
+
+  --oscuro-texto-principal: var(--oscuro-texto-claro);
+
+
+  --oscuro-texto-secundario: var(--oscuro-texto-medio);
+
+
+  --oscuro-texto-suave: var(--oscuro-texto-apagado);
+
+
+  --oscuro-texto-enlace: var(--oscuro-texto-claro);
+
+
+  --oscuro-texto-enlace-hover: var(--amarillo-normal);
+
+
+  --oscuro-borde-color: var(--oscuro-borde-principal);
+
+
+  --oscuro-borde-suave: var(--oscuro-borde-suave);
+
+
+  --oscuro-borde-foco: var(--amarillo-normal);
+
+
+  --oscuro-sombra-xs: 0 1px 2px var(--negro-puro-transparente-030);
+  --oscuro-sombra-sm: 0 2px 4px var(--negro-puro-transparente-035);
+  --oscuro-sombra-md: 0 4px 8px var(--negro-puro-transparente-040);
+  --oscuro-sombra-lg: 0 8px 16px var(--negro-puro-transparente-045);
+  --oscuro-sombra-xl: 0 12px 24px var(--negro-puro-transparente-050);
+
+
+  --oscuro-acento-primario: var(--oscuro-acento-amarillo);
+  --oscuro-acento-hover: var(--oscuro-acento-amarillo-hover);
+
+
+  --oscuro-cabecera-fondo: var(--gris-dark);
+
+
+  --oscuro-cabecera-borde: var(--gris-normal);
+
+
+  --oscuro-cabecera-enlace: var(--blanco-normal);
+
+
+  --oscuro-cabecera-enlace-hover: var(--amarillo-normal);
+
+
+  --oscuro-cabecera-buscador-fondo: var(--gris-normal);
+
+
+  --oscuro-cabecera-buscador-texto: var(--blanco-normal);
+
+
+  --oscuro-cabecera-buscador-placeholder: var(--blanco-dark);
+
+
+  --oscuro-cabecera-buscador-icono: var(--blanco-dark);
+
+
+  --oscuro-cabecera-boton-primario-fondo: var(--amarillo-normal);
+
+
+  --oscuro-cabecera-boton-primario-texto: var(--negro-normal);
+
+
+  --oscuro-cabecera-boton-primario-hover: var(--amarillo-dark);
+
+
+  --oscuro-cabecera-boton-secundario-fondo: transparent;
+
+
+  --oscuro-cabecera-boton-secundario-borde: var(--blanco-dark);
+
+
+  --oscuro-cabecera-boton-secundario-texto: var(--blanco-normal);
+
+
+  --oscuro-cabecera-boton-secundario-hover-fondo: var(--gris-normal);
+
+
+  --oscuro-cabecera-boton-secundario-hover-color: var(--amarillo-normal);
+
+
+  --oscuro-menu-fondo: var(--gris-dark);
+
+
+  --oscuro-menu-borde: var(--gris-normal);
+
+
+  --oscuro-menu-sombra: var(--negro-puro-transparente-040);
+
+
+  --oscuro-menu-item-texto: var(--blanco-normal);
+
+
+  --oscuro-menu-item-hover-fondo: var(--gris-normal);
+
+
+  --oscuro-menu-item-hover-texto: var(--amarillo-normal);
+
+
+  --oscuro-menu-icono: var(--blanco-dark);
+
+
+  --oscuro-menu-movil-fondo: var(--negro-dark);
+
+
+  --oscuro-menu-movil-cabecera-fondo: var(--gris-dark);
+
+
+  --oscuro-menu-movil-enlace-hover: var(--gris-dark);
+
+
+  --oscuro-hamburguesa-color: var(--blanco-normal);
+
+
+  --oscuro-hamburguesa-hover: var(--amarillo-normal);
+
+
+  --oscuro-pie-fondo: var(--negro-dark);
+
+
+  --oscuro-pie-borde: var(--gris-normal);
+
+
+  --oscuro-pie-texto: var(--blanco-dark);
+
+
+  --oscuro-pie-enlace-hover: var(--amarillo-normal);
+
+
+  --oscuro-pie-social-fondo: var(--gris-dark);
+
+
+  --oscuro-pie-social-icono: var(--blanco-normal);
+
+
+  --oscuro-pie-social-hover-fondo: var(--gris-normal);
+
+
+  --oscuro-pie-social-hover-icono: var(--amarillo-normal);
+
+
+  --oscuro-tarjeta-fondo: var(--gris-normal);
+
+
+  --oscuro-tarjeta-borde: var(--gris-normal-hover);
+
+
+  --oscuro-tarjeta-titulo: var(--blanco-normal);
+
+
+  --oscuro-tarjeta-contenido: var(--blanco-dark);
+
+
+  --oscuro-tarjeta-pie-borde: var(--gris-dark);
+
+
+  --oscuro-tarjeta-destacada-borde: var(--amarillo-normal);
+
+
+  --oscuro-formulario-etiqueta: var(--blanco-normal);
+
+
+  --oscuro-formulario-campo-fondo: var(--gris-dark);
+
+
+  --oscuro-formulario-campo-texto: var(--blanco-normal);
+
+
+  --oscuro-formulario-campo-borde: var(--gris-normal);
+
+
+  --oscuro-formulario-campo-foco-borde: var(--amarillo-normal);
+
+
+  --oscuro-formulario-campo-foco-fondo: var(--gris-dark-hover);
+
+
+  --oscuro-formulario-ayuda-texto: var(--blanco-dark-hover);
+
+
+  --oscuro-formulario-placeholder: var(--blanco-dark-hover);
+
+
+  --oscuro-input-campo-fondo: var(--gris-dark);
+
+
+  --oscuro-input-campo-texto: var(--blanco-normal);
+
+
+  --oscuro-input-campo-borde: var(--gris-normal);
+
+
+  --oscuro-input-campo-foco: var(--amarillo-normal);
+
+
+  --oscuro-alerta-borde: var(--gris-normal);
+
+
+  --oscuro-alerta-info-fondo: var(--gris-normal);
+
+
+  --oscuro-alerta-info-borde: var(--gris-normal-hover);
+
+
+  --oscuro-guia-fondo: var(--gris-dark);
+
+
+  --oscuro-guia-titulo: var(--amarillo-normal);
+
+
+  --oscuro-guia-subtitulo: var(--blanco-normal);
+
+
+  --oscuro-guia-descripcion: var(--blanco-dark);
+
+
+  --oscuro-guia-demo-fondo: var(--gris-normal);
+
+
+  --oscuro-guia-demo-borde: var(--gris-normal-hover);
+
+
+  --oscuro-guia-nota-fondo: var(--gris-normal);
+
+
+  --oscuro-guia-nota-borde: var(--amarillo-normal);
+
+
+  --oscuro-legal-fondo: var(--gris-dark);
+
+
+  --oscuro-legal-contenido-fondo: var(--gris-normal);
+
+
+  --oscuro-legal-contenido-sombra: var(--negro-puro-transparente-030);
+
+
+  --oscuro-legal-titulo: var(--blanco-normal);
+
+
+  --oscuro-legal-fecha: var(--blanco-dark);
+
+
+  --oscuro-legal-subtitulo: var(--blanco-normal);
+
+
+  --oscuro-legal-texto: var(--blanco-dark);
+
+
+  --oscuro-legal-borde: var(--gris-normal-hover);
+
+
+  --oscuro-legal-enlace: var(--amarillo-normal);
+
+
+  --oscuro-legal-enlace-hover: var(--amarillo-dark);
+
+
+  --oscuro-pagina-fondo-principal: var(--gris-dark-active);
+
+
+  --oscuro-pagina-card-fondo: var(--gris-normal);
+
+
+  --oscuro-pagina-titulo: var(--blanco-normal);
+
+
+  --oscuro-pagina-texto: var(--blanco-dark);
+
+
+  --oscuro-pagina-borde: var(--gris-normal-hover);
+
+
+  --oscuro-info-header-fondo: var(--negro-normal);
+
+
+  --oscuro-info-seccion-alt-fondo: var(--gris-dark);
+
+
+  --oscuro-info-card-fondo: var(--gris-normal);
+
+
+  --oscuro-info-titulo: var(--blanco-normal);
+
+
+  --oscuro-info-texto: var(--blanco-dark);
+
+
+  --oscuro-info-borde: var(--gris-normal-hover);
+
+
+  --oscuro-home-hero-fondo: linear-gradient(135deg, var(--oscuro-fondo-oscuro) 0%, var(--oscuro-fondo-medio) 100%);
+  --oscuro-home-seccion-alt: var(--oscuro-fondo-muy-oscuro);
+  --oscuro-home-feature-fondo: var(--oscuro-fondo-medio);
+  --oscuro-home-feature-icono-fondo: var(--oscuro-fondo-medio-claro);
+  --oscuro-home-testimonial-fondo: var(--oscuro-fondo-medio);
+  --oscuro-home-cta-fondo: linear-gradient(135deg, var(--oscuro-cta-gradiente-inicio) 0%, var(--oscuro-fondo-oscuro) 100%);
+  --oscuro-home-stat-fondo: var(--oscuro-fondo-medio-claro);
+
+
+  --oscuro-onboarding-fondo: var(--oscuro-fondo-oscuro);
+  --oscuro-onboarding-card-fondo: var(--oscuro-fondo-medio);
+  --oscuro-onboarding-progress-bg: var(--oscuro-borde-principal);
+  --oscuro-onboarding-progress-fill: var(--amarillo-normal);
+  --oscuro-onboarding-option-fondo: var(--oscuro-fondo-medio);
+  --oscuro-onboarding-optihover: var(--oscuro-fondo-medio-claro);
+  --oscuro-onboarding-option-selected: var(--oscuro-cta-gradiente-inicio);
+  --oscuro-onboarding-option-borde-selected: var(--amarillo-normal);
+  --oscuro-onboarding-input-fondo: var(--oscuro-fondo-oscuro);
+  --oscuro-onboarding-input-borde: var(--oscuro-borde-principal);
+
+
+  --oscuro-gimnasio-fondo: var(--oscuro-fondo-oscuro);
+  --oscuro-gimnasio-sidebar-fondo: var(--oscuro-fondo-medio);
+  --oscuro-gimnasio-ejercicio-fondo: var(--oscuro-fondo-medio);
+  --oscuro-gimnasio-ejercicio-hover: var(--oscuro-fondo-medio-claro);
+  --oscuro-gimnasio-categoria-fondo: var(--oscuro-borde-principal);
+  --oscuro-gimnasio-badge-fondo: var(--oscuro-fondo-medio-claro);
+  --oscuro-gimnasio-detalle-fondo: var(--oscuro-fondo-medio);
+  --oscuro-gimnasio-video-overlay: var(--negro-puro-transparente-060);
+
+
+  --oscuro-alimentacion-fondo: var(--oscuro-fondo-oscuro);
+  --oscuro-alimentacion-receta-fondo: var(--oscuro-fondo-medio);
+  --oscuro-alimentacion-nutrientes-fondo: var(--oscuro-fondo-medio-claro);
+  --oscuro-alimentacion-ingrediente-fondo: var(--oscuro-fondo-medio);
+  --oscuro-alimentacion-tab-fondo: var(--oscuro-borde-principal);
+  --oscuro-alimentacion-tab-activa: var(--amarillo-normal);
+  --oscuro-alimentacion-macro-fondo: var(--oscuro-fondo-medio-claro);
+  --oscuro-alimentacion-calorias-ring: var(--amarillo-normal);
+  --oscuro-alimentacion-loading-texto: var(--blanco-normal);
+  --oscuro-alimentacion-btn-regenerar-color: var(--blanco-normal);
+  --oscuro-alimentacion-btn-regenerar-borde: var(--blanco-normal);
+
+
+  --oscuro-seguimiento-fondo: var(--oscuro-fondo-oscuro);
+  --oscuro-seguimiento-card-fondo: var(--oscuro-fondo-medio);
+  --oscuro-seguimiento-grafico-linea: var(--amarillo-normal);
+  --oscuro-seguimiento-grafico-grid: var(--oscuro-borde-principal);
+  --oscuro-seguimiento-stat-fondo: var(--oscuro-fondo-medio-claro);
+  --oscuro-seguimiento-progress-bg: var(--oscuro-borde-principal);
+  --oscuro-seguimiento-progress-fill: var(--amarillo-normal);
+  --oscuro-seguimiento-chart-bg: var(--oscuro-fondo-medio);
+  --oscuro-seguimiento-sin-datos-texto: var(--oscuro-texto-principal);
+}
