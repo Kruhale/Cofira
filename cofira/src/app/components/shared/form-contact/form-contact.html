@@ -1,0 +1,44 @@
+<article class="contact-form">
+  <form [formGroup]="formularioContacto" (ngSubmit)="alEnviar()" class="form">
+
+    <fieldset class="form__fieldset">
+      <legend class="form__legend">Datos de contacto</legend>
+
+      <p class="form__group">
+        <label for="nombre" class="form__label">Escribe tu nombre:</label>
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          class="form__input"
+          placeholder="">
+      </p>
+
+      <p class="form__group">
+        <label for="apellido" class="form__label">Escribe tu apellido:</label>
+        <input
+          type="text"
+          id="apellido"
+          formControlName="apellido"
+          class="form__input"
+          placeholder="">
+      </p>
+
+      <p class="form__group">
+        <label for="email" class="form__label">Escribe tu email:</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form__input"
+          placeholder="">
+      </p>
+
+    </fieldset>
+
+    <app-button [anchoCompleto]="true" [habilitado]="formularioContacto.invalid" tamanio="grande" tipo="submit" variante="primario">
+      Enviar
+    </app-button>
+
+  </form>
+</article>

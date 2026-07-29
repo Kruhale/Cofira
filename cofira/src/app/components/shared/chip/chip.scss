@@ -1,0 +1,76 @@
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-size-xs);
+  padding: var(--spacing-size-xs) var(--spacing-size-s);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-full);
+  font-family: var(--fuente-mono);
+  font-size: var(--etiqueta-tecnica);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: border-color var(--duration-base) ease,
+    background var(--duration-base) ease,
+    color var(--duration-base) ease;
+
+  &:hover {
+    border-color: var(--borde-medio);
+    color: var(--texto-principal);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--naranja-normal);
+    box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+  }
+}
+
+.chip--selected {
+  background: var(--naranja-glow-suave);
+  border-color: var(--naranja-normal);
+  color: var(--naranja-texto);
+
+  &:hover {
+    border-color: var(--naranja-normal);
+    color: var(--naranja-texto);
+  }
+}
+
+.chip__texto {
+  line-height: 1;
+}
+
+.chip__boton-eliminar {
+  @include flex-center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  color: var(--texto-suave);
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
+
+  &:hover {
+    background: var(--naranja-normal);
+    color: var(--texto-sobre-acento);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--naranja-glow-suave);
+  }
+}
+
+.chip__boton-eliminar__svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
