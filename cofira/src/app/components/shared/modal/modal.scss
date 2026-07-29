@@ -1,0 +1,133 @@
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: hsla(0, 0%, 0%, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: var(--z-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-size-m);
+  box-sizing: border-box;
+  animation: aparecer-gradual var(--duration-base) ease;
+
+  @include responsive-down('sm') {
+    padding: var(--spacing-size-m);
+  }
+}
+
+@keyframes aparecer-gradual {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: calc(100% - var(--spacing-size-m) * 2);
+  @include superficie-bento;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  animation: deslizar-arriba var(--duration-base) ease;
+
+  @include responsive-down('md') {
+    max-height: 95vh;
+  }
+
+  @include responsive-down('sm') {
+    max-width: calc(100vw - var(--spacing-size-m) * 2);
+  }
+}
+
+@keyframes deslizar-arriba {
+  from {
+    transform: translateY(2rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-size-l);
+  border-bottom: 1px solid var(--borde-sutil);
+
+  @include responsive-down('md') {
+    padding: var(--spacing-size-m);
+  }
+}
+
+.modal__titulo {
+  margin: 0;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-principal);
+
+  @include responsive-down('md') {
+    font-size: var(--font-size-lg);
+  }
+}
+
+.modal__cerrar {
+  @include flex-center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  color: var(--texto-secundario);
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
+
+  &:hover {
+    background: var(--superficie-3);
+    color: var(--texto-principal);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+  }
+}
+
+.modal__cerrar-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+
+
+.modal__contenido {
+  padding: var(--spacing-size-l);
+  overflow-y: auto;
+
+  @include responsive-down('md') {
+    padding: var(--spacing-size-m);
+  }
+}

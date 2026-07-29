@@ -1,0 +1,49 @@
+<search [attr.aria-expanded]="estaAbierto()" class="autocomplete" role="combobox">
+  <label class="autocomplete__input-wrapper">
+    <figure class="autocomplete__icono">
+      @if (estaCargando()) {
+        <svg aria-hidden="true" class="autocomplete__icono-svg autocomplete__icono-svg--loading" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="32"/>
+        </svg>
+      } @else {
+        <svg aria-hidden="true" class="autocomplete__icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+      }
+    </figure>
+
+    <input
+      (blur)="alPerderFoco()"
+      (focus)="alObtenerFoco()"
+      (input)="alCambiarInput($any($event.target).value)"
+      (keydown)="alPresionarTecla($event)"
+      [attr.aria-activedescendant]="indiceResaltado() >= 0 ? 'result-' + indiceResaltado() : null"
+      [attr.aria-controls]="'autocomplete-results'"
+      [placeholder]="placeholder()"
+      [value]="consulta()"
+      autocomplete="off"
+      class="autocomplete__input"
+      role="searchbox"
+      type="search">
+  </label>
+
+  @if (estaAbierto()) {
+    <menu class="autocomplete__resultados" id="autocomplete-results" role="listbox">
+      @for (item of resultados(); track item.id; let i = $index) {
+        <li
+          (click)="alSeleccionar(item)"
+          [attr.aria-selected]="indiceResaltado() === i"
+          [class.autocomplete__item--destacado]="indiceResaltado() === i"
+          [id]="'result-' + i"
+          class="autocomplete__item"
+          role="option">
+          {{ item.nombre }}
+        </li>
+      } @empty {
+        <li class="autocomplete__empty">No se encontraron resultados</li>
+      }
+    </menu>
+  }
+</search>
