@@ -1,0 +1,224 @@
+<main class="perfil">
+  <header class="perfil__cabecera">
+    <section class="perfil__cabecera-textos">
+      <p class="perfil__eyebrow">{{ textos().eyebrow }}</p>
+      <h1 class="perfil__titulo">{{ datosUsuario().nombre || textos().tituloPorDefecto }}</h1>
+      <p class="perfil__contexto">{{ datosUsuario().email }}</p>
+    </section>
+
+    <aside class="perfil__cabecera-meta">
+      <p class="perfil__etiquetas">
+        @if (usuarioEsPro()) {
+          <span class="perfil__etiqueta perfil__etiqueta--acento">PRO</span>
+        }
+        @if (datosUsuario().objetivo) {
+          <span class="perfil__etiqueta">{{ datosUsuario().objetivo }}</span>
+        }
+        @if (datosUsuario().nivelActividad) {
+          <span class="perfil__etiqueta">{{ datosUsuario().nivelActividad }}</span>
+        }
+      </p>
+    </aside>
+  </header>
+
+  <section class="perfil__reticula">
+    <section class="perfil__identidad">
+      <header class="perfil__seccion-cabecera">
+        <h2 class="perfil__seccion-titulo">{{ textos().tituloInformacion }}</h2>
+        @if (!modoEdicion()) {
+          <app-button (click)="activarEdicion()" tamanio="pequeno" tipo="button" variante="secundario">
+            {{ textos().botonEditar }}
+          </app-button>
+        }
+      </header>
+
+      <article class="perfil__identidad-cuerpo">
+        <figure class="perfil__avatar">
+          <span class="perfil__avatar-inicial">{{ (datosUsuario().nombre || datosUsuario().email || '?').charAt(0) }}</span>
+        </figure>
+
+        <form class="perfil__formulario">
+          <fieldset [class.perfil__fila--edicion]="modoEdicion()" class="perfil__fila">
+            <label class="perfil__fila-dato" for="nombre">{{ textos().labelNombre }}</label>
+            @if (modoEdicion()) {
+              <input
+                [(ngModel)]="datosUsuario().nombre"
+                [placeholder]="textos().placeholderNombre"
+                class="perfil__input"
+                id="nombre"
+                name="nombre"
+                type="text">
+            } @else {
+              <p class="perfil__fila-valor">{{ datosUsuario().nombre || textos().sinEspecificar }}</p>
+            }
+          </fieldset>
+
+          @if (modoEdicion()) {
+            <fieldset class="perfil__fila perfil__fila--edicion">
+              <label class="perfil__fila-dato" for="peso">{{ textos().labelPesoActual }} (kg)</label>
+              <input
+                [(ngModel)]="datosUsuario().peso"
+                class="perfil__input"
+                id="peso"
+                name="peso"
+                step="0.1"
+                type="number">
+            </fieldset>
+
+            <fieldset class="perfil__fila perfil__fila--edicion">
+              <label class="perfil__fila-dato" for="altura">{{ textos().labelAltura }} (cm)</label>
+              <input
+                [(ngModel)]="datosUsuario().altura"
+                class="perfil__input"
+                id="altura"
+                name="altura"
+                type="number">
+            </fieldset>
+          }
+
+          <fieldset class="perfil__fila">
+            <span class="perfil__fila-dato">{{ textos().labelEmail }}</span>
+            <p class="perfil__fila-valor perfil__fila-valor--email">{{ datosUsuario().email }}</p>
+          </fieldset>
+
+          <fieldset class="perfil__fila">
+            <span class="perfil__fila-dato">{{ textos().labelMiembroDesde }}</span>
+            <p class="perfil__fila-valor">{{ formatearFecha(datosUsuario().fechaRegistro) }}</p>
+          </fieldset>
+
+          @if (modoEdicion()) {
+            <footer class="perfil__acciones">
+              <app-button (click)="cancelarEdicion()" tamanio="mediano" tipo="button" variante="secundario">
+                {{ textos().botonCancelar }}
+              </app-button>
+              <app-button (click)="guardarCambios()" [habilitado]="estaCargando()" tamanio="mediano" tipo="button" variante="primario">
+                @if (estaCargando()) {
+                  {{ textos().botonGuardando }}
+                } @else {
+                  {{ textos().botonGuardar }}
+                }
+              </app-button>
+            </footer>
+          }
+        </form>
+      </article>
+    </section>
+
+    <aside class="perfil__salud">
+      <header class="perfil__seccion-cabecera">
+        <h2 class="perfil__seccion-titulo">{{ textos().tituloSalud }}</h2>
+      </header>
+
+      <section class="perfil__banda">
+        <article class="perfil__banda-dato">
+          <span class="perfil__banda-etiqueta">{{ textos().labelPesoActual }}</span>
+          <span class="perfil__banda-valor">
+            @if (datosUsuario().peso) {
+              {{ comaDecimal(datosUsuario().peso!) }} kg
+            } @else {
+              <span class="perfil__banda-vacio">—</span>
+            }
+          </span>
+        </article>
+
+        <article class="perfil__banda-dato">
+          <span class="perfil__banda-etiqueta">{{ textos().labelAltura }}</span>
+          <span class="perfil__banda-valor">
+            @if (datosUsuario().altura) {
+              {{ datosUsuario().altura }} cm
+            } @else {
+              <span class="perfil__banda-vacio">—</span>
+            }
+          </span>
+        </article>
+
+        <article class="perfil__banda-dato">
+          <span class="perfil__banda-etiqueta">{{ textos().labelImc }}</span>
+          <span class="perfil__banda-valor">
+            @if (imcCalculado()) {
+              {{ comaDecimal(imcCalculado()!) }}
+              @if (estadoImc()) {
+                <mark class="perfil__imc-estado perfil__imc-estado--{{ estadoImc()?.clase }}">
+                  {{ estadoImc()?.texto }}
+                </mark>
+              }
+            } @else {
+              <span class="perfil__banda-vacio">—</span>
+            }
+          </span>
+        </article>
+
+        <article class="perfil__banda-dato">
+          <span class="perfil__banda-etiqueta">{{ textos().labelObjetivo }}</span>
+          <span class="perfil__banda-valor perfil__banda-valor--texto">{{ datosUsuario().objetivo }}</span>
+        </article>
+      </section>
+
+      @if (!datosUsuario().peso || !datosUsuario().altura) {
+        <p class="perfil__banda-nota">
+          {{ textos().notaPerfilIncompleto }}
+          @if (!modoEdicion()) {
+            <button (click)="activarEdicion()" class="perfil__banda-nota-enlace" type="button">
+              {{ textos().botonEditar }}
+            </button>
+          }
+        </p>
+      }
+
+      <article class="perfil__actividad">
+        <span class="perfil__actividad-etiqueta">{{ textos().tituloActividad }}</span>
+        <p class="perfil__actividad-nivel">{{ datosUsuario().nivelActividad }}</p>
+        <p class="perfil__actividad-descripcion">{{ descripcionActividad() }}</p>
+      </article>
+    </aside>
+  </section>
+
+  <section class="perfil__entrenamiento">
+    <header class="perfil__seccion-cabecera">
+      <h2 class="perfil__seccion-titulo">{{ textos().tituloEntrenamiento }}</h2>
+    </header>
+
+    <p class="perfil__entrenamiento-nota">{{ textos().notaEntrenamiento }}</p>
+
+    <section class="perfil__entrenamiento-grupo">
+      <h3 class="perfil__entrenamiento-subtitulo">{{ textos().tituloDeportes }}</h3>
+      <ul class="perfil__chips">
+        @for (opcion of opcionesDeportes(); track opcion.id) {
+          <li class="perfil__chips-item">
+            <app-chip
+              (click)="alternarDeporte(opcion.id)"
+              [seleccionado]="deportesSeleccionados().includes(opcion.id)"
+              [texto]="opcion.label">
+            </app-chip>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <section class="perfil__entrenamiento-grupo">
+      <h3 class="perfil__entrenamiento-subtitulo">{{ textos().tituloEquipamiento }}</h3>
+      <ul class="perfil__chips">
+        @for (opcion of opcionesEquipamiento(); track opcion.id) {
+          <li class="perfil__chips-item">
+            <app-chip
+              (click)="alternarEquipo(opcion.id)"
+              [seleccionado]="equipoSeleccionado().includes(opcion.id)"
+              [texto]="opcion.label">
+            </app-chip>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <footer class="perfil__entrenamiento-acciones">
+      <app-button
+        (click)="guardarEntrenamiento()"
+        [habilitado]="guardandoEntrenamiento()"
+        tamanio="mediano"
+        tipo="button"
+        variante="primario">
+        {{ textos().botonGuardarEntrenamiento }}
+      </app-button>
+    </footer>
+  </section>
+</main>
