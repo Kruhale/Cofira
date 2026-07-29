@@ -1,0 +1,12 @@
+<article class="formulario-seleccion">
+  <label [for]="nombre" class="formulario-seleccion__etiqueta">
+    {{ etiqueta }}
+  </label>
+
+  <select [id]="nombre" [name]="nombre" class="formulario-seleccion__campo">
+    <option value="" disabled selected>{{ textoOpcionVacia() }}</option>
+    @for (opcion of opciones; track opcion) {
+    <option [value]="opcion">{{ opcion }}</option>
+    }
+  </select>
+</article>

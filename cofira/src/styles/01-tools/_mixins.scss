@@ -1,0 +1,734 @@
+
+
+@import '../00-settings/css-variables';
+
+
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-wrap($gap: 1rem) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $gap;
+}
+
+@mixin flex-full {
+  display: flex;
+  width: 100%;
+}
+
+
+
+@mixin input-base {
+  width: 100%;
+  padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+  background-color: var(--blanco-normal);
+  border-radius: var(--radius-s);
+  font-size: var(--font-size-md);
+  font-family: var(--font-secondary);
+  color: var(--text-light);
+  transition: all var(--duration-fast);
+
+  &:focus-visible {
+    outline: 2px solid var(--negro-normal);
+    outline-offset: 2px;
+  }
+}
+
+@mixin input-placeholder {
+  color: var(--negro-normal);
+}
+
+@mixin input-focus {
+  background-color: var(--blanco-normal-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+@mixin input-hover {
+  background-color: var(--amarillo-normal-hover);
+  border-color: var(--negro-normal);
+}
+
+
+
+@mixin form-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-m);
+  background-color: var(--form-background);
+  padding: var(--form-padding);
+  border-radius: var(--radius-s);
+  max-width: var(--form-max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+@mixin form-contact-input {
+  background-color: var(--form-input-background);
+  color: var(--text-dark);
+  border: 0.125rem solid transparent;
+  transition: all var(--duration-base);
+
+  &:focus {
+    border-color: var(--amarillo-normal);
+    background-color: var(--form-input-background);
+  }
+
+  &:hover:not(:focus) {
+    background-color: var(--gris-dark);
+  }
+}
+
+@mixin form-label {
+  color: var(--blanco-normal);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  font-family: var(--font-secondary);
+  margin-bottom: var(--spacing-size-xss);
+}
+
+@mixin form-button {
+  width: 100%;
+  padding: var(--spacing-size-s);
+  background-color: var(--amarillo-normal);
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--radius-s);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-secondary);
+  cursor: pointer;
+  transition: all var(--duration-base);
+
+  &:hover:not(:disabled) {
+    background-color: var(--amarillo-dark-hover);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+
+
+@mixin responsive($breakpoint) {
+  @if $breakpoint == 'xxs' {
+    @media (min-width: $breakpoint-xxs) {
+      @content;
+    }
+  } @else if $breakpoint == 'xs' {
+    @media (min-width: $breakpoint-xs) {
+      @content;
+    }
+  } @else if $breakpoint == 'sm' {
+    @media (min-width: $breakpoint-sm) {
+      @content;
+    }
+  } @else if $breakpoint == 'md' {
+    @media (min-width: $breakpoint-md) {
+      @content;
+    }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: $breakpoint-xl) {
+      @content;
+    }
+  } @else if $breakpoint == 'xxl' {
+    @media (min-width: $breakpoint-xxl) {
+      @content;
+    }
+  }
+}
+
+@mixin responsive-down($breakpoint) {
+  @if $breakpoint == 'xxs' {
+    @media (max-width: $breakpoint-xxs) {
+      @content;
+    }
+  } @else if $breakpoint == 'xs' {
+    @media (max-width: $breakpoint-xs) {
+      @content;
+    }
+  } @else if $breakpoint == 'sm' {
+    @media (max-width: $breakpoint-sm) {
+      @content;
+    }
+  } @else if $breakpoint == 'md' {
+    @media (max-width: $breakpoint-md) {
+      @content;
+    }
+  } @else if $breakpoint == 'lg' {
+    @media (max-width: $breakpoint-lg) {
+      @content;
+    }
+  } @else if $breakpoint == 'xl' {
+    @media (max-width: $breakpoint-xl) {
+      @content;
+    }
+  } @else if $breakpoint == 'xxl' {
+    @media (max-width: $breakpoint-xxl) {
+      @content;
+    }
+  }
+}
+
+
+
+@mixin flex-columna($gap: 0) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+@mixin flex-fila($gap: 0) {
+  display: flex;
+  flex-direction: row;
+  gap: $gap;
+}
+
+
+
+@mixin tipografia-titulo {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-light);
+}
+
+@mixin tipografia-texto {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+}
+
+
+
+@mixin boton-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-semibold);
+  border: none;
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  transition: all var(--duration-base) ease;
+  text-decoration: none;
+  user-select: none;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+@mixin tarjeta-base {
+  background-color: var(--gris-normal);
+  border-radius: var(--radius-s);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-size-m);
+  transition: all var(--duration-base) ease;
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+@mixin alerta-base {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-s);
+  padding: var(--spacing-size-s) var(--spacing-size-m);
+  border-radius: var(--radius-s);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+}
+
+
+
+@mixin texto-truncado {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin texto-truncado-lineas($lineas: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lineas;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@mixin centrar-absoluto {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin transicion-suave($propiedad: all) {
+  transition: $propiedad var(--duration-base) ease;
+}
+
+@mixin sr-only {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  padding: 0;
+  margin: -0.0625rem;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+
+@mixin seccion-full-width($padding-h: 6rem, $padding-v: var(--spacing-size-xxxl)) {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  padding: $padding-v $padding-h;
+  box-sizing: border-box;
+  transform: translateX(-50%);
+}
+
+
+
+@mixin efecto-glass($bg: var(--blanco-normal-transparente-085), $blur: 12px) {
+  background: $bg;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+}
+
+@mixin titulo-seccion($color: var(--negro-normal), $size: var(--font-size-4xl), $margin-bottom: var(--spacing-size-xxl)) {
+  margin: 0 0 $margin-bottom 0;
+  font-family: var(--font-secondary);
+  font-size: $size;
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+  color: $color;
+}
+
+
+
+
+@mixin hover-activo {
+  &:hover:not(:disabled) {
+    @content;
+  }
+}
+
+@mixin click-activo {
+  &:active:not(:disabled) {
+    @content;
+  }
+}
+
+@mixin focus-activo {
+  &:focus:not(:disabled) {
+    @content;
+  }
+}
+
+@mixin focus-visible-activo {
+  &:focus-visible:not(:disabled) {
+    @content;
+  }
+}
+
+@mixin hover-elevacion($distancia: -0.25rem, $sombra: var(--shadow-lg)) {
+  transition: transform var(--duration-base) ease,
+  box-shadow var(--duration-base) ease;
+
+  &:hover {
+    transform: translateY($distancia);
+    box-shadow: $sombra;
+  }
+}
+
+@mixin focus-anillo($color: var(--amarillo-normal), $ancho: 2px, $offset: 2px) {
+  &:focus {
+    outline: $ancho solid $color;
+    outline-offset: $offset;
+  }
+}
+
+@mixin enlace-subrayado-animado($color: var(--amarillo-normal), $altura: 2px) {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: $altura;
+    content: '';
+    background: $color;
+    transition: width var(--duration-base) ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+
+
+@mixin caja-contenido {
+  width: 100%;
+  background-color: var(--blanco-normal);
+  border: 0.0625rem solid var(--blanco-dark);
+  border-radius: var(--radius-xss);
+  box-sizing: border-box;
+}
+
+@mixin boton-icono($size: 1.5rem) {
+  @include flex-center;
+  width: $size;
+  height: $size;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  transition: color var(--duration-fast) ease;
+}
+
+@mixin boton-icono-svg {
+  width: 100%;
+  height: 100%;
+}
+
+@mixin boton-circular($size: 1.875rem, $bg-color: var(--gris-normal)) {
+  @include flex-center;
+  width: $size;
+  height: $size;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background-color: $bg-color;
+  color: var(--blanco-normal);
+  cursor: pointer;
+  transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+@mixin boton-circular-svg {
+  width: 50%;
+  height: 50%;
+}
+
+
+@mixin texto-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+
+/* ════════════════════════════════════════════════════════════
+   MIXINS DEL REDISEÑO 2026 — oscuro premium + acento naranja
+   ════════════════════════════════════════════════════════════ */
+
+/* Tarjeta "bento": superficie + borde sutil + glow interior */
+@mixin superficie-bento($radio: var(--radius-bento)) {
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: $radio;
+  box-shadow: var(--sombra-bento), var(--glow-interior);
+}
+
+/* Elevación al pasar el ratón sobre una tarjeta bento */
+@mixin bento-hover {
+  transition: transform var(--duration-base) ease,
+    border-color var(--duration-base) ease,
+    box-shadow var(--duration-base) ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--borde-medio);
+    box-shadow: var(--sombra-bento), var(--glow-interior), var(--glow-acento);
+  }
+}
+
+/* Resplandor del acento */
+@mixin glow-acento {
+  box-shadow: var(--glow-acento);
+}
+
+/* Micro-etiqueta técnica monoespaciada en mayúsculas */
+@mixin etiqueta-tecnica($color: var(--texto-suave)) {
+  font-family: var(--fuente-mono);
+  font-size: var(--etiqueta-tecnica);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $color;
+}
+
+/* Cristal esmerilado (nav flotante, modales) */
+@mixin vidrio($blur: 16px) {
+  background: var(--vidrio-fondo);
+  backdrop-filter: blur($blur) saturate(140%);
+  -webkit-backdrop-filter: blur($blur) saturate(140%);
+}
+
+/* Titular display (Archivo) — sentence-case, peso extremo, eje de anchura.
+   La cursiva (font-style: italic) se reserva para resaltar nombres/métricas. */
+@mixin titular-display($tamano: var(--display-lg), $peso: 900, $ancho: 100%) {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-weight: $peso;
+  font-stretch: $ancho;
+  font-size: $tamano;
+  line-height: 1.02;
+  letter-spacing: 0;
+  color: var(--texto-principal);
+}
+
+/* Relleno de texto con el gradiente del acento */
+@mixin texto-gradiente {
+  background: var(--gradiente-acento);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Capa oscura degradada sobre una fotografía a sangre */
+@mixin overlay-foto {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: var(--gradiente-overlay-foto);
+    pointer-events: none;
+  }
+}
+
+/* Foco accesible con anillo naranja */
+@mixin foco-visible($color: var(--naranja-normal)) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: 2px;
+  }
+}
+
+/* Botón en forma de pastilla (base del rediseño) */
+@mixin boton-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-semibold);
+  border: 1px solid transparent;
+  border-radius: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  transition: transform var(--duration-fast) ease,
+    box-shadow var(--duration-base) ease,
+    background var(--duration-base) ease,
+    border-color var(--duration-base) ease,
+    color var(--duration-base) ease;
+  @include foco-visible;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+/* Resalte en cursiva real para nombres y métricas dentro de un titular */
+@mixin acento-italica {
+  font-style: italic;
+  font-weight: 800;
+}
+
+/* Textura de grano/ruido sutil — capa fija decorativa (atmósfera cinematográfica) */
+@mixin textura-grano($opacidad: 0.05) {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  content: '';
+  pointer-events: none;
+  opacity: $opacidad;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='ruido'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ruido)'/%3E%3C/svg%3E");
+}
+
+
+
+/* ════════════════════════════════════════════════════════════
+   CIMIENTOS RESPONSIVE COMPARTIDOS (2026) — contenedor, shell,
+   rejilla de tarjetas y ritmo. Desktop-first con responsive-down.
+   ════════════════════════════════════════════════════════════ */
+
+/* Padding horizontal del contenedor que baja por breakpoints */
+@mixin padding-contenedor {
+  padding-left: 6rem;
+  padding-right: 6rem;
+
+  @include responsive-down('lg') {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  @include responsive-down('sm') {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @include responsive-down('xxs') {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* Centra + limita ancho + padding responsive en una sola llamada */
+@mixin contenedor($ancho: var(--ancho-contenido)) {
+  max-width: $ancho;
+  margin-left: auto;
+  margin-right: auto;
+  @include padding-contenedor;
+}
+
+/* Shell de página: libra el header fijo + padding inferior.
+   Va al contenedor raíz de cada página de contenido. */
+@mixin page-shell {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: var(--page-shell-top);
+  padding-bottom: var(--spacing-size-xxxl);
+
+  @include responsive-down('sm') {
+    padding-top: var(--page-shell-top-movil);
+    padding-bottom: var(--spacing-size-xxl);
+  }
+}
+
+/* Ritmo vertical entre secciones de una misma página */
+@mixin ritmo-seccion($vertical: var(--spacing-size-xxxl)) {
+  padding-top: $vertical;
+  padding-bottom: $vertical;
+
+  @include responsive-down('sm') {
+    padding-top: var(--spacing-size-xxl);
+    padding-bottom: var(--spacing-size-xxl);
+  }
+}
+
+/* Rejilla de tarjetas auto-responsive. El min(...,100%) evita el
+   desbordamiento horizontal en móvil cuando $minimo > ancho de pantalla. */
+@mixin rejilla-tarjetas($minimo: 16rem, $separacion: 1.25rem) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(#{$minimo}, 100%), 1fr));
+  gap: $separacion;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Subtítulo de sección: pasos por breakpoint (no desborda en 375px) */
+@mixin texto-seccion {
+  margin: 0;
+  max-width: var(--ancho-lectura);
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-lg); /* 20px */
+  line-height: 1.55;
+  color: var(--texto-secundario);
+
+  @include responsive-down('md') {
+    font-size: 1.125rem; /* 18px */
+  }
+
+  @include responsive-down('xs') {
+    font-size: 1rem; /* 16px */
+  }
+}
+/* Atmósfera compartida de las páginas de la app: halo naranja que baja del
+   borde superior + grano fino fijo. Sin esto el fondo era negro plano y las
+   páginas se sentían muertas frente al login/onboarding. */
+@mixin atmosfera-app {
+  position: relative;
+  isolation: isolate;
+  /* El halo vive en el fondo del propio elemento: se pinta ENCIMA de la foto
+     del ::before y conserva su naranja (un filter en el pseudo lo grisearia) */
+  background-image: var(--gradiente-halo);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 64rem 30rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: -1;
+    width: 100vw;
+    height: 24rem;
+    transform: translateX(-50%);
+    background-image: linear-gradient(180deg, transparent 0%, var(--superficie-fondo) 96%), url('/assets/images/hero-fitness-alt.jpg');
+    background-position: center, center 30%;
+    background-size: cover, cover;
+    filter: grayscale(1) contrast(1.05);
+    opacity: var(--atmosfera-foto-opacidad);
+    pointer-events: none;
+  }
+
+  &::after {
+    @include textura-grano(0.026);
+  }
+}
+
+/* Barrido de luz de los esqueletos de carga (skeleton shimmer propio) */
+@keyframes brillo-barre {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Entrada compartida de las páginas de la app: sube 10px con fundido. Definida
+   una sola vez (ViewEncapsulation.None hace los estilos globales) en vez de
+   repetir el mismo keyframe en cada página. */
+@keyframes entrada-sube {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

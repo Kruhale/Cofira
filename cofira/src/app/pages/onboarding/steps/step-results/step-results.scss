@@ -1,0 +1,287 @@
+@import '../../../../../styles/00-settings/css-variables';
+@import '../../../../../styles/01-tools/mixins';
+
+.step-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-l);
+  width: 100%;
+  max-width: 27rem;
+  margin: 0 auto;
+  padding: var(--spacing-size-xl);
+
+  @include responsive-down('sm') {
+    padding: var(--spacing-size-m);
+    gap: var(--spacing-size-m);
+  }
+}
+
+
+
+/* ── Cargando y error: señal mono con punto vivo, sin cajas ── */
+
+.step-results__loading {
+  display: flex;
+  padding: var(--spacing-size-xl) 0;
+}
+
+.step-results__loading-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.step-results__loading-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: resultados-latido 1.9s ease-in-out infinite;
+}
+
+.step-results__error {
+  padding: var(--spacing-size-s) 0 var(--spacing-size-s) var(--spacing-size-m);
+  border-left: 2px solid var(--peligro);
+}
+
+.step-results__error-text {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  color: var(--peligro-texto);
+}
+
+
+
+/* ── Cabecera editorial: eyebrow con regla + display con acento ── */
+
+.step-results__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.step-results__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--naranja-texto);
+}
+
+.step-results__eyebrow::before {
+  width: 1.75rem;
+  height: 1px;
+  background: var(--naranja-normal);
+  content: '';
+}
+
+.step-results__titulo {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 2.4rem; /* 38.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 2rem; /* 32px */
+  }
+}
+
+.step-results__titulo-acento {
+  @include acento-italica;
+  color: var(--naranja-texto);
+}
+
+.step-results__subtitulo {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texto-secundario);
+}
+
+
+
+/* ── Héroe: la cifra que importa, con glow, sin caja ── */
+
+.step-results__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-l);
+}
+
+.step-results__heroe {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: var(--spacing-size-l) 0;
+  border-top: 1px solid var(--borde-sutil);
+  border-bottom: 1px solid var(--borde-sutil);
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.1s;
+}
+
+.step-results__heroe-label {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-secundario);
+}
+
+.step-results__heroe-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.step-results__heroe-valor {
+  font-family: var(--fuente-display);
+  font-size: 4rem; /* 64px */
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 2.5rem var(--glow-cifra-heroe);
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 3.2rem; /* 51px */
+  }
+}
+
+.step-results__heroe-unidad {
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
+}
+
+
+
+/* ── Filas de datos: etiqueta mono → puntos conductores → valor tabular ── */
+
+.step-results__banda {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.18s;
+}
+
+.step-results__dato {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.step-results__dato-label {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--texto-secundario);
+}
+
+.step-results__dato-puntos {
+  position: relative;
+  top: -0.15rem;
+  flex: 1 1 2rem;
+  border-bottom: 1px dotted var(--borde-medio);
+}
+
+.step-results__dato-valor {
+  font-family: var(--fuente-mono);
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.step-results__macros {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.26s;
+}
+
+.step-results__macros-title {
+  margin: 0;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--borde-sutil);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-suave);
+}
+
+.step-results__macros-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step-results__footer {
+  display: flex;
+  padding-top: var(--spacing-size-s);
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.34s;
+}
+
+@keyframes resultados-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-results__loading-punto {
+    animation: none;
+  }
+
+  .step-results__header {
+    animation: none;
+  }
+
+  .step-results__heroe {
+    animation: none;
+  }
+
+  .step-results__banda {
+    animation: none;
+  }
+
+  .step-results__macros {
+    animation: none;
+  }
+
+  .step-results__footer {
+    animation: none;
+  }
+}

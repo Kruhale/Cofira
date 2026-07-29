@@ -1,0 +1,105 @@
+<main class="legal">
+  <header class="legal__header">
+    <h1 class="legal__titulo">{{ textos().tituloPagina }}</h1>
+    <p class="legal__fecha">{{ textos().etiquetaFecha }} {{ fechaActualizacion() }}</p>
+  </header>
+
+  <article class="legal__contenido">
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().aceptacionTitulo }}</h2>
+      <p class="legal__texto">{{ textos().aceptacionParrafo1 }}</p>
+      <p class="legal__texto">{{ textos().aceptacionParrafo2 }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().servicioTitulo }}</h2>
+      <p class="legal__texto">{{ textos().servicioIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().servicioPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().cuentaTitulo }}</h2>
+      <p class="legal__texto">{{ textos().cuentaIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().cuentaPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+      <p class="legal__texto">{{ textos().cuentaSuspension }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().usoTitulo }}</h2>
+      <p class="legal__texto">{{ textos().usoIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().usoPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().propiedadTitulo }}</h2>
+      <p class="legal__texto">{{ textos().propiedadParrafo1 }}</p>
+      <p class="legal__texto">{{ textos().propiedadParrafo2 }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().propiedadPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().responsabilidadTitulo }}</h2>
+      <p class="legal__texto legal__texto--destacado">
+        <strong>{{ textos().responsabilidadAvisoEtiqueta }}</strong> {{ textos().responsabilidadAvisoTexto }}
+      </p>
+      <ul class="legal__lista">
+        @for (punto of textos().responsabilidadPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+      <p class="legal__texto">{{ textos().responsabilidadLimite }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().pagosTitulo }}</h2>
+      <p class="legal__texto">{{ textos().pagosIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().pagosPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().modificacionesTitulo }}</h2>
+      <p class="legal__texto">{{ textos().modificacionesTexto }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().leyTitulo }}</h2>
+      <p class="legal__texto">{{ textos().leyTexto }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().contactoTitulo }}</h2>
+      <p class="legal__texto">{{ textos().contactoIntro }}</p>
+      <ul class="legal__lista legal__lista--sin-estilo">
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoEmailEtiqueta }}</strong>
+          <a class="legal__enlace" href="mailto:legal@cofira.com">legal&#64;cofira.com</a>
+        </li>
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoDireccionEtiqueta }}</strong> {{ textos().contactoDireccion }}
+        </li>
+      </ul>
+    </section>
+
+  </article>
+</main>

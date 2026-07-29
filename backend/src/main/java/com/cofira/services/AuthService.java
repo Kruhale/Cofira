@@ -1,0 +1,153 @@
+package com.cofira.services;
+
+import com.cofira.dto.auth.AuthResponseDTO;
+import com.cofira.dto.auth.LoginRequestDTO;
+import com.cofira.dto.auth.RegisterRequestDTO;
+import com.cofira.dto.auth.UserInfoDTO;
+import com.cofira.entities.TokenRevocado;
+import com.cofira.entities.Usuario;
+import com.cofira.enums.Rol;
+import com.cofira.exceptions.RecursoDuplicadoException;
+import com.cofira.exceptions.RecursoNoEncontradoException;
+import com.cofira.repositories.TokenRevocadoRepository;
+import com.cofira.repositories.UsuarioRepository;
+import com.cofira.security.JwtUtils;
+import com.cofira.security.UserDetailsImpl;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
+@Service
+public class AuthService {
+
+    private final AuthenticationManager authenticationManager;
+    private final UsuarioRepository usuarioRepository;
+    private final TokenRevocadoRepository tokenRevocadoRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
+
+    public AuthService(
+            AuthenticationManager authenticationManager,
+            UsuarioRepository usuarioRepository,
+            TokenRevocadoRepository tokenRevocadoRepository,
+            PasswordEncoder passwordEncoder,
+            JwtUtils jwtUtils) {
+        this.authenticationManager = authenticationManager;
+        this.usuarioRepository = usuarioRepository;
+        this.tokenRevocadoRepository = tokenRevocadoRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
+    }
+
+    public AuthResponseDTO login(LoginRequestDTO loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        String roleString = userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(item -> item.getAuthority().replace("ROLE_", ""))
+                .orElse("");
+
+        // Convertir el String a Rol enum
+        Rol rol = roleString.equals("ADMIN") ? Rol.ADMIN : Rol.USER;
+
+        // Obtener estado de onboarding
+        Usuario usuario = usuarioRepository.findByUsername(userDetails.getUsername())
+                .orElse(null);
+        Boolean isOnboarded = usuario != null && Boolean.TRUE.equals(usuario.getIsOnboarded());
+
+        return AuthResponseDTO.builder()
+                .token(jwt)
+                .type("Bearer")
+                .id(userDetails.getId())
+                .username(userDetails.getUsername())
+                .email(userDetails.getEmail())
+                .rol(rol)
+                .isOnboarded(isOnboarded)
+                .build();
+    }
+
+    @Transactional
+    public AuthResponseDTO register(RegisterRequestDTO registerRequest) {
+        if (usuarioRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new RecursoDuplicadoException("Error: El email ya está en uso!");
+        }
+
+        // El registro público SIEMPRE crea usuarios con rol USER. El rol nunca
+        // se toma del cliente (evita escalada de privilegios por mass-assignment).
+        Usuario usuario = Usuario.builder()
+                .nombre(registerRequest.getNombre())
+                .username(registerRequest.getUsername())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .rol(Rol.USER)
+                .build();
+
+        usuarioRepository.save(usuario);
+
+        // Autenticar y generar token
+        LoginRequestDTO loginRequest = new LoginRequestDTO();
+        loginRequest.setUsername(registerRequest.getUsername());
+        loginRequest.setPassword(registerRequest.getPassword());
+
+        return login(loginRequest);
+    }
+
+    public UserInfoDTO getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        Usuario usuario = usuarioRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        return UserInfoDTO.builder()
+                .id(usuario.getId())
+                .nombre(usuario.getNombre())
+                .username(usuario.getUsername())
+                .email(usuario.getEmail())
+                .rol(usuario.getRol())
+                .edad(usuario.getEdad())
+                .peso(usuario.getPeso())
+                .altura(usuario.getAltura())
+                .build();
+    }
+
+    @Transactional
+    public void logout(String token) {
+        String jti = jwtUtils.getJtiFromJwtToken(token);
+        LocalDateTime expiresAt = jwtUtils.getExpirationFromJwtToken(token)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+
+        TokenRevocado tokenRevocado = TokenRevocado.builder()
+                .jti(jti)
+                .expiresAt(expiresAt)
+                .revokedAt(LocalDateTime.now())
+                .build();
+
+        tokenRevocadoRepository.save(tokenRevocado);
+    }
+
+    @Transactional
+    public void cleanupExpiredTokens() {
+        tokenRevocadoRepository.deleteExpiredTokens(LocalDateTime.now());
+    }
+
+    public boolean isEmailAvailable(String email) {
+        return !usuarioRepository.existsByEmail(email);
+    }
+}

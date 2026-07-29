@@ -1,0 +1,17 @@
+<ng-template #contenido>
+  <ng-content></ng-content>
+</ng-template>
+
+@if (enlace) {
+  <a (click)="alHacerClick()" [class]="obtenerClasesBoton()" [routerLink]="enlace">
+    <ng-container *ngTemplateOutlet="contenido"></ng-container>
+  </a>
+} @else if (href) {
+  <a [class]="obtenerClasesBoton()" [href]="href" rel="noopener noreferrer" target="_blank">
+    <ng-container *ngTemplateOutlet="contenido"></ng-container>
+  </a>
+} @else {
+  <button (click)="alHacerClick()" [class]="obtenerClasesBoton()" [disabled]="habilitado" [type]="tipo">
+    <ng-container *ngTemplateOutlet="contenido"></ng-container>
+  </button>
+}

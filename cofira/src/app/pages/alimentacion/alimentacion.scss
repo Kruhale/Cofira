@@ -1,0 +1,1175 @@
+@import '../../../styles/01-tools/mixins';
+
+:host {
+  display: block;
+  background-color: var(--superficie-fondo);
+}
+
+.alimentacion {
+  @include atmosfera-app;
+  max-width: 71.25rem; /* 1140px */
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: var(--page-shell-top) var(--spacing-size-xl) var(--spacing-size-xxxl);
+
+  @include responsive-down('md') {
+    padding: var(--page-shell-top-movil) var(--spacing-size-m) var(--spacing-size-xl);
+  }
+}
+
+
+
+/* ── Cabecera: eyebrow + display a la izquierda, metadatos mono a la derecha ── */
+
+.alimentacion__cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-size-l);
+  padding-bottom: var(--spacing-size-l);
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--borde-sutil);
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-size-s);
+  }
+}
+
+.alimentacion__cabecera-textos {
+  @include flex-columna(0.85rem);
+  align-items: flex-start;
+}
+
+.alimentacion__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* ~10px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
+}
+
+.alimentacion__eyebrow::before {
+  content: '';
+  width: 1.75rem; /* 28px */
+  height: 1px;
+  background: var(--naranja-normal);
+}
+
+.alimentacion__titulo {
+  @include titular-display(var(--display-md));
+}
+
+/* La palabra clave del titular en itálica naranja: el gesto editorial firma */
+.alimentacion__titulo-acento {
+  @include acento-italica;
+  color: var(--naranja-texto);
+}
+
+.alimentacion__cabecera-meta {
+  @include flex-columna(0.5rem);
+  align-items: flex-end;
+  flex-shrink: 0;
+
+  @include responsive-down('sm') {
+    align-items: flex-start;
+  }
+}
+
+/* El saludo manda en la columna meta: humano primero, datos despues */
+.alimentacion__saludo {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.05rem; /* ~17px */
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--texto-principal);
+}
+
+.alimentacion__contexto {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-suave);
+}
+
+.alimentacion__meta-plan {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__meta-plan--vacio {
+  color: var(--texto-suave);
+}
+
+.alimentacion__meta-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+}
+
+
+
+/* ── Estado generando: contador estilo precarga + barra hairline + log ── */
+
+.alimentacion__generando {
+  @include flex-columna(var(--spacing-size-l));
+  align-items: flex-start;
+  padding-top: var(--spacing-size-xl);
+}
+
+.alimentacion__generando-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__generando-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: alimentacion-punto-latido 1.9s ease-in-out infinite;
+}
+
+.alimentacion__generando-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin: 0;
+}
+
+.alimentacion__generando-numero {
+  font-family: var(--fuente-mono);
+  font-size: 6rem; /* 96px, mismo cuerpo que el contador de la precarga */
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 4.5rem; /* 72px */
+  }
+}
+
+.alimentacion__generando-total {
+  font-family: var(--fuente-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__generando-barra {
+  width: 100%;
+  height: 0.2rem;
+  margin: 0;
+  background: var(--superficie-3);
+}
+
+.alimentacion__generando-relleno {
+  display: block;
+  height: 100%;
+  background: var(--naranja-normal);
+  transition: width var(--duration-base) ease;
+}
+
+.alimentacion__generando-log {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-size-m);
+  width: 100%;
+  margin: 0;
+}
+
+.alimentacion__generando-log-texto {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__generando-porcentaje {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.alimentacion__generando-iniciando {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__boton-cancelar {
+  margin-top: var(--spacing-size-s);
+  padding: 0.4rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--borde-medio);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__boton-cancelar:hover {
+  color: var(--peligro-texto);
+  border-color: var(--peligro);
+}
+
+@keyframes alimentacion-punto-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+
+
+/* ── Estado cargando: banda con punto vivo ── */
+
+.alimentacion__estado {
+  @include flex-columna(var(--spacing-size-s));
+  padding: var(--spacing-size-l) 0;
+}
+
+.alimentacion__estado-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__estado-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: alimentacion-punto-latido 1.9s ease-in-out infinite;
+}
+
+
+
+/* ── Cuerpo: minuta a la izquierda + lateral pegajoso con resumen y agua ── */
+
+.alimentacion__cuerpo {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-size-xxl);
+
+  @include responsive-down('md') {
+    flex-direction: column;
+    /* En columna, flex-start encoge los hijos a su contenido y la fila de
+       comidas desbordaba el viewport: aquí toca estirar */
+    align-items: stretch;
+    gap: var(--spacing-size-l);
+  }
+}
+
+.alimentacion__principal {
+  flex: 1;
+  min-width: 0;
+}
+
+.alimentacion__lateral {
+  @include flex-columna(0);
+  position: sticky;
+  top: 6rem; /* 96px: por debajo del header fijo de la app */
+  flex: 0 0 19rem; /* 304px */
+  padding: 0 1.25rem;
+  background-color: var(--superficie-1);
+  /* Luz de esquina: la tarjeta recibe la luz naranja de arriba a la izquierda */
+  background-image: linear-gradient(135deg, var(--naranja-glow-suave), transparent 42%);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 40px -28px var(--naranja-glow-media);
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.16s;
+
+  @include responsive-down('md') {
+    position: static;
+    flex-basis: auto;
+    width: 100%;
+  }
+}
+
+
+
+/* ── Tira de días: chips letra+número, activo con subrayado naranja ── */
+
+.alimentacion__navegacion-fecha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-size-m);
+  padding: 0.85rem 0;
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.08s;
+
+  @include responsive-down('sm') {
+    flex-wrap: wrap;
+  }
+}
+
+.alimentacion__dias {
+  display: flex;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  @include responsive-down('sm') {
+    flex: 1 1 100%;
+  }
+}
+
+.alimentacion__dias-item {
+  flex-shrink: 0;
+}
+
+.alimentacion__dia {
+  --color-dia-letra: var(--texto-suave);
+  --color-dia-numero: var(--texto-secundario);
+
+  @include flex-columna(0.2rem);
+  align-items: center;
+  width: 2.7rem; /* 43px */
+  padding: 0.45rem 0 0.55rem;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+  transition: background-color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__dia::after {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0;
+  height: 2px;
+  background: var(--naranja-normal);
+  transform: scaleX(0);
+  transition: transform var(--duration-fast) ease;
+}
+
+.alimentacion__dia:hover {
+  background: var(--superficie-1);
+}
+
+/* Pressed físico: el chip baja 1px al pulsarlo */
+.alimentacion__dia:active {
+  transform: translateY(1px);
+}
+
+.alimentacion__dia--activo::after {
+  transform: scaleX(1);
+}
+
+.alimentacion__dia-letra {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-dia-letra);
+}
+
+/* La variable hereda al hijo: el chip pinta la letra sin anidar selectores */
+.alimentacion__dia--hoy {
+  --color-dia-letra: var(--naranja-texto);
+}
+
+.alimentacion__dia-numero {
+  font-family: var(--fuente-mono);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-dia-numero);
+  transition: color var(--duration-fast) ease;
+}
+
+.alimentacion__dia--activo {
+  --color-dia-numero: var(--texto-principal);
+
+  background: var(--superficie-1);
+}
+
+.alimentacion__fecha-texto {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.5rem; /* 24px */
+  line-height: 1;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 1.2rem; /* ~19px */
+  }
+}
+
+.alimentacion__navegacion-controles {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.alimentacion__boton-fecha {
+  @include flex-center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__boton-fecha:hover {
+  border-color: var(--naranja-normal);
+  color: var(--naranja-texto);
+}
+
+.alimentacion__boton-fecha:active {
+  transform: translateY(1px);
+}
+
+.alimentacion__boton-fecha-svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+
+
+/* ── Lateral: balance del día (kcal héroe + macros) y agua apilados ── */
+
+.alimentacion__balance {
+  @include flex-columna(0.6rem);
+  padding: var(--spacing-size-l) 0;
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.alimentacion__balance-etiqueta {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+/* ── Anillo de kcal: la firma de la página, se dibuja al entrar ── */
+
+.alimentacion__anillo {
+  position: relative;
+  width: 9.5rem; /* 152px */
+  height: 9.5rem;
+  margin: 0.25rem 0 0;
+}
+
+.alimentacion__anillo-svg {
+  width: 100%;
+  height: 100%;
+  /* El arco arranca a las 12: el SVG nace a las 3 y se gira -90 grados */
+  transform: rotate(-90deg);
+}
+
+.alimentacion__anillo-fondo {
+  fill: none;
+  stroke: var(--superficie-3);
+  stroke-width: 7;
+}
+
+.alimentacion__anillo-progreso {
+  fill: none;
+  stroke: var(--naranja-normal);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 326.7; /* 2π × r(52) */
+  filter: drop-shadow(0 0 0.5rem var(--naranja-glow-media));
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.alimentacion__anillo-centro {
+  @include centrar-absoluto;
+  @include flex-columna(0.1rem);
+  align-items: center;
+  margin: 0;
+}
+
+.alimentacion__balance-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.alimentacion__balance-kcal {
+  font-family: var(--fuente-display);
+  font-size: 2.1rem; /* ~34px: respira dentro del anillo */
+  text-shadow: 0 0 2.5rem var(--glow-cifra-heroe);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.alimentacion__balance-unidad {
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
+}
+
+.alimentacion__macros {
+  @include flex-columna(0.65rem);
+  margin: var(--spacing-size-s) 0 0;
+  padding: var(--spacing-size-s) 0 0;
+  border-top: 1px solid var(--borde-sutil);
+  list-style: none;
+}
+
+.alimentacion__macro {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.alimentacion__macro-nombre {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__macro-valor {
+  margin-left: auto;
+  font-family: var(--fuente-mono);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.alimentacion__agua {
+  @include flex-columna(0.75rem);
+  padding: var(--spacing-size-l) 0;
+}
+
+.alimentacion__agua-etiqueta {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__agua-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.alimentacion__agua-valor {
+  font-family: var(--fuente-display);
+  font-size: 2rem; /* 32px */
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.alimentacion__agua-unidad {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
+}
+
+.alimentacion__agua-meta {
+  margin-left: auto;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__agua-muescas {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alimentacion__agua-muesca {
+  flex: 1;
+  height: 0.5rem; /* 8px */
+  background: var(--superficie-3);
+}
+
+.alimentacion__agua-muesca--llena {
+  background: var(--naranja-normal);
+}
+
+.alimentacion__agua-controles {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.alimentacion__agua-boton {
+  @include flex-center;
+  width: 2.5rem; /* 40px, minimo tactil */
+  height: 2.5rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__agua-boton:hover:not(:disabled) {
+  border-color: var(--naranja-normal);
+  color: var(--naranja-texto);
+}
+
+.alimentacion__agua-boton:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.alimentacion__agua-boton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.alimentacion__agua-boton-svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+
+
+/* ── Menú del día: minuta editorial con filos 1px ── */
+
+.alimentacion__menu-dia {
+  @include flex-columna(var(--spacing-size-m));
+}
+
+.alimentacion__comida {
+  @include superficie-bento;
+  @include bento-hover;
+  @include flex-columna(0.7rem);
+  position: relative;
+  overflow: hidden;
+  padding: var(--spacing-size-l);
+  /* Cascada de entrada: cada plato llega un pelín después del anterior */
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+
+  @include responsive-down('xs') {
+    padding: var(--spacing-size-m);
+  }
+}
+
+.alimentacion__comida:nth-child(1) {
+  animation-delay: 0.12s;
+}
+
+.alimentacion__comida:nth-child(2) {
+  animation-delay: 0.19s;
+}
+
+.alimentacion__comida:nth-child(3) {
+  animation-delay: 0.26s;
+}
+
+.alimentacion__comida:nth-child(4) {
+  animation-delay: 0.33s;
+}
+
+.alimentacion__comida:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+/* La variable hereda a los descendientes: así el nombre cambia de color al
+   pasar el ratón por la tarjeta entera sin anidar el selector del hijo */
+.alimentacion__comida:hover {
+  --color-nombre-comida: var(--naranja-texto);
+}
+
+.alimentacion__comida--consumida {
+  opacity: 0.5;
+}
+
+.alimentacion__comida-linea {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+}
+
+.alimentacion__comida-checkbox-label {
+  display: inline-flex;
+  align-self: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.alimentacion__comida-checkbox {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.alimentacion__comida-checkbox-custom {
+  @include flex-center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
+  color: var(--texto-sobre-acento);
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+
+.alimentacion__comida-checkbox:checked + .alimentacion__comida-checkbox-custom {
+  background: var(--naranja-normal);
+  border-color: var(--naranja-normal);
+}
+
+.alimentacion__comida-checkbox:focus-visible + .alimentacion__comida-checkbox-custom {
+  outline: 2px solid var(--naranja-normal);
+  outline-offset: 2px;
+}
+
+.alimentacion__comida-checkbox-svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.alimentacion__comida-tipo {
+  flex: 0 0 auto;
+  min-width: 5rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--texto-suave);
+
+  @include responsive-down('sm') {
+    min-width: 3.5rem;
+  }
+}
+
+.alimentacion__comida-nombre {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.35rem; /* 21.6px */
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-nombre-comida, var(--texto-principal));
+  transition: color var(--duration-fast) ease;
+
+  /* En móvil el nombre respira en dos líneas en vez de truncarse */
+  @include responsive-down('sm') {
+    white-space: normal;
+    font-size: 1.1rem; /* ~18px */
+    line-height: 1.15;
+  }
+}
+
+.alimentacion__comida-kcal {
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-family: var(--fuente-display);
+  font-size: 1.35rem; /* 21.6px */
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 1.1rem; /* ~18px */
+  }
+}
+
+.alimentacion__comida-kcal-unidad {
+  font-family: var(--font-secondary);
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
+}
+
+/* Macros como píldoras: cifras táctiles en vez de una línea con puntitos */
+.alimentacion__comida-macros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  /* 2.05rem: checkbox (1.15rem) + hueco, alinea el desglose con el tipo */
+  padding: 0 0 0 2.05rem;
+  list-style: none;
+}
+
+.alimentacion__pildora-macro {
+  padding: 0.3rem 0.7rem;
+  background: var(--superficie-3);
+  border-radius: var(--radius-full);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.alimentacion__alimentos {
+  @include flex-columna(0);
+  margin: 0.5rem 0 0;
+  padding: 0 0 0 2.05rem;
+  list-style: none;
+}
+
+.alimentacion__alimento {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+}
+
+.alimentacion__alimento-nombre {
+  flex: 1;
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__alimento-gramos {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-suave);
+}
+
+.alimentacion__boton-info {
+  @include flex-center;
+  align-self: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: auto;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__boton-info:hover {
+  color: var(--naranja-texto);
+}
+
+.alimentacion__boton-info-svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.alimentacion__comida-preparacion {
+  margin-top: 0.4rem;
+  padding-left: 2.05rem;
+}
+
+.alimentacion__preparacion-titulo {
+  margin: 0 0 0.35rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
+}
+
+.alimentacion__preparacion-texto {
+  margin: 0;
+  max-width: 40rem;
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__comida-acciones {
+  display: flex;
+  gap: var(--spacing-size-l);
+  margin-top: 0.5rem;
+  padding-left: 2.05rem;
+}
+
+.alimentacion__boton-registro {
+  padding: 0.4rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--borde-medio);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.alimentacion__boton-registro:hover {
+  color: var(--naranja-texto);
+  border-color: var(--naranja-normal);
+}
+
+.alimentacion__regenerar {
+  display: flex;
+  padding: var(--spacing-size-l) 0;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+
+
+/* ── Estado vacío: etiqueta mono + mensaje + esqueleto de la minuta ── */
+
+.alimentacion__vacio {
+  @include flex-columna(var(--spacing-size-s));
+  align-items: flex-start;
+  padding: var(--spacing-size-xl) 0;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.alimentacion__vacio-etiqueta {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
+}
+
+.alimentacion__vacio-titulo {
+  @include titular-display(var(--font-size-2xl));
+}
+
+.alimentacion__vacio-nota {
+  margin: 0;
+  max-width: 34rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__esqueleto {
+  @include flex-columna(0);
+  width: 100%;
+  max-width: 34rem;
+  margin: var(--spacing-size-m) 0 var(--spacing-size-s);
+  padding: 0;
+  list-style: none;
+}
+
+.alimentacion__esqueleto-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-m);
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.alimentacion__esqueleto-barra {
+  position: relative;
+  height: 0.5rem; /* 8px */
+  overflow: hidden;
+  background: var(--superficie-3);
+  animation: alimentacion-esqueleto-pulso 2.4s ease-in-out infinite;
+}
+
+/* Barrido de luz: el esqueleto respira como carga real, no como bloque muerto */
+.alimentacion__esqueleto-barra::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, hsla(30, 40%, 62%, 0.16), transparent);
+  animation: brillo-barre 1.8s ease-in-out infinite;
+}
+
+.alimentacion__esqueleto-barra--tipo {
+  flex: 0 0 4rem;
+}
+
+.alimentacion__esqueleto-barra--nombre {
+  flex: 1 1 auto;
+}
+
+.alimentacion__esqueleto-barra--kcal {
+  flex: 0 0 3rem;
+}
+
+/* Cascada: cada fila respira con un pelín de retraso sobre la anterior */
+.alimentacion__esqueleto-fila:nth-child(2) .alimentacion__esqueleto-barra {
+  animation-delay: 0.2s;
+}
+
+.alimentacion__esqueleto-fila:nth-child(3) .alimentacion__esqueleto-barra {
+  animation-delay: 0.4s;
+}
+
+@keyframes alimentacion-esqueleto-pulso {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+
+
+/* ── Movimiento reducido: sin señales pulsantes ni cascadas ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .alimentacion__cabecera {
+    animation: none;
+  }
+
+  .alimentacion__navegacion-fecha {
+    animation: none;
+  }
+
+  .alimentacion__lateral {
+    animation: none;
+  }
+
+  .alimentacion__comida {
+    animation: none;
+  }
+
+  .alimentacion__generando-punto {
+    animation: none;
+  }
+
+  .alimentacion__estado-punto {
+    animation: none;
+  }
+
+  .alimentacion__esqueleto-barra {
+    animation: none;
+  }
+
+  .alimentacion__esqueleto-barra::after {
+    animation: none;
+  }
+
+  .alimentacion__generando-relleno {
+    transition: none;
+  }
+
+  .alimentacion__dia::after {
+    transition: none;
+  }
+}
+
+
+/* ── Receta paso a paso: números en círculo, tiempos dentro de cada paso ── */
+
+.alimentacion__pasos {
+  @include flex-columna(0.55rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso-receta;
+}
+
+.alimentacion__paso {
+  position: relative;
+  padding-left: 2rem;
+  counter-increment: paso-receta;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+  color: var(--texto-secundario);
+}
+
+.alimentacion__paso::before {
+  content: counter(paso-receta);
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  background: var(--naranja-glow-suave);
+  border: 1px solid var(--naranja-normal);
+  border-radius: var(--radius-full);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--naranja-texto);
+}

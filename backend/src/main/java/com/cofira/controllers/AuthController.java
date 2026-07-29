@@ -1,0 +1,58 @@
+package com.cofira.controllers;
+
+import com.cofira.api.AuthControllerApi;
+import com.cofira.dto.auth.AuthResponseDTO;
+import com.cofira.dto.auth.LoginRequestDTO;
+import com.cofira.dto.auth.RegisterRequestDTO;
+import com.cofira.dto.auth.UserInfoDTO;
+import com.cofira.services.AuthService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController implements AuthControllerApi {
+
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequest) {
+        AuthResponseDTO response = authService.login(loginRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegisterRequestDTO registerRequest) {
+        AuthResponseDTO response = authService.register(registerRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserInfoDTO> getCurrentUser() {
+        UserInfoDTO userInfo = authService.getCurrentUser();
+        return ResponseEntity.ok(userInfo);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            authService.logout(token);
+            return ResponseEntity.ok().body("Logout exitoso");
+        }
+        return ResponseEntity.badRequest().body("Token no proporcionado");
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String, Boolean>> checkEmailAvailable(@RequestParam String email) {
+        boolean available = authService.isEmailAvailable(email);
+        return ResponseEntity.ok(Map.of("available", available));
+    }
+}

@@ -1,0 +1,87 @@
+# ════════════════════════════════════════════════════════════════
+# DOCKER COMPOSE - PRODUCCIÓN
+# Uso: copiar .env.example a .env, rellenarlo y ejecutar:
+#      docker-compose up -d --build
+# ════════════════════════════════════════════════════════════════
+
+services:
+  # ════════════════════════════════════════
+  # BASE DE DATOS - PostgreSQL
+  # ════════════════════════════════════════
+  postgres:
+    image: postgres:16-alpine
+    container_name: cofira-postgres-prod
+    environment:
+      POSTGRES_DB: cofira
+      POSTGRES_USER: ${DB_USERNAME:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en el archivo .env}
+    ports:
+      - "6005:5432"
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    networks:
+      - cofira-network-prod
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME:-admin} -d cofira" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ════════════════════════════════════════
+  # BACKEND - Spring Boot
+  # ════════════════════════════════════════
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cofira-backend-prod
+    ports:
+      - "9002:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cofira
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-admin}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en el archivo .env}
+      JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET en el archivo .env}
+      SPRING_SQL_INIT_MODE: always
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      DISCORD_CONTACTO_WEBHOOK: ${DISCORD_CONTACTO_WEBHOOK:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cofira-network-prod
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+
+  # ════════════════════════════════════════
+  # FRONTEND - Angular (Producción con Nginx)
+  # ════════════════════════════════════════
+  frontend:
+    build:
+      context: ./cofira
+      dockerfile: Dockerfile
+      target: production
+    container_name: cofira-frontend-prod
+    ports:
+      - "4202:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - cofira-network-prod
+    restart: unless-stopped
+
+volumes:
+  postgres_data_prod:
+
+networks:
+  cofira-network-prod:
+    driver: bridge

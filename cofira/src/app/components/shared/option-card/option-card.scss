@@ -1,0 +1,130 @@
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
+
+.option-card {
+  /* Las variables bajan a icono y check: estados sin selectores descendientes */
+  --icono-color: var(--naranja-texto);
+  --check-fondo: transparent;
+  --check-borde: var(--borde-medio);
+  --check-color: transparent;
+
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-m);
+  width: 100%;
+  padding: 1rem 1.15rem;
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--duration-fast) ease, background-color var(--duration-fast) ease,
+    transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--naranja-normal);
+    box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+  }
+}
+
+.option-card:hover {
+  background: var(--superficie-2);
+  border-color: var(--borde-medio);
+}
+
+/* Pressed físico: la tarjeta baja 1px al pulsarla */
+.option-card:active {
+  transform: translateY(1px);
+}
+
+.option-card--seleccionado {
+  --icono-color: var(--naranja-normal);
+  --check-fondo: var(--naranja-normal);
+  --check-borde: var(--naranja-normal);
+  --check-color: var(--texto-sobre-acento);
+
+  background: var(--naranja-glow-suave);
+  border-color: var(--naranja-normal);
+  box-shadow: 0 12px 30px -18px var(--naranja-glow-media);
+}
+
+.option-card--seleccionado:hover {
+  background: var(--naranja-glow-suave);
+  border-color: var(--naranja-normal);
+}
+
+
+
+/* Icono desnudo en slot fijo: mismo eje en todas las tarjetas, sin cajitas */
+.option-card__icono {
+  @include flex-center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  color: var(--icono-color);
+  transition: color var(--duration-fast) ease;
+}
+
+.option-card__icono-svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+
+
+.option-card__contenido {
+  flex: 1;
+  min-width: 0;
+}
+
+.option-card__titulo {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-principal);
+}
+
+.option-card__descripcion {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--texto-secundario);
+}
+
+
+
+/* Anillo SIEMPRE presente: hueco en reposo, check naranja al seleccionar.
+   El hueco reservado mantiene todas las tarjetas simétricas entre sí. */
+.option-card__check {
+  @include flex-center;
+  flex-shrink: 0;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: var(--check-fondo);
+  border: 1px solid var(--check-borde);
+  border-radius: var(--radius-full);
+  outline: none;
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+
+.option-card__check-svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  color: var(--check-color);
+  transition: color var(--duration-fast) ease;
+}
+
+
+
+/* En móvil reduce padding/gap para que el texto no quede apretado */
+@include responsive-down('xs') {
+  .option-card {
+    gap: var(--spacing-size-s);
+    padding: 0.85rem 1rem;
+  }
+}

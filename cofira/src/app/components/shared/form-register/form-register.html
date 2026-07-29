@@ -1,0 +1,83 @@
+<section class="register-form">
+          <form [formGroup]="formularioRegistro" (ngSubmit)="alEnviar()" class="form">
+
+                    <fieldset class="form__fieldset">
+                              <legend class="form__legend">{{ textos().leyendaCuenta }}</legend>
+
+                              <fieldset class="form__group">
+                                        <legend class="form__label">{{ textos().labelNombre }}</legend>
+                                        <input type="text" id="nombre" formControlName="nombre" class="form__input"
+                                                  [placeholder]="textos().placeholderNombre"
+                                                  [class.form__input--error]="controlesDelFormulario['nombre'].invalid && controlesDelFormulario['nombre'].touched"
+                                                  [attr.aria-describedby]="controlesDelFormulario['nombre'].invalid && controlesDelFormulario['nombre'].touched ? 'error-nombre' : null"
+                                                  [attr.aria-invalid]="controlesDelFormulario['nombre'].invalid && controlesDelFormulario['nombre'].touched">
+                                        @if (controlesDelFormulario['nombre'].invalid && controlesDelFormulario['nombre'].touched) {
+                                        <small id="error-nombre" class="form__error" role="alert">{{ textos().errorNombre }}</small>
+                                        }
+                              </fieldset>
+
+                              <fieldset class="form__group">
+                                        <legend class="form__label">{{ textos().labelApellido }}</legend>
+                                        <input type="text" id="apellido" formControlName="apellido" class="form__input"
+                                                  [placeholder]="textos().placeholderApellido"
+                                                  [class.form__input--error]="controlesDelFormulario['apellido'].invalid && controlesDelFormulario['apellido'].touched"
+                                                  [attr.aria-describedby]="controlesDelFormulario['apellido'].invalid && controlesDelFormulario['apellido'].touched ? 'error-apellido' : null"
+                                                  [attr.aria-invalid]="controlesDelFormulario['apellido'].invalid && controlesDelFormulario['apellido'].touched">
+                                        @if (controlesDelFormulario['apellido'].invalid && controlesDelFormulario['apellido'].touched) {
+                                        <small id="error-apellido" class="form__error" role="alert">{{ textos().errorApellido }}</small>
+                                        }
+                              </fieldset>
+
+                              <fieldset class="form__group">
+                                        <legend class="form__label">{{ textos().labelEmail }}</legend>
+                                        <input type="email" id="email" formControlName="email" class="form__input"
+                                                  [placeholder]="textos().placeholderEmail"
+                                                  [class.form__input--error]="controlesDelFormulario['email'].invalid && controlesDelFormulario['email'].touched"
+                                                  [attr.aria-describedby]="controlesDelFormulario['email'].invalid && controlesDelFormulario['email'].touched ? 'error-email' : null"
+                                                  [attr.aria-invalid]="controlesDelFormulario['email'].invalid && controlesDelFormulario['email'].touched">
+                                        @if (controlesDelFormulario['email'].invalid && controlesDelFormulario['email'].touched) {
+                                        <small id="error-email" class="form__error" role="alert">{{ textos().errorEmail }}</small>
+                                        }
+                              </fieldset>
+
+                              <fieldset class="form__group">
+                                        <legend class="form__label">{{ textos().labelContrasena }}</legend>
+                                        <input type="password" id="password" formControlName="password"
+                                                  class="form__input" [placeholder]="textos().placeholderContrasena"
+                                                  [class.form__input--error]="controlesDelFormulario['password'].invalid && controlesDelFormulario['password'].touched"
+                                                  [attr.aria-describedby]="controlesDelFormulario['password'].invalid && controlesDelFormulario['password'].touched ? 'error-password' : null"
+                                                  [attr.aria-invalid]="controlesDelFormulario['password'].invalid && controlesDelFormulario['password'].touched">
+                                        @if (controlesDelFormulario['password'].invalid && controlesDelFormulario['password'].touched) {
+                                        <small id="error-password" class="form__error" role="alert">{{ textos().errorContrasena }}</small>
+                                        }
+                              </fieldset>
+
+                              <fieldset class="form__group">
+                                        <legend class="form__label">{{ textos().labelConfirmar }}</legend>
+                                        <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                                                  class="form__input" [placeholder]="textos().placeholderConfirmar"
+                                                  [class.form__input--error]="controlesDelFormulario['confirmPassword'].invalid && controlesDelFormulario['confirmPassword'].touched"
+                                                  [attr.aria-describedby]="controlesDelFormulario['confirmPassword'].touched && controlesDelFormulario['confirmPassword'].errors?.['passwordMismatch'] ? 'error-confirmPassword' : null"
+                                                  [attr.aria-invalid]="controlesDelFormulario['confirmPassword'].touched && controlesDelFormulario['confirmPassword'].errors?.['passwordMismatch']">
+                                        @if (controlesDelFormulario['confirmPassword'].touched &&
+                                        controlesDelFormulario['confirmPassword'].errors?.['passwordMismatch']) {
+                                        <small id="error-confirmPassword" class="form__error" role="alert">{{ textos().errorNoCoinciden }}</small>
+                                        }
+                              </fieldset>
+
+                              <app-form-checkbox [etiqueta]="textos().etiquetaTerminos" nombre="terminos"
+                                        [requerido]="true" [controlDelFormulario]="terminosControl">
+                              </app-form-checkbox>
+                              @if (controlesDelFormulario['terminos'].invalid && controlesDelFormulario['terminos'].touched) {
+                              <small class="form__error" role="alert">{{ textos().errorTerminos }}</small>
+                              }
+
+                    </fieldset>
+
+            <app-button [anchoCompleto]="true" [habilitado]="formularioRegistro.invalid" tamanio="grande" tipo="submit"
+                        variante="primario">
+                              {{ textos().botonRegistrarse }}
+            </app-button>
+
+          </form>
+</section>
