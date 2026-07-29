@@ -1,0 +1,288 @@
+<main class="gimnasio">
+
+  <header class="gimnasio__cabecera">
+    <section class="gimnasio__cabecera-textos">
+      <p class="gimnasio__eyebrow">{{ textos().eyebrow }}</p>
+      <h1 class="gimnasio__titulo">{{ textos().titulo }} <em class="gimnasio__titulo-acento">{{ textos().tituloAcento }}</em></h1>
+    </section>
+
+    <aside class="gimnasio__cabecera-meta">
+      <p class="gimnasio__contexto">{{ textos().contextoSemana }} {{ semanaActual() }}</p>
+      @if (grupoDelDia()) {
+        <p class="gimnasio__meta-grupo">
+          <span class="gimnasio__meta-punto" aria-hidden="true"></span>
+          {{ diasSemana()[diaActualIndex()] }} · {{ grupoDelDia() }}
+        </p>
+      }
+    </aside>
+  </header>
+
+  @if (esDemo()) {
+    <app-banner-pro></app-banner-pro>
+  }
+
+  @if (isLoading()) {
+    <section aria-live="polite" class="gimnasio__estado">
+      <p class="gimnasio__estado-etiqueta">
+        <span class="gimnasio__estado-punto" aria-hidden="true"></span>
+        {{ textos().cargandoRutina }}
+      </p>
+    </section>
+  }
+
+  @if (error()) {
+    <section class="gimnasio__estado gimnasio__estado--error" role="alert">
+      <p class="gimnasio__estado-error-texto">{{ error() }}</p>
+    </section>
+  }
+
+  @if (!tieneRutina() && !isLoading() && !error()) {
+    <section class="gimnasio__vacio">
+      <p class="gimnasio__estado-etiqueta">
+        <span class="gimnasio__estado-punto" aria-hidden="true"></span>
+        {{ textos().vacioEtiqueta }}
+      </p>
+      <h2 class="gimnasio__vacio-titulo">{{ textos().rutinaPreparandose }}</h2>
+      <p class="gimnasio__vacio-nota">{{ textos().rutinaAvisoMensual }}</p>
+
+      <ul aria-hidden="true" class="gimnasio__esqueleto">
+        <li class="gimnasio__esqueleto-tarjeta"></li>
+        <li class="gimnasio__esqueleto-tarjeta"></li>
+        <li class="gimnasio__esqueleto-tarjeta"></li>
+      </ul>
+    </section>
+  }
+
+  @if (tieneRutina() && !isLoading()) {
+  <nav aria-label="{{ textos().ariaNavegacionDias }}" class="gimnasio__dias">
+    @for (dia of diasSemana(); track $index) {
+      <button (click)="diaActualIndex.set($index)"
+        [attr.aria-current]="diaActualIndex() === $index ? 'true' : null"
+        [class.gimnasio__dias-tab--activa]="diaActualIndex() === $index"
+        class="gimnasio__dias-tab" type="button">
+        {{ dia }}
+      </button>
+    }
+  </nav>
+
+  @if (ejerciciosDelDia().length > 0) {
+    <section class="gimnasio__progreso-dia">
+      <p class="gimnasio__progreso-dia-texto">
+        <span class="gimnasio__progreso-dia-cifra">{{ hechosDelDia() }}/{{ ejerciciosDelDia().length }}</span>
+        {{ textos().progresoDia }}
+      </p>
+      <span aria-hidden="true" class="gimnasio__progreso-dia-barra">
+        <span class="gimnasio__progreso-dia-relleno" [style.--relleno]="hechosDelDia() / ejerciciosDelDia().length"></span>
+      </span>
+    </section>
+  }
+
+  <section class="gimnasio__lista">
+    @if (ejerciciosDelDia().length > 0) {
+      @for (ejercicio of ejerciciosDelDia(); track ejercicio.id; let indice = $index) {
+        <article class="gimnasio__tarjeta"
+          [class.gimnasio__tarjeta--hecha]="ejercicio.realizado === true"
+          [class.gimnasio__tarjeta--saltada]="ejercicio.realizado === false"
+          [style.--retardo-entrada]="(indice * 70) + 'ms'">
+
+          <header class="gimnasio__tarjeta-cabecera">
+            <hgroup class="gimnasio__tarjeta-textos">
+              <p class="gimnasio__tarjeta-grupo">{{ ejercicio.grupoMuscular || grupoDelDia() }}</p>
+              <h3 class="gimnasio__tarjeta-nombre">{{ ejercicio.nombre }}</h3>
+            </hgroup>
+
+            <p class="gimnasio__tarjeta-peso">
+              @if (ejercicio.pesoKg) {
+                <span class="gimnasio__tarjeta-peso-valor">{{ comaDecimal(ejercicio.pesoKg) }}</span>
+                <span class="gimnasio__tarjeta-peso-unidad">kg</span>
+              } @else {
+                <span class="gimnasio__tarjeta-peso-unidad">{{ textos().pesoCorporal }}</span>
+              }
+            </p>
+          </header>
+
+          @if (ejercicio.descripcion) {
+            <p class="gimnasio__tarjeta-detalle">{{ ejercicio.descripcion }}</p>
+          }
+
+          <footer class="gimnasio__tarjeta-pie">
+            <ul class="gimnasio__tarjeta-datos">
+              <li class="gimnasio__pildora">{{ ejercicio.series }} × {{ ejercicio.repeticiones }}</li>
+              <li class="gimnasio__pildora gimnasio__pildora--suave">{{ textos().cabeceraDescanso }} · {{ ejercicio.descanso }}</li>
+              <li class="gimnasio__tarjeta-datos-item">
+                <button (click)="abrirTecnica(ejercicio.nombre)" class="gimnasio__enlace-tecnica" type="button">
+                  <svg aria-hidden="true" class="gimnasio__enlace-tecnica-svg" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" fill="currentColor"/>
+                  </svg>
+                  {{ textos().verTecnica }}
+                </button>
+              </li>
+            </ul>
+
+            <menu class="gimnasio__tarjeta-acciones">
+              <li class="gimnasio__tarjeta-acciones-item">
+                <button (click)="marcarRealizado(ejercicio, true)"
+                  [class.gimnasio__boton-accion--activo]="ejercicio.realizado === true"
+                  [attr.aria-pressed]="ejercicio.realizado === true"
+                  aria-label="{{ textos().ariaMarcarRealizado }}" class="gimnasio__boton-accion gimnasio__boton-accion--ok" type="button">
+                  <svg aria-hidden="true" class="gimnasio__boton-accion-svg" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor" />
+                  </svg>
+                </button>
+              </li>
+              <li class="gimnasio__tarjeta-acciones-item">
+                <button (click)="marcarRealizado(ejercicio, false)"
+                  [class.gimnasio__boton-accion--activo]="ejercicio.realizado === false"
+                  [attr.aria-pressed]="ejercicio.realizado === false"
+                  aria-label="{{ textos().ariaMarcarNoRealizado }}" class="gimnasio__boton-accion gimnasio__boton-accion--no" type="button">
+                  <svg aria-hidden="true" class="gimnasio__boton-accion-svg" viewBox="0 0 24 24">
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                      fill="currentColor" />
+                  </svg>
+                </button>
+              </li>
+            </menu>
+          </footer>
+        </article>
+      }
+    } @else {
+      <article class="gimnasio__descanso">
+        <p class="gimnasio__descanso-titulo">{{ textos().descansoTitulo }}</p>
+        <span class="gimnasio__descanso-subtitulo">{{ textos().descansoSubtitulo }}</span>
+      </article>
+    }
+  </section>
+
+  <section class="gimnasio__feedback">
+    <header class="gimnasio__feedback-cabecera">
+      <p class="gimnasio__feedback-eyebrow">{{ textos().feedbackEyebrow }}</p>
+      <h2 class="gimnasio__feedback-titulo">{{ textos().feedbackTitulo }}</h2>
+    </header>
+
+    <form (ngSubmit)="enviarFeedback()" class="gimnasio__feedback-form">
+      <fieldset class="gimnasio__fatiga">
+        <legend class="gimnasio__feedback-label">{{ textos().fatigaEtiqueta }}</legend>
+        <menu class="gimnasio__fatiga-niveles">
+          @for (nivel of textos().fatigaNiveles; track $index) {
+            <li class="gimnasio__fatiga-item">
+              <button (click)="seleccionarFatiga($index + 1)"
+                [class.gimnasio__fatiga-boton--activo]="feedback.nivelFatiga === $index + 1"
+                [attr.aria-pressed]="feedback.nivelFatiga === $index + 1"
+                class="gimnasio__fatiga-boton" type="button">
+                <span class="gimnasio__fatiga-numero">{{ $index + 1 }}</span>
+                <span class="gimnasio__fatiga-nombre">{{ nivel }}</span>
+              </button>
+            </li>
+          }
+        </menu>
+      </fieldset>
+
+      <p class="gimnasio__feedback-field">
+        <label class="gimnasio__feedback-label" for="comentarios">
+          {{ textos().etiquetaComentarios }}
+        </label>
+        <textarea [(ngModel)]="feedback.comentarios" class="gimnasio__feedback-textarea" id="comentarios" name="comentarios"
+          placeholder="{{ textos().placeholderComentarios }}"
+          rows="3">
+        </textarea>
+      </p>
+
+      <footer class="gimnasio__feedback-acciones">
+        <label class="gimnasio__feedback-label gimnasio__feedback-label--checkbox">
+          <input type="checkbox" [(ngModel)]="feedback.puedeMasPeso" name="puedeMasPeso"
+            class="gimnasio__feedback-checkbox">
+          <span>{{ textos().preguntaMasPeso }}</span>
+        </label>
+
+        <app-button tamanio="mediano" tipo="submit" variante="primario">
+          {{ textos().botonEnviar }}
+        </app-button>
+      </footer>
+    </form>
+  </section>
+
+  <section class="gimnasio__progreso">
+    <article class="gimnasio__progreso-contenido">
+      <header class="gimnasio__progreso-panel">
+        <h2 class="gimnasio__progreso-titulo">{{ textos().progresoTitulo }}</h2>
+        <p class="gimnasio__progreso-descripcion">
+          {{ textos().progresoDescripcion }}
+        </p>
+        <app-button enlace="/seguimiento" tamanio="grande" variante="primario" id="gimnasio__progreso-boton">
+          {{ textos().botonVerEstadisticas }}
+        </app-button>
+      </header>
+      <figure class="gimnasio__progreso-imagen">
+        <picture class="gimnasio__progreso-imagen-contenedor">
+          <source
+            media="(max-width: 900px)"
+            type="image/webp"
+            srcset="
+              assets/images/imagen_progreso_mobile-400w.webp 400w,
+              assets/images/imagen_progreso_mobile-600w.webp 600w,
+              assets/images/imagen_progreso_mobile-900w.webp 900w"
+            sizes="(max-width: 600px) 100vw, 80vw" />
+          <source
+            type="image/webp"
+            srcset="
+              assets/images/imagen_progreso-600w.webp 600w,
+              assets/images/imagen_progreso-900w.webp 900w,
+              assets/images/imagen_progreso-1200w.webp 1200w"
+            sizes="(max-width: 1200px) 50vw, 600px" />
+          <img
+            class="gimnasio__progreso-imagen-foto"
+            alt="{{ textos().altImagenProgreso }}"
+            loading="lazy"
+            src="assets/images/imagen_progreso.jpg"
+            width="1200"
+            height="800" />
+        </picture>
+      </figure>
+    </article>
+  </section>
+  }
+
+  @if (tecnicaAbierta()) {
+    <section (click)="cerrarTecnica()" (keydown.escape)="cerrarTecnica()" class="gimnasio__tecnica">
+      <article (click)="$event.stopPropagation()" aria-modal="true" class="gimnasio__tecnica-dialogo" role="dialog"
+        aria-label="{{ textos().tecnicaTitulo }}: {{ tecnicaAbierta() }}">
+        <header class="gimnasio__tecnica-cabecera">
+          <hgroup class="gimnasio__tecnica-textos">
+            <p class="gimnasio__tecnica-eyebrow">{{ textos().tecnicaTitulo }}</p>
+            <h2 class="gimnasio__tecnica-nombre">{{ tecnicaAbierta() }}</h2>
+          </hgroup>
+          <button (click)="cerrarTecnica()" aria-label="{{ textos().tecnicaCerrar }}" class="gimnasio__tecnica-cerrar" type="button">
+            <svg aria-hidden="true" class="gimnasio__tecnica-cerrar-svg" viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+            </svg>
+          </button>
+        </header>
+
+        @if (urlTecnicaEmbebida()) {
+          <iframe
+            allow="accelerometer; encrypted-media; picture-in-picture"
+            allowfullscreen
+            class="gimnasio__tecnica-video"
+            title="{{ textos().tecnicaTitulo }}: {{ tecnicaAbierta() }}"
+            [src]="urlTecnicaEmbebida()">
+          </iframe>
+        } @else if (videoTecnicaId() === null) {
+          <p aria-live="polite" class="gimnasio__tecnica-estado">
+            <span aria-hidden="true" class="gimnasio__estado-punto"></span>
+            {{ textos().tecnicaBuscando }}
+          </p>
+        } @else {
+          <p class="gimnasio__tecnica-estado">{{ textos().tecnicaSinVideo }}</p>
+        }
+
+        <footer class="gimnasio__tecnica-pie">
+          <a class="gimnasio__tecnica-youtube" href="{{ urlTecnica(tecnicaAbierta()!) }}" rel="noopener" target="_blank">
+            {{ textos().tecnicaAbrirYoutube }}
+          </a>
+        </footer>
+      </article>
+    </section>
+  }
+
+</main>
