@@ -1,0 +1,217 @@
+@import '../01-tools/mixins';
+
+
+
+.formulario {
+  @include flex-columna(var(--spacing-size-m));
+  width: 100%;
+  max-width: 31.25rem;
+}
+
+.formulario--ancho {
+  max-width: 100%;
+}
+
+
+
+.formulario__titulo {
+  @include tipografia-titulo;
+  font-size: var(--font-size-2xl);
+  text-align: center;
+  margin-bottom: var(--spacing-size-m);
+}
+
+.formulario__descripcion {
+  @include tipografia-texto;
+  text-align: center;
+  color: var(--blanco-dark);
+  margin-bottom: var(--spacing-size-m);
+}
+
+.formulario__grupo {
+  @include flex-columna(var(--spacing-size-xss));
+}
+
+.formulario__fila {
+  display: flex;
+  gap: var(--spacing-size-m);
+}
+
+.formulario__grupo--en-fila {
+  flex: 1;
+}
+
+.formulario__etiqueta {
+  @include tipografia-texto;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-size-xss);
+}
+
+.formulario__requerido {
+  color: var(--button-red);
+  margin-left: var(--spacing-size-xss);
+}
+
+
+
+.formulario__campo {
+  @include input-base;
+  background-color: var(--gris-dark);
+  color: var(--text-dark);
+  border: 0.125rem solid transparent;
+}
+
+.formulario__campo:focus {
+  border-color: var(--amarillo-normal);
+  background-color: var(--gris-dark);
+}
+
+.formulario__campo:hover:not(:focus) {
+  background-color: var(--gris-dark-hover);
+}
+
+.formulario__campo--error {
+  border-color: var(--button-red);
+}
+
+.formulario__campo--error:focus {
+  border-color: var(--button-red);
+}
+
+.formulario__campo--valido {
+  border-color: var(--amarillo-normal);
+}
+
+.formulario__error {
+  @include tipografia-texto;
+  font-size: var(--font-size-sm);
+  color: var(--button-red);
+  margin-top: var(--spacing-size-xss);
+}
+
+.formulario__ayuda {
+  @include tipografia-texto;
+  font-size: var(--font-size-sm);
+  color: var(--blanco-dark);
+  margin-top: var(--spacing-size-xss);
+}
+
+
+
+.formulario__textarea {
+  @include input-base;
+  background-color: var(--gris-dark);
+  color: var(--text-dark);
+  border: 0.125rem solid transparent;
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.formulario__textarea:focus {
+  border-color: var(--amarillo-normal);
+}
+
+
+
+.formulario__select {
+  @include input-base;
+  background-color: var(--gris-dark);
+  color: var(--text-dark);
+  border: 0.125rem solid transparent;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 3rem;
+}
+
+.formulario__select:focus {
+  border-color: var(--amarillo-normal);
+}
+
+
+
+.formulario__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-size-xss);
+  cursor: pointer;
+}
+
+.formulario__checkbox-input {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+  accent-color: var(--amarillo-normal);
+}
+
+.formulario__checkbox-texto {
+  @include tipografia-texto;
+  font-size: var(--font-size-md);
+  color: var(--text-dark);
+}
+
+
+
+.formulario__acciones {
+  display: flex;
+  gap: var(--spacing-size-m);
+  margin-top: var(--spacing-size-m);
+}
+
+.formulario__acciones--centrado {
+  justify-content: center;
+}
+
+.formulario__acciones--derecha {
+  justify-content: flex-end;
+}
+
+
+
+.formulario__separador {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-m);
+  margin: var(--spacing-size-m) 0;
+}
+
+.formulario__separador::before {
+  content: '';
+  flex: 1;
+  height: 0.0625rem;
+  background-color: var(--gris-dark);
+}
+
+.formulario__separador::after {
+  content: '';
+  flex: 1;
+  height: 0.0625rem;
+  background-color: var(--gris-dark);
+}
+
+.formulario__separador-texto {
+  @include tipografia-texto;
+  font-size: var(--font-size-sm);
+  color: var(--blanco-dark);
+}
+
+
+
+.formulario__enlace {
+  color: var(--amarillo-normal);
+  text-decoration: none;
+}
+
+.formulario__enlace:hover {
+  text-decoration: underline;
+}
+
+.formulario__enlace:focus {
+  outline: 0.125rem solid var(--amarillo-normal);
+  outline-offset: 0.125rem;
+}
