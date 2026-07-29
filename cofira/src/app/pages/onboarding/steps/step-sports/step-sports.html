@@ -1,0 +1,38 @@
+<article class="step-sports">
+
+  <header class="step-sports__header">
+    <h2 class="step-sports__titulo">{{ textos().titulo }}</h2>
+    <p class="step-sports__subtitulo">{{ textos().subtitulo }}</p>
+  </header>
+
+  <section class="step-sports__grid">
+    @for (opcion of textos().opciones; track opcion.id) {
+      <app-chip
+        (click)="alAlternar(opcion.id)"
+        [seleccionado]="estaSeleccionado(opcion.id)"
+        [texto]="opcion.label">
+      </app-chip>
+    }
+  </section>
+
+  <footer class="step-sports__footer">
+    <nav class="step-sports__actions">
+      <app-button
+        (clicked)="alOmitir()"
+        tamanio="grande"
+        variante="secundario">
+        {{ textos().botonOmitir }}
+      </app-button>
+
+      @if (deportesSeleccionados().length > 0) {
+        <app-button
+          (clicked)="alContinuar()"
+          tamanio="grande"
+          variante="primario">
+          {{ textos().botonContinuar }} ({{ deportesSeleccionados().length }} {{ textos().sufijoSeleccionados }})
+        </app-button>
+      }
+    </nav>
+  </footer>
+
+</article>
