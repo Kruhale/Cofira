@@ -1,0 +1,231 @@
+<main class="sobre-nosotros">
+
+  <section class="sobre-nosotros__hero">
+    <span class="sobre-nosotros__hero-overlay" aria-hidden="true"></span>
+    <hgroup class="sobre-nosotros__hero-contenido">
+      <h1 class="sobre-nosotros__hero-titulo">{{ textos().heroTitulo }}</h1>
+      <p class="sobre-nosotros__hero-subtitulo">
+        {{ textos().heroSubtitulo }}
+      </p>
+    </hgroup>
+  </section>
+
+
+  <section class="sobre-nosotros__historia">
+    <article class="sobre-nosotros__contenedor">
+      <h2 class="sobre-nosotros__seccion-titulo">{{ textos().historiaTitulo }}</h2>
+      <section class="sobre-nosotros__historia-contenido">
+        <article class="sobre-nosotros__historia-texto">
+          <p class="sobre-nosotros__historia-parrafo">
+            {{ textos().historiaParrafo1 }}
+          </p>
+          <p class="sobre-nosotros__historia-parrafo">
+            {{ textos().historiaParrafo2 }}
+          </p>
+          <p class="sobre-nosotros__historia-parrafo">
+            {{ textos().historiaParrafo3 }}
+          </p>
+        </article>
+        <figure class="sobre-nosotros__historia-imagen">
+          <img class="sobre-nosotros__historia-imagen-foto" [alt]="textos().historiaImagenAlt" loading="lazy"
+            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop" />
+        </figure>
+      </section>
+    </article>
+  </section>
+
+
+  <section class="sobre-nosotros__galeria">
+    <article class="sobre-nosotros__contenedor">
+      <h2 class="sobre-nosotros__seccion-titulo">{{ textos().galeriaTitulo }}</h2>
+      <p class="sobre-nosotros__seccion-descripcion">
+        {{ textos().galeriaDescripcion }}
+      </p>
+      <ul class="sobre-nosotros__galeria-lista">
+        <li class="sobre-nosotros__galeria-elemento">
+          <figure class="sobre-nosotros__galeria-figura">
+            <img
+              [alt]="textos().galeriaPesoLibreAlt"
+              class="sobre-nosotros__galeria-imagen"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop"
+              width="600"
+              height="400" />
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaPesoLibrePie }}</figcaption>
+          </figure>
+        </li>
+        <li class="sobre-nosotros__galeria-elemento">
+          <figure class="sobre-nosotros__galeria-figura">
+            <img
+              [alt]="textos().galeriaCardioAlt"
+              class="sobre-nosotros__galeria-imagen"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=600&h=400&fit=crop"
+              width="600"
+              height="400" />
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaCardioPie }}</figcaption>
+          </figure>
+        </li>
+        <li class="sobre-nosotros__galeria-elemento">
+          <figure class="sobre-nosotros__galeria-figura">
+            <img
+              [alt]="textos().galeriaAlimentacionAlt"
+              class="sobre-nosotros__galeria-imagen"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=400&fit=crop"
+              width="600"
+              height="400" />
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaAlimentacionPie }}</figcaption>
+          </figure>
+        </li>
+        <li class="sobre-nosotros__galeria-elemento">
+          <figure class="sobre-nosotros__galeria-figura">
+            <img
+              [alt]="textos().galeriaClasesAlt"
+              class="sobre-nosotros__galeria-imagen"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop"
+              width="600"
+              height="400" />
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaClasesPie }}</figcaption>
+          </figure>
+        </li>
+        <li class="sobre-nosotros__galeria-elemento">
+          <figure class="sobre-nosotros__galeria-figura">
+            <img
+              [alt]="textos().galeriaEstiramientosAlt"
+              class="sobre-nosotros__galeria-imagen"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop"
+              width="600"
+              height="400" />
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaEstiramientosPie }}</figcaption>
+          </figure>
+        </li>
+        <li class="sobre-nosotros__galeria-elemento">
+          <figure class="sobre-nosotros__galeria-figura">
+            <img
+              [alt]="textos().galeriaProgresoAlt"
+              class="sobre-nosotros__galeria-imagen"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=600&h=400&fit=crop"
+              width="600"
+              height="400" />
+            <figcaption class="sobre-nosotros__galeria-pie">{{ textos().galeriaProgresoPie }}</figcaption>
+          </figure>
+        </li>
+      </ul>
+    </article>
+  </section>
+
+
+  <section class="sobre-nosotros__valores">
+    <article class="sobre-nosotros__contenedor">
+      <h2 class="sobre-nosotros__seccion-titulo">{{ textos().valoresTitulo }}</h2>
+      <ul class="sobre-nosotros__valores-grid">
+        @for (valor of valores(); track valor.icono) {
+        <li class="sobre-nosotros__valor">
+          <figure class="sobre-nosotros__valor-icono">
+            @switch (valor.icono) {
+            @case ('heart') {
+            <svg aria-hidden="true" class="sobre-nosotros__valor-icono-svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+            }
+            @case ('users') {
+            <svg aria-hidden="true" class="sobre-nosotros__valor-icono-svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            }
+            @case ('target') {
+            <svg aria-hidden="true" class="sobre-nosotros__valor-icono-svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="6" />
+              <circle cx="12" cy="12" r="2" />
+            </svg>
+            }
+            @case ('shield') {
+            <svg aria-hidden="true" class="sobre-nosotros__valor-icono-svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+            }
+            }
+          </figure>
+          <h3 class="sobre-nosotros__valor-titulo">{{ valor.titulo }}</h3>
+          <p class="sobre-nosotros__valor-descripcion">{{ valor.descripcion }}</p>
+        </li>
+        }
+      </ul>
+    </article>
+  </section>
+
+
+  <section class="sobre-nosotros__estadisticas">
+    <article class="sobre-nosotros__contenedor">
+      <ul class="sobre-nosotros__estadisticas-grid">
+        @for (stat of estadisticas(); track stat.valor) {
+        <li class="sobre-nosotros__estadistica">
+          <span class="sobre-nosotros__estadistica-valor">{{ stat.valor }}</span>
+          <span class="sobre-nosotros__estadistica-etiqueta">{{ stat.etiqueta }}</span>
+        </li>
+        }
+      </ul>
+    </article>
+  </section>
+
+
+  <section class="sobre-nosotros__equipo">
+    <article class="sobre-nosotros__contenedor">
+      <h2 class="sobre-nosotros__seccion-titulo">{{ textos().equipoTitulo }}</h2>
+      <p class="sobre-nosotros__seccion-descripcion">
+        {{ textos().equipoDescripcion }}
+      </p>
+      <ul class="sobre-nosotros__equipo-grid">
+        @for (miembro of equipo(); track miembro.nombre) {
+        <li class="sobre-nosotros__miembro">
+          <figure class="sobre-nosotros__miembro-foto">
+            <picture>
+
+              <source
+                type="image/webp"
+                [srcset]="miembro.fotoWebp.small + ' 200w, ' + miembro.fotoWebp.medium + ' 400w, ' + miembro.fotoWebp.large + ' 600w'"
+                sizes="(max-width: 640px) 200px, (max-width: 900px) 300px, 400px" />
+
+              <img
+                class="sobre-nosotros__miembro-foto-img"
+                [alt]="miembro.nombre"
+                [src]="miembro.foto"
+                loading="lazy"
+                width="400"
+                height="400" />
+            </picture>
+          </figure>
+          <h3 class="sobre-nosotros__miembro-nombre">{{ miembro.nombre }}</h3>
+          <p class="sobre-nosotros__miembro-cargo">{{ miembro.cargo }}</p>
+        </li>
+        }
+      </ul>
+    </article>
+  </section>
+
+
+  <section class="sobre-nosotros__cta">
+    <article class="sobre-nosotros__contenedor">
+      <h2 class="sobre-nosotros__cta-titulo">{{ textos().ctaTitulo }}</h2>
+      <p class="sobre-nosotros__cta-texto">
+        {{ textos().ctaTexto }}
+      </p>
+      <a class="sobre-nosotros__cta-boton" href="/registro">{{ textos().ctaBoton }}</a>
+    </article>
+  </section>
+</main>

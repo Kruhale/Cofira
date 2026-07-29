@@ -1,0 +1,70 @@
+<article class="step-measurements">
+
+  @if (mostrarNotificacion()) {
+    <app-notification
+      (alCerrar)="cerrarNotificacion()"
+      [duracion]="3000"
+      [mensaje]="mensajeNotificacion()"
+      tipo="error">
+    </app-notification>
+  }
+
+  <header class="step-measurements__header">
+    <h2 class="step-measurements__titulo">{{ textos().titulo }}</h2>
+    <p class="step-measurements__subtitulo">
+      {{ textos().subtitulo }}
+    </p>
+  </header>
+
+  <fieldset class="step-measurements__form">
+    <section class="step-measurements__input-group">
+
+      <label class="step-measurements__input-wrapper">
+        <span class="step-measurements__label">{{ textos().labelAltura }}</span>
+        <span class="step-measurements__input-container">
+          <input
+            (input)="alCambiarAltura($any($event.target).value)"
+            [class.step-measurements__input--error]="errorAltura()"
+            [value]="alturaCm()"
+            class="step-measurements__input"
+            max="250"
+            min="100"
+            placeholder="170"
+            required
+            type="number">
+          <span class="step-measurements__unit">cm</span>
+        </span>
+      </label>
+
+      <label class="step-measurements__input-wrapper">
+        <span class="step-measurements__label">{{ textos().labelPeso }}</span>
+        <span class="step-measurements__input-container">
+          <input
+            (input)="alCambiarPeso($any($event.target).value)"
+            [class.step-measurements__input--error]="errorPeso()"
+            [value]="pesoActualKg()"
+            class="step-measurements__input"
+            max="300"
+            min="10"
+            placeholder="70"
+            required
+            step="0.1"
+            type="number">
+          <span class="step-measurements__unit">kg</span>
+        </span>
+      </label>
+
+    </section>
+  </fieldset>
+
+  <footer class="step-measurements__footer">
+    <app-button
+      (click)="alContinuar()"
+      [habilitado]="!puedeContinuar()"
+      tamanio="grande"
+      variante="primario">
+      {{ textos().botonContinuar }}
+    </app-button>
+  </footer>
+
+</article>

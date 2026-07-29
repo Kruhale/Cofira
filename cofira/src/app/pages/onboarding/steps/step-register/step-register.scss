@@ -1,0 +1,591 @@
+@import '../../../../../styles/00-settings/css-variables';
+@import '../../../../../styles/01-tools/mixins';
+
+.step-register {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 27rem;
+  margin: 0 auto;
+  padding: var(--spacing-size-xl);
+
+  @include responsive-down('sm') {
+    padding: var(--spacing-size-m);
+    gap: 1.5rem;
+  }
+}
+
+.step-register__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  /* Entrada orquestada: la cabecera abre y los campos la siguen en cascada */
+  animation: reg-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.05s;
+}
+
+/* Eyebrow mono con regla: misma gramática editorial que el paso de pago */
+.step-register__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--naranja-texto);
+}
+
+.step-register__eyebrow::before {
+  width: 1.75rem;
+  height: 1px;
+  background: var(--naranja-normal);
+  content: '';
+}
+
+.step-register__titulo {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 2.4rem; /* 38.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--texto-principal);
+
+  @include responsive-down('sm') {
+    font-size: 2rem; /* 32px */
+  }
+}
+
+.step-register__subtitulo {
+  margin: 0;
+  max-width: 22rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+.step-register__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-l);
+  width: 100%;
+}
+
+.step-register__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ── Campo: label mono persistente encima + control (icono + input) ── */
+.step-register__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  /* Cascada de entrada (nth-of-type salta los asides condicionales entre campos) */
+  animation: reg-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.step-register__field:nth-of-type(1) {
+  animation-delay: 0.14s;
+}
+
+.step-register__field:nth-of-type(2) {
+  animation-delay: 0.21s;
+}
+
+.step-register__field:nth-of-type(3) {
+  animation-delay: 0.28s;
+}
+
+.step-register__field:nth-of-type(4) {
+  animation-delay: 0.35s;
+}
+
+.step-register__field-label {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--texto-secundario);
+}
+
+.step-register__field-control {
+  --field-icon-color: var(--texto-suave);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.step-register__field-control:focus-within {
+  --field-icon-color: var(--naranja-normal);
+}
+
+.step-register__field-icon {
+  position: absolute;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--field-icon-color);
+  pointer-events: none;
+  z-index: 1;
+  transition: color var(--duration-fast) ease;
+}
+
+.step-register__input {
+  width: 100%;
+  padding: 0.95rem 1rem 0.95rem 2.85rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-md);
+  text-overflow: ellipsis;
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+}
+
+.step-register__input::placeholder {
+  color: var(--texto-suave);
+}
+
+.step-register__input:hover {
+  border-color: var(--texto-suave);
+}
+
+.step-register__input:focus-visible {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+.step-register__input--password {
+  padding-right: 3rem;
+}
+
+/* Reserva sitio al check/spinner de la derecha para que no pise el texto */
+.step-register__input--con-estado {
+  padding-right: 2.85rem;
+}
+
+/* Válido: sin borde de color (el verde rompía la disciplina naranja); la
+   confirmación la da solo el check discreto de la derecha */
+.step-register__input--error {
+  border-color: var(--peligro);
+}
+
+.step-register__input--error:focus-visible {
+  border-color: var(--peligro);
+  box-shadow: 0 0 0 3px hsla(4, 80%, 52%, 0.16);
+}
+
+/* ── Estado a la derecha (spinner / check de validación) ── */
+.step-register__field-status {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  z-index: 1;
+}
+
+.step-register__field-status svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.step-register__field-status--loading {
+  color: var(--naranja-normal);
+}
+
+.step-register__field-status--valid {
+  color: var(--exito-texto);
+}
+
+.step-register__spinner {
+  width: 1.2rem;
+  height: 1.2rem;
+  animation: registro-girar 0.8s linear infinite;
+}
+
+/* ── Botón de mostrar/ocultar contraseña ── */
+.step-register__toggle-password {
+  position: absolute;
+  right: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease;
+
+  @include foco-visible;
+}
+
+.step-register__toggle-password svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.step-register__toggle-password:hover {
+  color: var(--texto-principal);
+}
+
+/* ── Requisitos de contraseña: medidor vivo + lista mono ── */
+.step-register__requirements {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding-top: 0.1rem;
+}
+
+/* Medidor de fuerza: la barra se llena y cambia de color según cumples requisitos */
+.step-register__fuerza {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.step-register__fuerza-cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.step-register__fuerza-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texto-suave);
+}
+
+.step-register__fuerza-nivel {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color var(--duration-base) ease;
+}
+
+/* Nivel: la fuerza se lee por la INTENSIDAD del naranja, no por otro color
+   (el rojo de antes metía un segundo hue y rompía el «naranja único») */
+.step-register__fuerza-nivel--vacio {
+  color: var(--texto-suave);
+}
+
+.step-register__fuerza-nivel--debil {
+  color: var(--texto-secundario);
+}
+
+.step-register__fuerza-nivel--media {
+  color: var(--naranja-texto);
+}
+
+.step-register__fuerza-nivel--fuerte {
+  color: var(--naranja-texto);
+}
+
+.step-register__fuerza-barra {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: var(--superficie-3);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+/* Relleno siempre naranja; la fuerza sube la opacidad y, al llegar a fuerte,
+   gana glow. La anchura (fuerzaContrasena·20%) marca cuánto llevas. */
+.step-register__fuerza-relleno {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--naranja-normal);
+  opacity: 0.5;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity var(--duration-base) ease;
+}
+
+.step-register__fuerza-relleno--media {
+  opacity: 0.78;
+}
+
+.step-register__fuerza-relleno--fuerte {
+  opacity: 1;
+  box-shadow: 0 0 0.5rem -0.1rem var(--naranja-glow-fuerte);
+}
+
+.step-register__requirements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.step-register__requirement {
+  --req-icon-color: var(--texto-suave);
+  --req-icon-escala: scale(1);
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--texto-secundario);
+  transition: color var(--duration-base) ease;
+  /* Entrada escalonada al aparecer la lista (backwards mantiene el inicio durante el delay) */
+  animation: registro-req-entra 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.step-register__requirement:nth-child(1) {
+  animation-delay: 0.02s;
+}
+
+.step-register__requirement:nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+.step-register__requirement:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.step-register__requirement:nth-child(4) {
+  animation-delay: 0.14s;
+}
+
+.step-register__requirement:nth-child(5) {
+  animation-delay: 0.18s;
+}
+
+/* Cumplido: texto encendido + check naranja + un saltito satisfactorio */
+.step-register__requirement--valid {
+  --req-icon-color: var(--naranja-normal);
+  --req-icon-escala: scale(1.12);
+
+  color: var(--texto-principal);
+  animation: registro-req-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-register__requirement-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+  color: var(--req-icon-color);
+  transform: var(--req-icon-escala);
+  transition: transform var(--duration-base) cubic-bezier(0.16, 1, 0.3, 1), color var(--duration-base) ease;
+}
+
+/* ── Errores de campo (formato / email en uso) ── */
+.step-register__field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  color: var(--peligro-texto);
+  animation: registro-aparece 0.2s ease-out;
+}
+
+.step-register__field-error svg {
+  flex-shrink: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-top: 0.05rem;
+}
+
+/* ── Subrayado vivo: el enlace crece de izquierda a derecha ── */
+.step-register__link {
+  position: relative;
+  color: var(--naranja-texto);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+
+  @include foco-visible;
+}
+
+.step-register__link::after {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--naranja-normal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) ease;
+  content: '';
+}
+
+.step-register__link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── Error global (contraseñas no coinciden) ── */
+.step-register__error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.step-register__error-icono {
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--peligro);
+}
+
+.step-register__error-text {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  color: var(--peligro-texto);
+}
+
+/* ── Pie: CTA + acceso alternativo (alineado a la izquierda como la columna) ── */
+.step-register__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-m);
+  width: 100%;
+  animation: reg-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.42s;
+}
+
+.step-register__alt-action {
+  margin: 0;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+}
+
+.step-register__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@keyframes registro-girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes registro-aparece {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes registro-req-entra {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes registro-req-pop {
+  0% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes reg-sube {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-register__header {
+    animation: none;
+  }
+
+  .step-register__field {
+    animation: none;
+  }
+
+  .step-register__footer {
+    animation: none;
+  }
+
+  .step-register__spinner {
+    animation: none;
+  }
+
+  .step-register__field-error {
+    animation: none;
+  }
+
+  .step-register__link::after {
+    transition: none;
+  }
+
+  .step-register__requirement {
+    animation: none;
+  }
+
+  .step-register__requirement--valid {
+    animation: none;
+  }
+
+  .step-register__requirement-icon {
+    transition: none;
+  }
+
+  .step-register__fuerza-nivel {
+    transition: none;
+  }
+
+  .step-register__fuerza-relleno {
+    transition: none;
+  }
+}

@@ -1,0 +1,33 @@
+<article class="step-activity-level">
+
+  <header class="step-activity-level__header">
+    <h2 class="step-activity-level__titulo">Como es tu actividad diaria?</h2>
+    <p class="step-activity-level__subtitulo">
+      Selecciona el nivel que mejor describe tu rutina
+    </p>
+  </header>
+
+  <ul class="step-activity-level__opciones">
+    @for (option of options; track option.value) {
+      <li class="step-activity-level__opcion-item">
+        <app-option-card
+          (seleccionar)="alSeleccionar($any(option.value))"
+          [descripcion]="option.description || ''"
+          [seleccionado]="selectedLevel() === option.value"
+          [titulo]="option.label">
+        </app-option-card>
+      </li>
+    }
+  </ul>
+
+  <footer class="step-activity-level__footer">
+    <app-button
+      (click)="alContinuar()"
+      [habilitado]="!canContinue()"
+      tamanio="grande"
+      variante="primario">
+      Continuar
+    </app-button>
+  </footer>
+
+</article>

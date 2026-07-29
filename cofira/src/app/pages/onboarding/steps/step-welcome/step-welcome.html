@@ -1,0 +1,75 @@
+<section class="welcome">
+
+  <span class="welcome__marca">Cofira <span class="welcome__marca-sub">{{ textos().marcaSub }}</span></span>
+
+  <header class="welcome__header">
+    <h1 class="welcome__titulo">{{ textos().titulo }} <em class="welcome__acento">{{ textos().tituloAcento }}</em></h1>
+    <p class="welcome__subtitulo">
+      {{ textos().subtitulo }}
+    </p>
+  </header>
+
+  <ul class="welcome__features">
+    <li class="welcome__feature">
+      <span class="welcome__feature-icono" aria-hidden="true">
+        <svg class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </span>
+      <span class="welcome__feature-cuerpo">
+        <span class="welcome__feature-titulo">{{ textos().featureAlimentacionTitulo }}</span>
+        <span class="welcome__feature-sub">{{ textos().featureAlimentacionSub }}</span>
+      </span>
+    </li>
+    <li class="welcome__feature">
+      <span class="welcome__feature-icono" aria-hidden="true">
+        <svg class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </span>
+      <span class="welcome__feature-cuerpo">
+        <span class="welcome__feature-titulo">{{ textos().featureRutinasTitulo }}</span>
+        <span class="welcome__feature-sub">{{ textos().featureRutinasSub }}</span>
+      </span>
+    </li>
+    <li class="welcome__feature">
+      <span class="welcome__feature-icono" aria-hidden="true">
+        <svg class="welcome__feature-icono-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </span>
+      <span class="welcome__feature-cuerpo">
+        <span class="welcome__feature-titulo">{{ textos().featureSeguimientoTitulo }}</span>
+        <span class="welcome__feature-sub">{{ textos().featureSeguimientoSub }}</span>
+      </span>
+    </li>
+  </ul>
+
+  <footer class="welcome__footer">
+    <app-button
+      (click)="alContinuar()"
+      [anchoCompleto]="true"
+      tamanio="grande"
+      variante="primario">
+      {{ textos().botonComenzar }}
+    </app-button>
+
+    <p class="welcome__meta">
+      <span class="welcome__tiempo">
+        <svg aria-hidden="true" class="welcome__tiempo-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+        {{ textos().tiempoEstimado }}
+      </span>
+      <span class="welcome__login">
+        {{ textos().yaTienesCuenta }}
+        <a class="welcome__login-link" routerLink="/login">{{ textos().iniciaSesion }}</a>
+      </span>
+    </p>
+  </footer>
+
+</section>

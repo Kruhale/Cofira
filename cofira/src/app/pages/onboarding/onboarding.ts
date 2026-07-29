@@ -1,0 +1,122 @@
+import { Component, computed, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { OnboardingService } from '../../services/onboarding.service';
+import { IdiomaService } from '../../services/idioma.service';
+import { ProgressBar } from '../../components/shared/progress-bar/progress-bar';
+import { TEXTOS_ONBOARDING } from './textos-onboarding';
+
+import { StepWelcome } from './steps/step-welcome/step-welcome';
+import { StepGoal } from './steps/step-goal/step-goal';
+import { StepGender } from './steps/step-gender/step-gender';
+import { StepBirthdate } from './steps/step-birthdate/step-birthdate';
+import { StepMeasurements } from './steps/step-measurements/step-measurements';
+import { StepTargetWeight } from './steps/step-target-weight/step-target-weight';
+import { StepActivityLevel } from './steps/step-activity-level/step-activity-level';
+import { StepFitnessLevel } from './steps/step-fitness-level/step-fitness-level';
+import { StepTrainingDays } from './steps/step-training-days/step-training-days';
+import { StepDietType } from './steps/step-diet-type/step-diet-type';
+import { StepMeals } from './steps/step-meals/step-meals';
+import { StepAllergies } from './steps/step-allergies/step-allergies';
+import { StepEquipment } from './steps/step-equipment/step-equipment';
+import { StepSports } from './steps/step-sports/step-sports';
+import { StepResults } from './steps/step-results/step-results';
+import { StepRegister } from './steps/step-register/step-register';
+import { StepPayment } from './steps/step-payment/step-payment';
+
+@Component({
+  selector: 'app-onboarding',
+  standalone: true,
+  imports: [
+    ProgressBar,
+    StepWelcome,
+    StepGoal,
+    StepGender,
+    StepBirthdate,
+    StepMeasurements,
+    StepTargetWeight,
+    StepActivityLevel,
+    StepFitnessLevel,
+    StepTrainingDays,
+    StepDietType,
+    StepMeals,
+    StepAllergies,
+    StepEquipment,
+    StepSports,
+    StepResults,
+    StepRegister,
+    StepPayment,
+  ],
+  templateUrl: './onboarding.html',
+  styleUrl: './onboarding.scss',
+})
+export class Onboarding implements OnInit {
+  readonly onboardingService = inject(OnboardingService);
+  private readonly idiomaService = inject(IdiomaService);
+
+  /* Textos de la página en el idioma vigente: al cambiar el signal se repinta todo */
+  readonly textos = computed(() => TEXTOS_ONBOARDING[this.idiomaService.idioma()]);
+  readonly currentStep = computed(() => this.onboardingService.currentStep());
+
+  /* Escena del panel visual según el bloque del cuestionario: la foto y el
+     mensaje acompañan lo que el usuario está rellenando */
+  private readonly imagenesAside = [
+    '/assets/images/hero-fitness-alt.jpg',
+    '/assets/images/home-progreso.jpg',
+    '/assets/images/home-entrenamiento.jpg',
+    '/assets/images/home-nutricion.jpg',
+  ];
+
+  readonly escenaAside = computed(() => {
+    const paso = this.currentStep();
+
+    let indiceEscena = 0;
+    if (paso >= 2 && paso <= 5) {
+      indiceEscena = 1;
+    } else if ((paso >= 6 && paso <= 8) || paso === 12 || paso === 13) {
+      indiceEscena = 2;
+    } else if (paso >= 9 && paso <= 11) {
+      indiceEscena = 3;
+    }
+
+    const escena = this.textos().asideEscenas[indiceEscena];
+    return { ...escena, imagen: this.imagenesAside[indiceEscena] };
+  });
+  readonly totalSteps = computed(() => this.onboardingService.getTotalSteps());
+  readonly canGoBack = computed(() => this.onboardingService.canGoBack());
+  readonly showProgress = computed(() => this.currentStep() > 0);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      const step = parseInt(params['step'] || '0', 10);
+      if (step !== this.currentStep()) {
+        this.onboardingService.goToStep(step);
+      }
+    });
+  }
+
+  goToStep(step: number): void {
+    this.onboardingService.goToStep(step);
+    this.updateUrl(step);
+  }
+
+  nextStep(): void {
+    this.onboardingService.nextStep();
+    this.updateUrl(this.currentStep());
+  }
+
+  previousStep(): void {
+    this.onboardingService.previousStep();
+    this.updateUrl(this.currentStep());
+  }
+
+  private updateUrl(step: number): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { step },
+      queryParamsHandling: 'merge',
+    });
+  }
+}
