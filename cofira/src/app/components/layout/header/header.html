@@ -1,0 +1,228 @@
+<header class="cabecera" [class.cabecera--transparente]="cabeceraTransparente()">
+  <a class="cabecera__logo-enlace" routerLink="/home" [attr.aria-label]="textos().ariaLogo">
+    <span class="cabecera__logo-texto">Cofira<span class="cabecera__logo-punto" aria-hidden="true">.</span></span>
+  </a>
+
+  <!-- Apps PRO: solo con sesión (un visitante se comería el redirect del guard) -->
+  @if (isAuthenticated()) {
+    <nav class="cabecera__navegacion cabecera__navegacion--escritorio" [attr.aria-label]="textos().ariaNavPrincipal">
+      <ul class="cabecera__menu">
+        <li><a class="cabecera__enlace" routerLink="/alimentacion" routerLinkActive="cabecera__enlace--activo">{{ textos().navNutricion }}</a></li>
+        <li><a class="cabecera__enlace" routerLink="/gimnasio" routerLinkActive="cabecera__enlace--activo">{{ textos().navEjercicio }}</a></li>
+        <li><a class="cabecera__enlace" routerLink="/seguimiento" routerLinkActive="cabecera__enlace--activo">{{ textos().navSeguimiento }}</a></li>
+      </ul>
+    </nav>
+  }
+
+  <nav class="cabecera__acciones cabecera__acciones--escritorio" [attr.aria-label]="textos().ariaAcciones">
+    <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? textos().ariaTemaClaro : textos().ariaTemaOscuro" [attr.aria-pressed]="modoOscuro" class="cabecera__tema-boton">
+      @if (modoOscuro) {
+        <svg aria-hidden="true" class="cabecera__tema-boton-icono" fill="currentColor" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      } @else {
+        <svg aria-hidden="true" class="cabecera__tema-boton-icono" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+             stroke-width="2" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" x2="12" y1="1" y2="3" />
+          <line x1="12" x2="12" y1="21" y2="23" />
+          <line x1="4.22" x2="5.64" y1="4.22" y2="5.64" />
+          <line x1="18.36" x2="19.78" y1="18.36" y2="19.78" />
+          <line x1="1" x2="3" y1="12" y2="12" />
+          <line x1="21" x2="23" y1="12" y2="12" />
+          <line x1="4.22" x2="5.64" y1="19.78" y2="18.36" />
+          <line x1="18.36" x2="19.78" y1="5.64" y2="4.22" />
+        </svg>
+      }
+    </button>
+
+    @if (isAuthenticated()) {
+        <section class="cabecera__perfil-contenedor">
+            <button (click)="toggleMenuCuenta()" [attr.aria-expanded]="menuCuentaAbierto" aria-controls="menu-cuenta" aria-haspopup="true"
+                    [attr.aria-label]="textos().ariaMenuCuenta" class="cabecera__perfil">
+                <span class="cabecera__perfil-avatar" aria-hidden="true">{{ inicialUsuario() }}</span>
+                <span class="cabecera__perfil-nombre">{{ userNombre() }}</span>
+                <svg aria-hidden="true" class="cabecera__perfil-chevron" [class.cabecera__perfil-chevron--abierto]="menuCuentaAbierto" fill="none" stroke="currentColor"
+                     stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <section [class.cabecera__desplegable--abierto]="menuCuentaAbierto" class="cabecera__desplegable"
+                   id="menu-cuenta" tabindex="-1">
+        <header class="cabecera__cuenta">
+          <span class="cabecera__cuenta-avatar" aria-hidden="true">{{ inicialUsuario() }}</span>
+          <span class="cabecera__cuenta-info">
+            <span class="cabecera__cuenta-nombre">{{ userNombre() }}</span>
+            @if (userEmail() && userEmail() !== userNombre()) {
+              <span class="cabecera__cuenta-email">{{ userEmail() }}</span>
+            } @else {
+              <span class="cabecera__cuenta-email">{{ textos().cuentaPersonal }}</span>
+            }
+          </span>
+          @if (esPro()) {
+            <span class="cabecera__cuenta-chip">PRO</span>
+          }
+        </header>
+        <nav class="cabecera__desplegable-navegacion">
+          <span class="cabecera__desplegable-etiqueta" aria-hidden="true">{{ textos().etiquetaCuenta }}</span>
+          <a (click)="cerrarMenuCuenta()" class="cabecera__desplegable-item" routerLink="/perfil">
+            <span class="cabecera__desplegable-item-caja" aria-hidden="true">
+              <svg class="cabecera__desplegable-item-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="cabecera__desplegable-item-textos">
+              <span class="cabecera__desplegable-item-titulo">{{ textos().itemPerfilTitulo }}</span>
+              <span class="cabecera__desplegable-item-descripcion">{{ textos().itemPerfilDescripcion }}</span>
+            </span>
+            <svg aria-hidden="true" class="cabecera__desplegable-item-flecha" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a (click)="cerrarMenuCuenta()" class="cabecera__desplegable-item" routerLink="/configuracion">
+            <span class="cabecera__desplegable-item-caja" aria-hidden="true">
+              <svg class="cabecera__desplegable-item-icono" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="cabecera__desplegable-item-textos">
+              <span class="cabecera__desplegable-item-titulo">{{ textos().itemConfigTitulo }}</span>
+              <span class="cabecera__desplegable-item-descripcion">{{ textos().itemConfigDescripcion }}</span>
+            </span>
+            <svg aria-hidden="true" class="cabecera__desplegable-item-flecha" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </nav>
+        <hr class="cabecera__desplegable-separador">
+        <nav class="cabecera__desplegable-navegacion cabecera__desplegable-navegacion--pie">
+          <button (click)="logout()" class="cabecera__desplegable-item cabecera__desplegable-item--cerrar-sesion">
+            <span class="cabecera__desplegable-item-caja cabecera__desplegable-item-caja--peligro" aria-hidden="true">
+              <svg class="cabecera__desplegable-item-icono cabecera__desplegable-item-icono--cerrar-sesion" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="cabecera__desplegable-item-textos">
+              <span class="cabecera__desplegable-item-titulo">{{ textos().cerrarSesion }}</span>
+            </span>
+          </button>
+        </nav>
+      </section>
+
+      @if (menuCuentaAbierto) {
+          <span (click)="cerrarMenuCuenta()" aria-hidden="true" class="cabecera__desplegable-overlay"
+                tabindex="-1"></span>
+      }
+        </section>
+    } @else {
+      <app-button enlace="/onboarding" variante="primario" tamanio="pequeno">{{ textos().inscribete }}</app-button>
+    }
+  </nav>
+
+  <button (click)="toggleMenu()" [class.cabecera__hamburguesa--abierto]="menuAbierto" [attr.aria-expanded]="menuAbierto" aria-controls="menu-movil" [attr.aria-label]="textos().ariaMenu"
+          class="cabecera__hamburguesa">
+    <span aria-hidden="true" class="cabecera__hamburguesa-linea"></span>
+    <span aria-hidden="true" class="cabecera__hamburguesa-linea"></span>
+    <span aria-hidden="true" class="cabecera__hamburguesa-linea"></span>
+  </button>
+</header>
+
+<nav resaltadoDeslizante class="mini-cabecera" [class.mini-cabecera--visible]="miniCabeceraVisible()" [attr.aria-label]="textos().ariaNavRapida">
+  <span class="mini-cabecera__resaltado" aria-hidden="true"></span>
+  <a class="mini-cabecera__logo" routerLink="/home" [attr.aria-label]="textos().ariaLogo">C<span class="mini-cabecera__logo-punto" aria-hidden="true">.</span></a>
+  @if (isAuthenticated()) {
+    <a class="mini-cabecera__enlace" routerLink="/alimentacion" routerLinkActive="mini-cabecera__enlace--activo">{{ textos().navNutricion }}</a>
+    <a class="mini-cabecera__enlace" routerLink="/gimnasio" routerLinkActive="mini-cabecera__enlace--activo">{{ textos().navEjercicio }}</a>
+    <a class="mini-cabecera__enlace" routerLink="/seguimiento" routerLinkActive="mini-cabecera__enlace--activo">{{ textos().navSeguimiento }}</a>
+    <a class="mini-cabecera__cta" routerLink="/perfil" [attr.aria-label]="textos().ariaMiPerfil">{{ inicialUsuario() }}</a>
+  } @else {
+    <a class="mini-cabecera__cta mini-cabecera__cta--texto" routerLink="/login">{{ textos().entrar }}</a>
+  }
+</nav>
+
+<section class="menu-movil" [class.menu-movil--abierto]="menuAbierto" id="menu-movil" role="dialog" [attr.aria-label]="textos().ariaMenuNavegacion" tabindex="-1">
+  <span aria-hidden="true" class="menu-movil__overlay" tabindex="-1" [class.menu-movil__overlay--visible]="menuAbierto" (click)="cerrarMenu()"></span>
+
+  <section class="menu-movil__contenido" [class.menu-movil__contenido--visible]="menuAbierto">
+    <header class="menu-movil__cabecera">
+      <h2 class="menu-movil__titulo">{{ textos().menuTitulo }}</h2>
+      <button class="menu-movil__cerrar" (click)="cerrarMenu()" [attr.aria-label]="textos().ariaCerrarMenu">
+        <svg aria-hidden="true" class="menu-movil__cerrar-icono" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"
+            fill="currentColor"/>
+        </svg>
+      </button>
+    </header>
+
+    @if (isAuthenticated()) {
+    <nav class="menu-movil__navegacion" [attr.aria-label]="textos().ariaNavPrincipal">
+      <a (click)="cerrarMenu()" class="menu-movil__enlace" routerLink="/alimentacion">
+        <svg aria-hidden="true" class="menu-movil__enlace-icono" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"
+            fill="currentColor"/>
+        </svg>
+        <span>{{ textos().navNutricion }}</span>
+      </a>
+
+      <a (click)="cerrarMenu()" class="menu-movil__enlace" routerLink="/gimnasio">
+        <svg aria-hidden="true" class="menu-movil__enlace-icono" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M20.57 14.86L22 13.43L20.57 12L17 15.57L8.43 7L12 3.43L10.57 2L9.14 3.43L7.71 2L5.57 4.14L4.14 2.71L2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57L3.43 12L7 8.43L15.57 17L12 20.57L13.43 22l1.43-1.43L16.29 22l2.14-2.14l1.43 1.43l1.43-1.43l-1.43-1.43L22 16.29z"
+            fill="currentColor"/>
+        </svg>
+        <span>{{ textos().navEjercicio }}</span>
+      </a>
+
+      <a routerLink="/seguimiento" (click)="cerrarMenu()" class="menu-movil__enlace">
+          <fa-icon [icon]="iconoGrafico" class="menu-movil__enlace-icono" aria-hidden="true"></fa-icon>
+        <span>{{ textos().navSeguimiento }}</span>
+      </a>
+    </nav>
+    }
+
+    <section class="menu-movil__acciones">
+      @if (isAuthenticated()) {
+        <a (click)="cerrarMenu()" class="menu-movil__enlace" routerLink="/perfil">
+          <svg aria-hidden="true" class="menu-movil__enlace-icono" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+          </svg>
+          <span>{{ textos().itemPerfilTitulo }}</span>
+        </a>
+        <a (click)="cerrarMenu()" class="menu-movil__enlace" routerLink="/configuracion">
+          <svg aria-hidden="true" class="menu-movil__enlace-icono" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          </svg>
+          <span>{{ textos().itemConfigTitulo }}</span>
+        </a>
+          <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? textos().ariaTemaClaro : textos().ariaTemaOscuro" [attr.aria-pressed]="modoOscuro" class="menu-movil__enlace menu-movil__enlace--tema">
+              <fa-icon [icon]="modoOscuro ? iconoSol : iconoLuna" class="menu-movil__enlace-icono"></fa-icon>
+              <span>{{ modoOscuro ? textos().modoClaro : textos().modoOscuro }}</span>
+          </button>
+        <button (click)="logout(); cerrarMenu()" class="menu-movil__cerrar-sesion">
+          <svg aria-hidden="true" class="menu-movil__cerrar-sesion-icono" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+          </svg>
+          <span>{{ textos().cerrarSesion }}</span>
+        </button>
+      } @else {
+          <button (click)="toggleTema()" [attr.aria-label]="modoOscuro ? textos().ariaTemaClaro : textos().ariaTemaOscuro" [attr.aria-pressed]="modoOscuro" class="menu-movil__enlace menu-movil__enlace--tema">
+              <fa-icon [icon]="modoOscuro ? iconoSol : iconoLuna" class="menu-movil__enlace-icono"></fa-icon>
+              <span>{{ modoOscuro ? textos().modoClaro : textos().modoOscuro }}</span>
+        </button>
+        <app-button (click)="cerrarMenu()" [anchoCompleto]="true" enlace="/onboarding" tamanio="mediano" variante="primario">
+          {{ textos().inscribete }}
+        </app-button>
+      }
+    </section>
+  </section>
+</section>

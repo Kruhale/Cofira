@@ -1,0 +1,987 @@
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
+
+app-footer {
+  display: block;
+}
+
+.pie {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--spacing-size-xxl);
+  padding: var(--spacing-size-xxxl) 6rem var(--spacing-size-xl);
+  box-sizing: border-box;
+  background: var(--superficie-fondo);
+  color: var(--texto-principal);
+  border-top: 1px solid var(--borde-sutil);
+  overflow: hidden;
+}
+
+/* Resplandor naranja difuso decorativo, abajo-izquierda (como la referencia) */
+.pie::before {
+  content: '';
+  position: absolute;
+  left: -8rem;
+  bottom: -10rem;
+  width: 34rem;
+  height: 34rem;
+  background: radial-gradient(circle, var(--naranja-glow-media), transparent 62%);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Pie mínimo (páginas de la app tras login): solo la barra legal. Sin el padding
+   gigante ni el resplandor, que eran para el mega-footer de captación. */
+.pie--minimo {
+  gap: 0;
+  padding-top: var(--spacing-size-l);
+  padding-bottom: var(--spacing-size-l);
+}
+
+.pie--minimo::before {
+  display: none;
+}
+
+/* ════════════ BANDA CTA ════════════ */
+.pie__cta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-size-xl);
+  flex-wrap: wrap;
+}
+
+.pie__cta-eyebrow {
+  @include etiqueta-tecnica(var(--naranja-texto));
+  margin: 0 0 1rem;
+}
+
+.pie__cta-titulo {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: var(--display-md);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--texto-principal);
+}
+
+.pie__cta-acento {
+  font-style: italic;
+  color: var(--naranja-texto);
+}
+
+.pie__cta-newsletter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 26rem;
+}
+
+.pie__cta-newsletter-texto {
+  margin: 0;
+  /* Mismo retranqueo que el padding derecho del pill (0.4rem) para que el borde
+     derecho del texto coincida con el botón "Únete", no con el borde del pill. */
+  padding-right: 0.4rem;
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+}
+
+.pie__newsletter {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.4rem 0.4rem 0.4rem 1.1rem;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-full);
+  transition: border-color var(--duration-base) ease;
+}
+
+.pie__newsletter:focus-within {
+  border-color: var(--naranja-normal);
+}
+
+.pie__newsletter-etiqueta {
+  flex-shrink: 0;
+  /* Resetea el margin-bottom global de <label> (8px): dentro del pill el label va
+     en fila, y ese margen lo descentraba 4px hacia arriba respecto al input/botón. */
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-principal);
+}
+
+.pie__newsletter-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.25rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-principal);
+}
+
+.pie__newsletter-input::placeholder {
+  color: var(--texto-suave);
+}
+
+.pie__newsletter-boton {
+  flex-shrink: 0;
+  padding: 0.55rem 1.4rem;
+  background: var(--gradiente-acento);
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-sobre-acento);
+  cursor: pointer;
+  transition: filter var(--duration-base) ease, transform var(--duration-base) ease;
+}
+
+.pie__newsletter-boton:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.pie__cta-newsletter-nota {
+  margin: 0;
+  /* Alineada con el botón "Únete" (mismo retranqueo que el texto de arriba). */
+  padding-right: 0.4rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6875rem; /* 11px */
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+}
+
+.pie__division {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: none;
+  background: var(--borde-sutil);
+}
+
+/* ════════════ PRINCIPAL ════════════ */
+.pie__principal {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: var(--spacing-size-xl);
+  flex-wrap: wrap;
+}
+
+.pie__marca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-m);
+  flex: 1 1 24rem;
+  min-width: 18rem;
+}
+
+/* ── COFIRA gigante animada ── */
+.pie__logo {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.02em;
+  margin-bottom: 2.2rem; /* hueco para el reflejo de suelo mojado */
+  text-decoration: none;
+  line-height: 0.9;
+  /* Reflejo de suelo pulido: COFIRA se refleja debajo, desvanecido (premium, encaja con el liquido) */
+  -webkit-box-reflect: below 0.12em linear-gradient(transparent 56%, rgba(255, 190, 130, 0.2));
+}
+
+.pie__logo-letra {
+  /* Anton: display ultra-condensada e industrial, como el wordmark de la #11
+     (mucho mas caracter que la Satoshi redondeada). Solo aqui, no global. */
+  font-family: 'Anton', var(--fuente-display);
+  font-size: 7.5rem; /* 120px */
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  /* Naranja liquido glossy (ref #11): filo brillante arriba, banda oscura,
+     cuerpo naranja mojado con reflejo especular que barre y filo abajo.
+     5 capas recortadas al texto: especular + filo superior + 2 olas molten
+     (mar, distinta velocidad) + base oscura. */
+  background-image:
+    linear-gradient(100deg, transparent 41%, hsla(40, 100%, 98%, 0.16) 45%, hsla(46, 100%, 99%, 0.55) 49%, hsla(40, 100%, 95%, 0.2) 51%, hsla(46, 100%, 99%, 0.42) 54%, transparent 59%),
+    linear-gradient(180deg, hsla(38, 100%, 93%, 0.92) 0%, hsla(32, 100%, 80%, 0.35) 3.5%, transparent 8.5%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff0d8'/%3E%3Cstop offset='0.05' stop-color='%23ffce86'/%3E%3Cstop offset='0.13' stop-color='%23ff9636'/%3E%3Cstop offset='0.22' stop-color='%23ee6414'/%3E%3Cstop offset='0.31' stop-color='%23ffbe66'/%3E%3Cstop offset='0.41' stop-color='%23f06618'/%3E%3Cstop offset='0.55' stop-color='%23ffbc62'/%3E%3Cstop offset='0.67' stop-color='%23e75e11'/%3E%3Cstop offset='0.82' stop-color='%23fa7420'/%3E%3Cstop offset='0.92' stop-color='%23ffc870'/%3E%3Cstop offset='1' stop-color='%23ff9c3e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 5 Q30 0 60 5 T120 5 V60 H0 Z' fill='url(%23m)'/%3E%3Cpath d='M0 5 Q30 0 60 5 T120 5' fill='none' stroke='%23fff2dc' stroke-width='2.4' opacity='0.85'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='60' viewBox='0 0 150 60' preserveAspectRatio='none'%3E%3Cpath d='M0 8 Q37 3 75 8 T150 8 V60 H0 Z' fill='%23c85510'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, hsl(22, 28%, 6%) 0%, hsl(20, 36%, 8%) 24%, hsl(24, 55%, 14%) 100%);
+  background-repeat: no-repeat, no-repeat, repeat-x, repeat-x, no-repeat;
+  background-size: 200% 100%, 100% 100%, 4.5rem 86%, 6rem 78%, 100% 100%;
+  background-position: 200% 0, 0 0, 0 100%, 0 100%, 0 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0.12rem 0.5rem hsla(22, 100%, 50%, 0.22));
+  animation: pie-cofira-ola 5.5s linear infinite;
+  transition: transform var(--duration-base) ease;
+}
+
+/* Hover: las letras se levantan en cascada (ola que recorre COFIRA) */
+.pie__logo:hover .pie__logo-letra {
+  transform: translateY(-0.16em);
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(2) {
+  transition-delay: 0.05s;
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(3) {
+  transition-delay: 0.1s;
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(4) {
+  transition-delay: 0.15s;
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(5) {
+  transition-delay: 0.2s;
+}
+
+.pie__logo:hover .pie__logo-letra:nth-child(6) {
+  transition-delay: 0.25s;
+}
+
+.pie__descripcion {
+  margin: 0;
+  max-width: 24rem;
+  font-size: var(--font-size-sm);
+  line-height: 1.65;
+  color: var(--texto-secundario);
+}
+
+/* ── Sociales ── */
+.pie__sociales {
+  display: flex;
+  gap: 0.6rem;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pie__social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  color: var(--texto-secundario);
+  transition: transform var(--duration-base) ease, color var(--duration-base) ease, border-color var(--duration-base) ease, background var(--duration-base) ease;
+}
+
+.pie__social:hover {
+  transform: translateY(-3px);
+  background: var(--naranja-glow-suave);
+  border-color: var(--naranja-normal);
+  color: var(--naranja-texto);
+}
+
+.pie__social-icono {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* ── Badges de apps ── */
+.pie__apps {
+  display: flex;
+  gap: 0.6rem;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.pie__app {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--texto-principal);
+  transition: transform var(--duration-base) ease, border-color var(--duration-base) ease;
+}
+
+.pie__app:hover {
+  transform: translateY(-2px);
+  border-color: var(--borde-medio);
+}
+
+.pie__app-icono {
+  width: 1.35rem;
+  height: 1.35rem;
+  color: var(--texto-principal);
+  flex-shrink: 0;
+}
+
+.pie__app-textos {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.pie__app-pre {
+  font-family: var(--fuente-mono);
+  font-size: 0.5625rem; /* 9px */
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.pie__app-tienda {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ── Columnas de navegación ── */
+.pie__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  flex: 0 1 9rem;
+}
+
+.pie__nav-titulo {
+  @include etiqueta-tecnica(var(--naranja-texto));
+  margin: 0 0 0.3rem;
+}
+
+.pie__nav-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pie__nav-enlace {
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  color: var(--texto-secundario);
+  transition: color var(--duration-base) ease, padding-left var(--duration-base) ease;
+}
+
+.pie__nav-enlace:hover {
+  padding-left: 0.35rem;
+  color: var(--texto-principal);
+}
+
+/* ── Columna contacto ── */
+.pie__contacto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  flex: 0 1 12rem;
+}
+
+.pie__contacto-enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  color: var(--texto-principal);
+  transition: color var(--duration-base) ease;
+}
+
+.pie__contacto-enlace:hover {
+  color: var(--naranja-texto);
+}
+
+.pie__contacto-enlace-flecha {
+  color: var(--naranja-normal);
+  transition: transform var(--duration-base) ease;
+}
+
+.pie__contacto-enlace:hover .pie__contacto-enlace-flecha {
+  transform: translateX(0.35rem);
+}
+
+.pie__contacto-direccion {
+  font-style: normal;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.pie__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.3rem 0 0;
+  padding: 0.4rem 0.85rem;
+  width: fit-content;
+  background: hsla(150, 65%, 40%, 0.1);
+  border: 1px solid hsla(150, 65%, 40%, 0.3);
+  border-radius: var(--radius-full);
+  font-family: var(--fuente-mono);
+  font-size: 0.6875rem; /* 11px */
+  letter-spacing: 0.04em;
+  color: var(--exito-texto);
+}
+
+.pie__estado-punto {
+  position: relative;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  background: var(--exito);
+  border-radius: 50%;
+  animation: pie-punto-respira 2.6s ease-in-out infinite;
+}
+
+/* Halo suave que respira: el resplandor difuso del punto */
+.pie__estado-punto::before {
+  content: '';
+  position: absolute;
+  inset: -0.45rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--exito) 0%, transparent 68%);
+  opacity: 0.4;
+  animation: pie-halo-respira 2.6s ease-in-out infinite;
+}
+
+/* Onda sonar que se expande y se desvanece */
+.pie__estado-punto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--exito);
+  animation: pie-sonar 2.6s ease-out infinite;
+}
+
+/* ════════════ COMUNIDAD EN VIVO (banda EKG) ════════════
+   Tríptico de telemetría: dato vivo | monitor | dato semanal, con
+   separadores 1px — la estructura la dan los filos, no las cajas. */
+.pie__pulso {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  /* stretch: las dos columnas de datos comparten techo y suelo (líneas alineadas) */
+  align-items: stretch;
+  gap: 2.5rem;
+  padding: 2.2rem 0;
+  border-top: 1px solid var(--borde-sutil);
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.pie__pulso-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  padding-right: 2.5rem;
+  border-right: 1px solid var(--borde-medio);
+}
+
+.pie__pulso-cifra {
+  margin: 0;
+}
+
+.pie__pulso-punto {
+  position: relative;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  background: var(--naranja-normal);
+  border-radius: 50%;
+  /* Mismo glow que los picos del EKG: una sola señal viva, no dos acabados */
+  box-shadow: 0 0 0.6rem var(--naranja-glow-fuerte);
+  animation: pie-punto-respira 2.6s ease-in-out infinite;
+}
+
+.pie__pulso-punto::before {
+  content: '';
+  position: absolute;
+  inset: -0.45rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--naranja-normal) 0%, transparent 68%);
+  opacity: 0.45;
+  animation: pie-halo-respira 2.6s ease-in-out infinite;
+}
+
+.pie__pulso-punto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--naranja-normal);
+  animation: pie-sonar 2.6s ease-out infinite;
+}
+
+.pie__pulso-num {
+  display: inline-block;
+  font-family: var(--fuente-display);
+  font-size: 3.1rem; /* 49.6px */
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+  transform-origin: left center;
+}
+
+.pie__pulso-sub {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem; /* 9.6px */
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--texto-secundario);
+}
+
+.pie__pulso-caption {
+  @include etiqueta-tecnica(var(--naranja-texto));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+}
+
+/* Línea de latido que se desliza sin fin (monitor en vivo) */
+.pie__pulso-linea {
+  position: relative;
+  flex: 1;
+  align-self: center;
+  min-width: 4rem;
+  height: 4.5rem;
+  overflow: hidden;
+  color: var(--naranja-normal);
+  /* Funde los dos extremos: la señal entra y sale de la banda sin corte seco. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+
+/* Monitor de constantes de la comunidad: una traza tenue persistente + un cometa
+   de luz que la recorre dibujando el latido (como un monitor de hospital). */
+.pie__pulso-monitor {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+/* Traza persistente: la onda completa, tenue (la "historia" en la pantalla) */
+.pie__pulso-traza {
+  stroke: var(--naranja-normal);
+  opacity: 0.32;
+}
+
+/* Cometa: cabeza CORTA de luz que recorre el latido (dasharray + dashoffset).
+   dash(30)+gap(270)=300 casa con el período del offset → bucle sin costura.
+   Con dash largo parecía una cortina que borraba el trazo, no un pulso. */
+.pie__pulso-cometa {
+  stroke: var(--naranja-normal);
+  stroke-dasharray: 30 270;
+  filter: drop-shadow(0 0 4px var(--naranja-glow-fuerte))
+    drop-shadow(0 0 9px var(--naranja-glow-media));
+  animation: pie-cometa 6s linear infinite;
+}
+
+/* En claro la banda va sobre superficie clara: la traza necesita más cuerpo y el
+   cometa destaca por contraste y grosor, no por halo (el glow ensucia el blanco). */
+[data-theme='light'] .pie__pulso-traza {
+  opacity: 0.42;
+}
+
+[data-theme='light'] .pie__pulso-cometa {
+  stroke-width: 2.75px;
+  filter: drop-shadow(0 0 2px var(--naranja-glow-media));
+}
+
+/* Columna semanal: espejo del dato vivo, alineada al filo derecho.
+   El número va en blanco: el naranja se reserva para la señal EN VIVO. */
+.pie__pulso-semana {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin: 0;
+  flex-shrink: 0;
+  padding-left: 2.5rem;
+  border-left: 1px solid var(--borde-medio);
+  text-align: right;
+}
+
+.pie__pulso-semana-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem; /* 9.6px */
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--texto-secundario);
+}
+
+.pie__pulso-semana-num {
+  font-family: var(--fuente-display);
+  font-size: 1.9rem; /* 30.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.pie__pulso-semana-sub {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem; /* 9.6px */
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--texto-secundario);
+}
+
+/* ════════════ INFERIOR ════════════ */
+.pie__inferior {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-size-m);
+  flex-wrap: wrap;
+}
+
+.pie__copyright {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.6875rem; /* 11px */
+  letter-spacing: 0.02em;
+  color: var(--texto-suave);
+}
+
+.pie__legal {
+  display: flex;
+  gap: var(--spacing-size-m);
+  flex-wrap: wrap;
+}
+
+.pie__legal-enlace {
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  color: var(--texto-secundario);
+  transition: color var(--duration-base) ease;
+}
+
+.pie__legal-enlace:hover {
+  color: var(--naranja-texto);
+}
+
+.pie__controles {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pie__tema-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-full);
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: color var(--duration-base) ease, border-color var(--duration-base) ease;
+}
+
+.pie__tema-boton:hover {
+  color: var(--naranja-texto);
+  border-color: var(--naranja-normal);
+}
+
+.pie__tema-boton-icono {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.pie__idioma {
+  position: relative;
+}
+
+.pie__idioma-boton {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-full);
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.04em;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: color var(--duration-base) ease, border-color var(--duration-base) ease;
+}
+
+.pie__idioma-boton:hover {
+  color: var(--texto-principal);
+  border-color: var(--borde-medio);
+}
+
+.pie__idioma-dropdown {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 6rem;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1rem 2rem hsla(0, 0%, 0%, 0.4);
+  z-index: var(--z-dropdown);
+}
+
+.pie__idioma-opcion {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: background var(--duration-base) ease, color var(--duration-base) ease;
+}
+
+.pie__idioma-opcion:hover {
+  background: var(--superficie-2);
+  color: var(--texto-principal);
+}
+
+.pie__idioma-opcion--activo {
+  color: var(--naranja-texto);
+}
+
+/* ════════════ ANIMACIONES ════════════ */
+@keyframes pie-cofira-ola {
+  0% {
+    background-position: 200% 0, 0 0, 0 100%, 0 100%, 0 0;
+  }
+  50% {
+    background-position: 20% 0, 0 0, -2.25rem 94%, -3rem 100%, 0 0;
+  }
+  75% {
+    background-position: -80% 0, 0 0, -3.375rem 97%, -4.5rem 100%, 0 0;
+  }
+  100% {
+    background-position: -80% 0, 0 0, -4.5rem 100%, -6rem 100%, 0 0;
+  }
+}
+
+/* Núcleo del punto latiendo suavemente */
+@keyframes pie-punto-respira {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+
+/* Halo difuso del punto respirando */
+@keyframes pie-halo-respira {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.28;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.55;
+  }
+}
+
+/* Onda sonar: se expande, se desvanece y descansa */
+@keyframes pie-sonar {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+/* Cometa recorriendo el latido: el dash se desliza por la traza (bucle perfecto).
+   Recorre -300 = dash(102)+gap(198), exactamente un período → sin salto al reiniciar. */
+@keyframes pie-cometa {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -300;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pie__logo-letra {
+    animation: none;
+  }
+
+  .pie__estado-punto {
+    animation: none;
+  }
+
+  .pie__estado-punto::before {
+    animation: none;
+  }
+
+  .pie__estado-punto::after {
+    animation: none;
+  }
+
+  .pie__pulso-punto {
+    animation: none;
+  }
+
+  .pie__pulso-punto::before {
+    animation: none;
+  }
+
+  .pie__pulso-punto::after {
+    animation: none;
+  }
+
+  .pie__pulso-cometa {
+    animation: none;
+    /* Sin animación, el dash dejaría un segmento naranja estático huérfano:
+       lo ocultamos y queda solo la traza tenue como EKG en reposo. */
+    opacity: 0;
+  }
+}
+
+/* ════════════ RESPONSIVE ════════════ */
+@include responsive-down('lg') {
+  .pie {
+    padding: var(--spacing-size-xxl) 3rem var(--spacing-size-xl);
+  }
+
+  .pie__principal {
+    gap: var(--spacing-size-l);
+  }
+
+  .pie__marca {
+    flex-basis: 100%;
+  }
+}
+
+@include responsive-down('md') {
+  .pie__cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-size-l);
+  }
+
+  .pie__cta-newsletter {
+    align-items: flex-start;
+    max-width: 100%;
+  }
+
+  .pie__nav {
+    flex-basis: 40%;
+  }
+
+  .pie__contacto {
+    flex-basis: 40%;
+  }
+}
+
+@include responsive-down('sm') {
+  .pie {
+    padding: var(--spacing-size-xl) 1.5rem var(--spacing-size-l);
+  }
+
+  .pie__nav {
+    flex-basis: 100%;
+  }
+
+  .pie__contacto {
+    flex-basis: 100%;
+  }
+
+  .pie__inferior {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-size-s);
+  }
+
+  .pie__pulso {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-size-m);
+  }
+
+  .pie__pulso-linea {
+    flex: none;
+    width: 100%;
+    height: 3rem;
+  }
+
+  /* En columna los filos laterales pierden el sentido: fuera separadores */
+  .pie__pulso-info {
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .pie__pulso-semana {
+    align-items: flex-start;
+    padding-left: 0;
+    border-left: none;
+    text-align: left;
+  }
+}
+
+/* El wordmark gigante escala por pasos (antes clamp) */
+@include responsive-down('md') {
+  .pie__logo-letra {
+    font-size: 5rem; /* 80px */
+  }
+}
+
+@include responsive-down('xs') {
+  .pie__logo-letra {
+    font-size: 4rem; /* 64px */
+  }
+}

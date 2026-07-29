@@ -1,0 +1,1147 @@
+@if (mostrarPrecarga()) {
+  <aside class="precarga" aria-hidden="true">
+    <span class="precarga__marca">Cofira<span class="precarga__punto">.</span></span>
+    <span class="precarga__numero">{{ contadorPrecarga() }}</span>
+  </aside>
+}
+
+<app-rastro-scroll [secciones]="seccionesRastro()"></app-rastro-scroll>
+
+<section class="hero" aria-labelledby="titulo-principal">
+  <figure class="hero__media">
+    <picture class="hero__picture">
+      <img
+        appParallaxSuave
+        [velocidad]="0.18"
+        [alt]="textos().hero.altImagen"
+        class="hero__imagen"
+        fetchpriority="high"
+        height="1280"
+        src="/assets/images/hero-fitness.jpg"
+        width="1920">
+    </picture>
+    <span aria-hidden="true" class="hero__velo"></span>
+  </figure>
+
+  <header class="hero__contenido">
+    <p class="hero__eyebrow">{{ textos().hero.eyebrow }}</p>
+    <h1 id="titulo-principal" class="hero__titulo">
+      {{ textos().hero.tituloLinea }}<br>
+      <span class="hero__titulo-acento">{{ textos().hero.tituloAcento }}</span>
+    </h1>
+    <p class="hero__subtitulo">
+      {{ textos().hero.subtitulo }}
+    </p>
+    <p class="hero__acciones">
+      <app-button botonMagnetico enlace="/onboarding" tamanio="grande" variante="primario">{{ textos().hero.botonEmpezar }}</app-button>
+      <app-button botonMagnetico (click)="navegarAPlanes()" tamanio="grande" variante="fantasma">{{ textos().hero.botonPlanes }}</app-button>
+    </p>
+  </header>
+
+  <a class="hero__scroll" (click)="navegarAPlanes()" aria-hidden="true">
+    <span class="hero__scroll-texto">{{ textos().hero.desliza }}</span>
+    <span class="hero__scroll-linea"></span>
+  </a>
+</section>
+
+
+<section class="manifiesto" [attr.aria-label]="textos().manifiesto.aria">
+  <p class="manifiesto__texto">
+    @for (palabra of palabrasManifiesto(); track $index) {
+      <span class="manifiesto__palabra" [class.manifiesto__palabra--clave]="palabra.clave">{{ palabra.texto }}</span>
+    }
+  </p>
+</section>
+
+
+<section class="proceso" aria-labelledby="titulo-proceso">
+  <header class="proceso__cabecera">
+    <p class="seccion__eyebrow">{{ textos().proceso.eyebrow }}</p>
+    <!-- SplitText trocea el nodo de texto: el @for recrea el h2 al cambiar idioma y la directiva re-divide -->
+    @for (idiomaActivo of [idioma()]; track idiomaActivo) {
+      <h2 id="titulo-proceso" class="seccion__titulo" appRevelarLineas>{{ textos().proceso.titulo }}</h2>
+    }
+  </header>
+
+  <ol class="proceso__lista">
+    @for (paso of pasos(); track paso.numero) {
+      <li class="proceso__paso">
+        <span class="proceso__numero" aria-hidden="true">{{ paso.numero }}</span>
+        <span class="proceso__paso-marcador" aria-hidden="true"></span>
+        <h3 class="proceso__paso-titulo">{{ paso.titulo }}</h3>
+        <p class="proceso__paso-texto">{{ paso.descripcion }}</p>
+      </li>
+    }
+  </ol>
+</section>
+
+
+<app-cinta-marquee [palabras]="textos().cintaAcciones"></app-cinta-marquee>
+
+
+<section class="pilares" [attr.aria-label]="textos().pilares.aria">
+  <article class="pilar">
+    <figure class="pilar__media">
+      <img
+        class="pilar__imagen"
+        src="/assets/images/home-entrenamiento.jpg"
+        [alt]="textos().pilares.entrenamiento.altImagen"
+        loading="lazy"
+        width="1400"
+        height="933">
+      <span aria-hidden="true" class="pilar__velo"></span>
+    </figure>
+    <section class="pilar__texto">
+      <p class="seccion__eyebrow">{{ textos().pilares.entrenamiento.eyebrow }}</p>
+      <h2 class="pilar__titulo">{{ textos().pilares.entrenamiento.tituloPre }}<em>{{ textos().pilares.entrenamiento.tituloAcento }}</em>{{ textos().pilares.entrenamiento.tituloPost }}</h2>
+      <p class="pilar__descripcion">
+        {{ textos().pilares.entrenamiento.descripcion }}
+      </p>
+      <ul class="pilar__datos">
+        @for (dato of textos().pilares.entrenamiento.datos; track dato) {
+          <li class="pilar__dato">{{ dato }}</li>
+        }
+      </ul>
+      <button type="button" class="pilar__enlace" (click)="verFuncionalidades()">
+        {{ textos().pilares.verComo }}<span class="pilar__enlace-flecha" aria-hidden="true">→</span>
+      </button>
+    </section>
+  </article>
+
+  <article class="pilar pilar--invertido">
+    <figure class="pilar__media">
+      <img
+        class="pilar__imagen"
+        src="/assets/images/home-nutricion.jpg"
+        [alt]="textos().pilares.nutricion.altImagen"
+        loading="lazy"
+        width="1400"
+        height="933">
+      <span aria-hidden="true" class="pilar__velo"></span>
+    </figure>
+    <section class="pilar__texto">
+      <p class="seccion__eyebrow">{{ textos().pilares.nutricion.eyebrow }}</p>
+      <h2 class="pilar__titulo">{{ textos().pilares.nutricion.tituloPre }}<em>{{ textos().pilares.nutricion.tituloAcento }}</em>{{ textos().pilares.nutricion.tituloPost }}</h2>
+      <p class="pilar__descripcion">
+        {{ textos().pilares.nutricion.descripcion }}
+      </p>
+      <ul class="pilar__datos">
+        @for (dato of textos().pilares.nutricion.datos; track dato) {
+          <li class="pilar__dato">{{ dato }}</li>
+        }
+      </ul>
+      <button type="button" class="pilar__enlace" (click)="verFuncionalidades()">
+        {{ textos().pilares.verComo }}<span class="pilar__enlace-flecha" aria-hidden="true">→</span>
+      </button>
+    </section>
+  </article>
+
+  <article class="pilar">
+    <figure class="pilar__media">
+      <img
+        class="pilar__imagen"
+        src="/assets/images/home-progreso.jpg"
+        [alt]="textos().pilares.progreso.altImagen"
+        loading="lazy"
+        width="1400"
+        height="933">
+      <span aria-hidden="true" class="pilar__velo"></span>
+    </figure>
+    <section class="pilar__texto">
+      <p class="seccion__eyebrow">{{ textos().pilares.progreso.eyebrow }}</p>
+      <h2 class="pilar__titulo">{{ textos().pilares.progreso.tituloPre }}<em>{{ textos().pilares.progreso.tituloAcento }}</em>{{ textos().pilares.progreso.tituloPost }}</h2>
+      <p class="pilar__descripcion">
+        {{ textos().pilares.progreso.descripcion }}
+      </p>
+      <ul class="pilar__datos">
+        @for (dato of textos().pilares.progreso.datos; track dato) {
+          <li class="pilar__dato">{{ dato }}</li>
+        }
+      </ul>
+      <button type="button" class="pilar__enlace" (click)="verFuncionalidades()">
+        {{ textos().pilares.verComo }}<span class="pilar__enlace-flecha" aria-hidden="true">→</span>
+      </button>
+    </section>
+  </article>
+</section>
+
+
+<section class="planes" id="seccion-planes" aria-labelledby="titulo-planes">
+  <span class="planes__halo" aria-hidden="true"></span>
+
+  <header class="planes__cabecera">
+    <p class="seccion__eyebrow">{{ textos().planes.eyebrow }}</p>
+    <!-- SplitText trocea el nodo de texto: el @for recrea el h2 al cambiar idioma y la directiva re-divide -->
+    @for (idiomaActivo of [idioma()]; track idiomaActivo) {
+      <h2 id="titulo-planes" class="seccion__titulo" appRevelarLineas>{{ textos().planes.titulo }}</h2>
+    }
+    <p class="seccion__subtitulo">
+      {{ textos().planes.subtitulo }}
+    </p>
+
+    <span class="planes__selector" role="group" [attr.aria-label]="textos().planes.ariaCiclo">
+      <button
+        type="button"
+        class="planes__opcion"
+        [class.planes__opcion--activa]="cicloSeleccionado() === 'mensual'"
+        (click)="seleccionarCiclo('mensual')">{{ textos().planes.opcionMensual }}</button>
+      <button
+        type="button"
+        class="planes__opcion"
+        [class.planes__opcion--activa]="cicloSeleccionado() === 'anual'"
+        (click)="seleccionarCiclo('anual')">{{ textos().planes.opcionAnual }}<span class="planes__opcion-ahorro">{{ textos().planes.ahorro }}</span></button>
+    </span>
+
+    <p class="planes__garantia">{{ textos().planes.garantia }}</p>
+  </header>
+
+  <section class="planes__tarjetas">
+    <article class="planes__tarjeta" [class.planes__tarjeta--realzada]="cicloSeleccionado() === 'mensual'">
+      <app-card
+        [destacada]="cicloSeleccionado() === 'mensual'"
+        [ventajas]="textos().planes.mensual.ventajas"
+        [descripcion]="textos().planes.mensual.descripcion"
+        [precioCantidad]="textos().planes.mensual.precio"
+        [precioPeriodo]="textos().planes.mensual.periodo"
+        [notaPrecio]="textos().planes.mensual.nota"
+        [texto_boton]="textos().planes.mensual.boton"
+        [titulo]="textos().planes.mensual.titulo"></app-card>
+    </article>
+
+    <article class="planes__tarjeta" [class.planes__tarjeta--realzada]="cicloSeleccionado() === 'anual'">
+      <app-card
+        [deshabilitada]="false"
+        [destacada]="cicloSeleccionado() === 'anual'"
+        [etiqueta]="textos().planes.etiquetaAnual"
+        [ventajas]="textos().planes.anual.ventajas"
+        [descripcion]="textos().planes.anual.descripcion"
+        [precioCantidad]="textos().planes.anual.precio"
+        [precioPeriodo]="textos().planes.anual.periodo"
+        [notaPrecio]="textos().planes.anual.nota"
+        [texto_boton]="textos().planes.anual.boton"
+        [titulo]="textos().planes.anual.titulo"></app-card>
+    </article>
+  </section>
+</section>
+
+
+<section class="funcionalidades" aria-labelledby="titulo-funcionalidades">
+  <header class="funcionalidades__cabecera">
+    <p class="seccion__eyebrow">{{ textos().funcionalidades.eyebrow }}</p>
+    <!-- SplitText trocea el nodo de texto: el @for recrea el h2 al cambiar idioma y la directiva re-divide -->
+    @for (idiomaActivo of [idioma()]; track idiomaActivo) {
+      <h2 id="titulo-funcionalidades" class="seccion__titulo" appRevelarLineas>{{ textos().funcionalidades.titulo }}</h2>
+    }
+  </header>
+
+  <section class="funcionalidades__escena">
+    <ol class="funcionalidades__lista" [attr.aria-label]="textos().funcionalidades.ariaLista">
+      @for (funcionalidad of funcionalidades(); track funcionalidad.titulo; let indice = $index) {
+        <li
+          class="funcionalidades__paso"
+          [class.funcionalidades__paso--activo]="indice === indiceFuncionalidadActiva()">
+          <button
+            type="button"
+            class="funcionalidades__paso-boton"
+            [attr.aria-current]="indice === indiceFuncionalidadActiva() ? 'true' : null"
+            (click)="seleccionarFuncionalidad(indice)">
+            <span aria-hidden="true" class="funcionalidades__paso-numero">{{ indice + 1 }}</span>
+            <span class="funcionalidades__paso-titulo">{{ funcionalidad.titulo }}</span>
+          </button>
+          <p class="funcionalidades__paso-texto">{{ funcionalidad.descripcion }}</p>
+        </li>
+      }
+    </ol>
+
+    <aside class="funcionalidades__panel" hazDeLuz>
+      <span aria-hidden="true" class="funcionalidades__panel-reticula"></span>
+      <span aria-hidden="true" class="funcionalidades__panel-resplandor"></span>
+
+      @for (funcionalidad of funcionalidades(); track funcionalidad.titulo; let indice = $index) {
+        <figure
+          class="funcionalidades__visual"
+          [class.funcionalidades__visual--activo]="indice === indiceFuncionalidadActiva()"
+          [class.funcionalidades__visual--lienzo]="indice === 1 || indice === 2 || indice === 3 || indice === 4"
+          [class.funcionalidades__visual--datos]="indice === 0 || indice === 5"
+          [class.funcionalidades__visual--oscuro]="indice === 2 || indice === 3"
+          aria-hidden="true">
+          <span class="funcionalidades__visual-cabecera">
+            @if (indice !== 0) {
+              <span class="funcionalidades__visual-eyebrow">{{ textos().funcionalidades.funcion }} 0{{ indice + 1 }} · {{ funcionalidad.categoria }}</span>
+            }
+            <span class="funcionalidades__visual-titulo">{{ funcionalidad.titulo }}</span>
+            @if (indice === 0) {
+              <span class="funcionalidades__visual-contexto">{{ textos().grafica.periodo }} · {{ textos().grafica.sincronizado }}</span>
+            }
+          </span>
+
+          @switch (indice) {
+            @case (0) {
+              <span class="funcionalidades__grafica">
+                <span class="funcionalidades__grafica-metricas">
+                  @for (metrica of metricas(); track metrica.clave; let indiceMet = $index) {
+                    <button
+                      type="button"
+                      tabindex="-1"
+                      class="funcionalidades__grafica-metrica"
+                      [class.funcionalidades__grafica-metrica--activa]="indiceMet === indiceMetrica()"
+                      (click)="seleccionarMetrica(indiceMet)">
+                      <span class="funcionalidades__grafica-metrica-etiqueta">{{ metrica.etiqueta }}</span>
+                      <span class="funcionalidades__grafica-metrica-valor">
+                        {{ metrica.actual }}
+                        <span class="funcionalidades__grafica-metrica-unidad">{{ metrica.unidad }}</span>
+                      </span>
+                      <span class="funcionalidades__grafica-metrica-delta">{{ metrica.delta }} · {{ metrica.periodo }}</span>
+                    </button>
+                  }
+                </span>
+
+                <span class="funcionalidades__grafica-lienzo" (mouseleave)="restaurarPunto()">
+                  <svg class="funcionalidades__grafica-svg" viewBox="0 0 400 110">
+                    <defs>
+                      <linearGradient id="gradienteArea" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="var(--naranja-normal)" stop-opacity="0.16"/>
+                        <stop offset="100%" stop-color="var(--naranja-normal)" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+
+                    <line x1="0" [attr.y1]="objetivoY()" x2="400" [attr.y2]="objetivoY()" pathLength="99" class="funcionalidades__grafica-objetivo"/>
+                    <text
+                      x="400"
+                      [attr.y]="objetivoEtiquetaY()"
+                      text-anchor="end"
+                      class="funcionalidades__grafica-rotulo">{{ textos().grafica.objetivoEje }} {{ metricaActiva().objetivoEtiqueta }}</text>
+
+                    @if (indicePuntoActivo() !== null) {
+                      <line
+                        class="funcionalidades__grafica-cursor"
+                        [attr.x1]="puntoMostrado().x"
+                        [attr.y1]="puntoMostrado().y"
+                        [attr.x2]="puntoMostrado().x"
+                        y2="110"/>
+                    }
+
+                    <path class="funcionalidades__grafica-area" [attr.d]="rutaArea()" fill="url(#gradienteArea)"/>
+                    <path
+                      class="funcionalidades__grafica-linea"
+                      [class.funcionalidades__grafica-linea--reinicio]="reinicioTrazo()"
+                      [attr.pathLength]="1"
+                      [attr.d]="rutaLinea()"/>
+
+                    <circle class="funcionalidades__grafica-actual-halo" [attr.cx]="puntoActual().x" [attr.cy]="puntoActual().y" r="5"/>
+                    <circle class="funcionalidades__grafica-actual" [attr.cx]="puntoActual().x" [attr.cy]="puntoActual().y" r="3.4"/>
+
+                    @if (indicePuntoActivo() !== null) {
+                      <circle
+                        class="funcionalidades__grafica-halo"
+                        [attr.cx]="puntoMostrado().x"
+                        [attr.cy]="puntoMostrado().y"
+                        r="8"/>
+                    }
+
+                    @for (punto of puntosTrazados(); track punto.mes; let indicePunto = $index) {
+                      <circle
+                        class="funcionalidades__grafica-punto"
+                        [class.funcionalidades__grafica-punto--activo]="indicePunto === indicePuntoActivo()"
+                        [attr.cx]="punto.x"
+                        [attr.cy]="punto.y"
+                        [attr.r]="indicePunto === indicePuntoActivo() ? 4.5 : 2.5"/>
+                    }
+
+                    @for (punto of puntosTrazados(); track punto.mes; let indicePunto = $index) {
+                      <circle
+                        class="funcionalidades__grafica-zona"
+                        [attr.cx]="punto.x"
+                        [attr.cy]="punto.y"
+                        r="16"
+                        (mouseenter)="seleccionarPunto(indicePunto)"/>
+                    }
+                  </svg>
+
+                  <span
+                    class="funcionalidades__grafica-tooltip"
+                    [class.funcionalidades__grafica-tooltip--visible]="indicePuntoActivo() !== null"
+                    [class.funcionalidades__grafica-tooltip--inicio]="(indicePuntoActivo() ?? 5) <= 0"
+                    [class.funcionalidades__grafica-tooltip--fin]="(indicePuntoActivo() ?? 5) >= 5"
+                    [style.left.%]="puntoMostrado().x / 4"
+                    [style.top.%]="puntoMostrado().y / 1.1">
+                    <span class="funcionalidades__grafica-tooltip-mes">{{ puntoMostrado().etiqueta }}</span>
+                    <span class="funcionalidades__grafica-tooltip-valor">{{ comaDecimal(puntoMostrado().valor) }} {{ metricaActiva().unidad }}</span>
+                    <span class="funcionalidades__grafica-tooltip-extra">{{ puntoMostrado().cambio }}</span>
+                    <span class="funcionalidades__grafica-tooltip-fila">
+                      <span>{{ textos().grafica.media7 }}</span>
+                      <span class="funcionalidades__grafica-tooltip-cifra">{{ comaDecimal(puntoMostrado().media) }} {{ metricaActiva().unidad }}</span>
+                    </span>
+                    <span class="funcionalidades__grafica-tooltip-fila">
+                      <span>{{ textos().grafica.haciaTooltip }} {{ metricaActiva().objetivoEtiqueta }}</span>
+                      <span class="funcionalidades__grafica-tooltip-cifra">{{ puntoMostrado().pct }} %</span>
+                    </span>
+                    <span class="funcionalidades__grafica-tooltip-barra">
+                      <span
+                        class="funcionalidades__grafica-tooltip-barra-relleno"
+                        [style.width.%]="puntoMostrado().pct"></span>
+                    </span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__grafica-meses">
+                  @for (punto of puntosTrazados(); track punto.mes; let esPrimero = $first; let esUltimo = $last) {
+                    <span
+                      class="funcionalidades__grafica-mes"
+                      [class.funcionalidades__grafica-mes--primero]="esPrimero"
+                      [class.funcionalidades__grafica-mes--ultimo]="esUltimo"
+                      [style.left.%]="punto.x / 4">{{ punto.mes }}</span>
+                  }
+                </span>
+
+                <span class="funcionalidades__grafica-regla">
+                  <span class="funcionalidades__grafica-regla-extremo">
+                    <span class="funcionalidades__grafica-regla-cifra">{{ valorInicial() }} {{ metricaActiva().unidad }}</span>
+                    <span class="funcionalidades__grafica-regla-rotulo">{{ textos().grafica.inicio }}</span>
+                  </span>
+                  <span class="funcionalidades__grafica-regla-pista">
+                    <span class="funcionalidades__grafica-regla-avance" [style.width.%]="metricaActiva().pctObjetivo"></span>
+                    <span class="funcionalidades__grafica-regla-marcador" [style.left.%]="metricaActiva().pctObjetivo">{{ metricaActiva().pctObjetivo }}%</span>
+                    <span class="funcionalidades__grafica-regla-nota">{{ metricaActiva().restante }}</span>
+                  </span>
+                  <span class="funcionalidades__grafica-regla-extremo funcionalidades__grafica-regla-extremo--fin">
+                    <span class="funcionalidades__grafica-regla-cifra">{{ metricaActiva().objetivoEtiqueta }}</span>
+                    <span class="funcionalidades__grafica-regla-rotulo">{{ textos().grafica.leyendaObjetivo }}</span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__grafica-datos">
+                  <span class="funcionalidades__grafica-dato">
+                    <span class="funcionalidades__grafica-dato-etiqueta">{{ textos().grafica.total }} · {{ metricaActiva().periodo }}</span>
+                    <span class="funcionalidades__grafica-dato-valor">{{ estadisticasMetrica().total }}</span>
+                  </span>
+                  <span class="funcionalidades__grafica-dato">
+                    <span class="funcionalidades__grafica-dato-etiqueta">{{ textos().grafica.ritmo }}</span>
+                    <span class="funcionalidades__grafica-dato-valor">{{ estadisticasMetrica().ritmo }}</span>
+                  </span>
+                  <span class="funcionalidades__grafica-dato">
+                    <span class="funcionalidades__grafica-dato-etiqueta">{{ textos().grafica.mejorMes }}</span>
+                    <span class="funcionalidades__grafica-dato-valor">{{ estadisticasMetrica().mejor }}</span>
+                  </span>
+                  <span class="funcionalidades__grafica-dato">
+                    <span class="funcionalidades__grafica-dato-etiqueta">{{ textos().grafica.esteMes }}</span>
+                    <span class="funcionalidades__grafica-dato-valor">{{ puntoActual().cambio }}</span>
+                  </span>
+                </span>
+              </span>
+            }
+            @case (1) {
+              <span class="funcionalidades__comparador">
+
+                <span class="funcionalidades__comparador-timeline">
+                  <span class="funcionalidades__comparador-delta">
+                    <span class="funcionalidades__comparador-delta-eyebrow">{{ textos().comparador.eyebrow }}</span>
+                    <span class="funcionalidades__comparador-delta-valor">{{ textos().comparador.delta }}</span>
+                    <span class="funcionalidades__comparador-delta-sub">{{ textos().comparador.sub }}</span>
+                  </span>
+
+                  <span class="funcionalidades__comparador-hitos">
+                    @for (foto of fotosAntes(); track foto.fecha; let indiceFoto = $index) {
+                      <button
+                        type="button"
+                        tabindex="-1"
+                        class="funcionalidades__comparador-hito"
+                        [class.funcionalidades__comparador-hito--activo]="indiceFoto === indiceFotoAntes()"
+                        (click)="seleccionarFotoAntes(indiceFoto)">
+                        <span class="funcionalidades__comparador-hito-imagen">
+                          <img class="funcionalidades__comparador-hito-foto" [src]="foto.imagen" alt="" loading="lazy">
+                        </span>
+                        <span class="funcionalidades__comparador-hito-info">
+                          <span class="funcionalidades__comparador-hito-semana">{{ foto.fecha }}</span>
+                          <span class="funcionalidades__comparador-hito-peso">{{ foto.peso }}</span>
+                        </span>
+                      </button>
+                    }
+                    <span class="funcionalidades__comparador-hito funcionalidades__comparador-hito--hoy">
+                      <span class="funcionalidades__comparador-hito-imagen">
+                        <img class="funcionalidades__comparador-hito-foto" src="/assets/images/transformacion-hoy.png" alt="" loading="lazy">
+                      </span>
+                      <span class="funcionalidades__comparador-hito-info">
+                        <span class="funcionalidades__comparador-hito-semana">{{ textos().comparador.hoySemana }}</span>
+                        <span class="funcionalidades__comparador-hito-peso">{{ textos().comparador.hoyPeso }}</span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__comparador-marco" (pointermove)="moverComparador($event)">
+                  <span class="funcionalidades__comparador-capa">
+                    <img
+                      class="funcionalidades__comparador-imagen funcionalidades__comparador-imagen--antes"
+                      [src]="fotoAntes().imagen"
+                      alt=""
+                      loading="lazy">
+                  </span>
+                  <span
+                    class="funcionalidades__comparador-capa funcionalidades__comparador-capa--despues"
+                    [style.clip-path]="'inset(0 0 0 ' + posicionComparador() + '%)'">
+                    <img
+                      class="funcionalidades__comparador-imagen funcionalidades__comparador-imagen--despues"
+                      src="/assets/images/transformacion-hoy.png"
+                      alt=""
+                      loading="lazy">
+                  </span>
+
+                  <span class="funcionalidades__comparador-division" [style.left.%]="posicionComparador()">
+                    <span class="funcionalidades__comparador-tirador">‹ ›</span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__comparador-pista">{{ textos().comparador.pista }}</span>
+              </span>
+            }
+            @case (2) {
+              <span
+                class="funcionalidades__ayuno"
+                [class.funcionalidades__ayuno--inspeccion]="zonaInspeccionada() !== null">
+                <canvas
+                  heliceAdn
+                  class="funcionalidades__ayuno-lienzo"
+                  [tiempoAyuno]="horaActualReloj()"
+                  [frenteAyuno]="fraccionAyuno()"
+                  [zonaAyuno]="zonaInspeccionada()"
+                  aria-hidden="true"></canvas>
+                <span class="funcionalidades__ayuno-fantasma" aria-hidden="true">{{ horaActualReloj() }}</span>
+
+                <span class="funcionalidades__ayuno-estado">
+                  <span class="funcionalidades__ayuno-estado-fase">{{ estadoAyuno().fase }}</span>
+                  <span class="funcionalidades__ayuno-estado-detalle">{{ estadoAyuno().detalle }}</span>
+                </span>
+
+                <span class="funcionalidades__ayuno-rotulo">{{ rotuloAyuno() }}</span>
+
+                <span class="funcionalidades__plan">
+                  <span class="funcionalidades__plan-titulo">{{ textos().ayuno.planTitulo }}</span>
+                  @for (fila of filasPlan(); track fila.nombre) {
+                    <span
+                      class="funcionalidades__plan-fila"
+                      [class.funcionalidades__plan-fila--proxima]="fila.esProxima"
+                      [class.funcionalidades__plan-fila--ultima]="!fila.esComida">
+                      <span class="funcionalidades__plan-hora">{{ fila.etiqueta }}</span>
+                      <span class="funcionalidades__plan-comida">{{ fila.nombre }}</span>
+                      <span class="funcionalidades__plan-detalle">{{ fila.detalle }}</span>
+                    </span>
+                  }
+                </span>
+
+                <span class="funcionalidades__fase-nota funcionalidades__fase-nota--una funcionalidades__fase-nota--cian">
+                  <span class="funcionalidades__fase-nota-titulo">{{ textos().ayuno.notaGlucogenoTitulo }}</span>
+                  <span class="funcionalidades__fase-nota-sub">{{ subGlucogeno() }}</span>
+                  <span class="funcionalidades__fase-nota-dato">{{ textos().ayuno.notaGlucogenoDato }}</span>
+                </span>
+
+                <span class="funcionalidades__fase-nota funcionalidades__fase-nota--tres funcionalidades__fase-nota--activa">
+                  <span class="funcionalidades__fase-nota-titulo">{{ textos().ayuno.notaCetosisTitulo }}</span>
+                  <span class="funcionalidades__fase-nota-sub">{{ subCetosis() }}</span>
+                  <span class="funcionalidades__fase-nota-dato">{{ textos().ayuno.notaCetosisDato }}</span>
+                </span>
+
+                <span class="funcionalidades__fase-nota funcionalidades__fase-nota--grafica">
+                  <span class="funcionalidades__fase-nota-titulo">{{ textos().ayuno.notaHormonaTitulo }}</span>
+                  <span class="funcionalidades__fase-nota-sub">{{ textos().ayuno.notaHormonaSub }}</span>
+                  <svg class="funcionalidades__fase-nota-curva" viewBox="0 0 90 26" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline points="0,23 12,21 24,22 36,17 48,18 60,12 72,13 84,4 90,3" />
+                  </svg>
+                </span>
+
+                <span class="funcionalidades__ayuno-vertical">{{ textos().ayuno.vertical }}</span>
+
+                <span class="funcionalidades__tarjeta-detox">
+                  <span class="funcionalidades__tarjeta-detox-titulo">{{ textos().ayuno.detoxTitulo }}</span>
+                  <span class="funcionalidades__tarjeta-detox-sub">{{ textos().ayuno.detoxSub }} <span class="funcionalidades__tarjeta-detox-cuenta">{{ cuentaAtrasAutofagia() }}</span></span>
+                  <svg class="funcionalidades__tarjeta-detox-grafico" viewBox="0 0 120 30" aria-hidden="true">
+                    <circle class="funcionalidades__tarjeta-detox-nucleo" cx="98" cy="15" r="8" />
+                    <circle class="funcionalidades__tarjeta-detox-particula" cx="14" cy="9" r="2.6" />
+                    <circle class="funcionalidades__tarjeta-detox-particula funcionalidades__tarjeta-detox-particula--dos" cx="30" cy="21" r="2" />
+                    <circle class="funcionalidades__tarjeta-detox-particula funcionalidades__tarjeta-detox-particula--tres" cx="48" cy="12" r="3" />
+                    <circle class="funcionalidades__tarjeta-detox-particula funcionalidades__tarjeta-detox-particula--cuatro" cx="62" cy="22" r="1.8" />
+                    <circle class="funcionalidades__tarjeta-detox-particula funcionalidades__tarjeta-detox-particula--cinco" cx="76" cy="8" r="2.4" />
+                  </svg>
+                  <span class="funcionalidades__tarjeta-detox-celdas">
+                    <span class="funcionalidades__tarjeta-detox-celda">
+                      <span class="funcionalidades__tarjeta-detox-valor">{{ textos().ayuno.detoxMitocondriasValor }}</span>
+                      <span class="funcionalidades__tarjeta-detox-etiqueta">{{ textos().ayuno.detoxMitocondrias }}</span>
+                    </span>
+                    <span class="funcionalidades__tarjeta-detox-celda">
+                      <span class="funcionalidades__tarjeta-detox-valor">{{ textos().ayuno.detoxInflamacionValor }}</span>
+                      <span class="funcionalidades__tarjeta-detox-etiqueta">{{ textos().ayuno.detoxInflamacion }}</span>
+                    </span>
+                  </span>
+                </span>
+
+                <span class="funcionalidades__regla">
+                  <span class="funcionalidades__regla-zona funcionalidades__regla-zona--cian"></span>
+                  <span class="funcionalidades__regla-zona funcionalidades__regla-zona--ambar"></span>
+                  <span class="funcionalidades__regla-zona funcionalidades__regla-zona--violeta"></span>
+                  @for (tick of ticksRegla; track tick.hora) {
+                    <span
+                      class="funcionalidades__regla-tick"
+                      [class.funcionalidades__regla-tick--mayor]="tick.mayor"
+                      [style.left.%]="tick.x"></span>
+                  }
+                  <span class="funcionalidades__regla-etiqueta funcionalidades__regla-etiqueta--glucogeno">{{ textos().ayuno.reglaGlucogeno }}</span>
+                  <span class="funcionalidades__regla-etiqueta funcionalidades__regla-etiqueta--quema">{{ textos().ayuno.reglaQuema }}</span>
+                  <span class="funcionalidades__regla-etiqueta funcionalidades__regla-etiqueta--reparacion">{{ textos().ayuno.reglaReparacion }}</span>
+
+                  @if (estaAyunando()) {
+                    <span class="funcionalidades__regla-ahora" [style.left.%]="fraccionAyuno() * 100">
+                      <span class="funcionalidades__regla-ahora-linea"></span>
+                      <span class="funcionalidades__regla-ahora-texto">{{ textos().ayuno.llevas }} {{ tiempoAyunoCorto() }}</span>
+                    </span>
+                  }
+
+                  <span class="funcionalidades__regla-marca funcionalidades__regla-marca--comida">
+                    <span class="funcionalidades__regla-marca-titulo">{{ textos().ayuno.comidaEn }}</span>
+                    <span class="funcionalidades__regla-marca-tiempo">{{ cuentaAtrasComida() }}</span>
+                  </span>
+                </span>
+
+                @for (zona of zonasAyuno(); track zona.clave) {
+                  <span
+                    class="funcionalidades__zona"
+                    [style.left.%]="4 + zona.min * 69"
+                    [style.width.%]="(zona.max - zona.min) * 69"
+                    (mouseenter)="inspeccionarZona(zona)"
+                    (mouseleave)="despejarZona()"></span>
+                }
+
+                @if (zonaInspeccionada(); as zona) {
+                  <span
+                    class="funcionalidades__inspector"
+                    [class.funcionalidades__inspector--libre]="!movimientoReducido()"
+                    [style.left.%]="movimientoReducido() ? 6 + zona.min * 52 : null"
+                    [style.border-left-color]="zona.color">
+                    <span class="funcionalidades__inspector-titulo" [style.color]="zona.color">{{ zona.titulo }}</span>
+                    <span class="funcionalidades__inspector-rango">{{ zona.rango }}</span>
+                    <span class="funcionalidades__inspector-descripcion">{{ zona.descripcion }}</span>
+                    <span class="funcionalidades__inspector-datos">
+                      @for (dato of zona.datos; track dato.etiqueta) {
+                        <span class="funcionalidades__inspector-dato">
+                          <span class="funcionalidades__inspector-valor">{{ dato.valor }}</span>
+                          <span class="funcionalidades__inspector-etiqueta">{{ dato.etiqueta }}</span>
+                        </span>
+                      }
+                    </span>
+                  </span>
+                }
+              </span>
+
+              <span class="funcionalidades__visual-pie">
+                <span class="funcionalidades__chip funcionalidades__chip--acento">16:8</span>
+                <span class="funcionalidades__visual-dato">{{ textos().ayuno.pieProxima }} {{ proximaComida().etiqueta }}</span>
+              </span>
+            }
+            @case (3) {
+              <span class="funcionalidades__agua">
+                <span class="funcionalidades__agua-consola">
+
+                  <span class="funcionalidades__agua-datos">
+                    <span class="funcionalidades__agua-eyebrow">{{ textos().agua.eyebrow }}</span>
+                    <span class="funcionalidades__agua-litros">{{ litrosAgua() }}<span class="funcionalidades__agua-litros-unidad">L</span></span>
+                    <span class="funcionalidades__agua-objetivo">{{ textos().agua.objetivo }}</span>
+                    <span class="funcionalidades__agua-barra">
+                      <span class="funcionalidades__agua-barra-relleno" [style.width.%]="porcentajeAgua()"></span>
+                    </span>
+                    <span class="funcionalidades__agua-progreso">{{ porcentajeAgua() }}% {{ textos().agua.progreso }}</span>
+
+                    <span class="funcionalidades__agua-separador"></span>
+
+                    <span class="funcionalidades__agua-stats">
+                      <span class="funcionalidades__agua-stat funcionalidades__agua-stat--racha">
+                        <span class="funcionalidades__agua-stat-texto">
+                          <span class="funcionalidades__agua-stat-valor">9</span>
+                          <span class="funcionalidades__agua-stat-label">{{ textos().agua.rachaLabel }}</span>
+                        </span>
+                      </span>
+                      <span class="funcionalidades__agua-stat">
+                        <span class="funcionalidades__agua-stat-texto">
+                          <span class="funcionalidades__agua-stat-valor">{{ textos().agua.mediaValor }}</span>
+                          <span class="funcionalidades__agua-stat-label">{{ textos().agua.mediaLabel }}</span>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span class="funcionalidades__agua-semana-bloque">
+                      <span class="funcionalidades__agua-semana-titulo">{{ textos().agua.semanaTitulo }}</span>
+                      <span class="funcionalidades__agua-semana" aria-hidden="true">
+                        @for (dia of semanaAgua(); track dia.dia) {
+                          <span class="funcionalidades__agua-dia" [class.funcionalidades__agua-dia--hoy]="dia.hoy">
+                            <span class="funcionalidades__agua-dia-barra">
+                              <span class="funcionalidades__agua-dia-relleno" [style.height.%]="dia.altura"></span>
+                            </span>
+                            <span class="funcionalidades__agua-dia-label">{{ dia.dia }}</span>
+                          </span>
+                        }
+                      </span>
+                    </span>
+
+                    <span class="funcionalidades__agua-registro">
+                      <span class="funcionalidades__agua-pista">{{ textos().agua.pista }}</span>
+                      <span class="funcionalidades__agua-vasos">
+                        @for (vaso of vasosAgua; track vaso) {
+                          <button
+                            type="button"
+                            tabindex="-1"
+                            class="funcionalidades__agua-vaso"
+                            [class.funcionalidades__agua-vaso--lleno]="vaso < vasosBebidos()"
+                            [class.funcionalidades__agua-vaso--actual]="vaso === vasosBebidos() - 1"
+                            [attr.aria-label]="textos().agua.ariaVaso + ' ' + (vaso + 1)"
+                            (click)="seleccionarVasos(vaso)">
+                            <span class="funcionalidades__agua-vaso-nivel"></span>
+                          </button>
+                        }
+                      </span>
+                    </span>
+                  </span>
+
+                  <figure class="funcionalidades__vaso">
+                    <span class="funcionalidades__vaso-agua" [style.height.%]="porcentajeAgua()">
+                      <svg class="funcionalidades__vaso-cresta" viewBox="0 0 240 16" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M0,8 C15,2 30,2 60,8 C90,14 105,14 120,8 C135,2 150,2 180,8 C210,14 225,14 240,8 L240,16 L0,16 Z"></path>
+                      </svg>
+                      <svg class="funcionalidades__vaso-cresta funcionalidades__vaso-cresta--b" viewBox="0 0 240 16" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M0,8 C15,2 30,2 60,8 C90,14 105,14 120,8 C135,2 150,2 180,8 C210,14 225,14 240,8 L240,16 L0,16 Z"></path>
+                      </svg>
+                    </span>
+                    <span class="funcionalidades__vaso-brillo" aria-hidden="true"></span>
+                    <span class="funcionalidades__vaso-marcas" aria-hidden="true"></span>
+                    <span class="funcionalidades__vaso-burbujas" aria-hidden="true">
+                      <span class="funcionalidades__vaso-burbuja"></span>
+                      <span class="funcionalidades__vaso-burbuja"></span>
+                      <span class="funcionalidades__vaso-burbuja"></span>
+                    </span>
+                    <figcaption class="funcionalidades__vaso-dato">
+                      <span class="funcionalidades__vaso-litros">{{ porcentajeAgua() }}<span class="funcionalidades__vaso-unidad">%</span></span>
+                      <span class="funcionalidades__vaso-meta">{{ textos().agua.vasoMeta }}</span>
+                    </figcaption>
+                  </figure>
+
+                </span>
+              </span>
+            }
+            @case (4) {
+              <span class="funcionalidades__wid">
+                <!-- Ambiente: halo cálido tras el móvil + malla de puntos -->
+                <span class="funcionalidades__wid-malla" aria-hidden="true"></span>
+                <span class="funcionalidades__wid-aura" aria-hidden="true"></span>
+
+                <!-- Columna izquierda: copy de la función -->
+                <span class="funcionalidades__wid-info">
+                  <span class="funcionalidades__wid-eyebrow">{{ textos().funcionalidades.funcion }} 05</span>
+                  <span class="funcionalidades__wid-titulo">Widgets</span>
+                  <span class="funcionalidades__wid-sub">{{ textos().widgets.subPre }}<strong>{{ textos().widgets.subAcento }}</strong>.</span>
+
+                  <span class="funcionalidades__wid-lista">
+                    <span class="funcionalidades__wid-item">
+                      <span class="funcionalidades__wid-item-icono">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5" /><line x1="10.5" y1="5.5" x2="13.5" y2="5.5" /></svg>
+                      </span>
+                      <span class="funcionalidades__wid-item-texto">{{ textos().widgets.items[0] }}</span>
+                    </span>
+                    <span class="funcionalidades__wid-item">
+                      <span class="funcionalidades__wid-item-icono">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="3" /><path d="M9 6.5 9.7 3h4.6l.7 3.5" /><path d="M9 17.5 9.7 21h4.6l.7-3.5" /></svg>
+                      </span>
+                      <span class="funcionalidades__wid-item-texto">{{ textos().widgets.items[1] }}</span>
+                    </span>
+                    <span class="funcionalidades__wid-item">
+                      <span class="funcionalidades__wid-item-icono funcionalidades__wid-item-icono--vivo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14-4.5L4 8" /><polyline points="4 4 4 8 8 8" /><path d="M4 13a8 8 0 0 0 14 4.5L20 16" /><polyline points="20 20 20 16 16 16" /></svg>
+                      </span>
+                      <span class="funcionalidades__wid-item-texto">{{ textos().widgets.items[2] }}</span>
+                    </span>
+                  </span>
+
+                  <span class="funcionalidades__wid-chip">
+                    <span class="funcionalidades__wid-chip-punto" aria-hidden="true"></span>
+                    iOS · Android · watchOS
+                  </span>
+
+                  <!-- Tarjeta flotante: Actividad -->
+                  <span class="funcionalidades__wid-act">
+                    <span class="funcionalidades__wid-act-cab">
+                      <span class="funcionalidades__wid-act-etq">
+                        <svg class="funcionalidades__wid-glifo" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="8" cy="8" r="5.5" opacity="0.25" /><path d="M8 2.5a5.5 5.5 0 0 1 4.8 8.2" stroke-linecap="round" /></svg>
+                        {{ textos().widgets.actividad }}
+                      </span>
+                      <span class="funcionalidades__wid-act-delta">+12%</span>
+                    </span>
+                    <span class="funcionalidades__wid-act-cuerpo">
+                      <svg class="funcionalidades__wid-anillo funcionalidades__wid-anillo--act" viewBox="0 0 48 48" aria-hidden="true">
+                        <circle class="funcionalidades__wid-anillo-pista" cx="24" cy="24" r="19" />
+                        <circle class="funcionalidades__wid-anillo-trazo funcionalidades__wid-anillo-trazo--act" cx="24" cy="24" r="19" pathLength="100" />
+                      </svg>
+                      <span class="funcionalidades__wid-act-cifra">1849<span class="funcionalidades__wid-act-u">kcal</span></span>
+                    </span>
+                    <span class="funcionalidades__wid-act-pie">
+                      <span class="funcionalidades__wid-act-dato">{{ textos().widgets.actActivo }}</span>
+                      <span class="funcionalidades__wid-act-dato">{{ textos().widgets.actEjercicios }}</span>
+                    </span>
+                  </span>
+                </span>
+
+                <!-- Móvil: pantalla de inicio con widgets -->
+                <span class="funcionalidades__wid-movil">
+                  <span class="funcionalidades__wid-movil-isla" aria-hidden="true"></span>
+                  <span class="funcionalidades__wid-pantalla">
+                    <span class="funcionalidades__wid-barra-estado">
+                      <span class="funcionalidades__wid-barra-hora">{{ widgetHora() }}</span>
+                      <span class="funcionalidades__wid-barra-iconos" aria-hidden="true">
+                        <svg viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="0.6" /><rect x="5" y="5.5" width="3" height="6.5" rx="0.6" /><rect x="10" y="3" width="3" height="9" rx="0.6" /><rect x="15" y="0.5" width="3" height="11.5" rx="0.6" opacity="0.4" /></svg>
+                        <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 4.4a9 9 0 0 1 12 0" /><path d="M4.4 6.9a5.6 5.6 0 0 1 7.2 0" /><path d="M6.7 9.3a2.3 2.3 0 0 1 2.6 0" /></svg>
+                        <svg viewBox="0 0 26 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1.6" width="21" height="8.8" rx="2.4" /><rect x="3" y="3.6" width="14" height="4.8" rx="1" fill="currentColor" stroke="none" /><rect x="23.4" y="4" width="1.8" height="4" rx="0.9" fill="currentColor" stroke="none" /></svg>
+                      </span>
+                    </span>
+
+                    <span class="funcionalidades__wid-saludo">
+                      <span class="funcionalidades__wid-saludo-fecha">{{ widgetFecha() }}</span>
+                      <span class="funcionalidades__wid-saludo-nombre">{{ textos().widgets.saludo }}</span>
+                    </span>
+
+                    <span class="funcionalidades__wid-rejilla">
+                      <span class="funcionalidades__wid-widget">
+                        <span class="funcionalidades__wid-widget-etq">
+                          <svg class="funcionalidades__wid-glifo" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="8" cy="8" r="5.5" opacity="0.25" /><path d="M8 2.5a5.5 5.5 0 0 1 4.8 8.2" stroke-linecap="round" /></svg>
+                          {{ textos().widgets.actividad }}
+                        </span>
+                        <span class="funcionalidades__wid-widget-cuerpo">
+                          <svg class="funcionalidades__wid-anillo funcionalidades__wid-anillo--mov" viewBox="0 0 40 40" aria-hidden="true">
+                            <circle class="funcionalidades__wid-anillo-pista" cx="20" cy="20" r="15" />
+                            <circle class="funcionalidades__wid-anillo-trazo funcionalidades__wid-anillo-trazo--mov" cx="20" cy="20" r="15" pathLength="100" />
+                          </svg>
+                          <span class="funcionalidades__wid-widget-cifra">1849<span class="funcionalidades__wid-widget-u">kcal</span></span>
+                        </span>
+                      </span>
+
+                      <span class="funcionalidades__wid-widget">
+                        <span class="funcionalidades__wid-widget-etq">
+                          <svg class="funcionalidades__wid-glifo" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="2" y="9" width="2.4" height="5" rx="0.6" /><rect x="6.8" y="6" width="2.4" height="8" rx="0.6" /><rect x="11.6" y="3" width="2.4" height="11" rx="0.6" /></svg>
+                          {{ textos().widgets.pasos }}
+                        </span>
+                        <span class="funcionalidades__wid-widget-cifra funcionalidades__wid-widget-cifra--grande">8415</span>
+                        <span class="funcionalidades__wid-barras funcionalidades__wid-barras--mini" aria-hidden="true">
+                          <span class="funcionalidades__wid-barra"></span>
+                          <span class="funcionalidades__wid-barra"></span>
+                          <span class="funcionalidades__wid-barra"></span>
+                          <span class="funcionalidades__wid-barra"></span>
+                          <span class="funcionalidades__wid-barra funcionalidades__wid-barra--alta"></span>
+                          <span class="funcionalidades__wid-barra"></span>
+                          <span class="funcionalidades__wid-barra"></span>
+                        </span>
+                      </span>
+
+                      <span class="funcionalidades__wid-widget">
+                        <span class="funcionalidades__wid-widget-etq">
+                          <svg class="funcionalidades__wid-glifo" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 4 7 8 10 6 14 11" /></svg>
+                          {{ textos().widgets.peso }}
+                        </span>
+                        <span class="funcionalidades__wid-widget-cifra funcionalidades__wid-widget-cifra--grande">{{ textos().widgets.pesoCifra }}<span class="funcionalidades__wid-widget-u">kg</span></span>
+                        <svg class="funcionalidades__wid-linea" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true">
+                          <defs>
+                            <linearGradient id="gradWidPeso" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stop-color="var(--naranja-normal)" stop-opacity="0.32" />
+                              <stop offset="100%" stop-color="var(--naranja-normal)" stop-opacity="0" />
+                            </linearGradient>
+                          </defs>
+                          <path class="funcionalidades__wid-linea-area" d="M2 8 C18 9 30 12 48 15 C66 18 80 19 98 21 L98 26 L2 26 Z" />
+                          <path class="funcionalidades__wid-linea-trazo" pathLength="1" d="M2 8 C18 9 30 12 48 15 C66 18 80 19 98 21" />
+                        </svg>
+                        <span class="funcionalidades__wid-widget-nota">{{ textos().widgets.pesoNota }}</span>
+                      </span>
+
+                      <span class="funcionalidades__wid-widget">
+                        <span class="funcionalidades__wid-widget-etq funcionalidades__wid-widget-etq--agua">
+                          <svg class="funcionalidades__wid-glifo" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.5s4 4.2 4 7.2a4 4 0 0 1-8 0c0-3 4-7.2 4-7.2Z" /></svg>
+                          {{ textos().widgets.agua }}
+                        </span>
+                        <span class="funcionalidades__wid-widget-cuerpo">
+                          <svg class="funcionalidades__wid-anillo funcionalidades__wid-anillo--agua" viewBox="0 0 40 40" aria-hidden="true">
+                            <circle class="funcionalidades__wid-anillo-pista" cx="20" cy="20" r="15" />
+                            <circle class="funcionalidades__wid-anillo-trazo funcionalidades__wid-anillo-trazo--agua" cx="20" cy="20" r="15" pathLength="100" />
+                          </svg>
+                          <span class="funcionalidades__wid-widget-cifra">{{ textos().widgets.aguaCifra }}<span class="funcionalidades__wid-widget-sub"><span class="funcionalidades__wid-widget-u">L</span><span class="funcionalidades__wid-widget-pct">63%</span></span></span>
+                        </span>
+                      </span>
+
+                      <span class="funcionalidades__wid-widget funcionalidades__wid-widget--ancho">
+                        <span class="funcionalidades__wid-racha">
+                          <span class="funcionalidades__wid-racha-izq">
+                            <span class="funcionalidades__wid-racha-cifra">12<span class="funcionalidades__wid-widget-u">{{ textos().widgets.diasUnidad }}</span></span>
+                            <span class="funcionalidades__wid-racha-etq">{{ textos().widgets.rachaEtiqueta }}</span>
+                          </span>
+                          <span class="funcionalidades__wid-barras funcionalidades__wid-barras--racha" aria-hidden="true">
+                            <span class="funcionalidades__wid-barra"></span>
+                            <span class="funcionalidades__wid-barra"></span>
+                            <span class="funcionalidades__wid-barra"></span>
+                            <span class="funcionalidades__wid-barra funcionalidades__wid-barra--alta"></span>
+                            <span class="funcionalidades__wid-barra"></span>
+                            <span class="funcionalidades__wid-barra"></span>
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span class="funcionalidades__wid-dock" aria-hidden="true">
+                      <span class="funcionalidades__wid-app funcionalidades__wid-app--comida">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5v7a2 2 0 0 0 4 0v-7" /><line x1="7" y1="9.5" x2="7" y2="21.5" /><path d="M16 2.5c-1.7 0-3 2-3 5s1.3 4.5 3 4.5" /><line x1="16" y1="12" x2="16" y2="21.5" /></svg>
+                      </span>
+                      <span class="funcionalidades__wid-app funcionalidades__wid-app--gym">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6M6 7.5v9M18 7.5v9M21 9v6M6 12h12" /></svg>
+                      </span>
+                      <span class="funcionalidades__wid-app funcionalidades__wid-app--datos">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 16 9 10 13 14 21 6" /></svg>
+                      </span>
+                      <span class="funcionalidades__wid-app funcionalidades__wid-app--agua">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z" /></svg>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+
+                <!-- Widget flotante: Distancia (métrica distinta a la del móvil/reloj, que comparten pasos sincronizados) -->
+                <span class="funcionalidades__wid-flotante funcionalidades__wid-flotante--distancia">
+                  <span class="funcionalidades__wid-flotante-cab">
+                    <span class="funcionalidades__wid-flotante-etq">
+                      <svg class="funcionalidades__wid-glifo" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.8c-2.3 0-4.2 1.9-4.2 4.2 0 3 4.2 8 4.2 8s4.2-5 4.2-8c0-2.3-1.9-4.2-4.2-4.2Z" /><circle cx="8" cy="6" r="1.5" /></svg>
+                      {{ textos().widgets.distancia }}
+                    </span>
+                    <span class="funcionalidades__wid-flotante-meta">/ 8 km</span>
+                  </span>
+                  <span class="funcionalidades__wid-flotante-cifra">{{ textos().widgets.distanciaCifra }}<span class="funcionalidades__wid-flotante-u">km</span></span>
+                  <span class="funcionalidades__wid-barras funcionalidades__wid-barras--flotante" aria-hidden="true">
+                    <span class="funcionalidades__wid-barra"></span>
+                    <span class="funcionalidades__wid-barra"></span>
+                    <span class="funcionalidades__wid-barra"></span>
+                    <span class="funcionalidades__wid-barra funcionalidades__wid-barra--alta"></span>
+                    <span class="funcionalidades__wid-barra"></span>
+                    <span class="funcionalidades__wid-barra"></span>
+                    <span class="funcionalidades__wid-barra"></span>
+                  </span>
+                  <span class="funcionalidades__wid-flotante-progreso" aria-hidden="true">
+                    <span class="funcionalidades__wid-flotante-relleno"></span>
+                  </span>
+                </span>
+
+                <!-- Apple Watch -->
+                <span class="funcionalidades__wid-watch">
+                  <span class="funcionalidades__wid-watch-correa funcionalidades__wid-watch-correa--arriba" aria-hidden="true"></span>
+                  <span class="funcionalidades__wid-watch-correa funcionalidades__wid-watch-correa--abajo" aria-hidden="true"></span>
+                  <span class="funcionalidades__wid-watch-corona" aria-hidden="true"></span>
+                  <span class="funcionalidades__wid-watch-boton" aria-hidden="true"></span>
+                  <span class="funcionalidades__wid-watch-caja">
+                    <span class="funcionalidades__wid-watch-pantalla">
+                      <span class="funcionalidades__wid-watch-hora">{{ widgetHora() }}</span>
+                      <span class="funcionalidades__wid-watch-cuerpo">
+                        <svg class="funcionalidades__wid-anillo funcionalidades__wid-anillo--watch" viewBox="0 0 44 44" aria-hidden="true">
+                          <circle class="funcionalidades__wid-anillo-pista" cx="22" cy="22" r="17" />
+                          <circle class="funcionalidades__wid-anillo-trazo funcionalidades__wid-anillo-trazo--watch" cx="22" cy="22" r="17" pathLength="100" />
+                        </svg>
+                        <span class="funcionalidades__wid-watch-pasos">8415<span class="funcionalidades__wid-watch-u">{{ textos().widgets.watchPasos }}</span></span>
+                      </span>
+                      <span class="funcionalidades__wid-watch-pie">
+                        <span class="funcionalidades__wid-watch-dato">{{ textos().widgets.aguaCifra }} L<span class="funcionalidades__wid-watch-min">{{ textos().widgets.watchAgua }}</span></span>
+                        <span class="funcionalidades__wid-watch-dato">12<span class="funcionalidades__wid-watch-min">{{ textos().widgets.watchRacha }}</span></span>
+                      </span>
+                    </span>
+                    <span class="funcionalidades__wid-watch-brillo" aria-hidden="true"></span>
+                  </span>
+                </span>
+              </span>
+            }
+            @case (5) {
+              <span class="funcionalidades__comidas">
+                <span class="funcionalidades__comidas-cabecera">
+                  <span class="funcionalidades__comidas-dia">{{ textos().comidas.hoy }} {{ registroComidas().length }} {{ textos().comidas.unidad }}</span>
+                  <span class="funcionalidades__comidas-ia">
+                    <span class="funcionalidades__comidas-ia-punto" aria-hidden="true"></span>
+                    {{ textos().comidas.ia }}
+                  </span>
+                </span>
+
+                <span class="funcionalidades__comidas-cuerpo">
+                  <span class="funcionalidades__balance">
+                    <span class="funcionalidades__balance-etiqueta">{{ textos().comidas.consumido }}</span>
+                    <span class="funcionalidades__balance-cifra">
+                      <span class="funcionalidades__balance-kcal">{{ totalesComida().consumidas }}</span>
+                      <span class="funcionalidades__balance-unidad">kcal</span>
+                    </span>
+                    <span class="funcionalidades__balance-meta">{{ textos().comidas.balanceMeta }}</span>
+                    <span class="funcionalidades__balance-barra">
+                      <span class="funcionalidades__balance-relleno" [style.--relleno]="totalesComida().pct / 100"></span>
+                    </span>
+
+                    <span class="funcionalidades__macros">
+                      @for (macro of macrosComida(); track macro.nombre) {
+                        <span class="funcionalidades__macros-item" [style.--tono]="macro.color">
+                          <span class="funcionalidades__macros-cab">
+                            <span class="funcionalidades__macros-nombre">{{ macro.nombre }}</span>
+                            <span class="funcionalidades__macros-cifra">{{ macro.gramos }}<span class="funcionalidades__macros-meta">/{{ macro.objetivo }} g</span></span>
+                          </span>
+                          <span class="funcionalidades__macros-barra">
+                            <span class="funcionalidades__macros-relleno" [style.--relleno]="macro.pct / 100"></span>
+                          </span>
+                        </span>
+                      }
+                    </span>
+                  </span>
+
+                  <span class="funcionalidades__minuta">
+                    @for (comida of registroComidas(); track comida.nombre; let indiceComida = $index) {
+                      <span
+                        class="funcionalidades__minuta-fila"
+                        [class.funcionalidades__minuta-fila--analizada]="indiceComida === indiceComidaAnalizada()">
+                        <span class="funcionalidades__minuta-linea">
+                          <span class="funcionalidades__minuta-hora">{{ comida.hora }}</span>
+                          <span class="funcionalidades__minuta-nombre">{{ comida.nombre }}</span>
+                          <span class="funcionalidades__minuta-puntos" aria-hidden="true"></span>
+                          <span class="funcionalidades__minuta-kcal">{{ comida.kcal }}</span>
+                        </span>
+                        <span class="funcionalidades__minuta-detalle">
+                          <span class="funcionalidades__minuta-macros">{{ comida.desglose }}</span>
+                          @if (indiceComida === indiceComidaAnalizada()) {
+                            <span class="funcionalidades__minuta-tag">
+                              <span class="funcionalidades__minuta-tag-punto" aria-hidden="true"></span>
+                              {{ textos().comidas.tagAnalizada }}
+                            </span>
+                          }
+                        </span>
+                      </span>
+                    }
+                  </span>
+                </span>
+
+                <span class="funcionalidades__comidas-datos">
+                  @for (dato of textos().comidas.datos; track dato.etiqueta) {
+                    <span class="funcionalidades__comidas-dato">
+                      <span class="funcionalidades__comidas-dato-etiqueta">{{ dato.etiqueta }}</span>
+                      <span class="funcionalidades__comidas-dato-valor">{{ dato.valor }}</span>
+                    </span>
+                  }
+                </span>
+              </span>
+              <span class="funcionalidades__visual-pie">
+                <span class="funcionalidades__chip funcionalidades__chip--acento">{{ textos().comidas.chipFoto }}</span>
+                <span class="funcionalidades__visual-dato">{{ textos().comidas.pie }}</span>
+              </span>
+            }
+          }
+        </figure>
+      }
+    </aside>
+  </section>
+</section>
+
+
+<section class="faq" aria-labelledby="titulo-faq">
+  <span aria-hidden="true" class="faq__halo"></span>
+  <section class="faq__rejilla">
+    <header class="faq__cabecera">
+      <p class="seccion__eyebrow">{{ textos().faq.eyebrow }}</p>
+      <!-- SplitText trocea el nodo de texto: el @for recrea el h2 al cambiar idioma y la directiva re-divide -->
+      @for (idiomaActivo of [idioma()]; track idiomaActivo) {
+        <h2 id="titulo-faq" class="seccion__titulo" appRevelarLineas>{{ textos().faq.titulo }}<br><span class="faq__titulo-acento">{{ textos().faq.tituloAcento }}</span></h2>
+      }
+      <p class="faq__intro">
+        {{ textos().faq.intro }}
+      </p>
+
+      <a class="faq__contacto" href="mailto:soporte@cofira.com">
+        <span class="faq__contacto-textos">
+          <span class="faq__contacto-titulo">{{ textos().faq.contactoTitulo }}</span>
+          <span class="faq__contacto-email">soporte&#64;cofira.com</span>
+        </span>
+        <svg aria-hidden="true" class="faq__contacto-flecha" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M7 17L17 7M17 7H9M17 7v8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </header>
+
+    <section class="faq__contenedor" hazDeLuz>
+      <span aria-hidden="true" class="faq__foco"></span>
+      <p aria-hidden="true" class="faq__meta">
+        <span>{{ textos().faq.metaIndice }}</span>
+        <span>{{ textos().faq.metaTotal }}</span>
+      </p>
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(0)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">01</span>
+          <span class="faq__pregunta-texto">{{ textos().faq.pregunta1 }}</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[0]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          {{ textos().faq.respuesta1Pre }}<strong class="faq__clave">{{ textos().faq.respuesta1Clave1 }}</strong>{{ textos().faq.respuesta1Medio }}<strong class="faq__clave">{{ textos().faq.respuesta1Clave2 }}</strong>{{ textos().faq.respuesta1Post }}
+        </p>
+      </details>
+
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(1)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">02</span>
+          <span class="faq__pregunta-texto">{{ textos().faq.pregunta2 }}</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[1]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          {{ textos().faq.respuesta2Pre }}<strong class="faq__clave">{{ textos().faq.respuesta2Clave }}</strong>{{ textos().faq.respuesta2Post }}
+        </p>
+      </details>
+
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(2)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">03</span>
+          <span class="faq__pregunta-texto">{{ textos().faq.pregunta3 }}</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[2]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          {{ textos().faq.respuesta3 }}
+        </p>
+      </details>
+
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(3)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">04</span>
+          <span class="faq__pregunta-texto">{{ textos().faq.pregunta4 }}</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[3]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          {{ textos().faq.respuesta4 }}
+        </p>
+      </details>
+
+      <details class="faq__item" name="preguntas-frecuentes" (toggle)="alternarEstadoFaq(4)">
+        <summary class="faq__pregunta">
+          <span aria-hidden="true" class="faq__numero">05</span>
+          <span class="faq__pregunta-texto">{{ textos().faq.pregunta5 }}</span>
+          <span aria-hidden="true" class="faq__icono" [class.faq__icono--abierto]="estadoFaqAbierto[4]"></span>
+        </summary>
+        <p class="faq__respuesta">
+          {{ textos().faq.respuesta5Pre }}<strong class="faq__clave">{{ textos().faq.respuesta5Clave1 }}</strong>{{ textos().faq.respuesta5Medio }}<strong class="faq__clave">{{ textos().faq.respuesta5Clave2 }}</strong>{{ textos().faq.respuesta5Post }}
+        </p>
+      </details>
+    </section>
+  </section>
+</section>
+
+
+<app-cinta-marquee [palabras]="textos().cintaCompromiso" [invertida]="true"></app-cinta-marquee>
+
+
+<section class="cta-final">
+  <figure class="cta-final__media" aria-hidden="true">
+    <img class="cta-final__imagen" src="/assets/images/home-cta.jpg" alt="" loading="lazy" width="1400" height="933">
+  </figure>
+  <span class="cta-final__halo" aria-hidden="true"></span>
+  <section class="cta-final__contenido">
+    <h2 class="cta-final__titulo">{{ textos().ctaFinal.titulo }}</h2>
+    <p class="cta-final__texto">{{ textos().ctaFinal.texto }}</p>
+    <app-button botonMagnetico enlace="/onboarding" tamanio="grande" variante="primario">
+      {{ textos().ctaFinal.boton }}
+      <svg class="cta-final__flecha" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </app-button>
+  </section>
+</section>
