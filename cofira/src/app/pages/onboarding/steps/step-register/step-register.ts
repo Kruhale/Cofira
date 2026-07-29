@@ -1,0 +1,196 @@
+import { Component, computed, EventEmitter, inject, Output, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+
+import { AuthService } from '../../../../services/auth.service';
+import { OnboardingService } from '../../../../services/onboarding.service';
+import { NotificacionService } from '../../../../services/notificacion.service';
+import { IdiomaService } from '../../../../services/idioma.service';
+import { Button } from '../../../../components/shared/button/button';
+import {
+  checkPasswordRequirements,
+  passwordStrengthValidator,
+} from '../../../../validators/password-strength.validator';
+import { emailAvailableValidator } from '../../../../validators/email.validator';
+import { TEXTOS_ONBOARDING } from '../../textos-onboarding';
+
+@Component({
+  selector: 'app-step-register',
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink, Button],
+  templateUrl: './step-register.html',
+  styleUrl: './step-register.scss',
+})
+export class StepRegister {
+  @Output() continuar = new EventEmitter<void>();
+  readonly estaCargando = signal(false);
+  readonly mostrarContrasena = signal(false);
+  readonly mostrarConfirmacionContrasena = signal(false);
+  private readonly authService = inject(AuthService);
+  private readonly notificacionService = inject(NotificacionService);
+  private readonly idiomaService = inject(IdiomaService);
+
+  /* Textos del paso en el idioma vigente: al cambiar el signal se repinta todo */
+  readonly textos = computed(() => TEXTOS_ONBOARDING[this.idiomaService.idioma()].registro);
+
+  readonly formularioRegistro = new FormGroup({
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    email: new FormControl(
+      '',
+      [Validators.required, Validators.email],
+      [emailAvailableValidator(this.authService)],
+    ),
+    password: new FormControl('', [Validators.required, passwordStrengthValidator()]),
+    confirmPassword: new FormControl('', [Validators.required]),
+  });
+  private readonly onboardingService = inject(OnboardingService);
+  private readonly router = inject(Router);
+
+  get valorContrasena(): string {
+    return this.formularioRegistro.get('password')?.value || '';
+  }
+
+  get requisitosContrasena() {
+    return checkPasswordRequirements(this.valorContrasena);
+  }
+
+  /* Fuerza = cuántos de los 5 requisitos se cumplen (alimenta el medidor vivo) */
+  get fuerzaContrasena(): number {
+    const req = this.requisitosContrasena;
+    const cumplidos = [
+      req.isLongEnough,
+      req.hasUpperCase,
+      req.hasLowerCase,
+      req.hasNumeric,
+      req.hasSpecial,
+    ];
+    return cumplidos.filter((cumplido) => cumplido).length;
+  }
+
+  get nivelFuerzaClave(): 'vacio' | 'debil' | 'media' | 'fuerte' {
+    const fuerza = this.fuerzaContrasena;
+    if (fuerza === 0) return 'vacio';
+    if (fuerza <= 2) return 'debil';
+    if (fuerza <= 4) return 'media';
+    return 'fuerte';
+  }
+
+  get nivelFuerzaTexto(): string {
+    const clave = this.nivelFuerzaClave;
+    if (clave === 'debil') return this.textos().fuerzaDebil;
+    if (clave === 'media') return this.textos().fuerzaMedia;
+    if (clave === 'fuerte') return this.textos().fuerzaFuerte;
+    return '';
+  }
+
+  get estadoEmail(): 'valid' | 'invalid-format' | 'taken' | 'checking' | null {
+    const emailControl = this.formularioRegistro.get('email');
+    if (!emailControl?.value) return null;
+    if (emailControl.pending) return 'checking';
+    if (emailControl.hasError('email')) return 'invalid-format';
+    if (emailControl.hasError('emailTaken')) return 'taken';
+    if (emailControl.valid) return 'valid';
+    return null;
+  }
+
+  alternarContrasena(): void {
+    this.mostrarContrasena.update((v) => !v);
+  }
+
+  alternarConfirmacionContrasena(): void {
+    this.mostrarConfirmacionContrasena.update((v) => !v);
+  }
+
+  contrasenasCoinciden(): boolean {
+    const password = this.formularioRegistro.get('password')?.value;
+    const confirm = this.formularioRegistro.get('confirmPassword')?.value;
+    return password === confirm;
+  }
+
+  puedeEnviar(): boolean {
+    return this.formularioRegistro.valid && this.contrasenasCoinciden() && !this.estaCargando();
+  }
+
+  alEnviar(): void {
+    if (!this.puedeEnviar()) {
+      return;
+    }
+
+    this.estaCargando.set(true);
+
+    const valorFormulario = this.formularioRegistro.value;
+
+    this.authService
+      .register({
+        nombre: valorFormulario.nombre!,
+        username: valorFormulario.email!,
+        email: valorFormulario.email!,
+        password: valorFormulario.password!,
+      })
+      .subscribe({
+        next: () => {
+          this.notificacionService.exito(this.textos().exitoCuentaCreada);
+          this.completarOnboarding();
+        },
+        error: () => {
+          this.estaCargando.set(false);
+          this.notificacionService.error(this.textos().errorCrearCuenta);
+        },
+      });
+  }
+
+  private completarOnboarding(): void {
+    const datosOnboarding = this.onboardingService.formData();
+    const tieneDataRequerida = this.tieneDataMinimaOnboarding(datosOnboarding);
+
+    if (!tieneDataRequerida) {
+      this.estaCargando.set(false);
+      this.navegarAlPago();
+      return;
+    }
+
+    this.onboardingService.completeOnboarding().subscribe({
+      next: function (this: StepRegister) {
+        this.estaCargando.set(false);
+        this.navegarAlPago();
+      }.bind(this),
+      error: function (this: StepRegister, error: unknown) {
+        this.estaCargando.set(false);
+        console.error('Error al completar onboarding:', error);
+        const errorObj = error as { error?: { message?: string; errors?: string } };
+        const mensajeError =
+          errorObj?.error?.message || errorObj?.error?.errors || 'Error desconocido';
+        console.error('Detalles del error:', mensajeError);
+        this.notificacionService.error(this.textos().avisoDatosNoGuardados);
+        this.navegarAlPago();
+      }.bind(this),
+    });
+  }
+
+  private navegarAlPago(): void {
+    this.router.navigate(['/onboarding'], { queryParams: { step: 15 } });
+  }
+
+  private tieneDataMinimaOnboarding(
+    data: Partial<import('../../../../models/onboarding.model').OnboardingData>,
+  ): boolean {
+    const tieneDataBasica = !!(
+      data.gender &&
+      data.currentWeightKg &&
+      data.heightCm &&
+      data.birthDate &&
+      data.activityLevel &&
+      data.primaryGoal
+    );
+
+    const tieneDataEntrenamiento = !!(
+      data.workType &&
+      data.fitnessLevel &&
+      data.trainingDaysPerWeek !== null &&
+      data.trainingDaysPerWeek !== undefined &&
+      data.dietType
+    );
+
+    return tieneDataBasica && tieneDataEntrenamiento;
+  }
+}

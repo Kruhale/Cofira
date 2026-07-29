@@ -1,0 +1,80 @@
+<article class="step-results">
+
+  @if (isLoading()) {
+    <section aria-live="polite" class="step-results__loading">
+      <p class="step-results__loading-text">
+        <span aria-hidden="true" class="step-results__loading-punto"></span>
+        Calculando tu plan personalizado...
+      </p>
+    </section>
+  } @else if (error()) {
+    <section class="step-results__error" role="alert">
+      <p class="step-results__error-text">{{ error() }}</p>
+    </section>
+  } @else if (results()) {
+    <header class="step-results__header">
+      <p class="step-results__eyebrow">Tu plan personalizado</p>
+      <h2 class="step-results__titulo">Esto es lo que <em class="step-results__titulo-acento">necesitas</em></h2>
+      <p class="step-results__subtitulo">Objetivo: {{ goalText() }}</p>
+    </header>
+
+    <section class="step-results__content">
+      <article class="step-results__heroe">
+        <span class="step-results__heroe-label">Calorías diarias</span>
+        <p class="step-results__heroe-cifra">
+          <data class="step-results__heroe-valor" [value]="results()!.dailyCalories">{{ results()!.dailyCalories }}</data>
+          <span class="step-results__heroe-unidad">kcal</span>
+        </p>
+      </article>
+
+      <ul class="step-results__banda">
+        <li class="step-results__dato">
+          <span class="step-results__dato-label">Metabolismo basal</span>
+          <span aria-hidden="true" class="step-results__dato-puntos"></span>
+          <data class="step-results__dato-valor" [value]="results()!.calculatedBMR">{{ results()!.calculatedBMR }} kcal</data>
+        </li>
+        <li class="step-results__dato">
+          <span class="step-results__dato-label">Gasto total (TDEE)</span>
+          <span aria-hidden="true" class="step-results__dato-puntos"></span>
+          <data class="step-results__dato-valor" [value]="results()!.calculatedTDEE">{{ results()!.calculatedTDEE }} kcal</data>
+        </li>
+      </ul>
+
+      <section class="step-results__macros">
+        <h3 class="step-results__macros-title">Macronutrientes diarios</h3>
+        <ul class="step-results__macros-list">
+          <li class="step-results__dato">
+            <span class="step-results__dato-label">Proteína</span>
+            <span aria-hidden="true" class="step-results__dato-puntos"></span>
+            <data class="step-results__dato-valor" [value]="results()!.proteinGrams">{{ results()!.proteinGrams }}g</data>
+          </li>
+          <li class="step-results__dato">
+            <span class="step-results__dato-label">Carbohidratos</span>
+            <span aria-hidden="true" class="step-results__dato-puntos"></span>
+            <data class="step-results__dato-valor" [value]="results()!.carbsGrams">{{ results()!.carbsGrams }}g</data>
+          </li>
+          <li class="step-results__dato">
+            <span class="step-results__dato-label">Grasas</span>
+            <span aria-hidden="true" class="step-results__dato-puntos"></span>
+            <data class="step-results__dato-valor" [value]="results()!.fatGrams">{{ results()!.fatGrams }}g</data>
+          </li>
+          <li class="step-results__dato">
+            <span class="step-results__dato-label">Fibra</span>
+            <span aria-hidden="true" class="step-results__dato-puntos"></span>
+            <data class="step-results__dato-valor" [value]="results()!.fiberGrams">{{ results()!.fiberGrams }}g</data>
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <footer class="step-results__footer">
+      <app-button
+        variante="primario"
+        tamanio="grande"
+        (clicked)="alCompletar()">
+        Crear cuenta
+      </app-button>
+    </footer>
+  }
+
+</article>
