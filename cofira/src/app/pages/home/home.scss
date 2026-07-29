@@ -1,0 +1,5389 @@
+@import '../../../styles/01-tools/mixins';
+
+/* ════════════════════════════════════════════
+   Precarga: cortina negra con contador 0→100
+   ════════════════════════════════════════════ */
+.precarga {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 2.2rem 2.8rem;
+  background: hsl(240, 7%, 4%);
+}
+
+.precarga__marca {
+  font-family: var(--fuente-display);
+  font-size: 1.4rem; /* 22.4px */
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--texto-principal);
+}
+
+.precarga__punto {
+  color: var(--naranja-normal);
+}
+
+.precarga__numero {
+  font-family: var(--fuente-mono);
+  font-size: 6rem; /* 96px */
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+/* ════════════════════════════════════════════
+   Helpers de sección (reutilizados en la home)
+   ════════════════════════════════════════════ */
+.seccion__eyebrow {
+  @include etiqueta-tecnica(var(--naranja-texto));
+  margin: 0 0 1rem;
+}
+
+.seccion__titulo {
+  @include titular-display(var(--display-md));
+  margin: 0;
+}
+
+.seccion__subtitulo {
+  margin: 1.25rem 0 0;
+  max-width: 44rem;
+  color: var(--texto-secundario);
+  font-size: var(--font-size-lg);
+  line-height: 1.5;
+}
+
+
+/* ════════════════════════════════════════════
+   HERO — foto a sangre + velo + titular Anton
+   El hero es visualmente oscuro en ambos temas:
+   texto claro sobre fotografía con overlay.
+   ════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 9rem 6rem 7rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+
+.hero__picture {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* La imagen sobra un 14% por arriba y por abajo: el parallax la desplaza hacia
+   abajo, así que sin este margen dejaba un hueco oscuro arriba (parecía un header
+   separado). Centrada en el overflow, la foto llega hasta el borde superior y el
+   header flota SOBRE ella. */
+.hero__imagen {
+  position: absolute;
+  top: -14%;
+  left: 0;
+  width: 100%;
+  height: 128%;
+  object-fit: cover;
+  object-position: center 30%;
+  will-change: transform;
+  filter: grayscale(1) contrast(1.08) brightness(0.62);
+}
+
+.hero__velo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, hsla(240, 6%, 3%, 0.94) 0%, hsla(240, 6%, 3%, 0.72) 48%, hsla(240, 6%, 3%, 0.58) 100%),
+    radial-gradient(75% 60% at 12% 48%, hsla(24, 100%, 50%, 0.18), transparent 58%),
+    linear-gradient(0deg, hsla(240, 6%, 3%, 0.96) 0%, hsla(240, 6%, 3%, 0.15) 62%);
+}
+
+.hero__contenido {
+  max-width: 46rem;
+}
+
+.hero__eyebrow {
+  @include etiqueta-tecnica(var(--naranja-normal));
+  margin: 0 0 1.5rem;
+  font-size: 0.8rem;
+}
+
+.hero__titulo {
+  @include titular-display(var(--display-xl));
+  margin: 0;
+  color: hsl(40, 8%, 98%);
+}
+
+.hero__titulo-acento {
+  @include texto-gradiente;
+}
+
+.hero__subtitulo {
+  margin: 1.75rem 0 0;
+  max-width: 34rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  line-height: 1.55;
+  color: hsla(40, 8%, 96%, 0.78);
+}
+
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.hero__scroll-texto {
+  @include etiqueta-tecnica(hsla(40, 8%, 96%, 0.6));
+}
+
+.hero__scroll-linea {
+  display: block;
+  width: 3rem;
+  height: 1px;
+  background: hsla(40, 8%, 96%, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__scroll-linea::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: var(--naranja-normal);
+  transform: translateX(-100%);
+  animation: hero-scroll-cue 1.8s ease-in-out infinite;
+}
+
+@keyframes hero-scroll-cue {
+  0% { transform: translateX(-100%); }
+  60% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+
+/* ════════════════════════════════════════════
+   MANIFIESTO — declaración editorial con reveal
+   palabra a palabra (lo pinta GSAP vía opacity)
+   ════════════════════════════════════════════ */
+.manifiesto {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-size-xxxl) 6rem;
+  background: var(--superficie-fondo);
+}
+
+.manifiesto__texto {
+  margin: 0;
+  max-width: 64rem;
+
+  font-family: var(--fuente-display);
+  font-size: 4.6rem; /* 73.6px */
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--texto-principal);
+}
+
+.manifiesto__palabra {
+  display: inline-block;
+  margin: 0 0.26em 0.1em 0;
+}
+
+.manifiesto__palabra--clave {
+  color: var(--naranja-normal);
+}
+
+@include responsive-down('lg') {
+  .manifiesto {
+    padding: var(--spacing-size-xxxl) 3rem;
+  }
+}
+
+@include responsive-down('sm') {
+  .manifiesto {
+    padding: var(--spacing-size-xxl) 1.5rem;
+  }
+}
+
+
+/* ════════════════════════════════════════════
+   Contenedor común de secciones de contenido
+   ════════════════════════════════════════════ */
+.proceso,
+.funcionalidades,
+.faq {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-size-xxxl) 6rem;
+  background: var(--superficie-fondo);
+}
+
+.proceso__cabecera,
+.funcionalidades__cabecera,
+.faq__cabecera {
+  margin-bottom: var(--spacing-size-xxl);
+}
+
+
+/* ── PROCESO — recorrido editorial sin cajas: numeros gigantes en contorno,
+   filo superior que se traza en naranja y pasos en escalera ── */
+.proceso__lista {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-items: start;
+}
+
+.proceso__paso {
+  position: relative;
+  padding-top: 2rem;
+  border-top: 1px solid var(--borde-medio);
+}
+
+/* Escalera: cada paso entra mas abajo que el anterior (recorrido descendente) */
+.proceso__paso:nth-child(2) {
+  margin-top: 3rem;
+}
+
+.proceso__paso:nth-child(3) {
+  margin-top: 6rem;
+}
+
+/* El filo superior se traza en naranja al pasar el cursor, como en el FAQ */
+.proceso__paso::before {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  content: '';
+  background: linear-gradient(90deg, var(--naranja-normal), var(--naranja-glow-suave) 55%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.proceso__paso:hover::before {
+  transform: scaleX(1);
+}
+
+/* Marcador de nodo sobre el filo */
+.proceso__paso-marcador {
+  position: absolute;
+  top: -0.25rem;
+  left: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--naranja-normal);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.proceso__paso:hover .proceso__paso-marcador {
+  transform: rotate(45deg) scale(1.2);
+}
+
+/* Numero gigante en contorno; se rellena de color al pasar el cursor.
+   GSAP le aplica parallax via transform: aqui solo se anima el color. */
+.proceso__numero {
+  display: block;
+  font-family: var(--fuente-display);
+  font-size: 6.5rem; /* 104px */
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--naranja-normal) 45%, transparent);
+  transition: color 0.35s ease;
+}
+
+.proceso__paso:hover .proceso__numero {
+  color: var(--naranja-normal);
+}
+
+.proceso__paso-titulo {
+  margin: 1.5rem 0 0.75rem;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-principal);
+  text-wrap: balance;
+}
+
+.proceso__paso-texto {
+  max-width: 24rem;
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--texto-secundario);
+  text-wrap: pretty;
+}
+
+
+/* ════════════════════════════════════════════
+   PLANES — halo naranja + tarjetas
+   ════════════════════════════════════════════ */
+.planes {
+  position: relative;
+  padding: var(--spacing-size-xxxl) 6rem;
+  background: var(--superficie-1);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.planes__halo {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80rem;
+  height: 40rem;
+  z-index: -1;
+  background: var(--gradiente-halo);
+  pointer-events: none;
+}
+
+.planes__cabecera {
+  max-width: 1400px;
+  margin: 0 auto var(--spacing-size-xxl);
+  text-align: center;
+}
+
+.planes__cabecera .seccion__subtitulo {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.planes__tarjetas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.planes__tarjeta {
+  position: relative;
+  flex: 1 1 22rem;
+  max-width: 26rem;
+}
+
+/* Marcos de esquina (visor) sobre la tarjeta realzada: van en el wrapper
+   porque el clip-path de la tarjeta recortaría cualquier cosa que asome. */
+.planes__tarjeta--realzada::before {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 0.8rem;
+  height: 0.8rem;
+  content: '';
+  border-top: 1.5px solid var(--naranja-normal);
+  border-left: 1.5px solid var(--naranja-normal);
+  pointer-events: none;
+}
+
+.planes__tarjeta--realzada::after {
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  width: 0.8rem;
+  height: 0.8rem;
+  content: '';
+  border-right: 1.5px solid var(--naranja-normal);
+  border-bottom: 1.5px solid var(--naranja-normal);
+  pointer-events: none;
+}
+
+/* Selector de ciclo: conmutador HUD cuadrado, mono y sin radios */
+.planes__selector {
+  display: inline-flex;
+  margin-top: 2.25rem;
+
+  background: var(--superficie-fondo);
+  border: 1px solid var(--borde-medio);
+}
+
+.planes__opcion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.7rem;
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.planes__opcion--activa {
+  background: var(--naranja-normal);
+  color: var(--texto-sobre-acento);
+}
+
+.planes__opcion-ahorro {
+  font-size: 0.65rem;
+  opacity: 0.85;
+}
+
+.planes__garantia {
+  margin: 1.1rem 0 0;
+
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem; /* 11px */
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+
+/* ════════════════════════════════════════════
+   FUNCIONALIDADES — escena fijada con lista de
+   pasos y panel visual que cambia con el scroll
+   ════════════════════════════════════════════ */
+/* La sección rompe el contenedor: el visual ES el fondo a pantalla completa */
+.funcionalidades {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+
+  /* Showcase inmersivo: SIEMPRE oscuro en ambos temas. Replica los tokens del
+     tema oscuro (07-dark-mode/_dark-mode-config) acotados a esta seccion, para
+     que los paneles de datos (Graficos, Comidas) y las escenas cinematograficas
+     (Fotos/Ayuno/Agua/Widgets) formen una banda oscura coherente, no una mezcla
+     claro/oscuro cuando el usuario activa el modo claro. */
+  --superficie-fondo: hsl(240, 6%, 4%);
+  --superficie-1: hsl(240, 6%, 7%);
+  --superficie-2: hsl(240, 7%, 9%);
+  --superficie-3: hsl(240, 7%, 12.5%);
+  --naranja-normal: hsl(24, 100%, 55%);
+  --naranja-hover: hsl(24, 100%, 61%);
+  --naranja-active: hsl(24, 100%, 48%);
+  --naranja-texto: hsl(28, 100%, 64%);
+  --ambar: hsl(38, 100%, 55%);
+  --texto-principal: hsl(40, 8%, 96%);
+  --texto-secundario: hsla(40, 8%, 96%, 0.64);
+  --texto-suave: hsla(40, 8%, 96%, 0.40);
+  --texto-sobre-acento: hsl(240, 6%, 4%);
+  --borde-sutil: hsla(0, 0%, 100%, 0.08);
+  --borde-medio: hsla(0, 0%, 100%, 0.14);
+  --vidrio-fondo: hsla(240, 6%, 4%, 0.62);
+  --gradiente-overlay-foto: linear-gradient(180deg, hsla(0, 0%, 0%, 0.2) 0%, hsla(240, 6%, 4%, 0.92) 100%);
+  --sombra-bento: 0 1px 0 hsla(0, 0%, 100%, 0.04) inset, 0 1rem 2.5rem hsla(0, 0%, 0%, 0.45);
+  --glow-interior: inset 0 1px 0 hsla(0, 0%, 100%, 0.06), inset 0 0 3.75rem hsla(24, 100%, 50%, 0.05);
+  background: var(--superficie-fondo);
+}
+
+/* Modo claro: la sección deja de forzar oscuro y recupera los tokens claros
+   (los valores del tema claro de 00-settings). Así el marco y las pantallas de
+   datos (Gráficos, Comidas, Widgets…) tematizan; las escenas WebGL (Ayuno/Agua)
+   conservan su escenario oscuro propio porque su fondo es un literal, no token. */
+[data-theme='light'] .funcionalidades {
+  --superficie-fondo: hsl(40, 20%, 98%);
+  --superficie-1: hsl(0, 0%, 100%);
+  --superficie-2: hsl(40, 12%, 95.5%);
+  --superficie-3: hsl(40, 10%, 91%);
+  --naranja-hover: hsl(24, 92%, 41%);
+  --naranja-active: hsl(24, 92%, 36%);
+  --naranja-texto: hsl(24, 95%, 35%);
+  --ambar: hsl(38, 95%, 48%);
+  --texto-principal: hsl(240, 6%, 8%);
+  --texto-secundario: hsla(240, 6%, 8%, 0.66);
+  --texto-suave: hsla(240, 6%, 8%, 0.42);
+  --texto-sobre-acento: hsl(0, 0%, 100%);
+  --borde-sutil: hsla(240, 6%, 8%, 0.10);
+  --borde-medio: hsla(240, 6%, 8%, 0.18);
+  --vidrio-fondo: hsla(40, 20%, 98%, 0.72);
+  --gradiente-overlay-foto: linear-gradient(180deg, hsla(0, 0%, 0%, 0.10) 0%, hsla(40, 20%, 98%, 0.92) 100%);
+  --sombra-bento: 0 1px 0 hsla(0, 0%, 100%, 0.6) inset, 0 0.75rem 2rem hsla(30, 30%, 20%, 0.08);
+  --glow-interior: inset 0 1px 0 hsla(0, 0%, 100%, 0.5);
+}
+
+/* Pantallas HTML (Fotos y Widgets) pasan a claro: solo se aclara el FONDO de
+   pantalla; el texto ya tematiza por tokens, y los "devices" (móvil/reloj/tarjetas
+   de widget) y las fotos conservan sus literales oscuros a propósito (un móvil es
+   oscuro). Las escenas WebGL (Ayuno/Agua) NO se tocan: su fondo literal las
+   mantiene oscuras, que es lo que necesitan las partículas. */
+[data-theme='light'] .funcionalidades__comparador {
+  background:
+    radial-gradient(52% 64% at 40% 48%, hsla(28, 95%, 50%, 0.05), transparent 70%),
+    var(--superficie-fondo);
+}
+
+[data-theme='light'] .funcionalidades__wid {
+  background:
+    radial-gradient(48% 60% at 43% 50%, hsla(28, 90%, 50%, 0.06), transparent 70%),
+    linear-gradient(180deg, var(--superficie-1) 0%, var(--superficie-2) 100%);
+}
+
+/* Los devices (móvil, reloj, tarjetas flotantes) conservan su fondo oscuro literal
+   en modo claro —un móvil es oscuro—, así que su texto debe seguir siendo CLARO.
+   Reescalamos los tokens de texto a sus valores oscuros dentro de cada device para
+   que todo lo que use var(--texto-*) se vea (antes el número salía oscuro sobre
+   fondo oscuro = ilegible: el "lavado" del modo claro). */
+[data-theme='light'] .funcionalidades__wid-movil,
+[data-theme='light'] .funcionalidades__wid-watch,
+[data-theme='light'] .funcionalidades__wid-act,
+[data-theme='light'] .funcionalidades__wid-flotante {
+  --texto-principal: hsl(40, 8%, 96%);
+  --texto-secundario: hsla(40, 8%, 96%, 0.64);
+  --texto-suave: hsla(40, 8%, 96%, 0.40);
+}
+
+/* Fotos: el contenido (textos sueltos, sin fondo) usa literales CLAROS pensados
+   para fondo oscuro; en claro hay que oscurecerlos para que contrasten. Las fotos
+   y sus etiquetas-sobre-imagen conservan sus literales (van sobre la imagen). */
+[data-theme='light'] .funcionalidades__comparador-delta-valor {
+  color: var(--naranja-texto);
+  text-shadow: none;
+}
+[data-theme='light'] .funcionalidades__comparador-delta-sub {
+  color: var(--texto-suave);
+}
+[data-theme='light'] .funcionalidades__comparador-pista {
+  color: var(--texto-suave);
+}
+
+.funcionalidades__cabecera {
+  max-width: 1400px;
+  margin: 0 auto var(--spacing-size-xl);
+  padding: 0 6rem;
+}
+
+.funcionalidades__escena {
+  position: relative;
+  height: 100vh;
+  min-height: 44rem;
+}
+
+.funcionalidades__lista {
+  position: absolute;
+  top: 50%;
+  right: 4rem;
+  z-index: 3;
+  width: 21rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.funcionalidades__paso {
+  border-bottom: 1px dashed var(--borde-sutil);
+}
+
+.funcionalidades__paso-boton {
+  display: flex;
+  align-items: baseline;
+  gap: 1.75rem;
+  width: 100%;
+  padding: 1.5rem 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.funcionalidades__paso-numero {
+  min-width: 1.5rem;
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-md);
+  color: var(--texto-suave);
+  transition: color var(--duration-base) ease;
+}
+
+.funcionalidades__paso-titulo {
+  text-shadow: 0 2px 12px hsla(240, 6%, 3%, 0.85);
+  font-family: var(--fuente-display);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--texto-suave);
+  transition: color var(--duration-base) ease;
+}
+
+.funcionalidades__paso--activo .funcionalidades__paso-numero {
+  color: var(--naranja-normal);
+}
+
+.funcionalidades__paso--activo .funcionalidades__paso-titulo {
+  color: var(--texto-principal);
+}
+
+.funcionalidades__paso-texto {
+  max-height: 0;
+  margin: 0;
+  padding-left: 3.25rem;
+  overflow: hidden;
+  opacity: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  line-height: 1.55;
+  color: var(--texto-secundario);
+  transition: max-height var(--duration-base) ease, opacity var(--duration-base) ease,
+    padding var(--duration-base) ease;
+}
+
+.funcionalidades__paso--activo .funcionalidades__paso-texto {
+  max-height: 8rem;
+  padding-bottom: 1.5rem;
+  opacity: 1;
+}
+
+.funcionalidades__panel {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--superficie-fondo);
+}
+
+/* Foco naranja que sigue al cursor por el panel (directiva hazDeLuz) */
+.funcionalidades__panel::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: '';
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(18rem 18rem at var(--haz-x, 50%) var(--haz-y, 50%), var(--naranja-glow-media), transparent 60%);
+  transition: opacity var(--duration-base) ease;
+}
+
+.funcionalidades__panel.haz--activo::before {
+  opacity: 1;
+}
+
+.funcionalidades__visual {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 4rem 29rem 4rem 6rem;
+  opacity: 0;
+  transform: translateY(1.5rem);
+  pointer-events: none;
+  transition: opacity var(--duration-base) ease, transform var(--duration-base) ease;
+}
+
+.funcionalidades__visual--activo {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Ambiente del panel: retícula de puntos + resplandor superior */
+.funcionalidades__panel-reticula {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--borde-sutil) 1px, transparent 1px);
+  background-size: 1.5rem 1.5rem;
+  opacity: 0.35;
+  mask-image: radial-gradient(80% 80% at 50% 40%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(80% 80% at 50% 40%, black 30%, transparent 100%);
+}
+
+.funcionalidades__panel-resplandor {
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  width: 30rem;
+  height: 22rem;
+  pointer-events: none;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, var(--naranja-glow-suave), transparent 70%);
+}
+
+.funcionalidades__visual-cabecera {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  transform: translateY(0.75rem);
+  opacity: 0;
+  transition: transform var(--duration-base) ease, opacity var(--duration-base) ease;
+}
+
+/* Etiqueta editorial: regla naranja + mono con tracking, sin caja-badge */
+.funcionalidades__visual-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
+}
+
+.funcionalidades__visual-eyebrow::before {
+  content: '';
+  width: 1.75rem;
+  height: 1px;
+  background: var(--naranja-normal);
+}
+
+.funcionalidades__visual--activo .funcionalidades__visual-cabecera {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 80ms;
+}
+
+.funcionalidades__visual-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-sm);
+  background: var(--naranja-glow-suave);
+  border: 1px solid var(--borde-sutil);
+  color: var(--naranja-normal);
+  font-size: 0.95rem;
+}
+
+.funcionalidades__visual-titulo {
+  font-family: var(--fuente-display);
+  font-size: 2.4rem; /* 38.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--texto-principal);
+}
+
+/* Contexto mono bajo el título (panel Gráficos): periodo + sincronización */
+.funcionalidades__visual-contexto {
+  display: block;
+  margin-top: 0.7rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+/* Cuerpo del mockup: entra con un pelín de retraso tras la cabecera */
+.funcionalidades__grafica,
+.funcionalidades__ayuno,
+.funcionalidades__comparador,
+.funcionalidades__anillo,
+.funcionalidades__agua,
+.funcionalidades__comidas {
+  transform: translateY(1rem) scale(0.985);
+  opacity: 0;
+  transition: transform var(--duration-base) ease, opacity var(--duration-base) ease;
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica,
+.funcionalidades__visual--activo .funcionalidades__ayuno,
+.funcionalidades__visual--activo .funcionalidades__comparador,
+.funcionalidades__visual--activo .funcionalidades__anillo,
+.funcionalidades__visual--activo .funcionalidades__agua,
+.funcionalidades__visual--activo .funcionalidades__comidas {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  transition-delay: 160ms;
+}
+
+/* Pantallas-lienzo (full-bleed): título arriba, sin pie duplicado */
+.funcionalidades__visual--lienzo {
+  justify-content: flex-start;
+}
+
+.funcionalidades__visual--lienzo .funcionalidades__visual-pie {
+  display: none;
+}
+
+/* El contenido de cada pantalla se centra en el área libre del raíl */
+.funcionalidades__visual-cabecera,
+.funcionalidades__visual-pie,
+.funcionalidades__grafica,
+.funcionalidades__comparador,
+.funcionalidades__comidas {
+  width: 100%;
+  max-width: 54rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.funcionalidades__visual-pie {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  transform: translateY(0.75rem);
+  opacity: 0;
+  transition: transform var(--duration-base) ease, opacity var(--duration-base) ease;
+}
+
+.funcionalidades__visual--activo .funcionalidades__visual-pie {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 240ms;
+}
+
+.funcionalidades__visual-dato {
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+/* Etiqueta editorial del pie: mono en mayúsculas con filo separador,
+   sustituye a la antigua píldora redondeada (patrón vetado por el usuario) */
+.funcionalidades__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__chip::after {
+  width: 1px;
+  height: 0.85rem;
+  background: var(--borde-medio);
+  content: '';
+}
+
+.funcionalidades__chip--acento {
+  color: var(--naranja-texto);
+}
+
+/* Mockup: gráfica de evolución de peso */
+/* ════════════════════════════════════════════════════════════════════════
+   PANTALLA 01 · "Gráficos de progreso" — panel de datos premium.
+   Tarjeta de seguimiento: identidad + selector de métrica, número héroe,
+   progreso al objetivo y gráfica de área DERIVADA de datos reales.
+   ════════════════════════════════════════════════════════════════════════ */
+.funcionalidades__grafica {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  /* 4rem: libra el rótulo vertical FUNCIONES del raíl (llega a ~142px) */
+  padding-left: 4rem;
+}
+
+.funcionalidades__visual--datos .funcionalidades__visual-cabecera {
+  padding-left: 4rem;
+}
+
+.funcionalidades__visual--datos .funcionalidades__visual-pie {
+  padding-left: 4rem;
+}
+
+/* ── Banda de métricas: el selector ES la información (sin tabs ni héroe) ── */
+.funcionalidades__grafica-metricas {
+  display: flex;
+  width: 100%;
+  border-top: 1px solid var(--borde-sutil);
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.funcionalidades__grafica-metrica {
+  appearance: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  /* Tercios exactos: con flex 1 a secas el padding asimétrico descuadra los divisores */
+  flex: 1 1 33.333%;
+  padding: 1.1rem 1.5rem 1.2rem 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(0.4rem);
+  transition: opacity var(--duration-base) ease, transform var(--duration-base) ease;
+}
+
+/* Entrada en cascada: las tres celdas asientan una tras otra */
+.funcionalidades__visual--activo .funcionalidades__grafica-metrica {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica-metrica:nth-child(1) {
+  transition-delay: 0.2s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica-metrica:nth-child(2) {
+  transition-delay: 0.3s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica-metrica:nth-child(3) {
+  transition-delay: 0.4s;
+}
+
+.funcionalidades__grafica-metrica + .funcionalidades__grafica-metrica {
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--borde-sutil);
+}
+
+/* Regla viva: el filo superior naranja crece desde la izquierda al activarse */
+.funcionalidades__grafica-metrica::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--naranja-normal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funcionalidades__grafica-metrica--activa::before {
+  transform: scaleX(1);
+}
+
+.funcionalidades__grafica-metrica-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
+  transition: color var(--duration-base) ease;
+}
+
+.funcionalidades__grafica-metrica--activa .funcionalidades__grafica-metrica-etiqueta {
+  color: var(--naranja-texto);
+}
+
+.funcionalidades__grafica-metrica-valor {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-family: var(--fuente-display);
+  font-size: 2.1rem; /* 33.6px */
+  font-weight: var(--font-weight-bold);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+  transition: color var(--duration-base) ease;
+}
+
+.funcionalidades__grafica-metrica:hover .funcionalidades__grafica-metrica-valor {
+  color: var(--texto-principal);
+}
+
+.funcionalidades__grafica-metrica--activa .funcionalidades__grafica-metrica-valor {
+  color: var(--texto-principal);
+}
+
+.funcionalidades__grafica-metrica-unidad {
+  font-family: var(--font-secondary);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
+}
+
+.funcionalidades__grafica-metrica-delta {
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+/* ── Lienzo panorámico: la gráfica manda, a todo el ancho ──────────────── */
+
+.funcionalidades__grafica-lienzo {
+  position: relative;
+  display: block;
+}
+
+.funcionalidades__grafica-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Rótulo directo de la línea de objetivo: sin eje Y ni leyenda */
+.funcionalidades__grafica-rotulo {
+  fill: var(--naranja-texto);
+  font-family: var(--fuente-mono);
+  font-size: 8px;
+  letter-spacing: 0.04em;
+}
+
+.funcionalidades__grafica-objetivo {
+  stroke: var(--naranja-normal);
+  stroke-width: 1;
+  /* Con pathLength 99 en el SVG, el patrón remata en guion completo en el borde */
+  stroke-dasharray: 1 1;
+  opacity: 0.55;
+}
+
+/* Área bajo la curva: velo que se funde hacia abajo (sin borde inferior) */
+.funcionalidades__grafica-area {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica-area {
+  opacity: 1;
+  transition-delay: 0.85s;
+}
+
+/* Curva principal: trazo naranja que se dibuja solo (pathLength normalizado a 1) */
+.funcionalidades__grafica-linea {
+  fill: none;
+  stroke: var(--naranja-normal);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 2px 5px var(--naranja-glow-media));
+  transition: stroke-dashoffset 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica-linea {
+  stroke-dashoffset: 0;
+  transition-delay: 0.25s;
+}
+
+/* Reinicio al cambiar de métrica: oculta el trazo un frame para redibujarlo */
+.funcionalidades__visual--activo .funcionalidades__grafica-linea--reinicio {
+  stroke-dashoffset: 1;
+  transition: none;
+}
+
+/* Marcador del dato vigente (último punto): núcleo + halo que respira */
+.funcionalidades__grafica-actual {
+  fill: var(--naranja-normal);
+  stroke: var(--superficie-1);
+  stroke-width: 1.25;
+}
+
+.funcionalidades__grafica-actual-halo {
+  fill: var(--naranja-normal);
+  opacity: 0.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: funcionalidades-pulso 2.8s ease-in-out infinite;
+}
+
+@keyframes funcionalidades-pulso {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.45);
+    opacity: 0.06;
+  }
+}
+
+/* Puntos por mes: aparecen tras la curva; crecen al activarse con el ratón */
+.funcionalidades__grafica-punto {
+  fill: var(--naranja-normal);
+  opacity: 0;
+  transition: opacity 0.4s ease, r 0.2s ease;
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica-punto {
+  opacity: 1;
+  transition-delay: 1.05s;
+}
+
+.funcionalidades__grafica-punto--activo {
+  filter: drop-shadow(0 0 5px var(--naranja-glow-media));
+}
+
+.funcionalidades__grafica-halo {
+  fill: var(--naranja-glow-media);
+}
+
+.funcionalidades__grafica-cursor {
+  stroke: var(--borde-medio);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.funcionalidades__grafica-zona {
+  fill: transparent;
+  cursor: pointer;
+}
+
+/* Cada mes se ancla a la x exacta de su punto; los extremos van a ras del eje */
+.funcionalidades__grafica-meses {
+  position: relative;
+  width: 100%;
+  height: 0.75rem; /* 12px */
+}
+
+.funcionalidades__grafica-mes {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__grafica-mes--primero {
+  transform: none;
+}
+
+.funcionalidades__grafica-mes--ultimo {
+  transform: translateX(-100%);
+}
+
+/* ── Tooltip ───────────────────────────────────────────────────────────── */
+.funcionalidades__grafica-tooltip {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 11.5rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--borde-medio);
+  background: var(--superficie-1);
+  box-shadow: var(--sombra-bento);
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  margin-top: -1.1rem; /* hueco sobre el punto sin recurrir a calc */
+  opacity: 0;
+  transition: opacity 0.4s ease, left 0.25s ease, top 0.25s ease;
+}
+
+.funcionalidades__grafica-tooltip--inicio {
+  transform: translate(-4%, -100%);
+}
+
+.funcionalidades__grafica-tooltip--fin {
+  transform: translate(-96%, -100%);
+}
+
+.funcionalidades__grafica-tooltip--visible {
+  opacity: 1;
+}
+
+.funcionalidades__grafica-tooltip-mes {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__grafica-tooltip-valor {
+  font-family: var(--fuente-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__grafica-tooltip-extra {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--naranja-texto);
+}
+
+.funcionalidades__grafica-tooltip-fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-top: 0.05rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__grafica-tooltip-cifra {
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__grafica-tooltip-barra {
+  display: block;
+  height: 2px;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  background: var(--superficie-3);
+}
+
+.funcionalidades__grafica-tooltip-barra-relleno {
+  display: block;
+  height: 100%;
+  background: var(--naranja-normal);
+  transition: width 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .funcionalidades__grafica-actual-halo {
+    animation: none;
+  }
+}
+
+/* ── Regla de objetivo: inicio → avance → objetivo sobre pista hairline ── */
+.funcionalidades__grafica-regla {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  padding-top: 0.35rem;
+}
+
+.funcionalidades__grafica-regla-extremo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.funcionalidades__grafica-regla-extremo--fin {
+  align-items: flex-end;
+}
+
+.funcionalidades__grafica-regla-cifra {
+  font-family: var(--fuente-display);
+  font-size: 1.05rem; /* 16.8px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__grafica-regla-rotulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__grafica-regla-pista {
+  position: relative;
+  flex: 1;
+  height: 2.9rem;
+}
+
+/* La pista es el propio filo: 1px al centro vertical */
+.funcionalidades__grafica-regla-pista::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--borde-medio);
+}
+
+/* El avance nace plegado y crece hasta su % cuando la curva termina de dibujarse */
+.funcionalidades__grafica-regla-avance {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--naranja-normal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica-regla-avance {
+  transform: scaleX(1);
+  transition-delay: 0s, 1.3s;
+}
+
+/* El porcentaje aparece justo cuando el avance llega a su posición */
+.funcionalidades__grafica-regla-marcador {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--naranja-texto);
+  opacity: 0;
+  transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+
+.funcionalidades__visual--activo .funcionalidades__grafica-regla-marcador {
+  opacity: 1;
+  transition-delay: 0s, 1.9s;
+}
+
+/* Tic que baja del porcentaje y muere al tocar la pista, sin cruzarla */
+.funcionalidades__grafica-regla-marcador::after {
+  content: '';
+  position: absolute;
+  top: 1.05rem;
+  left: 50%;
+  width: 1px;
+  height: 0.4rem;
+  background: var(--naranja-normal);
+}
+
+.funcionalidades__grafica-regla-nota {
+  position: absolute;
+  right: 0;
+  /* 0.35rem: calza su baseline con el rótulo OBJETIVO del extremo derecho */
+  bottom: 0.35rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.03em;
+  color: var(--texto-secundario);
+}
+
+/* Banda de datos de la serie: cuatro lecturas a todo el ancho */
+.funcionalidades__grafica-datos {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.funcionalidades__grafica-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.funcionalidades__grafica-dato-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  /* secundario: gemela de la banda de comidas, mismo suelo de contraste */
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__grafica-dato-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.15rem; /* 18.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+/* Móvil/tablet: la sección se des-pinea (≤lg) y la visual deja de estar
+   absoluta-centrada en los paneles de DATOS (Gráficos y Comidas), así el panel
+   crece con su contenido y la tarjeta no se recorta. */
+@include responsive-down('lg') {
+  .funcionalidades__visual--datos.funcionalidades__visual--activo {
+    position: relative;
+  }
+}
+
+/* Pantallas medias: valores más compactos y regla sin nota */
+@include responsive-down('md') {
+  .funcionalidades__grafica-metrica-valor {
+    font-size: 1.75rem; /* 28px */
+  }
+}
+
+@include responsive-down('sm') {
+  .funcionalidades__grafica-regla-nota {
+    display: none;
+  }
+}
+
+/* Pantallas estrechas: la banda de métricas se apila en filas */
+@include responsive-down('xs') {
+  .funcionalidades__visual-titulo {
+    font-size: 1.9rem; /* 30.4px */
+  }
+
+  .funcionalidades__grafica-metricas {
+    flex-direction: column;
+  }
+
+  .funcionalidades__grafica-metrica {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.85rem;
+    padding: 0.85rem 0; /* tap target cómodo en táctil */
+  }
+
+  .funcionalidades__grafica-metrica + .funcionalidades__grafica-metrica {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--borde-sutil);
+  }
+
+  .funcionalidades__grafica-datos {
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+  }
+}
+
+/* Pantalla: fotos de progreso — revelado editorial a pantalla completa.
+   Como el póster del ayuno, fuerza su ambiente oscuro en ambos temas (hsl literales). */
+.funcionalidades__comparador {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(52% 64% at 40% 48%, hsla(28, 95%, 50%, 0.07), transparent 70%),
+    hsl(240, 6%, 4%);
+}
+
+/* Marco editorial: proporción vertical para que la persona se vea entera */
+.funcionalidades__comparador-marco {
+  position: absolute;
+  top: 10%;
+  bottom: 13%;
+  left: 29%;
+  width: 35%;
+  display: block;
+  overflow: hidden;
+  border: 1px solid hsla(40, 8%, 88%, 0.14);
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+/* Capas: el clip vive en la capa (sin transformar) y el Ken Burns en la
+   imagen interior, así el corte siempre queda alineado con la división */
+.funcionalidades__comparador-capa {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.funcionalidades__comparador-imagen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  pointer-events: none;
+  animation: funcionalidades-kenburns 30s ease-in-out infinite alternate;
+}
+
+.funcionalidades__comparador-imagen--antes {
+  filter: grayscale(1) brightness(0.62) contrast(1.08);
+  transform-origin: 38% 26%;
+}
+
+.funcionalidades__comparador-imagen--despues {
+  transform-origin: 62% 26%;
+  animation-delay: -15s;
+}
+
+@keyframes funcionalidades-kenburns {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.07);
+  }
+}
+
+.funcionalidades__comparador-division {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, hsl(28, 100%, 58%) 14%, hsl(28, 100%, 58%) 86%, transparent);
+  box-shadow: 0 0 18px hsla(28, 100%, 55%, 0.45);
+  pointer-events: none;
+}
+
+.funcionalidades__comparador-tirador {
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: hsl(28, 100%, 58%);
+  color: hsl(240, 6%, 6%);
+  font-family: var(--fuente-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 24px hsla(28, 100%, 55%, 0.5);
+  animation: funcionalidades-respira-suave 5.5s ease-in-out infinite;
+}
+
+/* Timeline vertical: la narrativa del progreso; rellena la columna izquierda
+   y da a las fotos semanales el protagonismo que antes no tenían. */
+.funcionalidades__comparador-timeline {
+  position: absolute;
+  top: 50%;
+  /* 10rem libra el raíl fijo de navegación y su rótulo FUNCIONES (llega a ~142px) */
+  left: 10rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.7rem;
+  width: 17%;
+  transform: translateY(-50%);
+}
+
+/* Delta protagonista: el dato que vende la transformación (cabecera del timeline) */
+.funcionalidades__comparador-delta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  pointer-events: none;
+}
+
+.funcionalidades__comparador-delta-eyebrow {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: hsla(28, 92%, 66%, 0.9);
+}
+
+.funcionalidades__comparador-delta-valor {
+  font-family: var(--fuente-display);
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: hsl(28, 100%, 62%);
+  text-shadow: 0 0 38px hsla(28, 100%, 55%, 0.35);
+  animation: funcionalidades-respira-suave 5.5s ease-in-out infinite;
+}
+
+.funcionalidades__comparador-delta-sub {
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: hsla(40, 8%, 88%, 0.62);
+}
+
+/* Lista de hitos: eje vertical conector + foto + semana/peso por cada semana */
+.funcionalidades__comparador-hitos {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-left: 1.6rem;
+}
+
+/* Eje que une los hitos (la línea del progreso) */
+.funcionalidades__comparador-hitos::before {
+  content: '';
+  position: absolute;
+  top: 1.6rem;
+  bottom: 1.6rem;
+  left: 0.33rem;
+  width: 2px;
+  background: hsla(40, 8%, 88%, 0.16);
+}
+
+.funcionalidades__comparador-hito {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  opacity: 0.55;
+  transition: opacity var(--duration-base) ease;
+}
+
+.funcionalidades__comparador-hito:hover {
+  opacity: 0.85;
+}
+
+/* Punto sobre el eje */
+.funcionalidades__comparador-hito::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -1.6rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: hsl(240, 6%, 12%);
+  border: 2px solid hsla(40, 8%, 88%, 0.35);
+}
+
+.funcionalidades__comparador-hito-imagen {
+  flex-shrink: 0;
+  width: 4rem;
+  height: 3rem;
+  overflow: hidden;
+  border: 1px solid hsla(40, 8%, 88%, 0.2);
+  border-radius: 0.3rem;
+}
+
+.funcionalidades__comparador-hito-foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 16%;
+  filter: grayscale(0.5) brightness(0.82);
+  transition: filter var(--duration-base) ease;
+}
+
+.funcionalidades__comparador-hito-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.funcionalidades__comparador-hito-semana {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: hsla(40, 8%, 88%, 0.6);
+}
+
+.funcionalidades__comparador-hito-peso {
+  font-family: var(--fuente-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: hsl(40, 18%, 96%);
+}
+
+/* Hito activo: naranja, foto a color, protagonismo pleno */
+.funcionalidades__comparador-hito--activo {
+  opacity: 1;
+}
+
+.funcionalidades__comparador-hito--activo::before {
+  background: hsl(28, 100%, 58%);
+  border-color: hsl(28, 100%, 58%);
+  box-shadow: 0 0 12px hsla(28, 100%, 55%, 0.6);
+}
+
+.funcionalidades__comparador-hito--activo .funcionalidades__comparador-hito-imagen {
+  border-color: hsl(28, 100%, 58%);
+}
+
+.funcionalidades__comparador-hito--activo .funcionalidades__comparador-hito-foto {
+  filter: grayscale(0) brightness(1);
+}
+
+/* Hito HOY: el destino, siempre destacado y no seleccionable */
+.funcionalidades__comparador-hito--hoy {
+  opacity: 1;
+  cursor: default;
+}
+
+.funcionalidades__comparador-hito--hoy::before {
+  background: hsl(28, 100%, 58%);
+  border-color: hsl(28, 100%, 58%);
+}
+
+.funcionalidades__comparador-hito--hoy .funcionalidades__comparador-hito-imagen {
+  border-color: hsl(28, 100%, 58%);
+}
+
+.funcionalidades__comparador-hito--hoy .funcionalidades__comparador-hito-foto {
+  filter: none;
+}
+
+.funcionalidades__comparador-hito--hoy .funcionalidades__comparador-hito-semana {
+  color: hsl(28, 100%, 62%);
+}
+
+.funcionalidades__comparador-pista {
+  position: absolute;
+  bottom: 6%;
+  left: 42%;
+  transform: translateX(-50%);
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: hsla(40, 8%, 88%, 0.5);
+  pointer-events: none;
+}
+
+/* Mockup: ayuno — secuencia metabólica 3D (hélice WebGL + instrumento temporal).
+   Es un póster cinematográfico: fuerza su propia paleta oscura en ambos temas,
+   por eso usa hsl literales en vez de tokens de tema. */
+.funcionalidades__ayuno {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background:
+    radial-gradient(46% 60% at 10% 42%, hsla(196, 80%, 48%, 0.07), transparent 70%),
+    radial-gradient(58% 66% at 46% 56%, hsla(24, 95%, 50%, 0.1), transparent 72%),
+    radial-gradient(40% 56% at 72% 50%, hsla(276, 70%, 50%, 0.09), transparent 70%),
+    linear-gradient(180deg, hsl(233, 12%, 4%) 0%, hsl(240, 10%, 3%) 100%);
+  isolation: isolate;
+}
+
+/* La hélice 3D cruza por delante del reloj de respaldo */
+.funcionalidades__ayuno-lienzo {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Reloj DOM de respaldo: solo se ve mientras la escena WebGL no ha cargado
+   (al montarse, la directiva añade --vivo al canvas y este se desvanece) */
+.funcionalidades__ayuno-fantasma {
+  position: absolute;
+  inset: 0 27% 0 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  font-family: var(--fuente-display);
+  font-size: 12rem; /* 192px */
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: hsla(40, 10%, 96%, 0.12);
+  user-select: none;
+  pointer-events: none;
+  transition: opacity 700ms ease;
+}
+
+.funcionalidades__ayuno-lienzo--vivo ~ .funcionalidades__ayuno-fantasma {
+  opacity: 0;
+}
+
+/* Lectura de estado: tipografía desnuda con tick de color, sin contenedor */
+.funcionalidades__ayuno-estado {
+  position: absolute;
+  top: 6rem;
+  left: 4%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-left: 0.7rem;
+  border-left: 2px solid hsl(24, 95%, 55%);
+  pointer-events: none;
+}
+
+.funcionalidades__ayuno-estado-fase {
+  font-family: var(--fuente-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: hsl(28, 100%, 64%);
+  animation: funcionalidades-respira-suave 5.5s ease-in-out infinite;
+}
+
+.funcionalidades__ayuno-estado-detalle {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: hsla(40, 8%, 88%, 0.55);
+}
+
+@keyframes funcionalidades-respira {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes funcionalidades-respira-suave {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* Anotaciones de fase: texto flotando desnudo, levemente inclinado
+   siguiendo la pendiente de la hebra (tipografía integrada en la escena) */
+.funcionalidades__fase-nota {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  max-width: 12rem;
+  pointer-events: none;
+}
+
+.funcionalidades__fase-nota-titulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: hsl(40, 12%, 92%);
+  text-shadow: 0 2px 10px hsla(240, 8%, 3%, 0.9);
+}
+
+.funcionalidades__fase-nota-sub {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: hsla(40, 8%, 85%, 0.6);
+  text-shadow: 0 2px 10px hsla(240, 8%, 3%, 0.9);
+}
+
+.funcionalidades__fase-nota-dato {
+  margin-top: 0.25rem;
+  padding-left: 0.55rem;
+  border-left: 2px solid hsla(40, 8%, 80%, 0.4);
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  color: hsla(40, 8%, 88%, 0.62);
+  text-shadow: 0 2px 10px hsla(240, 8%, 3%, 0.9);
+  white-space: nowrap;
+}
+
+.funcionalidades__fase-nota--una {
+  top: 15%;
+  left: 5%;
+  transform: rotate(-3deg);
+}
+
+.funcionalidades__fase-nota--tres {
+  top: 17%;
+  left: 38%;
+  transform: rotate(-2deg);
+}
+
+.funcionalidades__fase-nota--activa .funcionalidades__fase-nota-titulo {
+  color: hsl(28, 100%, 64%);
+  animation: funcionalidades-respira-suave 5.5s ease-in-out infinite;
+}
+
+.funcionalidades__fase-nota--activa .funcionalidades__fase-nota-dato {
+  border-left-color: hsl(24, 95%, 55%);
+}
+
+.funcionalidades__fase-nota--cian .funcionalidades__fase-nota-titulo { color: hsl(196, 60%, 68%); }
+.funcionalidades__fase-nota--cian .funcionalidades__fase-nota-dato { border-left-color: hsla(196, 70%, 55%, 0.7); }
+
+/* Curva de hormona de crecimiento: también desnuda, sin tarjeta */
+.funcionalidades__fase-nota--grafica {
+  bottom: 26%;
+  left: 44%;
+  width: 8.5rem;
+  transform: rotate(-2deg);
+}
+
+.funcionalidades__fase-nota--grafica .funcionalidades__fase-nota-titulo {
+  color: hsl(30, 100%, 66%);
+}
+
+.funcionalidades__fase-nota-curva {
+  width: 100%;
+  height: 1.5rem;
+  margin-top: 0.35rem;
+  fill: none;
+  stroke: hsl(24, 95%, 55%);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px hsla(24, 95%, 55%, 0.5));
+}
+
+/* Etiqueta vertical pegada a la cola violeta, como en los pósteres científicos */
+.funcionalidades__ayuno-vertical {
+  position: absolute;
+  top: 14%;
+  right: 26rem;
+  z-index: 3;
+  writing-mode: vertical-rl;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: hsla(276, 80%, 75%, 0.55);
+  pointer-events: none;
+}
+
+/* Panel de autofagia: rectángulo recto de borde fino, con visual dentro */
+.funcionalidades__tarjeta-detox {
+  position: absolute;
+  right: 27.5rem;
+  bottom: 24%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: 16.5rem;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid hsla(276, 70%, 65%, 0.4);
+  background: hsla(264, 32%, 8%, 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.funcionalidades__tarjeta-detox-titulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: hsl(276, 85%, 78%);
+}
+
+.funcionalidades__tarjeta-detox-sub {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: hsla(40, 8%, 88%, 0.55);
+}
+
+.funcionalidades__tarjeta-detox-cuenta {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: hsl(276, 90%, 80%);
+}
+
+/* Micro-visual de autofagia: residuos derivando hacia el lisosoma que late */
+.funcionalidades__tarjeta-detox-grafico {
+  width: 100%;
+  height: 2.1rem;
+  margin-top: 0.15rem;
+}
+
+.funcionalidades__tarjeta-detox-nucleo {
+  fill: hsla(276, 85%, 62%, 0.28);
+  stroke: hsla(276, 85%, 72%, 0.8);
+  stroke-width: 1;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: funcionalidades-detox-late 4.8s ease-in-out infinite;
+}
+
+.funcionalidades__tarjeta-detox-particula {
+  fill: hsl(282, 80%, 74%);
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: funcionalidades-detox-deriva 5.2s ease-in-out infinite;
+}
+
+.funcionalidades__tarjeta-detox-particula--dos {
+  animation-duration: 6.4s;
+  animation-delay: -2.1s;
+}
+
+.funcionalidades__tarjeta-detox-particula--tres {
+  animation-duration: 4.6s;
+  animation-delay: -1.2s;
+}
+
+.funcionalidades__tarjeta-detox-particula--cuatro {
+  animation-duration: 7.1s;
+  animation-delay: -3.6s;
+}
+
+.funcionalidades__tarjeta-detox-particula--cinco {
+  animation-duration: 5.7s;
+  animation-delay: -0.7s;
+}
+
+@keyframes funcionalidades-detox-late {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+
+@keyframes funcionalidades-detox-deriva {
+  0% { transform: translateX(0); opacity: 0; }
+  18% { opacity: 0.95; }
+  82% { opacity: 0.6; }
+  100% { transform: translateX(26px) scale(0.55); opacity: 0; }
+}
+
+.funcionalidades__tarjeta-detox-celdas {
+  display: flex;
+  gap: 0.6rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid hsla(276, 60%, 70%, 0.25);
+}
+
+.funcionalidades__tarjeta-detox-celda {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.funcionalidades__tarjeta-detox-valor {
+  font-family: var(--fuente-display);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: hsl(40, 12%, 94%);
+}
+
+.funcionalidades__tarjeta-detox-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: hsla(40, 8%, 80%, 0.5);
+}
+
+/* En tema claro el raíl usa texto oscuro, ilegible sobre este póster oscuro:
+   mientras la pantalla de ayuno está activa, el raíl pasa a texto claro */
+[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--oscuro.funcionalidades__visual--activo) .funcionalidades__paso-numero { color: hsla(40, 8%, 88%, 0.5); }
+[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--oscuro.funcionalidades__visual--activo) .funcionalidades__paso-titulo { color: hsla(40, 8%, 92%, 0.75); }
+[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--oscuro.funcionalidades__visual--activo) .funcionalidades__paso-texto { color: hsla(40, 8%, 88%, 0.6); }
+[data-theme='light'] .funcionalidades__escena:has(.funcionalidades__visual--oscuro.funcionalidades__visual--activo) .funcionalidades__paso--activo .funcionalidades__paso-titulo { color: hsl(28, 100%, 64%); }
+
+/* Regla temporal inferior: escala no lineal 0-18 h alineada con el gradiente
+   de la hélice; el cursor AHORA sube hasta el frente de combustión del ADN */
+.funcionalidades__regla {
+  position: absolute;
+  left: 4%;
+  right: 27%;
+  bottom: 3.4rem;
+  z-index: 3;
+  height: 1px;
+  background: hsla(40, 10%, 80%, 0.12);
+}
+
+.funcionalidades__regla-zona {
+  position: absolute;
+  top: 0;
+  height: 1px;
+}
+
+.funcionalidades__regla-zona--cian {
+  left: 0;
+  width: 30%;
+  background: hsla(196, 70%, 55%, 0.45);
+}
+
+.funcionalidades__regla-zona--ambar {
+  left: 30%;
+  width: 48%;
+  background: hsla(28, 95%, 55%, 0.75);
+  box-shadow: 0 0 10px hsla(28, 95%, 55%, 0.35);
+}
+
+.funcionalidades__regla-zona--violeta {
+  left: 78%;
+  width: 22%;
+  background: hsla(276, 75%, 60%, 0.5);
+}
+
+.funcionalidades__regla-tick {
+  position: absolute;
+  top: 0.2rem;
+  width: 1px;
+  height: 0.32rem;
+  background: hsla(40, 8%, 80%, 0.2);
+}
+
+.funcionalidades__regla-tick--mayor {
+  height: 0.6rem;
+  background: hsla(40, 8%, 88%, 0.4);
+}
+
+.funcionalidades__regla-etiqueta {
+  position: absolute;
+  top: 1.05rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  color: hsla(40, 8%, 85%, 0.4);
+}
+
+.funcionalidades__regla-etiqueta--glucogeno {
+  left: 0;
+  color: hsla(196, 60%, 70%, 0.55);
+}
+
+.funcionalidades__regla-etiqueta--quema {
+  left: 30%;
+  color: hsla(28, 95%, 64%, 0.65);
+}
+
+.funcionalidades__regla-etiqueta--reparacion {
+  left: 78%;
+  color: hsla(276, 75%, 74%, 0.6);
+}
+
+.funcionalidades__regla-ahora {
+  position: absolute;
+  top: 0;
+  height: 1px;
+}
+
+/* Línea localizadora que une la regla con el nudo brillante de la hélice */
+.funcionalidades__regla-ahora-linea {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 27vh;
+  background: linear-gradient(180deg, transparent 0%, hsla(28, 100%, 62%, 0.55) 85%);
+  animation: funcionalidades-respira-suave 5.5s ease-in-out infinite;
+}
+
+.funcionalidades__regla-ahora-texto {
+  position: absolute;
+  top: 0.95rem;
+  left: 0;
+  transform: translateX(-50%);
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: hsl(28, 100%, 66%);
+  text-shadow: 0 0 14px hsla(28, 100%, 55%, 0.5);
+}
+
+.funcionalidades__regla-marca {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid hsla(40, 8%, 85%, 0.3);
+}
+
+.funcionalidades__regla-marca--comida {
+  left: 78%;
+  bottom: 0.8rem;
+  border-left-color: hsla(28, 95%, 60%, 0.6);
+}
+
+.funcionalidades__regla-marca-titulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.52rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: hsla(40, 8%, 85%, 0.5);
+}
+
+.funcionalidades__regla-marca-tiempo {
+  font-family: var(--fuente-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: hsl(40, 12%, 92%);
+}
+
+.funcionalidades__regla-marca--comida .funcionalidades__regla-marca-tiempo {
+  color: hsl(28, 100%, 66%);
+}
+
+/* Rótulo que da contexto al reloj gigante */
+.funcionalidades__ayuno-rotulo {
+  position: absolute;
+  top: 28.5%;
+  left: 6.5%;
+  z-index: 3;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: hsla(40, 8%, 88%, 0.45);
+  pointer-events: none;
+}
+
+/* Plan de comidas del día: tabla mono con la próxima en cuenta atrás viva */
+.funcionalidades__plan {
+  position: absolute;
+  top: 9%;
+  left: 56%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  width: 17rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid hsla(40, 8%, 60%, 0.18);
+  background: hsla(240, 8%, 5%, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color var(--duration-base) ease, opacity var(--duration-base) ease;
+}
+
+.funcionalidades__plan:hover {
+  border-color: hsla(28, 95%, 55%, 0.45);
+}
+
+.funcionalidades__plan-titulo {
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid hsla(40, 8%, 60%, 0.18);
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: hsl(28, 100%, 64%);
+}
+
+.funcionalidades__plan-fila {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid hsla(40, 8%, 60%, 0.12);
+}
+
+.funcionalidades__plan-fila--ultima {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.funcionalidades__plan-hora {
+  width: 2.6rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: hsl(40, 12%, 92%);
+}
+
+.funcionalidades__plan-comida {
+  flex: 1;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: hsla(40, 8%, 88%, 0.7);
+}
+
+.funcionalidades__plan-detalle {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  font-variant-numeric: tabular-nums;
+  color: hsla(40, 8%, 85%, 0.45);
+}
+
+.funcionalidades__plan-fila--proxima .funcionalidades__plan-hora {
+  color: hsl(28, 100%, 66%);
+}
+
+.funcionalidades__plan-fila--proxima .funcionalidades__plan-comida {
+  color: hsl(28, 100%, 64%);
+}
+
+.funcionalidades__plan-fila--proxima .funcionalidades__plan-detalle {
+  color: hsl(28, 100%, 66%);
+  animation: funcionalidades-respira-suave 5.5s ease-in-out infinite;
+}
+
+/* Bandas invisibles de inspección: una por fase metabólica */
+.funcionalidades__zona {
+  position: absolute;
+  top: 16%;
+  bottom: 6.5rem;
+  z-index: 2;
+}
+
+/* Durante la inspección, los callouts persistentes se apartan (como la hélice):
+   el inspector nunca compite con nada y la atención va a la fase enfocada */
+.funcionalidades__ayuno-estado,
+.funcionalidades__ayuno-rotulo,
+.funcionalidades__ayuno-vertical,
+.funcionalidades__fase-nota,
+.funcionalidades__tarjeta-detox {
+  transition: opacity var(--duration-base) ease;
+}
+
+.funcionalidades__ayuno--inspeccion .funcionalidades__ayuno-estado,
+.funcionalidades__ayuno--inspeccion .funcionalidades__ayuno-rotulo,
+.funcionalidades__ayuno--inspeccion .funcionalidades__ayuno-vertical,
+.funcionalidades__ayuno--inspeccion .funcionalidades__fase-nota,
+.funcionalidades__ayuno--inspeccion .funcionalidades__tarjeta-detox,
+.funcionalidades__ayuno--inspeccion .funcionalidades__plan {
+  opacity: 0.18;
+}
+
+/* Panel inspector: aparece al sobrevolar una fase, con sus biomarcadores */
+.funcionalidades__inspector {
+  position: absolute;
+  bottom: 7rem;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  width: 19rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid hsla(40, 8%, 60%, 0.2);
+  border-left-width: 2px;
+  background: hsla(240, 8%, 5%, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: none;
+  animation: funcionalidades-inspector-entra 220ms ease-out;
+}
+
+@keyframes funcionalidades-inspector-entra {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Modo libre: el panel persigue al cursor vía transform (rAF con easing) */
+.funcionalidades__inspector--libre {
+  left: 0;
+  top: 0;
+  bottom: auto;
+  will-change: transform;
+}
+
+.funcionalidades__inspector-titulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.funcionalidades__inspector-rango {
+  font-family: var(--fuente-mono);
+  font-size: 0.54rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: hsla(40, 8%, 85%, 0.5);
+}
+
+.funcionalidades__inspector-descripcion {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  line-height: 1.55;
+  color: hsla(40, 8%, 90%, 0.65);
+}
+
+.funcionalidades__inspector-datos {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.3rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid hsla(40, 8%, 60%, 0.15);
+}
+
+.funcionalidades__inspector-dato {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.funcionalidades__inspector-valor {
+  font-family: var(--fuente-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: hsl(40, 12%, 94%);
+  white-space: nowrap;
+}
+
+.funcionalidades__inspector-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: hsla(40, 8%, 80%, 0.5);
+}
+
+/* Mockup: hidratación — el cuerpo es el depósito. Una silueta translúcida se
+   llena de agua hasta tu nivel (recorte SVG al contorno) con olas en la línea
+   de flotación y burbujas dentro del cuerpo; al lado, la tarjeta de lectura. */
+.funcionalidades__agua {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  background:
+    radial-gradient(46% 54% at 20% 32%, hsla(196, 80%, 50%, 0.1), transparent 70%),
+    radial-gradient(50% 60% at 70% 62%, hsla(210, 70%, 45%, 0.06), transparent 72%),
+    linear-gradient(180deg, hsl(214, 16%, 6%) 0%, hsl(220, 14%, 3.5%) 100%);
+}
+
+.funcionalidades__agua-lienzo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  pointer-events: none;
+}
+
+
+/* Consola de hidratación: columna de datos (izquierda) + vaso héroe (derecha)
+   como una sola unidad, centrada verticalmente en el área libre del raíl. */
+.funcionalidades__agua-consola {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  padding: 0 26rem 0 8rem;
+}
+
+/* Vaso de cristal que se llena de agua segun el progreso de hidratacion */
+.funcionalidades__vaso {
+  position: relative;
+  z-index: 3;
+  display: block;
+  flex-shrink: 0;
+  width: 14rem;
+  height: 22rem;
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(165deg, hsla(200, 60%, 75%, 0.07), hsla(212, 45%, 55%, 0.02));
+  border: 1.5px solid hsla(196, 65%, 74%, 0.3);
+  border-radius: 0.7rem 0.7rem 1.7rem 1.7rem;
+  box-shadow:
+    inset 0 1px 0 hsla(196, 95%, 92%, 0.25),
+    inset 0 0 2.5rem hsla(200, 60%, 50%, 0.06),
+    0 1.8rem 3.5rem hsla(214, 55%, 3%, 0.55),
+    0 0 5rem hsla(196, 88%, 50%, 0.17);
+}
+
+.funcionalidades__vaso-agua {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, hsl(193, 92%, 56%), hsl(207, 88%, 40%));
+  box-shadow: 0 -0.3rem 1.5rem hsla(196, 95%, 60%, 0.4);
+  transition: height 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Onda viajera de la superficie (SVG que se desplaza en bucle) */
+.funcionalidades__vaso-cresta {
+  position: absolute;
+  top: -0.95rem;
+  left: 0;
+  width: 200%;
+  height: 1.9rem;
+  fill: hsl(195, 92%, 64%);
+  animation: funcionalidades-vaso-cresta 4s linear infinite;
+}
+
+.funcionalidades__vaso-cresta--b {
+  top: -0.55rem;
+  fill: hsl(189, 86%, 66%);
+  opacity: 0.5;
+  animation-duration: 6.5s;
+  animation-direction: reverse;
+}
+
+@keyframes funcionalidades-vaso-cresta {
+  to { transform: translateX(-50%); }
+}
+
+/* Reflejo vertical del cristal */
+.funcionalidades__vaso-brillo {
+  position: absolute;
+  top: 0.6rem;
+  bottom: 1.5rem;
+  left: 1.1rem;
+  z-index: 4;
+  width: 0.5rem;
+  border-radius: 99px;
+  background: linear-gradient(180deg, hsla(0, 0%, 100%, 0.5), hsla(0, 0%, 100%, 0.04));
+  pointer-events: none;
+}
+
+.funcionalidades__vaso-dato {
+  position: absolute;
+  top: 1.9rem;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  text-align: center;
+}
+
+.funcionalidades__vaso-litros {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.2rem;
+  font-family: var(--fuente-display);
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: hsl(40, 14%, 97%);
+  text-shadow: 0 2px 18px hsla(214, 60%, 3%, 0.7);
+}
+
+.funcionalidades__vaso-unidad {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: hsla(196, 95%, 82%, 0.95);
+}
+
+.funcionalidades__vaso-meta {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsla(40, 10%, 88%, 0.55);
+}
+
+/* Marcas de medida sutiles en el vidrio (rayitas a la derecha) */
+.funcionalidades__vaso-marcas {
+  position: absolute;
+  top: 2.2rem;
+  bottom: 2rem;
+  right: 0.85rem;
+  z-index: 4;
+  width: 0.6rem;
+  background: repeating-linear-gradient(180deg, hsla(196, 80%, 85%, 0.16) 0, hsla(196, 80%, 85%, 0.16) 1px, transparent 1px, transparent 2.3rem);
+  pointer-events: none;
+}
+
+/* Burbujas que ascienden por el agua */
+.funcionalidades__vaso-burbujas {
+  position: absolute;
+  top: 35%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.funcionalidades__vaso-burbuja {
+  position: absolute;
+  bottom: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: hsla(190, 95%, 88%, 0.5);
+  animation: funcionalidades-vaso-burbuja 5s ease-in infinite;
+}
+
+.funcionalidades__vaso-burbuja:nth-child(1) {
+  left: 30%;
+  animation-duration: 4.8s;
+}
+
+.funcionalidades__vaso-burbuja:nth-child(2) {
+  left: 56%;
+  width: 0.28rem;
+  height: 0.28rem;
+  animation-duration: 6.5s;
+  animation-delay: 1.8s;
+}
+
+.funcionalidades__vaso-burbuja:nth-child(3) {
+  left: 70%;
+  animation-duration: 5.5s;
+  animation-delay: 3.2s;
+}
+
+@keyframes funcionalidades-vaso-burbuja {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-9rem); opacity: 0; }
+}
+
+/* Columna de datos: espina cian a la izquierda, lenguaje HUD (sin caja). */
+.funcionalidades__agua-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 21rem;
+  flex-shrink: 0;
+  padding-left: 1.5rem;
+  border-left: 2px solid hsla(196, 85%, 62%, 0.5);
+}
+
+/* Porcentaje del objetivo, bajo la barra de progreso */
+.funcionalidades__agua-progreso {
+  font-family: var(--fuente-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: hsla(196, 85%, 78%, 0.8);
+}
+
+.funcionalidades__agua-eyebrow {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: hsla(196, 85%, 76%, 0.85);
+}
+
+.funcionalidades__agua-litros {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-family: var(--fuente-display);
+  font-size: 3.7rem;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: hsl(40, 12%, 97%);
+}
+
+.funcionalidades__agua-litros-unidad {
+  font-size: 0.3em;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: hsla(196, 92%, 76%, 0.95);
+}
+
+.funcionalidades__agua-objetivo {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: hsla(40, 10%, 88%, 0.55);
+}
+
+.funcionalidades__agua-barra {
+  position: relative;
+  height: 0.55rem;
+  margin-top: 0.6rem;
+  overflow: hidden;
+  background: hsla(210, 30%, 40%, 0.16);
+  border-radius: 99px;
+  box-shadow: inset 0 1px 2px hsla(214, 45%, 4%, 0.55);
+}
+
+.funcionalidades__agua-barra-relleno {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 99px;
+  background: linear-gradient(90deg, hsl(212, 90%, 48%), hsl(198, 95%, 56%) 58%, hsl(189, 98%, 70%));
+  box-shadow:
+    0 0 16px hsla(196, 95%, 60%, 0.6),
+    inset 0 1px 0 hsla(196, 100%, 92%, 0.55);
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Reflejo líquido que recorre la barra (vida sutil) */
+.funcionalidades__agua-barra-relleno::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, hsla(0, 0%, 100%, 0.5) 50%, transparent 100%);
+  transform: translateX(-110%);
+  animation: funcionalidades-agua-reflejo 2.8s ease-in-out infinite;
+}
+
+@keyframes funcionalidades-agua-reflejo {
+  0% { transform: translateX(-110%); }
+  55%, 100% { transform: translateX(240%); }
+}
+
+.funcionalidades__agua-estado {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+}
+
+.funcionalidades__agua-estado-texto {
+  font-weight: 700;
+  color: hsla(196, 90%, 78%, 0.95);
+}
+
+.funcionalidades__agua-estado-pct {
+  font-variant-numeric: tabular-nums;
+  color: hsla(40, 10%, 88%, 0.5);
+}
+
+.funcionalidades__agua-separador {
+  height: 1px;
+  margin: 0.45rem 0;
+  background: hsla(196, 40%, 60%, 0.14);
+}
+
+.funcionalidades__agua-stats {
+  display: flex;
+  gap: 1.6rem;
+}
+
+/* Stat: chip de icono + (cifra / etiqueta) */
+.funcionalidades__agua-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+/* Acento de color a la izquierda (sin icono): cian = media, naranja = racha */
+.funcionalidades__agua-stat::before {
+  content: '';
+  flex-shrink: 0;
+  width: 3px;
+  height: 2.1rem;
+  border-radius: 99px;
+  background: hsl(193, 96%, 68%);
+  box-shadow: 0 0 10px hsla(196, 95%, 60%, 0.5);
+}
+
+.funcionalidades__agua-stat--racha::before {
+  background: var(--naranja-normal);
+  box-shadow: 0 0 10px hsla(24, 95%, 55%, 0.5);
+}
+
+.funcionalidades__agua-stat-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.funcionalidades__agua-stat-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: hsl(40, 12%, 95%);
+}
+
+.funcionalidades__agua-stat-label {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsla(40, 10%, 86%, 0.55);
+}
+
+/* Mini-grafico semanal */
+.funcionalidades__agua-semana-bloque {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.funcionalidades__agua-semana-titulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsla(40, 10%, 86%, 0.42);
+}
+
+.funcionalidades__agua-semana {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.45rem;
+  height: 3.4rem;
+}
+
+.funcionalidades__agua-dia {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  height: 100%;
+}
+
+.funcionalidades__agua-dia-barra {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 0.85rem;
+  height: 100%;
+  overflow: hidden;
+  background: hsla(210, 30%, 45%, 0.12);
+  border-radius: 99px;
+}
+
+.funcionalidades__agua-dia-relleno {
+  width: 100%;
+  min-height: 0.45rem;
+  border-radius: 99px;
+  background: linear-gradient(180deg, hsl(189, 98%, 72%), hsl(206, 90%, 50%));
+  box-shadow:
+    0 0 8px hsla(196, 95%, 60%, 0.35),
+    inset 0 1px 0 hsla(196, 100%, 92%, 0.6);
+  transition: height 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.funcionalidades__agua-dia-label {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsla(40, 10%, 86%, 0.5);
+}
+
+.funcionalidades__agua-dia--hoy .funcionalidades__agua-dia-barra {
+  background: hsla(24, 55%, 42%, 0.18);
+}
+
+.funcionalidades__agua-dia--hoy .funcionalidades__agua-dia-relleno {
+  background: linear-gradient(180deg, hsl(34, 100%, 66%), hsl(22, 95%, 52%));
+  box-shadow:
+    0 0 12px hsla(24, 95%, 55%, 0.6),
+    inset 0 1px 0 hsla(38, 100%, 85%, 0.7);
+}
+
+.funcionalidades__agua-dia--hoy .funcionalidades__agua-dia-label {
+  font-weight: 700;
+  color: var(--naranja-texto);
+}
+
+/* ---------- Bandeja de registro: vasos ---------- */
+/* Registro interactivo: toca un vaso y litros/%/vaso/semana se actualizan en vivo.
+   Separado de la gráfica semanal con un divisor: historial arriba, acción abajo. */
+.funcionalidades__agua-registro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.7rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid hsla(196, 40%, 60%, 0.14);
+}
+
+.funcionalidades__agua-pista {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: hsla(40, 10%, 86%, 0.45);
+}
+
+.funcionalidades__agua-vasos {
+  display: flex;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+/* Vaso de agua: tumbler ligeramente conico (mas ancho arriba), cristal con
+   reflejo vertical y agua que sube desde el fondo. */
+.funcionalidades__agua-vaso {
+  position: relative;
+  flex: 1;
+  height: 3.8rem;
+  padding: 0;
+  overflow: hidden;
+  isolation: isolate;
+
+  background: linear-gradient(180deg, hsla(200, 45%, 82%, 0.10), hsla(210, 30%, 45%, 0.04));
+  border: 1px solid hsla(196, 45%, 70%, 0.26);
+  border-radius: 0.16rem 0.16rem 0.4rem 0.4rem;
+  /* silueta de vaso: arriba a tope, fondo recogido */
+  clip-path: polygon(3% 0, 97% 0, 87% 100%, 13% 100%);
+  cursor: pointer;
+  transition: transform var(--duration-base) ease, border-color var(--duration-base) ease, background var(--duration-base) ease;
+}
+
+/* Reflejo de cristal: franja clara vertical a la izquierda */
+.funcionalidades__agua-vaso::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 16%;
+  width: 14%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, hsla(0, 0%, 100%, 0.22), hsla(0, 0%, 100%, 0.03));
+}
+
+.funcionalidades__agua-vaso:hover {
+  transform: translateY(-3px);
+  border-color: hsla(196, 85%, 70%, 0.7);
+  background: linear-gradient(180deg, hsla(200, 55%, 86%, 0.14), hsla(210, 30%, 45%, 0.05));
+}
+
+.funcionalidades__agua-vaso-nivel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  z-index: 1;
+
+  background: linear-gradient(180deg, hsla(193, 96%, 66%, 0.95), hsla(206, 92%, 48%, 0.9));
+  border-top: 2px solid transparent;
+  transition: height 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.55s ease;
+}
+
+/* Vaso lleno (registrado): agua casi hasta arriba, como un vaso servido */
+.funcionalidades__agua-vaso--lleno .funcionalidades__agua-vaso-nivel {
+  height: 84%;
+  border-top-color: hsla(196, 100%, 86%, 0.95);
+}
+
+/* El ultimo registrado: resplandor sutil */
+.funcionalidades__agua-vaso--actual {
+  border-color: hsla(196, 95%, 72%, 0.95);
+  box-shadow: 0 0 16px hsla(196, 90%, 55%, 0.35);
+}
+
+
+/* ============================================================
+   Mockup: WIDGETS — "tu pantalla de inicio, en directo".
+   Escena hermana del ayuno: una esfera de reloj con anillos de
+   actividad y hora REAL en el centro, anotaciones de métricas
+   desnudas alrededor, tabla de resumen, tarjeta de racha y una
+   regla de 24 h con marcador "ahora" vivo. Todo deriva de ahoraMs.
+   ============================================================ */
+/* ════════════════════════════════════════════
+   WIDGETS — "tu pantalla de inicio, allá donde estés"
+   Maqueta de dispositivos: columna de copy a la izq.,
+   móvil con pantalla de inicio en el centro y widgets
+   flotantes (Pasos + Apple Watch) a la derecha, justo
+   antes del raíl de pasos (right:4rem, 21rem de ancho).
+   Escena a sangre completa; sólo se anima transform/opacity
+   (los anillos usan stroke-dashoffset, como el resto).
+   ════════════════════════════════════════════ */
+.funcionalidades__wid {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  background:
+    radial-gradient(48% 60% at 43% 50%, hsla(28, 90%, 50%, 0.10), transparent 70%),
+    linear-gradient(180deg, hsl(228, 16%, 5%) 0%, hsl(230, 18%, 3%) 100%);
+}
+
+.funcionalidades__wid-malla {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--borde-sutil) 1px, transparent 1px);
+  background-size: 1.7rem 1.7rem;
+  opacity: 0.3;
+  mask-image: radial-gradient(72% 70% at 43% 50%, black 18%, transparent 92%);
+  -webkit-mask-image: radial-gradient(72% 70% at 43% 50%, black 18%, transparent 92%);
+}
+
+.funcionalidades__wid-aura {
+  position: absolute;
+  top: 50%;
+  left: 43%;
+  width: 42rem;
+  height: 42rem;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(50% 50% at 50% 50%, hsla(28, 100%, 50%, 0.13), transparent 66%);
+}
+
+/* ─── Columna izquierda: copy de la función ─── */
+.funcionalidades__wid-info {
+  position: absolute;
+  top: 50%;
+  /* Anclada por su borde DERECHO al móvil: el móvil está centrado en left:41%
+     (ancho 16.5rem → borde izquierdo en 41% − 8.25rem), así que el borde derecho de
+     la info cae 1.5rem antes (right ≈ 59% + 9.625rem) y el hueco al móvil es
+     CONSTANTE a cualquier ancho. El ancho ENCOGE con min() para que el borde
+     izquierdo nunca baje de 9.5rem y no pise el rastro fijo de la izquierda (acaba
+     ~8.9rem): antes, con left+ancho fijos, a ≤1490px la columna se deslizaba bajo el
+     rótulo «FUNCIONES». */
+  right: calc(59% + 9.625rem);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.95rem;
+  width: min(19rem, calc(41% - 19.125rem));
+  transform: translateY(-50%);
+}
+
+.funcionalidades__wid-eyebrow {
+  font-family: var(--fuente-mono);
+  font-size: 0.72rem; /* 11.5px */
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--naranja-normal);
+}
+
+.funcionalidades__wid-titulo {
+  margin: -0.3rem 0 0;
+  font-family: var(--fuente-display);
+  /* 4rem fijo a ≥1392px; en anchos estrechos encoge con el viewport para no
+     desbordar la columna (que mengua) ni rozar el móvil a ~1280px. */
+  font-size: 4rem; /* 64px */
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__wid-sub {
+  max-width: 18rem;
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__wid-sub strong {
+  font-weight: 600;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__wid-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 0.35rem;
+}
+
+.funcionalidades__wid-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.funcionalidades__wid-item-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--borde-sutil);
+  background: var(--superficie-1);
+  color: var(--naranja-normal);
+}
+
+.funcionalidades__wid-item-icono svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.funcionalidades__wid-item-icono--vivo {
+  border-color: var(--naranja-glow-media);
+  color: hsl(30, 100%, 62%);
+}
+
+.funcionalidades__wid-item-icono--vivo svg {
+  animation: funcionalidades-wid-gira 7s linear infinite;
+}
+
+.funcionalidades__wid-item-texto {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__wid-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+  padding: 0.5rem 0.95rem;
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  clip-path: polygon(0.55rem 0, 100% 0, 100% calc(100% - 0.55rem), calc(100% - 0.55rem) 100%, 0 100%, 0 0.55rem);
+  font-family: var(--fuente-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__wid-chip-punto {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  box-shadow: 0 0 0.5rem var(--naranja-normal);
+  animation: funcionalidades-wid-late 2.6s ease-in-out infinite;
+}
+
+/* ─── Tarjeta flotante: Actividad (bajo el copy) ─── */
+.funcionalidades__wid-act {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 16rem;
+  margin-top: 0.5rem;
+  padding: 1rem 1.1rem;
+}
+
+.funcionalidades__wid-act-cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.funcionalidades__wid-act-etq {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-act-delta {
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--naranja-normal);
+}
+
+.funcionalidades__wid-act-cuerpo {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.funcionalidades__wid-act-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-family: var(--fuente-display);
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__wid-act-u {
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-act-pie {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.funcionalidades__wid-act-dato {
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  color: var(--texto-suave);
+}
+
+/* ─── Móvil: marco + pantalla de inicio ─── */
+.funcionalidades__wid-movil {
+  position: absolute;
+  top: 50%;
+  left: 41%;
+  z-index: 2;
+  width: 16.5rem;
+  height: 37rem;
+  padding: 0.42rem;
+  transform: translate(-50%, -50%) scale(0.94);
+  opacity: 0;
+  border-radius: 2.95rem;
+  /* Canto de titanio: catch-light arriba-izquierda, metal apagado abajo-derecha. */
+  background: linear-gradient(
+    150deg,
+    hsl(228, 9%, 38%) 0%,
+    hsl(230, 12%, 16%) 28%,
+    hsl(230, 14%, 9%) 68%,
+    hsl(226, 9%, 27%) 100%
+  );
+  border: none;
+  box-shadow:
+    inset 0 1.5px 1.5px hsla(0, 0%, 100%, 0.3),
+    inset 0 -2px 2px hsla(0, 0%, 0%, 0.55),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.07),
+    inset 0 0 0 0.42rem hsl(230, 16%, 6%),
+    0 2.8rem 6rem hsla(0, 0%, 0%, 0.6),
+    0 0.5rem 1.4rem hsla(0, 0%, 0%, 0.5);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Botón lateral derecho (encendido). */
+.funcionalidades__wid-movil::before {
+  content: '';
+  position: absolute;
+  top: 31%;
+  right: -0.16rem;
+  width: 0.26rem;
+  height: 4.4rem;
+  border-radius: 0.16rem;
+  background: linear-gradient(90deg, hsl(230, 13%, 11%), hsl(228, 9%, 32%));
+  box-shadow: 0 0.15rem 0.3rem hsla(0, 0%, 0%, 0.45);
+}
+
+/* Botones de volumen izquierdos (un balancín). */
+.funcionalidades__wid-movil::after {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: -0.16rem;
+  width: 0.26rem;
+  height: 6.8rem;
+  border-radius: 0.16rem;
+  background: linear-gradient(90deg, hsl(228, 9%, 32%), hsl(230, 13%, 11%));
+  box-shadow: 0 0.15rem 0.3rem hsla(0, 0%, 0%, 0.45);
+}
+
+.funcionalidades__wid-movil-isla {
+  position: absolute;
+  top: 1.1rem;
+  left: 50%;
+  z-index: 6;
+  width: 5.2rem;
+  height: 1.2rem;
+  transform: translateX(-50%);
+  border-radius: 99px;
+  background: hsl(230, 16%, 2%);
+  box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.04);
+}
+
+/* Lente de la cámara frontal dentro de la isla dinámica. */
+.funcionalidades__wid-movil-isla::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  width: 0.46rem;
+  height: 0.46rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, hsl(214, 38%, 26%), hsl(230, 24%, 4%) 68%);
+  box-shadow: 0 0 0 1px hsla(0, 0%, 0%, 0.7);
+}
+
+.funcionalidades__wid-pantalla {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 2.05rem 0.8rem 0.75rem;
+  border-radius: 2.55rem;
+  background: linear-gradient(170deg, hsl(228, 20%, 9%), hsl(230, 22%, 5%));
+  overflow: hidden;
+}
+
+/* Reflejo del cristal: destello diagonal muy sutil sobre toda la pantalla. */
+.funcionalidades__wid-pantalla::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(
+    122deg,
+    hsla(0, 0%, 100%, 0.06) 0%,
+    hsla(0, 0%, 100%, 0.015) 20%,
+    transparent 42%
+  );
+}
+
+.funcionalidades__wid-barra-estado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+}
+
+.funcionalidades__wid-barra-hora {
+  font-family: var(--fuente-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__wid-barra-iconos {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__wid-barra-iconos svg {
+  height: 0.72rem;
+  width: auto;
+}
+
+.funcionalidades__wid-saludo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.25rem 0.5rem 0.1rem;
+}
+
+.funcionalidades__wid-saludo-fecha {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-saludo-nombre {
+  font-family: var(--font-secondary);
+  font-size: 1.16rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__wid-rejilla {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 0.42rem;
+  flex: 1;
+}
+
+.funcionalidades__wid-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  flex: 1 1 48%;
+  min-width: 0;
+  padding: 0.5rem 0.65rem;
+  border-radius: 1rem;
+  background: hsla(230, 16%, 13%, 0.72);
+  border: 1px solid hsla(230, 14%, 24%, 0.55);
+}
+
+.funcionalidades__wid-widget--ancho {
+  flex-basis: 100%;
+}
+
+.funcionalidades__wid-widget-etq {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-widget-etq svg {
+  color: var(--naranja-normal);
+}
+
+.funcionalidades__wid-widget-etq--agua svg {
+  color: hsl(196, 90%, 58%);
+}
+
+.funcionalidades__wid-glifo {
+  width: 0.78rem;
+  height: 0.78rem;
+  flex-shrink: 0;
+}
+
+.funcionalidades__wid-widget-cuerpo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.funcionalidades__wid-widget-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  min-width: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--texto-principal);
+}
+
+/* En las tarjetas con anillo (Actividad, Agua) el número + unidad NO caben en
+   fila junto al anillo: se apilan (número arriba, unidad/porcentaje debajo). */
+.funcionalidades__wid-widget-cuerpo .funcionalidades__wid-widget-cifra {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  font-size: 1.05rem;
+}
+
+.funcionalidades__wid-widget-cifra--grande {
+  font-size: 1.35rem;
+}
+
+.funcionalidades__wid-widget-u {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-widget-pct {
+  margin-left: 0.1rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  color: hsl(196, 90%, 62%);
+}
+
+/* Unidad + porcentaje del widget de Agua en una sola línea bajo la cifra. */
+.funcionalidades__wid-widget-sub {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.funcionalidades__wid-widget-nota {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.02em;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-linea {
+  width: 100%;
+  height: 1.25rem;
+}
+
+.funcionalidades__wid-linea-area {
+  fill: url(#gradWidPeso);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.funcionalidades__wid-linea-trazo {
+  fill: none;
+  stroke: var(--naranja-normal);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.3s ease;
+}
+
+.funcionalidades__wid-racha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.funcionalidades__wid-racha-izq {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.funcionalidades__wid-racha-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-family: var(--fuente-display);
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--naranja-normal);
+}
+
+.funcionalidades__wid-racha-etq {
+  font-family: var(--fuente-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-dock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.1rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 1.3rem;
+  background: hsla(230, 18%, 14%, 0.55);
+  border: 1px solid hsla(230, 14%, 26%, 0.4);
+}
+
+.funcionalidades__wid-app {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.78rem;
+}
+
+.funcionalidades__wid-app svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.funcionalidades__wid-app--comida {
+  background: linear-gradient(150deg, hsl(28, 92%, 52%), hsl(18, 88%, 46%));
+  color: hsl(40, 100%, 96%);
+}
+
+.funcionalidades__wid-app--gym {
+  background: linear-gradient(150deg, hsl(205, 60%, 30%), hsl(215, 55%, 22%));
+  color: hsl(200, 90%, 72%);
+}
+
+.funcionalidades__wid-app--datos {
+  background: linear-gradient(150deg, hsl(230, 12%, 26%), hsl(230, 14%, 18%));
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__wid-app--agua {
+  background: linear-gradient(150deg, hsl(198, 70%, 34%), hsl(206, 65%, 24%));
+  color: hsl(196, 95%, 76%);
+}
+
+/* ─── Anillos de progreso (compartidos) ─── */
+.funcionalidades__wid-anillo {
+  transform: rotate(-90deg);
+  flex-shrink: 0;
+}
+
+.funcionalidades__wid-anillo--act {
+  width: 3rem;
+  height: 3rem;
+}
+
+.funcionalidades__wid-anillo--mov,
+.funcionalidades__wid-anillo--agua {
+  width: 2.1rem;
+  height: 2.1rem;
+}
+
+.funcionalidades__wid-anillo--watch {
+  width: 3.3rem;
+  height: 3.3rem;
+}
+
+.funcionalidades__wid-anillo-pista {
+  fill: none;
+  stroke: hsla(230, 14%, 42%, 0.32);
+  stroke-width: 6;
+}
+
+.funcionalidades__wid-anillo-trazo {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funcionalidades__wid-anillo-trazo--act,
+.funcionalidades__wid-anillo-trazo--mov,
+.funcionalidades__wid-anillo-trazo--watch {
+  stroke: var(--naranja-normal);
+}
+
+.funcionalidades__wid-anillo-trazo--agua {
+  stroke: hsl(196, 90%, 56%);
+}
+
+/* ─── Ecualizador / barras (compartidas) ─── */
+.funcionalidades__wid-barras {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.16rem;
+}
+
+.funcionalidades__wid-barras--mini {
+  height: 1.4rem;
+}
+
+.funcionalidades__wid-barras--racha {
+  width: 6rem;
+  height: 1.8rem;
+}
+
+.funcionalidades__wid-barras--flotante {
+  height: 2.4rem;
+}
+
+.funcionalidades__wid-barra {
+  flex: 1;
+  height: 100%;
+  border-radius: 0.12rem;
+  background: hsla(28, 90%, 55%, 0.4);
+  transform-origin: bottom;
+  transform: scaleY(0.55);
+  animation: funcionalidades-wid-eq 1.5s ease-in-out infinite;
+}
+
+/* Ecualizador: retardo escalonado por posición (0,13s por barra, sin estilos inline) */
+.funcionalidades__wid-barra:nth-child(2) {
+  animation-delay: 0.13s;
+}
+
+.funcionalidades__wid-barra:nth-child(3) {
+  animation-delay: 0.26s;
+}
+
+.funcionalidades__wid-barra:nth-child(4) {
+  animation-delay: 0.39s;
+}
+
+.funcionalidades__wid-barra:nth-child(5) {
+  animation-delay: 0.52s;
+}
+
+.funcionalidades__wid-barra:nth-child(6) {
+  animation-delay: 0.65s;
+}
+
+.funcionalidades__wid-barra:nth-child(7) {
+  animation-delay: 0.78s;
+}
+
+.funcionalidades__wid-barra--alta {
+  background: var(--naranja-normal);
+}
+
+/* ─── Widget flotante: Pasos ─── */
+.funcionalidades__wid-flotante {
+  position: absolute;
+  top: 13%;
+  /* Atada al móvil (que está en left:41%), no al nav: así viaja con él como un
+     clúster y no deja el hueco gigante entre móvil y tarjeta a anchos amplios. */
+  left: calc(41% + 9rem);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 12rem;
+  padding: 1rem 1.1rem;
+  isolation: isolate;
+  opacity: 0;
+  animation: funcionalidades-wid-flota 8s ease-in-out infinite;
+  transition: opacity 0.7s ease;
+}
+
+.funcionalidades__wid-flotante-cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.funcionalidades__wid-flotante-etq {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-flotante-etq svg {
+  color: var(--naranja-normal);
+}
+
+.funcionalidades__wid-flotante-meta {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-flotante-cifra {
+  font-family: var(--fuente-display);
+  font-size: 2.6rem;
+  line-height: 0.95;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__wid-flotante-u {
+  margin-left: 0.25rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-flotante-progreso {
+  height: 0.32rem;
+  border-radius: 99px;
+  background: hsla(230, 14%, 30%, 0.5);
+  overflow: hidden;
+}
+
+.funcionalidades__wid-flotante-relleno {
+  display: block;
+  width: 78%;
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, hsl(30, 96%, 58%), var(--naranja-normal));
+}
+
+/* ─── Apple Watch ─── */
+/* ─── Apple Watch realista: caja-cojín de titanio, corona digital, botón y correa ─── */
+.funcionalidades__wid-watch {
+  position: absolute;
+  top: 52%;
+  /* Atada al móvil como la tarjeta de Pasos (clúster cohesionado). */
+  left: calc(41% + 9.5rem);
+  z-index: 3;
+  width: 9.5rem;
+  height: 11rem;
+  opacity: 0;
+  animation: funcionalidades-wid-flota 9s ease-in-out infinite 0.6s;
+  transition: opacity 0.7s ease;
+}
+
+/* Caja de titanio: gradiente metálico con filo superior brillante y línea negra
+   contra la pantalla (la mella que tiene el Apple Watch real entre canto y cristal). */
+.funcionalidades__wid-watch-caja {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 0.42rem;
+  border-radius: 3rem / 3.3rem;
+  background: linear-gradient(
+    145deg,
+    hsl(226, 9%, 32%) 0%,
+    hsl(228, 10%, 16%) 24%,
+    hsl(230, 13%, 9%) 62%,
+    hsl(224, 8%, 22%) 100%
+  );
+  box-shadow:
+    inset 0 1.5px 1px hsla(0, 0%, 100%, 0.3),
+    inset 0 -1.5px 1.5px hsla(0, 0%, 0%, 0.6),
+    inset 0 0 0 1.5px hsla(228, 14%, 4%, 0.95),
+    0 1.8rem 3.6rem hsla(0, 0%, 0%, 0.55);
+}
+
+/* Correa deportiva: emerge por arriba y abajo, por detrás de la caja, y se
+   desvanece hacia los extremos para sugerir que continúa fuera de cuadro. */
+.funcionalidades__wid-watch-correa {
+  position: absolute;
+  left: 50%;
+  z-index: 1;
+  width: 6.5rem;
+  height: 5rem;
+  transform: translateX(-50%);
+  /* Sección cilíndrica de goma deportiva: cantos en sombra, lomo con leve brillo. */
+  background:
+    linear-gradient(90deg, hsla(0, 0%, 0%, 0.4) 0%, transparent 24%, hsla(0, 0%, 100%, 0.05) 50%, transparent 76%, hsla(0, 0%, 0%, 0.4) 100%),
+    linear-gradient(180deg, hsl(228, 7%, 21%), hsl(230, 9%, 9%));
+  box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, 0.07), inset 0 0 0 1px hsla(0, 0%, 100%, 0.04);
+}
+
+.funcionalidades__wid-watch-correa--arriba {
+  bottom: calc(100% - 2rem);
+  border-radius: 1.7rem 1.7rem 0.5rem 0.5rem;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 60%);
+  mask-image: linear-gradient(180deg, transparent 0%, black 60%);
+}
+
+.funcionalidades__wid-watch-correa--abajo {
+  top: calc(100% - 2rem);
+  border-radius: 0.5rem 0.5rem 1.7rem 1.7rem;
+  -webkit-mask-image: linear-gradient(0deg, transparent 0%, black 60%);
+  mask-image: linear-gradient(0deg, transparent 0%, black 60%);
+}
+
+/* Corona digital: cilindro estriado en el canto derecho. */
+.funcionalidades__wid-watch-corona {
+  position: absolute;
+  top: 32%;
+  right: -0.32rem;
+  z-index: 1;
+  width: 0.55rem;
+  height: 1.75rem;
+  border-radius: 0.16rem;
+  background:
+    repeating-linear-gradient(0deg, hsla(220, 8%, 60%, 0.45) 0 1px, transparent 1px 2.4px),
+    linear-gradient(90deg, hsl(226, 8%, 33%), hsl(230, 10%, 13%));
+  box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, 0.3), 0 0.2rem 0.45rem hsla(0, 0%, 0%, 0.5);
+}
+
+/* Botón lateral, justo debajo de la corona. */
+.funcionalidades__wid-watch-boton {
+  position: absolute;
+  top: 55%;
+  right: -0.12rem;
+  z-index: 1;
+  width: 0.3rem;
+  height: 2.1rem;
+  border-radius: 0.16rem;
+  background: linear-gradient(90deg, hsl(226, 8%, 28%), hsl(230, 10%, 12%));
+  box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, 0.22), 0 0.15rem 0.3rem hsla(0, 0%, 0%, 0.45);
+}
+
+/* Reflejo del cristal: destello diagonal sutil sobre la pantalla. */
+.funcionalidades__wid-watch-brillo {
+  position: absolute;
+  inset: 0.42rem;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: 2.6rem / 2.9rem;
+  background: linear-gradient(122deg, hsla(0, 0%, 100%, 0.12) 0%, hsla(0, 0%, 100%, 0.02) 26%, transparent 48%);
+}
+
+.funcionalidades__wid-watch-pantalla {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem 0.55rem;
+  border-radius: 2.6rem / 2.9rem;
+  background: radial-gradient(125% 95% at 50% -5%, hsl(228, 24%, 10%), hsl(232, 30%, 2.5%) 75%);
+}
+
+.funcionalidades__wid-watch-hora {
+  align-self: flex-end;
+  margin-right: 0.4rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: hsl(30, 96%, 62%);
+}
+
+.funcionalidades__wid-watch-cuerpo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: -0.1rem;
+}
+
+.funcionalidades__wid-watch-pasos {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--fuente-display);
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__wid-watch-u {
+  font-family: var(--fuente-mono);
+  font-size: 0.48rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__wid-watch-pie {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.funcionalidades__wid-watch-dato {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--fuente-display);
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__wid-watch-min {
+  font-family: var(--fuente-mono);
+  font-size: 0.44rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+/* ─── Tarjetas HUD con chaflán (capa exterior = borde, ::before = relleno) ─── */
+.funcionalidades__wid-act,
+.funcionalidades__wid-flotante {
+  background: linear-gradient(150deg, hsla(28, 60%, 42%, 0.45), hsla(230, 14%, 30%, 0.45));
+  clip-path: polygon(0.9rem 0, 100% 0, 100% calc(100% - 0.9rem), calc(100% - 0.9rem) 100%, 0 100%, 0 0.9rem);
+  filter: drop-shadow(0 1.5rem 2.8rem hsla(0, 0%, 0%, 0.45));
+}
+
+.funcionalidades__wid-act::before,
+.funcionalidades__wid-flotante::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  background: linear-gradient(160deg, hsla(28, 32%, 11%, 0.94), hsla(230, 22%, 6%, 0.95));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  clip-path: polygon(0.85rem 0, 100% 0, 100% calc(100% - 0.85rem), calc(100% - 0.85rem) 100%, 0 100%, 0 0.85rem);
+}
+
+/* ─── Revelado al activarse la pantalla ─── */
+.funcionalidades__wid-info > span {
+  opacity: 0;
+  transform: translateY(0.9rem);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funcionalidades__visual--activo .funcionalidades__wid-info > span {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.funcionalidades__visual--activo .funcionalidades__wid-info > span:nth-child(1) { transition-delay: 0.1s; }
+.funcionalidades__visual--activo .funcionalidades__wid-info > span:nth-child(2) { transition-delay: 0.18s; }
+.funcionalidades__visual--activo .funcionalidades__wid-info > span:nth-child(3) { transition-delay: 0.26s; }
+.funcionalidades__visual--activo .funcionalidades__wid-info > span:nth-child(4) { transition-delay: 0.34s; }
+.funcionalidades__visual--activo .funcionalidades__wid-info > span:nth-child(5) { transition-delay: 0.42s; }
+.funcionalidades__visual--activo .funcionalidades__wid-info > span:nth-child(6) { transition-delay: 0.52s; }
+
+.funcionalidades__visual--activo .funcionalidades__wid-movil {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  transition-delay: 0.1s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__wid-flotante {
+  opacity: 1;
+  transition-delay: 0.32s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__wid-watch {
+  opacity: 1;
+  transition-delay: 0.44s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__wid-anillo-trazo--act,
+.funcionalidades__visual--activo .funcionalidades__wid-anillo-trazo--mov { stroke-dashoffset: 25; transition-delay: 0.5s; }
+.funcionalidades__visual--activo .funcionalidades__wid-anillo-trazo--agua { stroke-dashoffset: 37; transition-delay: 0.6s; }
+.funcionalidades__visual--activo .funcionalidades__wid-anillo-trazo--watch { stroke-dashoffset: 16; transition-delay: 0.7s; }
+
+.funcionalidades__visual--activo .funcionalidades__wid-linea-trazo { stroke-dashoffset: 0; transition-delay: 0.6s; }
+.funcionalidades__visual--activo .funcionalidades__wid-linea-area { opacity: 1; transition-delay: 0.75s; }
+
+/* ─── Keyframes ─── */
+@keyframes funcionalidades-wid-gira {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes funcionalidades-wid-late {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.8); }
+}
+
+@keyframes funcionalidades-wid-eq {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1); }
+}
+
+@keyframes funcionalidades-wid-flota {
+  0%, 100% { transform: translateY(-0.45rem); }
+  50% { transform: translateY(0.45rem); }
+}
+
+/* ─── Anchos intermedios: el clúster flotante se retira ─── */
+@include responsive-down('xl') {
+  .funcionalidades__wid-flotante,
+  .funcionalidades__wid-watch {
+    display: none;
+  }
+
+  .funcionalidades__wid-movil {
+    left: 50%;
+  }
+
+  .funcionalidades__wid-aura {
+    left: 50%;
+  }
+}
+
+@include responsive-down('md') {
+  .funcionalidades__wid-info {
+    left: 3rem;
+    width: 16rem;
+  }
+
+  .funcionalidades__wid-titulo {
+    font-size: 3.2rem;
+  }
+
+  .funcionalidades__wid-movil {
+    left: 62%;
+  }
+}
+
+/* ─── Movimiento reducido: estados finales, sin bucles ─── */
+@media (prefers-reduced-motion: reduce) {
+  .funcionalidades__wid-barra,
+  .funcionalidades__wid-flotante,
+  .funcionalidades__wid-watch,
+  .funcionalidades__wid-item-icono--vivo svg,
+  .funcionalidades__wid-chip-punto {
+    animation: none;
+  }
+
+  .funcionalidades__wid-barra {
+    transform: scaleY(0.8);
+  }
+
+  .funcionalidades__wid-flotante,
+  .funcionalidades__wid-watch {
+    opacity: 1;
+    transform: none;
+  }
+
+  .funcionalidades__wid-anillo-trazo--act,
+  .funcionalidades__wid-anillo-trazo--mov { stroke-dashoffset: 25; }
+  .funcionalidades__wid-anillo-trazo--agua { stroke-dashoffset: 37; }
+  .funcionalidades__wid-anillo-trazo--watch { stroke-dashoffset: 16; }
+  .funcionalidades__wid-linea-trazo { stroke-dashoffset: 0; }
+  .funcionalidades__wid-linea-area { opacity: 1; }
+}
+
+/* Mockup: registro de comidas — minuta editorial tipo carta de restaurante.
+   Sin tarjetas ni fotos: balance del día (kcal héroe + macros) a la izquierda
+   y la carta del día (hora · plato · puntos conductores · kcal) a la derecha,
+   cerradas por la banda de datos inferior. Se apilan solas con flex-wrap. */
+.funcionalidades__comidas {
+  display: flex;
+  flex-direction: column;
+  /* 4rem: mismo indent que la gráfica para librar el rótulo FUNCIONES del raíl */
+  padding-left: 4rem;
+}
+
+/* Cabecera del día: etiqueta mono a la izquierda + estado IA a la derecha */
+.funcionalidades__comidas-cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.funcionalidades__comidas-dia {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__comidas-ia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--naranja-texto);
+}
+
+.funcionalidades__comidas-ia-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  box-shadow: 0 0 8px var(--naranja-normal);
+  animation: funcionalidades-comidas-latido 1.9s ease-in-out infinite;
+}
+
+/* Cuerpo: balance del día a la izquierda, minuta a la derecha.
+   flex-wrap: apilan solos cuando no caben, sin media queries. */
+.funcionalidades__comidas-cuerpo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 2.5rem;
+  /* 1.1rem abajo: mismo compás que el padding de las filas de la minuta */
+  padding: 0.8rem 0 1.1rem;
+}
+
+/* BALANCE: kcal héroe con la misma voz que el número de la gráfica */
+.funcionalidades__balance {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 0 1 15.5rem;
+  min-width: 13rem;
+}
+
+.funcionalidades__balance-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  /* secundario: suave se queda en ~3,5:1 y esto es dato, no adorno */
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__balance-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.funcionalidades__balance-kcal {
+  font-family: var(--fuente-display);
+  font-size: 4.6rem; /* 73.6px, mismo cuerpo que el héroe de la gráfica */
+  font-weight: var(--font-weight-bold);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__balance-unidad {
+  font-family: var(--font-secondary);
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--texto-suave);
+}
+
+.funcionalidades__balance-meta {
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+/* Hairline técnica de esquinas vivas, no píldora redondeada */
+.funcionalidades__balance-barra {
+  position: relative;
+  height: 0.2rem;
+  margin-top: 0.35rem;
+  background: var(--superficie-3);
+  overflow: hidden;
+}
+
+.funcionalidades__balance-relleno {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--naranja-glow-media), var(--naranja-normal));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.funcionalidades__visual--activo .funcionalidades__balance-relleno {
+  transform: scaleX(var(--relleno));
+  transition-delay: 0.35s;
+}
+
+@keyframes funcionalidades-comidas-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+/* Macros como líneas técnicas cerrando la columna del balance */
+.funcionalidades__macros {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  /* auto: empuja los macros al suelo de la columna estirada */
+  margin-top: auto;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.funcionalidades__macros-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.funcionalidades__macros-cab {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.funcionalidades__macros-nombre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  /* nowrap: en la fila de tres macros "CARBOHIDRATOS" no debe partirse */
+  white-space: nowrap;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__macros-nombre::before {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--tono);
+  box-shadow: 0 0 7px -1px var(--tono);
+  content: '';
+}
+
+.funcionalidades__macros-cifra {
+  font-family: var(--fuente-mono);
+  font-size: 0.74rem;
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__macros-meta {
+  font-weight: 400;
+  color: var(--texto-suave);
+}
+
+.funcionalidades__macros-barra {
+  position: relative;
+  height: 0.14rem;
+  background: var(--superficie-3);
+  overflow: hidden;
+}
+
+.funcionalidades__macros-relleno {
+  position: absolute;
+  inset: 0;
+  background: var(--tono);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.funcionalidades__visual--activo .funcionalidades__macros-relleno {
+  transform: scaleX(var(--relleno));
+}
+
+.funcionalidades__visual--activo .funcionalidades__macros-item:nth-child(1) .funcionalidades__macros-relleno {
+  transition-delay: 0.5s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__macros-item:nth-child(2) .funcionalidades__macros-relleno {
+  transition-delay: 0.62s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__macros-item:nth-child(3) .funcionalidades__macros-relleno {
+  transition-delay: 0.74s;
+}
+
+/* MINUTA: el día contado como una carta de restaurante — hora, plato,
+   puntos conductores y kcal en la misma línea base. Sin cajas ni fotos. */
+.funcionalidades__minuta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 26rem;
+  min-width: 0;
+  padding-left: 2.5rem;
+  border-left: 1px solid var(--borde-sutil);
+}
+
+.funcionalidades__minuta-fila {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.1rem 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.funcionalidades__minuta-fila + .funcionalidades__minuta-fila {
+  border-top: 1px solid var(--borde-sutil);
+}
+
+/* Sin padding en los extremos: la primera hora arranca a la altura de
+   CONSUMIDO HOY y la última fila muere donde muere el balance */
+.funcionalidades__minuta-fila:first-child {
+  padding-top: 0;
+}
+
+.funcionalidades__minuta-fila:last-child {
+  padding-bottom: 0;
+}
+
+.funcionalidades__visual--activo .funcionalidades__minuta-fila {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.funcionalidades__visual--activo .funcionalidades__minuta > *:nth-child(1) {
+  transition-delay: 0.42s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__minuta > *:nth-child(2) {
+  transition-delay: 0.54s;
+}
+
+.funcionalidades__visual--activo .funcionalidades__minuta > *:nth-child(3) {
+  transition-delay: 0.66s;
+}
+
+.funcionalidades__minuta-linea {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+}
+
+.funcionalidades__minuta-hora {
+  flex: 0 0 3rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__minuta-nombre {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--fuente-display);
+  font-size: 1.45rem; /* 23.2px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--texto-principal);
+  transition: color var(--duration-fast) ease;
+}
+
+.funcionalidades__minuta-fila:hover .funcionalidades__minuta-nombre {
+  color: var(--naranja-texto);
+}
+
+/* Puntos conductores de carta impresa: el span vacío en un flex con línea
+   base deja su borde inferior justo sobre la baseline del texto */
+.funcionalidades__minuta-puntos {
+  position: relative;
+  top: -0.15rem;
+  flex: 1 1 2rem;
+  border-bottom: 1px dotted var(--borde-medio);
+}
+
+.funcionalidades__minuta-kcal {
+  flex: 0 0 auto;
+  font-family: var(--fuente-display);
+  font-size: 1.45rem; /* 23.2px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.funcionalidades__minuta-detalle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.9rem;
+  /* 3.9rem: alinea el desglose bajo el nombre (hora 3rem + hueco 0.9rem) */
+  padding-left: 3.9rem;
+}
+
+.funcionalidades__minuta-macros {
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__minuta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--naranja-texto);
+}
+
+.funcionalidades__minuta-tag-punto {
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  box-shadow: 0 0 6px var(--naranja-normal);
+  animation: funcionalidades-comidas-latido 1.9s ease-in-out infinite;
+}
+
+/* Destello de análisis: un brillo sesgado recorre la fila recién analizada.
+   El skew evita que un fotograma congelado parezca un rectángulo. */
+.funcionalidades__minuta-fila--analizada::after {
+  position: absolute;
+  top: 0;
+  left: -26%;
+  width: 26%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, hsla(42, 100%, 86%, 0.07) 50%, transparent);
+  pointer-events: none;
+  content: '';
+}
+
+.funcionalidades__visual--activo .funcionalidades__minuta-fila--analizada::after {
+  animation: funcionalidades-minuta-destello 5s ease-in-out 1.2s infinite;
+}
+
+/* 485%: (100% de fila + 26% propio) / 26% de ancho propio → cruza entera */
+@keyframes funcionalidades-minuta-destello {
+  0% { transform: translateX(0) skewX(-14deg); opacity: 0; }
+  12% { opacity: 1; }
+  55% { transform: translateX(485%) skewX(-14deg); opacity: 1; }
+  60% { opacity: 0; }
+  100% { transform: translateX(485%) skewX(-14deg); opacity: 0; }
+}
+
+/* Banda de datos inferior: espejo de la banda de la gráfica. La primera
+   columna calza con el balance y la segunda arranca en el filo vertical
+   del cuerpo, así la banda hereda la retícula de arriba. */
+.funcionalidades__comidas-datos {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.funcionalidades__comidas-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1 1 auto;
+}
+
+/* 16rem + 2rem de gap = 18rem: el mismo ancho que balance + hueco, así
+   la segunda columna cae exactamente sobre el filo vertical */
+.funcionalidades__comidas-dato:first-child {
+  flex: 0 0 16rem;
+}
+
+/* La última no crece: su texto remata contra el borde derecho del marco */
+.funcionalidades__comidas-dato:last-child {
+  flex: 0 0 auto;
+}
+
+.funcionalidades__comidas-dato-etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.funcionalidades__comidas-dato-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.15rem; /* 18.4px */
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+/* Al apilarse el cuerpo (la minuta baja bajo el balance) el filo vertical
+   izquierdo deja de tener columna a la que separar */
+@include responsive-down('md') {
+  .funcionalidades__minuta {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  /* Apilado: el balance ocupa todo el ancho y los macros se tumban en fila
+     para no dejar media pantalla vacía a la derecha del número */
+  .funcionalidades__balance {
+    flex: 1 1 100%;
+  }
+
+  .funcionalidades__macros {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .funcionalidades__macros-item {
+    flex: 1;
+  }
+
+  .funcionalidades__comidas-datos {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 1.1rem 2.4rem;
+  }
+}
+
+@include responsive-down('sm') {
+  /* Columna otra vez: entre 641-680px la fila de tres macros con
+     "CARBOHIDRATOS/265g" en nowrap se queda sin colchón lateral */
+  .funcionalidades__macros {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  /* El plato salta de línea como en una carta impresa: la elipsis junto a
+     los puntos conductores parecía un doble punteado roto */
+  .funcionalidades__minuta-nombre {
+    font-size: 1.15rem;
+    line-height: 1.15;
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .funcionalidades__minuta-kcal {
+    font-size: 1.15rem;
+  }
+
+  /* 40%: dos columnas reales por fila, con la segunda columna alineada */
+  .funcionalidades__comidas-dato {
+    flex: 1 1 40%;
+  }
+
+  /* Apilado sin filo vertical: los extremos pierden su ancho especial */
+  .funcionalidades__comidas-dato:first-child {
+    flex: 1 1 40%;
+  }
+
+  .funcionalidades__comidas-dato:last-child {
+    flex: 1 1 40%;
+  }
+}
+
+
+
+/* ════════════════════════════════════════════
+   FAQ
+   ════════════════════════════════════════════ */
+/* FAQ editorial: cabecera fija a la izquierda, lista de lineas a la derecha.
+   Sin cajas: la estructura la dan los filos y la numeracion mono. */
+.faq__rejilla {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.faq .faq__cabecera {
+  position: sticky;
+  top: 6rem;
+  margin-bottom: 0;
+}
+
+.faq {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Halo naranja muy tenue en la esquina de la lista, como en planes */
+.faq__halo {
+  position: absolute;
+  top: -12rem;
+  right: -16rem;
+  width: 50rem;
+  height: 34rem;
+  z-index: -1;
+  background: var(--gradiente-halo);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.faq__titulo-acento {
+  @include texto-gradiente;
+}
+
+/* Datos clave de las respuestas, encendidos en el acento */
+.faq__clave {
+  font-weight: var(--font-weight-semibold);
+  color: var(--naranja-texto);
+}
+
+.faq__intro {
+  max-width: 26rem;
+  margin: 1.25rem 0 2.5rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.faq__contacto {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 0.875rem 0;
+  border-top: 1px solid var(--borde-medio);
+  border-bottom: 1px solid var(--borde-medio);
+  text-decoration: none;
+}
+
+/* La linea inferior se redibuja en naranja, como las de la lista */
+.faq__contacto::after {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  content: '';
+  background: linear-gradient(90deg, var(--naranja-normal), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq__contacto:hover::after {
+  transform: scaleX(1);
+}
+
+.faq__contacto-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.faq__contacto-titulo {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--texto-principal);
+}
+
+.faq__contacto-email {
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--naranja-texto);
+}
+
+.faq__contacto-flecha {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--texto-suave);
+  transition: transform var(--duration-base) ease, color var(--duration-base) ease;
+}
+
+.faq__contacto:hover .faq__contacto-flecha {
+  color: var(--naranja-normal);
+  transform: translate(0.125rem, -0.125rem);
+}
+
+.faq__contenedor {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  counter-reset: indice-faq;
+  isolation: isolate;
+}
+
+/* Haz de luz: un foco naranja tenue sigue al cursor por la lista */
+.faq__foco {
+  position: absolute;
+  inset: -2rem;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    20rem 20rem at var(--haz-x, 50%) var(--haz-y, 50%),
+    var(--naranja-glow-suave),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.faq__contenedor.haz--activo .faq__foco {
+  opacity: 1;
+}
+
+.faq__meta {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding-bottom: 0.75rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.faq__item {
+  position: relative;
+  border-top: 1px solid var(--borde-medio);
+  counter-increment: indice-faq;
+  /* Permite animar height:auto del contenido del details (Chrome) */
+  interpolate-size: allow-keywords;
+  /* El atenuado usa filter porque GSAP controla la opacity inline al entrar */
+  transition: filter 0.35s ease;
+}
+
+/* Al recorrer la lista, las preguntas hermanas se atenuan y la activa brilla */
+.faq__contenedor:hover .faq__item {
+  filter: opacity(0.4);
+}
+
+.faq__contenedor:hover .faq__item:hover,
+.faq__contenedor:hover .faq__item[open] {
+  filter: none;
+}
+
+.faq__item:last-of-type {
+  border-bottom: 1px solid var(--borde-medio);
+}
+
+/* La linea divisoria superior se redibuja en naranja al pasar el cursor */
+.faq__item::before {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  content: '';
+  background: linear-gradient(90deg, var(--naranja-normal), var(--naranja-glow-suave) 55%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.faq__item:hover::before,
+.faq__item[open]::before {
+  transform: scaleX(1);
+}
+
+/* Numero fantasma editorial: aparece gigante al abrir la pregunta */
+.faq__item::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  content: counter(indice-faq, decimal-leading-zero);
+  font-family: var(--fuente-display);
+  font-size: 8rem; /* 128px */
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--naranja-normal) 22%, transparent);
+  transform: translateY(-40%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.faq__item[open]::after {
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+/* Despliegue con altura animada (Chrome; en el resto abre sin transicion) */
+.faq__item::details-content {
+  height: 0;
+  overflow: clip;
+  transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), content-visibility 0.4s allow-discrete;
+}
+
+.faq__item[open]::details-content {
+  height: auto;
+}
+
+.faq__pregunta {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.75rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq__pregunta::-webkit-details-marker {
+  display: none;
+}
+
+.faq__numero {
+  flex-shrink: 0;
+  width: 2rem;
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--texto-suave);
+  transition: color var(--duration-base) ease;
+}
+
+.faq__pregunta-texto {
+  flex: 1;
+  font-family: var(--font-secondary);
+  font-size: 1.375rem; /* 22px */
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--texto-principal);
+  transition: transform var(--duration-base) ease;
+}
+
+.faq__item:hover .faq__numero {
+  color: var(--naranja-normal);
+}
+
+.faq__item:hover .faq__pregunta-texto {
+  transform: translateX(0.375rem);
+}
+
+.faq__item[open] .faq__numero {
+  color: var(--naranja-normal);
+}
+
+.faq__item[open] .faq__pregunta-texto {
+  transform: none;
+}
+
+.faq__icono {
+  position: relative;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  align-self: center;
+  border: 1px solid var(--borde-sutil);
+  border-radius: 50%;
+  transition: transform var(--duration-base) cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background 0.25s ease;
+}
+
+.faq__item:hover .faq__icono {
+  border-color: color-mix(in srgb, var(--naranja-normal) 45%, transparent);
+  background: var(--naranja-glow-suave);
+}
+
+.faq__item[open] .faq__icono {
+  border-color: var(--naranja-normal);
+  background: var(--naranja-glow-suave);
+}
+
+.faq__icono::before,
+.faq__icono::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  content: '';
+  background: var(--texto-suave);
+  transition: background var(--duration-base) ease;
+}
+
+.faq__icono::before {
+  width: 1.125rem;
+  height: 1.5px;
+  transform: translate(-50%, -50%);
+}
+
+.faq__icono::after {
+  width: 1.5px;
+  height: 1.125rem;
+  transform: translate(-50%, -50%);
+}
+
+.faq__item:hover .faq__icono::before,
+.faq__item:hover .faq__icono::after {
+  background: var(--naranja-normal);
+}
+
+/* El + gira 45 grados y se convierte en x al abrir */
+.faq__item[open] .faq__icono {
+  transform: rotate(45deg);
+}
+
+.faq__item[open] .faq__icono::before,
+.faq__item[open] .faq__icono::after {
+  background: var(--naranja-normal);
+}
+
+.faq__respuesta {
+  max-width: 36rem;
+  margin: 0;
+  padding: 0 0 1.75rem 3.5rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  line-height: 1.65;
+  color: var(--texto-secundario);
+  animation: faq-respuesta-entra 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes faq-respuesta-entra {
+  from {
+    opacity: 0;
+    transform: translateY(-0.375rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@include responsive-down('lg') {
+  .faq__rejilla {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .faq .faq__cabecera {
+    position: static;
+  }
+
+  .faq__respuesta {
+    padding-left: 0;
+  }
+}
+
+
+/* ════════════════════════════════════════════
+   CTA FINAL
+   ════════════════════════════════════════════ */
+.cta-final {
+  position: relative;
+  padding: var(--spacing-size-xxxl) 6rem;
+  background: var(--superficie-1);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.cta-final__halo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gradiente-halo);
+  pointer-events: none;
+}
+
+.cta-final__contenido {
+  max-width: 44rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-final__titulo {
+  @include titular-display(var(--display-lg));
+  margin: 0 0 1.25rem;
+}
+
+.cta-final__texto {
+  margin: 0 0 2rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+.cta-final__flecha {
+  width: 1.05rem;
+  height: 1.05rem;
+  transition: transform var(--duration-base) ease;
+}
+
+.boton:hover .cta-final__flecha {
+  transform: translateX(0.35rem);
+}
+
+
+/* ════════════════════════════════════════════
+   PILARES — bloques de foto + texto en zig-zag
+   ════════════════════════════════════════════ */
+.pilares {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-xxxl);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-size-xxxl) 6rem;
+  background: var(--superficie-fondo);
+}
+
+.pilar {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: 3.5rem;
+}
+
+.pilar--invertido .pilar__media {
+  order: 2;
+}
+
+.pilar__media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-bento);
+  overflow: hidden;
+  border: 1px solid var(--borde-sutil);
+  box-shadow: var(--sombra-bento);
+  isolation: isolate;
+}
+
+.pilar__imagen {
+  width: 100%;
+  height: 116%;
+  object-fit: cover;
+  object-position: center;
+  will-change: transform;
+  filter: grayscale(1) contrast(1.06) brightness(0.62);
+}
+
+.pilar__velo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, hsla(240, 6%, 3%, 0.05) 0%, hsla(240, 6%, 3%, 0.5) 100%),
+    radial-gradient(75% 65% at 28% 30%, hsla(24, 100%, 50%, 0.24), transparent 62%);
+}
+
+.pilar__titulo {
+  @include titular-display(var(--display-md));
+  margin: 0.75rem 0 0;
+}
+
+.pilar__titulo em {
+  @include acento-italica;
+  color: var(--naranja-texto);
+}
+
+.pilar__descripcion {
+  margin: 1.25rem 0 0;
+  max-width: 32rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  line-height: 1.55;
+  color: var(--texto-secundario);
+}
+
+/* Micro-datos técnicos: rellenan el aire muerto bajo el copy con detalle real */
+.pilar__datos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pilar__dato {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem; /* 12px */
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.pilar__dato::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1px;
+  background: var(--naranja-normal);
+  opacity: 0.65;
+}
+
+.pilar__enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+  padding: 0;
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--naranja-texto);
+}
+
+.pilar__enlace-flecha {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pilar__enlace:hover .pilar__enlace-flecha {
+  transform: translateX(0.35rem);
+}
+
+@include responsive-down('lg') {
+  .pilares {
+    padding: var(--spacing-size-xxxl) 3rem;
+    gap: var(--spacing-size-xxl);
+  }
+
+  .pilar {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .pilar--invertido .pilar__media {
+    order: 0;
+  }
+}
+
+@include responsive-down('sm') {
+  .pilares {
+    padding: var(--spacing-size-xxl) 1.5rem;
+  }
+}
+
+
+/* ════════════════════════════════════════════
+   CTA FINAL — fondo fotográfico tratado
+   ════════════════════════════════════════════ */
+.cta-final__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  margin: 0;
+  overflow: hidden;
+}
+
+.cta-final__media::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: linear-gradient(180deg, hsla(240, 6%, 3%, 0.55) 0%, hsla(240, 6%, 4%, 0.84) 100%);
+}
+
+.cta-final__imagen {
+  width: 100%;
+  height: 116%;
+  object-fit: cover;
+  object-position: center;
+  will-change: transform;
+  filter: grayscale(1) contrast(1.05) brightness(0.45);
+}
+
+
+/* ════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════ */
+@include responsive-down('lg') {
+  .hero { padding: 8rem 3rem 6rem; }
+  .hero__scroll { left: 3rem; }
+  .proceso, .funcionalidades, .faq, .planes, .cta-final { padding-left: 3rem; padding-right: 3rem; }
+  .proceso__lista { grid-template-columns: 1fr; }
+  .funcionalidades { padding-left: 0; padding-right: 0; }
+  .funcionalidades__cabecera { padding: 0 3rem; }
+  .funcionalidades__escena { height: auto; min-height: 0; }
+  .funcionalidades__lista { position: static; width: auto; transform: none; padding: 0 3rem; margin-bottom: 2rem; }
+  .funcionalidades__panel { position: relative; inset: auto; min-height: 32rem; }
+  .funcionalidades__visual { padding: 2rem; }
+  .funcionalidades__ayuno-fantasma { inset: 0; font-size: 5.5rem; }
+  .funcionalidades__ayuno-vertical { display: none; }
+  .funcionalidades__tarjeta-detox { right: 5%; }
+  .funcionalidades__regla { right: 6%; }
+  .funcionalidades__plan { display: none; }
+  .funcionalidades__zona { display: none; }
+  .funcionalidades__inspector { display: none; }
+  .funcionalidades__ayuno-rotulo { display: none; }
+  .funcionalidades__agua-registro { display: none; }
+  .funcionalidades__paso-texto { max-height: none; padding-bottom: 1.5rem; opacity: 1; }
+  .funcionalidades__paso-titulo { color: var(--texto-principal); }
+  /* Sin el raíl fijo (oculto en ≤lg) el indent de 4rem solo roba ancho */
+  .funcionalidades__grafica { padding-left: 0; }
+  .funcionalidades__comidas { padding-left: 0; }
+  .funcionalidades__visual--datos .funcionalidades__visual-cabecera { padding-left: 0; }
+  .funcionalidades__visual--datos .funcionalidades__visual-pie { padding-left: 0; }
+}
+
+@include responsive-down('sm') {
+  .hero {
+    padding: 7rem 1.5rem 5rem;
+    min-height: 90vh;
+  }
+  .hero__scroll { display: none; }
+  .proceso, .funcionalidades, .faq, .planes, .cta-final {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .funcionalidades__paso-titulo { font-size: var(--font-size-xl); }
+  .funcionalidades__panel { min-height: 24rem; }
+  .planes__tarjetas { gap: 1.25rem; }
+}
+
+/* Sin animaciones: todo el contenido visible y quieto */
+@media (prefers-reduced-motion: reduce) {
+  .funcionalidades__paso-texto { max-height: none; padding-bottom: 1.5rem; opacity: 1; }
+  .funcionalidades__paso-titulo { color: var(--texto-principal); }
+  .funcionalidades__grafica-linea { stroke-dashoffset: 0; transition: none; }
+  .funcionalidades__grafica-area { opacity: 1; transition: none; }
+  .funcionalidades__grafica-punto { opacity: 1; transition: none; animation: none; }
+  .funcionalidades__grafica-tooltip { transition: none; animation: none; }
+  .funcionalidades__grafica-tooltip-barra-relleno { transition: none; }
+  .funcionalidades__grafica-metrica { opacity: 1; transform: none; transition: none; }
+  .funcionalidades__grafica-metrica::before { transition: none; }
+  .funcionalidades__grafica-regla-avance { transform: none; transition: none; }
+  .funcionalidades__grafica-regla-marcador { opacity: 1; transition: none; }
+  .funcionalidades__ayuno-estado-fase,
+  .funcionalidades__fase-nota--activa .funcionalidades__fase-nota-titulo,
+  .funcionalidades__regla-ahora-linea,
+  .funcionalidades__tarjeta-detox-nucleo,
+  .funcionalidades__tarjeta-detox-particula,
+  .funcionalidades__plan-fila--proxima .funcionalidades__plan-detalle,
+  .funcionalidades__inspector { animation: none; }
+  .funcionalidades__comparador-imagen,
+  .funcionalidades__comparador-delta-valor,
+  .funcionalidades__comparador-tirador { animation: none; }
+  .funcionalidades__comidas-ia-punto { animation: none; }
+  .funcionalidades__minuta-tag-punto { animation: none; }
+  .funcionalidades__minuta-fila--analizada::after { animation: none; }
+  .funcionalidades__minuta-fila { opacity: 1; transform: none; transition: none; }
+  .funcionalidades__balance-relleno { transform: scaleX(var(--relleno)); transition: none; }
+  .funcionalidades__macros-relleno { transform: scaleX(var(--relleno)); transition: none; }
+}
+
+
+/* Tipografías display de la landing: pasos por breakpoint (antes clamp) */
+@include responsive-down('xl') {
+  .proceso__numero {
+    font-size: 5.25rem; /* 84px */
+  }
+
+  .funcionalidades__ayuno-fantasma {
+    font-size: 9.5rem; /* 152px */
+  }
+
+  .funcionalidades__wid-titulo {
+    font-size: 3.4rem; /* 54.4px */
+  }
+}
+
+@include responsive-down('lg') {
+  .proceso__numero {
+    font-size: 4.5rem; /* 72px */
+  }
+
+  .faq__item::before {
+    font-size: 5.75rem; /* 92px */
+  }
+}
+
+@include responsive-down('md') {
+  .manifiesto__texto {
+    font-size: 2.9rem; /* 46.4px */
+  }
+
+  .faq__pregunta {
+    font-size: 1.125rem; /* 18px */
+  }
+}
+
+@include responsive-down('xs') {
+  .manifiesto__texto {
+    font-size: 2.5rem; /* 40px */
+  }
+
+  .faq__item::before {
+    font-size: 5rem; /* 80px */
+  }
+
+  .funcionalidades__ayuno-fantasma {
+    font-size: 3.25rem; /* 52px */
+  }
+}
