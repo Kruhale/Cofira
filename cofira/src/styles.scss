@@ -1,0 +1,35 @@
+@import 'styles/00-settings/fonts';
+@import 'styles/00-settings/variables';
+
+
+@import 'styles/01-tools/mixins';
+
+
+@import 'styles/02-generic/reset';
+
+
+@import 'styles/03-elements/elements';
+@import 'styles/03-elements/typography';
+@import 'styles/03-elements/links';
+@import 'styles/03-elements/buttons';
+@import 'styles/03-elements/forms';
+@import 'styles/03-elements/lists';
+
+
+@import 'styles/04-layout/grid';
+@import 'styles/04-layout/layout';
+
+
+@import 'styles/05-components/inputs';
+@import 'styles/05-components/boton';
+@import 'styles/05-components/tarjeta';
+@import 'styles/05-components/formulario';
+@import 'styles/05-components/navegacion';
+@import 'styles/05-components/alerta';
+@import 'styles/05-components/legal';
+
+
+@import 'styles/06-utilities/utilities';
+
+
+@import 'styles/07-dark-mode/dark-mode';
