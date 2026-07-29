@@ -1,0 +1,248 @@
+<main class="seguimiento">
+
+  <header class="seguimiento__cabecera">
+    <section class="seguimiento__cabecera-textos">
+      <p class="seguimiento__eyebrow">{{ textos().eyebrow }}</p>
+      <h1 class="seguimiento__titulo">{{ textos().titulo }} <em class="seguimiento__titulo-acento">{{ textos().tituloAcento }}</em></h1>
+    </section>
+
+    <aside class="seguimiento__cabecera-meta">
+      <p class="seguimiento__contexto">
+        <span class="seguimiento__contexto-punto" aria-hidden="true"></span>
+        {{ textos().contexto }}
+      </p>
+    </aside>
+  </header>
+
+  @if (esDemo()) {
+    <app-banner-pro></app-banner-pro>
+  }
+
+  <section class="seguimiento__entrenador">
+    <p class="seguimiento__entrenador-eyebrow">{{ textos().entrenadorEyebrow }}</p>
+
+    @if (cargandoIA()) {
+      <p aria-live="polite" class="seguimiento__entrenador-cargando">
+        <span aria-hidden="true" class="seguimiento__contexto-punto"></span>
+        {{ textos().entrenadorCargando }}
+      </p>
+    } @else if (comentarioIA()) {
+      <blockquote class="seguimiento__entrenador-cita">
+        <p class="seguimiento__entrenador-comentario">{{ comentarioIA()!.comentario }}</p>
+        <footer class="seguimiento__entrenador-consejo">
+          <span class="seguimiento__entrenador-consejo-etiqueta">{{ textos().entrenadorConsejoEtiqueta }}</span>
+          <p class="seguimiento__entrenador-consejo-texto">{{ comentarioIA()!.consejo }}</p>
+        </footer>
+      </blockquote>
+    }
+  </section>
+
+  <section class="seguimiento__anillos">
+    <article class="seguimiento__anillo-tarjeta">
+      <figure class="seguimiento__anillo">
+        <svg aria-hidden="true" class="seguimiento__anillo-svg" viewBox="0 0 100 100">
+          <circle class="seguimiento__anillo-fondo" cx="50" cy="50" r="44"/>
+          <circle class="seguimiento__anillo-progreso" cx="50" cy="50" r="44" [style.stroke-dashoffset]="calcularDashoffset(porcentajeKcalSemana())"/>
+        </svg>
+        <figcaption class="seguimiento__anillo-cifra">{{ porcentajeKcalSemana() }}<span class="seguimiento__anillo-unidad">%</span></figcaption>
+      </figure>
+      <p class="seguimiento__anillo-etiqueta">{{ textos().anilloKcal }}</p>
+    </article>
+
+    <article class="seguimiento__anillo-tarjeta">
+      <figure class="seguimiento__anillo">
+        <svg aria-hidden="true" class="seguimiento__anillo-svg" viewBox="0 0 100 100">
+          <circle class="seguimiento__anillo-fondo" cx="50" cy="50" r="44"/>
+          <circle class="seguimiento__anillo-progreso" cx="50" cy="50" r="44" [style.stroke-dashoffset]="calcularDashoffset(adherenciaComidas())"/>
+        </svg>
+        <figcaption class="seguimiento__anillo-cifra">{{ adherenciaComidas() }}<span class="seguimiento__anillo-unidad">%</span></figcaption>
+      </figure>
+      <p class="seguimiento__anillo-etiqueta">{{ textos().anilloAdherencia }}</p>
+    </article>
+
+    <article class="seguimiento__anillo-tarjeta">
+      <figure class="seguimiento__anillo">
+        <svg aria-hidden="true" class="seguimiento__anillo-svg" viewBox="0 0 100 100">
+          <circle class="seguimiento__anillo-fondo" cx="50" cy="50" r="44"/>
+          <circle class="seguimiento__anillo-progreso" cx="50" cy="50" r="44" [style.stroke-dashoffset]="calcularDashoffset(porcentajeAgua())"/>
+        </svg>
+        <figcaption class="seguimiento__anillo-cifra">{{ porcentajeAgua() }}<span class="seguimiento__anillo-unidad">%</span></figcaption>
+      </figure>
+      <p class="seguimiento__anillo-etiqueta">{{ textos().anilloAgua }}</p>
+    </article>
+
+    <article class="seguimiento__anillo-tarjeta">
+      <p class="seguimiento__anillo-cifra-grande">
+        @if (ejerciciosEstaSemana() !== null) {
+          {{ ejerciciosEstaSemana() }}
+        } @else {
+          <span class="seguimiento__anillo-vacio">—</span>
+        }
+      </p>
+      <p class="seguimiento__anillo-etiqueta">{{ textos().anilloEjercicios }}</p>
+    </article>
+  </section>
+
+  <section class="seguimiento__macros">
+    <article class="seguimiento__consumo">
+      <p class="seguimiento__consumo-etiqueta">{{ textos().macrosEtiqueta }}</p>
+
+      <p class="seguimiento__kcal">
+        @if (macrosConsumo().diasConDatos === 0) {
+          <span class="seguimiento__kcal-valor seguimiento__kcal-valor--vacio">—</span>
+        } @else {
+          <span class="seguimiento__kcal-valor">{{ macrosConsumo().calorias.consumido }}</span>
+        }
+        <span class="seguimiento__kcal-objetivo">/ {{ macrosConsumo().calorias.objetivo }} kcal</span>
+      </p>
+
+      @if (macrosConsumo().diasConDatos === 0) {
+        <aside class="seguimiento__consumo-vacio">
+          <p class="seguimiento__vacio-etiqueta">{{ textos().sinDatosAlimentacion }}</p>
+          <p class="seguimiento__vacio-ayuda">{{ textos().ayudaGenerarMenu }}</p>
+        </aside>
+      }
+
+      <ul class="seguimiento__macro-lista">
+        <li class="seguimiento__macro">
+          <span class="seguimiento__macro-fila">
+            <span class="seguimiento__macro-nombre">{{ textos().etiquetaProteinas }}</span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().proteinas.consumido }}g · {{ macrosConsumo().proteinas.porcentaje }}%</span>
+          </span>
+          <span class="seguimiento__macro-barra">
+            <span class="seguimiento__macro-relleno seguimiento__macro-relleno--proteinas" [style.--relleno]="macrosConsumo().proteinas.porcentaje / 100"></span>
+          </span>
+        </li>
+        <li class="seguimiento__macro">
+          <span class="seguimiento__macro-fila">
+            <span class="seguimiento__macro-nombre">{{ textos().etiquetaCarbohidratos }}</span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().carbohidratos.consumido }}g · {{ macrosConsumo().carbohidratos.porcentaje }}%</span>
+          </span>
+          <span class="seguimiento__macro-barra">
+            <span class="seguimiento__macro-relleno seguimiento__macro-relleno--carbohidratos" [style.--relleno]="macrosConsumo().carbohidratos.porcentaje / 100"></span>
+          </span>
+        </li>
+        <li class="seguimiento__macro">
+          <span class="seguimiento__macro-fila">
+            <span class="seguimiento__macro-nombre">{{ textos().etiquetaGrasas }}</span>
+            <span class="seguimiento__macro-cifra">{{ macrosConsumo().grasas.consumido }}g · {{ macrosConsumo().grasas.porcentaje }}%</span>
+          </span>
+          <span class="seguimiento__macro-barra">
+            <span class="seguimiento__macro-relleno seguimiento__macro-relleno--grasas" [style.--relleno]="macrosConsumo().grasas.porcentaje / 100"></span>
+          </span>
+        </li>
+      </ul>
+    </article>
+
+  </section>
+
+  <section class="seguimiento__fuerza">
+    <header class="seguimiento__fuerza-cabecera">
+      <p class="seguimiento__fuerza-eyebrow">{{ textos().fuerzaEyebrow }}</p>
+      <h2 class="seguimiento__fuerza-titulo">{{ textos().fuerzaTitulo }}</h2>
+    </header>
+
+    @if (ejerciciosDisponibles().length > 0) {
+      <nav class="seguimiento__tabs">
+        <ul class="seguimiento__tabs-lista">
+          @for (ejercicio of ejerciciosDisponibles(); track ejercicio) {
+            <li class="seguimiento__tabs-item">
+              <button
+                [attr.aria-current]="ejercicioSeleccionado() === ejercicio ? 'true' : null"
+                [class.seguimiento__tab--activa]="ejercicioSeleccionado() === ejercicio"
+                (click)="seleccionarEjercicio(ejercicio)"
+                class="seguimiento__tab"
+                type="button">
+                {{ ejercicio }}
+              </button>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <article class="seguimiento__grafica">
+        @if (cargandoGrafico()) {
+          <aside aria-live="polite" class="seguimiento__cargando">
+            <span aria-hidden="true" class="seguimiento__cargando-punto"></span>
+            <p class="seguimiento__cargando-texto">{{ textos().cargandoDatos }}</p>
+          </aside>
+        } @else if (puntosGrafico().length === 0) {
+          <aside class="seguimiento__vacio">
+            <p class="seguimiento__vacio-etiqueta">{{ ejercicioSeleccionado() }}</p>
+            <p class="seguimiento__vacio-mensaje">{{ textos().sinDatosPeso }}</p>
+            <p class="seguimiento__vacio-ayuda">{{ textos().ayudaRegistrarPeso }}</p>
+            <span aria-hidden="true" class="seguimiento__vacio-esqueleto"></span>
+            <span aria-hidden="true" class="seguimiento__vacio-esqueleto"></span>
+            <span aria-hidden="true" class="seguimiento__vacio-esqueleto seguimiento__vacio-esqueleto--corto"></span>
+          </aside>
+        } @else {
+          <figure class="seguimiento__grafica-lienzo">
+            <svg aria-label="{{ textos().ariaGraficoFuerza }}" class="seguimiento__grafica-svg" role="img" viewBox="0 0 590 275">
+              @for (guia of guiasEjeY(); track guia.y) {
+                <line class="seguimiento__grafica-guia" x1="50" x2="560" [attr.y1]="guia.y" [attr.y2]="guia.y"/>
+                <text class="seguimiento__grafica-eje" text-anchor="end" x="40" [attr.y]="guia.y + 4">{{ comaDecimal(guia.peso) }}kg</text>
+              }
+
+              <line class="seguimiento__grafica-base" x1="50" x2="560" y1="235" y2="235"/>
+
+              @for (punto of fechasEjeX(); track punto.fecha) {
+                <text class="seguimiento__grafica-eje" text-anchor="middle" [attr.x]="punto.x" y="255">{{ punto.fecha }}</text>
+              }
+
+              <defs>
+                <linearGradient id="area-fuerza" x1="0" x2="0" y1="0" y2="1">
+                  <stop class="seguimiento__grafica-area-inicio" offset="0%"/>
+                  <stop class="seguimiento__grafica-area-fin" offset="100%"/>
+                </linearGradient>
+              </defs>
+              @if (poligonoArea()) {
+                <polygon class="seguimiento__grafica-area" fill="url(#area-fuerza)" [attr.points]="poligonoArea()"/>
+              }
+              @if (polylinePoints()) {
+                <polyline class="seguimiento__grafica-linea" fill="none" [attr.points]="polylinePoints()"/>
+              }
+
+              @for (punto of puntosGrafico(); track punto.fecha; let ultimo = $last) {
+                <circle class="seguimiento__grafica-punto" [class.seguimiento__grafica-punto--ultimo]="ultimo" [attr.cx]="punto.x" [attr.cy]="punto.y" r="4.5">
+                  <title>{{ punto.fecha }}: {{ comaDecimal(punto.peso) }}kg</title>
+                  @if (ultimo && !movimientoReducido()) {
+                    <animate attributeName="r" dur="1.4s" repeatCount="indefinite" values="4.5;6.5;4.5"/>
+                  }
+                </circle>
+              }
+            </svg>
+            <figcaption class="sr-only">
+              @for (punto of puntosGrafico(); track punto.fecha) {
+                {{ punto.fecha }}: {{ comaDecimal(punto.peso) }} kg.
+              }
+            </figcaption>
+          </figure>
+
+          <footer class="seguimiento__grafica-datos">
+            <p class="seguimiento__grafica-dato">
+              <span class="seguimiento__dato-etiqueta">{{ textos().datoUltimoPeso }}</span>
+              <span class="seguimiento__dato-valor">{{ comaDecimal(resumenFuerza().ultimoPeso) }}kg</span>
+            </p>
+            <p class="seguimiento__grafica-dato">
+              <span class="seguimiento__dato-etiqueta">{{ textos().datoMejorMarca }}</span>
+              <span class="seguimiento__dato-valor">{{ comaDecimal(resumenFuerza().mejorMarca) }}kg</span>
+            </p>
+            <p class="seguimiento__grafica-dato">
+              <span class="seguimiento__dato-etiqueta">{{ textos().datoSesiones }}</span>
+              <span class="seguimiento__dato-valor">{{ resumenFuerza().sesiones }}</span>
+            </p>
+          </footer>
+        }
+      </article>
+    } @else {
+      <aside class="seguimiento__vacio">
+        <p class="seguimiento__vacio-etiqueta">{{ textos().sinEjerciciosRegistrados }}</p>
+        <p class="seguimiento__vacio-ayuda">{{ textos().ayudaRegistrarPeso }}</p>
+        <span aria-hidden="true" class="seguimiento__vacio-esqueleto"></span>
+        <span aria-hidden="true" class="seguimiento__vacio-esqueleto"></span>
+        <span aria-hidden="true" class="seguimiento__vacio-esqueleto seguimiento__vacio-esqueleto--corto"></span>
+      </aside>
+    }
+  </section>
+
+</main>
