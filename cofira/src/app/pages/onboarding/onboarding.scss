@@ -1,0 +1,267 @@
+@import '../../../styles/01-tools/mixins';
+
+.onboarding {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--superficie-fondo);
+  isolation: isolate;
+}
+
+/* ══ Panel visual (izquierda, solo desktop): imagen atlética + marca ══ */
+.onboarding__aside {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  display: flex;
+  align-items: flex-end;
+  width: 42%;
+  max-width: 46rem;
+  height: 100vh;
+  padding: 3.5rem;
+  overflow: hidden;
+  background: hsl(240, 7%, 5%);
+  isolation: isolate;
+
+  @include responsive-down('lg') {
+    display: none;
+  }
+}
+
+/* Foto a sangre, B&N cinematográfico + Ken Burns lento (la escena respira) */
+.onboarding__aside-imagen {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 28%;
+  filter: grayscale(1) brightness(0.5) contrast(1.05);
+  transform-origin: center 35%;
+  animation: onb-kenburns 26s ease-in-out infinite alternate, onb-fundido 0.9s ease both;
+}
+
+.onboarding__aside-velo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(180deg, hsla(240, 7%, 5%, 0.7) 0%, hsla(240, 7%, 5%, 0.28) 42%, hsla(240, 7%, 5%, 0.95) 100%);
+}
+
+.onboarding__aside-halo {
+  position: absolute;
+  top: -8%;
+  left: -12%;
+  z-index: -1;
+  width: 44rem;
+  height: 44rem;
+  background: radial-gradient(circle at 32% 32%, var(--naranja-glow-fuerte), transparent 60%);
+  pointer-events: none;
+  animation: onb-respira 9s ease-in-out infinite;
+}
+
+.onboarding__aside-contenido {
+  animation: onb-fundido 0.7s ease both;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 26rem;
+  margin: 0;
+}
+
+.onboarding__aside-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--naranja-texto);
+}
+
+.onboarding__aside-eyebrow::before {
+  width: 1.75rem;
+  height: 1px;
+  background: var(--naranja-normal);
+  content: '';
+}
+
+.onboarding__aside-titulo {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 3rem; /* 48px — entra en 2 líneas también con el panel estrecho */
+  font-weight: var(--font-weight-bold);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  color: hsl(40, 14%, 96%);
+}
+
+.onboarding__aside-acento {
+  font-style: italic;
+  color: var(--naranja-texto);
+}
+
+.onboarding__aside-texto {
+  margin: 0;
+  max-width: 22rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--font-size-md);
+  line-height: 1.55;
+  color: hsla(40, 8%, 96%, 0.72);
+}
+
+/* ══ Cuerpo (derecha): header sticky + contenido, con atmósfera propia ══ */
+.onboarding__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  isolation: isolate;
+}
+
+.onboarding__body::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 52rem;
+  height: 34rem;
+  z-index: -1;
+  content: '';
+  transform: translateX(-50%);
+  background: var(--gradiente-halo);
+  pointer-events: none;
+}
+
+/* ── Header glassy con progreso ── */
+.onboarding__header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-m);
+  padding: var(--spacing-size-m) var(--spacing-size-xl);
+  @include vidrio(16px);
+  border-bottom: 1px solid var(--borde-sutil);
+}
+
+.onboarding__nav {
+  flex-shrink: 0;
+  width: 2.5rem;
+}
+
+.onboarding__boton-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background-color: transparent;
+  border: 1px solid var(--borde-medio);
+  border-radius: 50%;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+
+  @include foco-visible;
+}
+
+.onboarding__boton-back:hover {
+  border-color: var(--naranja-normal);
+  color: var(--naranja-normal);
+  transform: translateX(-2px);
+}
+
+.onboarding__boton-back-svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.onboarding__progress {
+  flex: 1;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+/* Contrapeso del botón atrás: sin él la barra queda descentrada hacia la derecha */
+.onboarding__header-spacer {
+  flex-shrink: 0;
+  width: 2.5rem;
+}
+
+/* ── Contenido: centra cada paso en el área libre del cuerpo ── */
+.onboarding__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 3rem 2rem var(--spacing-size-xxxl);
+  box-sizing: border-box;
+}
+
+@include responsive-down('sm') {
+  .onboarding__header {
+    padding: var(--spacing-size-s) var(--spacing-size-m);
+  }
+
+  .onboarding__content {
+    padding: 2rem 1.25rem var(--spacing-size-xxl);
+  }
+}
+
+/* Ken Burns: zoom lento e imperceptible que mantiene viva la foto del panel */
+@keyframes onb-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.09);
+  }
+}
+
+/* Fundido de escena: la foto y el mensaje entran suaves al cambiar de bloque */
+@keyframes onb-fundido {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* El halo naranja respira: la atmósfera del panel no se queda quieta */
+@keyframes onb-respira {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboarding__aside-imagen {
+    animation: none;
+  }
+
+  .onboarding__aside-halo {
+    animation: none;
+  }
+
+  .onboarding__aside-contenido {
+    animation: none;
+  }
+}
