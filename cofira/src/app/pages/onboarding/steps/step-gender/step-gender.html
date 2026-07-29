@@ -1,0 +1,34 @@
+<article class="step-gender">
+
+  <header class="step-gender__header">
+    <h2 class="step-gender__titulo">{{ textos().titulo }}</h2>
+    <p class="step-gender__subtitulo">
+      {{ textos().subtitulo }}
+    </p>
+  </header>
+
+  <ul class="step-gender__opciones">
+    @for (gender of genders(); track gender.value) {
+      <li class="step-gender__opcion-item">
+        <app-option-card
+          (seleccionar)="selectGender($event)"
+          [icono]="gender.icon || ''"
+          [seleccionado]="selectedGender() === gender.value"
+          [titulo]="gender.label"
+          [valor]="gender.value">
+        </app-option-card>
+      </li>
+    }
+  </ul>
+
+  <footer class="step-gender__footer">
+    <app-button
+      (click)="alContinuar()"
+      [habilitado]="!canContinue()"
+      tamanio="grande"
+      variante="primario">
+      {{ textos().botonContinuar }}
+    </app-button>
+  </footer>
+
+</article>
