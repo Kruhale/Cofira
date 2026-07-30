@@ -1,0 +1,107 @@
+<main class="blog">
+
+  <header class="blog__header">
+    <hgroup class="blog__header-content">
+      <h1 class="blog__titulo">{{ textos().titulo }}</h1>
+      <p class="blog__subtitulo">
+        {{ textos().subtitulo }}
+      </p>
+    </hgroup>
+  </header>
+
+
+  <section class="blog__filtros">
+      <nav [attr.aria-label]="textos().ariaFiltrar" class="blog__categorias blog__container">
+        @for (cat of categorias(); track cat.id) {
+          <button
+            (click)="filtrarPorCategoria(cat.id)"
+            [ngClass]="{'blog__categoria-boton--activo': categoriaActiva === cat.id}"
+            class="blog__categoria-boton"
+          >
+            {{ cat.label }}
+          </button>
+        }
+      </nav>
+  </section>
+
+
+  <section class="blog__contenido">
+    <section class="blog__container">
+      <ul class="blog__grid">
+        @for (articulo of articulosFiltrados; track articulo.id) {
+          <li class="blog__articulo" [class.blog__articulo--destacado]="$first">
+            <figure class="blog__articulo-imagen">
+              <picture>
+                <source
+                  type="image/webp"
+                  [srcset]="articulo.imagen + '-400w.webp 400w, ' +
+                           articulo.imagen + '-800w.webp 800w, ' +
+                           articulo.imagen + '-1200w.webp 1200w'"
+                  sizes="(max-width: 480px) 400px, (max-width: 900px) 800px, 1200px"
+                />
+                <img
+                  [alt]="articulo.titulo"
+                  [src]="articulo.imagen + '-800w.webp'"
+                  class="blog__articulo-imagen-img"
+                  loading="lazy"
+                />
+              </picture>
+              <span
+                [ngClass]="'blog__articulo-categoria--' + articulo.categoria"
+                class="blog__articulo-categoria"
+              >
+                {{ articulo.categoriaLabel }}
+              </span>
+            </figure>
+            <section class="blog__articulo-contenido">
+              <header class="blog__articulo-meta">
+                <span class="blog__articulo-fecha">{{ articulo.fecha }}</span>
+                <span class="blog__articulo-separador">·</span>
+                <span class="blog__articulo-tiempo">{{ articulo.tiempoLectura }} {{ textos().sufijoLectura }}</span>
+              </header>
+              <h2 class="blog__articulo-titulo">{{ articulo.titulo }}</h2>
+              <p class="blog__articulo-extracto">{{ articulo.extracto }}</p>
+              <footer class="blog__articulo-footer">
+                <span class="blog__articulo-autor">{{ textos().prefijoAutor }} {{ articulo.autor }}</span>
+                <a [attr.aria-label]="textos().ariaLeerMas + articulo.titulo" class="blog__articulo-leer" href="#">
+                  {{ textos().leerMas }}
+                  <svg aria-hidden="true" class="blog__articulo-leer-svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                       stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12h14"/>
+                    <path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </a>
+              </footer>
+            </section>
+          </li>
+        }
+      </ul>
+
+
+      @if (articulosFiltrados.length === 0) {
+        <p class="blog__sin-resultados">{{ textos().sinResultados }}</p>
+      }
+    </section>
+  </section>
+
+
+  <section class="blog__newsletter">
+      <aside class="blog__newsletter-card blog__container">
+        <hgroup class="blog__newsletter-contenido">
+          <h2 class="blog__newsletter-titulo">{{ textos().newsletterTitulo }}</h2>
+          <p class="blog__newsletter-texto">
+            {{ textos().newsletterTexto }}
+          </p>
+        </hgroup>
+        <form (submit)="$event.preventDefault()" class="blog__newsletter-form">
+          <input
+            [attr.aria-label]="textos().ariaNewsletter"
+            class="blog__newsletter-input"
+            [placeholder]="textos().newsletterPlaceholder"
+            type="email"
+          />
+          <button class="blog__newsletter-boton" type="submit">{{ textos().newsletterBoton }}</button>
+        </form>
+      </aside>
+  </section>
+</main>

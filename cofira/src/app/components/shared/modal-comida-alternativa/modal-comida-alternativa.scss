@@ -1,0 +1,163 @@
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
+
+.modal-alternativa {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-l);
+}
+
+.modal-alternativa__subtitulo {
+  margin: 0;
+  padding: var(--spacing-size-s);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-secundario);
+  background: var(--superficie-1);
+  border-radius: var(--radius-md);
+  border-left: 0.1875rem solid var(--naranja-normal);
+}
+
+.modal-alternativa__formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-l);
+}
+
+.modal-alternativa__campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-xs);
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-alternativa__label {
+  @include etiqueta-tecnica(var(--texto-secundario));
+}
+
+.modal-alternativa__input {
+  padding: var(--spacing-size-s) var(--spacing-size-m);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
+}
+
+.modal-alternativa__input::placeholder {
+  color: var(--texto-suave);
+}
+
+.modal-alternativa__input:focus-visible {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+.modal-alternativa__grupo-macros {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-m);
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-alternativa__grupo-titulo {
+  padding: 0;
+  @include etiqueta-tecnica(var(--texto-suave));
+}
+
+.modal-alternativa__macro {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-s);
+}
+
+.modal-alternativa__macro-label {
+  flex: 1;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-principal);
+}
+
+.modal-alternativa__macro-input {
+  width: 5rem;
+  padding: var(--spacing-size-xs) var(--spacing-size-s);
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  text-align: right;
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
+}
+
+.modal-alternativa__macro-input:focus-visible {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+.modal-alternativa__macro-unidad {
+  min-width: 2rem;
+  font-family: var(--fuente-mono);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
+}
+
+.modal-alternativa__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-size-m);
+  padding-top: var(--spacing-size-m);
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.modal-alternativa__boton {
+  padding: var(--spacing-size-s) var(--spacing-size-l);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background var(--duration-base) ease,
+    border-color var(--duration-base) ease,
+    color var(--duration-base) ease,
+    transform var(--duration-fast) ease;
+}
+
+.modal-alternativa__boton--cancelar {
+  color: var(--texto-secundario);
+  background: transparent;
+  border: 1px solid var(--borde-sutil);
+}
+
+.modal-alternativa__boton--cancelar:hover {
+  border-color: var(--borde-medio);
+  color: var(--texto-principal);
+}
+
+.modal-alternativa__boton--guardar {
+  color: var(--texto-sobre-acento);
+  background: var(--gradiente-acento);
+  border: 1px solid transparent;
+}
+
+.modal-alternativa__boton--guardar:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: var(--glow-acento);
+}
+
+.modal-alternativa__boton--guardar:disabled {
+  background: var(--superficie-3);
+  color: var(--texto-suave);
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}

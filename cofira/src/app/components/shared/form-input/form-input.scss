@@ -1,0 +1,66 @@
+@import '../../../../styles/01-tools/mixins';
+
+
+
+.campo-entrada {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-xss);
+  width: var(--width-estandar);
+}
+
+
+
+
+.campo-entrada__etiqueta {
+  margin-bottom: var(--input-margin-bottom);
+  @include etiqueta-tecnica(var(--texto-secundario));
+}
+
+
+.campo-entrada__requerido {
+  color: var(--naranja-texto);
+}
+
+
+.campo-entrada__campo {
+  width: 100%;
+  padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
+}
+
+.campo-entrada__campo::placeholder {
+  color: var(--texto-suave);
+}
+
+.campo-entrada__campo:hover {
+  border-color: var(--borde-medio);
+}
+
+.campo-entrada__campo:focus-visible {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+
+.campo-entrada__error {
+  margin-top: var(--input-margin-bottom);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--peligro-texto);
+}
+
+
+.campo-entrada__ayuda {
+  margin-top: var(--input-margin-bottom);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--texto-suave);
+}

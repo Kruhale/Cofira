@@ -1,0 +1,1170 @@
+@import '../../../styles/01-tools/mixins';
+
+
+
+.gimnasio {
+  --contenido-max-width: 60rem; /* 960px */
+
+  @include atmosfera-app;
+  @include flex-columna(var(--spacing-size-xxl));
+  align-items: center;
+  z-index: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--page-shell-top) var(--spacing-size-xl) var(--spacing-size-xxxl);
+  background-color: var(--superficie-fondo);
+
+  @include responsive-down('md') {
+    gap: var(--spacing-size-l);
+    padding: var(--page-shell-top-movil) var(--spacing-size-m) var(--spacing-size-xl);
+  }
+
+  @include responsive-down('xs') {
+    padding: var(--page-shell-top-movil) var(--spacing-size-s) var(--spacing-size-l);
+  }
+}
+
+
+
+/* ── Cabecera canónica: eyebrow con regla + display + contexto mono ── */
+
+.gimnasio__cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-size-l);
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+
+  @include responsive-down('sm') {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-size-s);
+  }
+}
+
+.gimnasio__cabecera-textos {
+  @include flex-columna(0.85rem);
+  align-items: flex-start;
+}
+
+.gimnasio__cabecera-meta {
+  @include flex-columna(0.5rem);
+  align-items: flex-end;
+  flex-shrink: 0;
+
+  @include responsive-down('sm') {
+    align-items: flex-start;
+  }
+}
+
+.gimnasio__meta-grupo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
+
+.gimnasio__meta-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+}
+
+.gimnasio__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem; /* ~10px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--naranja-texto);
+}
+
+.gimnasio__eyebrow::before {
+  content: '';
+  width: 1.75rem; /* 28px */
+  height: 1px;
+  background: var(--naranja-normal);
+}
+
+.gimnasio__titulo {
+  @include titular-display(var(--display-md));
+}
+
+/* La palabra clave del titular en itálica naranja: el gesto editorial firma */
+.gimnasio__titulo-acento {
+  @include acento-italica;
+  color: var(--naranja-texto);
+}
+
+.gimnasio__contexto {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-suave);
+}
+
+
+
+/* ── Estados de carga y error ── */
+
+.gimnasio__estado {
+  @include flex-columna(var(--spacing-size-s));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  padding: var(--spacing-size-l) 0;
+}
+
+.gimnasio__estado--error {
+  padding: var(--spacing-size-s) 0 var(--spacing-size-s) var(--spacing-size-m);
+  border-left: 2px solid var(--peligro);
+}
+
+.gimnasio__estado-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-secundario);
+}
+
+.gimnasio__estado-punto {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--naranja-normal);
+  animation: gimnasio-punto-latido 1.9s ease-in-out infinite;
+}
+
+.gimnasio__estado-error-texto {
+  margin: 0;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-md);
+  color: var(--peligro-texto);
+}
+
+@keyframes gimnasio-punto-latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+
+
+/* ── Estado vacío: tarjetas fantasma que respiran mientras la IA trabaja ── */
+
+.gimnasio__vacio {
+  @include flex-columna(var(--spacing-size-s));
+  align-items: flex-start;
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.gimnasio__vacio-titulo {
+  @include titular-display(var(--font-size-3xl));
+}
+
+.gimnasio__vacio-nota {
+  margin: 0;
+  max-width: 34rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.gimnasio__esqueleto {
+  @include flex-columna(var(--spacing-size-m));
+  width: 100%;
+  margin: var(--spacing-size-l) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gimnasio__esqueleto-tarjeta {
+  position: relative;
+  overflow: hidden;
+  height: 6.5rem; /* 104px, silueta de una tarjeta de ejercicio */
+  background: var(--superficie-1);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-bento);
+  animation: gimnasio-esqueleto-pulso 2.4s ease-in-out infinite;
+}
+
+/* Barrido de luz: el esqueleto respira como carga real, no como bloque muerto */
+.gimnasio__esqueleto-tarjeta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, hsla(30, 40%, 62%, 0.14), transparent);
+  animation: brillo-barre 1.8s ease-in-out infinite;
+}
+
+.gimnasio__esqueleto-tarjeta:nth-child(2) {
+  animation-delay: 0.2s;
+  opacity: 0.75;
+}
+
+.gimnasio__esqueleto-tarjeta:nth-child(3) {
+  animation-delay: 0.4s;
+  opacity: 0.5;
+}
+
+@keyframes gimnasio-esqueleto-pulso {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+
+
+/* ── Días como píldoras: la semana se recorre con chips táctiles ── */
+
+.gimnasio__dias {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: var(--contenido-max-width);
+
+  @include responsive-down('sm') {
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+  }
+}
+
+.gimnasio__dias-tab {
+  appearance: none;
+  margin: 0;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-full);
+  background: var(--superficie-1);
+  cursor: pointer;
+  font-family: var(--fuente-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--texto-secundario);
+  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease,
+    background-color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.gimnasio__dias-tab:hover {
+  color: var(--texto-principal);
+  border-color: var(--borde-medio);
+}
+
+/* Pressed físico: el chip baja 1px al pulsarlo */
+.gimnasio__dias-tab:active {
+  transform: translateY(1px);
+}
+
+.gimnasio__dias-tab--activa {
+  color: var(--texto-sobre-acento);
+  border-color: var(--naranja-normal);
+  background: var(--naranja-normal);
+}
+
+
+
+/* ── Tarjetas de ejercicio: el peso manda, la pauta acompaña ── */
+
+/* Rejilla 2×N: tarjetas compactas y densas, sin desiertos horizontales */
+.gimnasio__lista {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: stretch;
+  gap: var(--spacing-size-m);
+  width: 100%;
+  max-width: var(--contenido-max-width);
+
+  @include responsive-down('md') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gimnasio__tarjeta {
+  @include superficie-bento;
+  @include bento-hover;
+  /* Estados por variables: el modificador cambia el filo sin selectores anidados */
+  --filo-estado: transparent;
+
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-size-s);
+  padding: var(--spacing-size-l);
+  box-shadow: inset 3px 0 0 var(--filo-estado), var(--sombra-bento), var(--glow-interior);
+  animation: entrada-sube 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: var(--retardo-entrada, 0ms);
+
+  @include responsive-down('xs') {
+    padding: var(--spacing-size-m);
+  }
+}
+
+.gimnasio__tarjeta--hecha {
+  --filo-estado: var(--exito);
+}
+
+.gimnasio__tarjeta--saltada {
+  --filo-estado: var(--peligro);
+  opacity: 0.72;
+}
+
+.gimnasio__tarjeta-cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-size-m);
+}
+
+.gimnasio__tarjeta-textos {
+  @include flex-columna(0.3rem);
+  margin: 0;
+  min-width: 0;
+}
+
+.gimnasio__tarjeta-grupo {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--naranja-texto);
+}
+
+.gimnasio__tarjeta-nombre {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.35rem; /* ~22px */
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--texto-principal);
+}
+
+/* El peso como cifra héroe de la tarjeta: mono tabular con brillo sutil */
+.gimnasio__tarjeta-peso {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.gimnasio__tarjeta-peso-valor {
+  font-family: var(--fuente-display);
+  font-size: 1.9rem; /* ~30px */
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 1.5rem var(--glow-cifra-heroe);
+  color: var(--texto-principal);
+}
+
+.gimnasio__tarjeta-peso-unidad {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texto-suave);
+}
+
+/* La pauta del entrenador (técnica, RPE, tempo) en texto de apoyo */
+.gimnasio__tarjeta-detalle {
+  margin: 0;
+  max-width: 42rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+  color: var(--texto-secundario);
+}
+
+.gimnasio__tarjeta-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-size-m);
+
+  @include responsive-down('xs') {
+    flex-wrap: wrap;
+    gap: var(--spacing-size-s);
+  }
+}
+
+.gimnasio__tarjeta-datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gimnasio__pildora {
+  padding: 0.35rem 0.75rem;
+  background: var(--superficie-3);
+  border-radius: var(--radius-full);
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.gimnasio__pildora--suave {
+  background: transparent;
+  border: 1px solid var(--borde-sutil);
+  color: var(--texto-secundario);
+}
+
+.gimnasio__tarjeta-acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gimnasio__tarjeta-acciones-item {
+  display: contents;
+}
+
+.gimnasio__boton-accion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem; /* 40px, minimo tactil */
+  height: 2.5rem;
+  padding: 0;
+  background: var(--superficie-fondo);
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-full);
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease,
+    background-color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+/* Pressed físico: el tick se hunde al pulsarlo */
+.gimnasio__boton-accion:active {
+  transform: scale(0.92);
+}
+
+.gimnasio__boton-accion--ok:hover {
+  border-color: var(--exito);
+  color: var(--exito-texto);
+}
+
+.gimnasio__boton-accion--no:hover {
+  border-color: var(--peligro);
+  color: var(--peligro-texto);
+}
+
+.gimnasio__boton-accion--ok.gimnasio__boton-accion--activo {
+  background-color: var(--exito);
+  border-color: var(--exito);
+  color: hsl(0, 0%, 100%);
+}
+
+.gimnasio__boton-accion--no.gimnasio__boton-accion--activo {
+  background-color: var(--peligro);
+  border-color: var(--peligro);
+  color: hsl(0, 0%, 100%);
+}
+
+.gimnasio__boton-accion-svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+
+
+/* ── Día de descanso: tarjeta serena, sin drama ── */
+
+.gimnasio__descanso {
+  @include superficie-bento;
+  @include flex-columna(var(--spacing-size-xs));
+  padding: var(--spacing-size-xl) var(--spacing-size-l);
+}
+
+.gimnasio__descanso-titulo {
+  @include titular-display(var(--font-size-2xl));
+  margin: 0;
+}
+
+.gimnasio__descanso-subtitulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--texto-suave);
+}
+
+
+
+/* ── Diario del entreno: tarjeta bento con selector de esfuerzo 1-5 ── */
+
+.gimnasio__feedback {
+  @include superficie-bento;
+  @include flex-columna(var(--spacing-size-l));
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  box-sizing: border-box;
+  padding: var(--spacing-size-xl);
+
+  @include responsive-down('sm') {
+    padding: var(--spacing-size-l);
+  }
+}
+
+.gimnasio__feedback-cabecera {
+  @include flex-columna(0.5rem);
+}
+
+.gimnasio__feedback-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--naranja-texto);
+}
+
+.gimnasio__feedback-eyebrow::before {
+  content: '';
+  width: 1.25rem;
+  height: 1px;
+  background: var(--naranja-normal);
+}
+
+.gimnasio__feedback-titulo {
+  @include titular-display(1.5rem); /* 24px: H2 claramente menor que el H1 */
+}
+
+.gimnasio__feedback-form {
+  @include flex-columna(var(--spacing-size-l));
+
+  @include responsive-down('xs') {
+    gap: var(--spacing-size-m);
+  }
+}
+
+.gimnasio__fatiga {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.gimnasio__fatiga-niveles {
+  display: flex;
+  gap: 0.5rem;
+  margin: var(--spacing-size-s) 0 0;
+  padding: 0;
+  list-style: none;
+
+  @include responsive-down('sm') {
+    flex-wrap: wrap;
+  }
+}
+
+.gimnasio__fatiga-item {
+  display: contents;
+}
+
+.gimnasio__fatiga-boton {
+  @include flex-columna(0.25rem);
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 4rem;
+  padding: 0.7rem 0.5rem;
+  background: var(--superficie-fondo);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease, background-color var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.gimnasio__fatiga-boton:hover {
+  border-color: var(--borde-medio);
+}
+
+.gimnasio__fatiga-boton:active {
+  transform: translateY(1px);
+}
+
+.gimnasio__fatiga-boton--activo {
+  background: var(--naranja-glow-suave);
+  border-color: var(--naranja-normal);
+}
+
+.gimnasio__fatiga-numero {
+  font-family: var(--fuente-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.gimnasio__fatiga-nombre {
+  font-family: var(--fuente-mono);
+  font-size: 0.54rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--texto-secundario);
+}
+
+.gimnasio__feedback-field {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.gimnasio__feedback-label {
+  display: block;
+  margin-bottom: var(--spacing-size-s);
+  padding: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--texto-principal);
+
+  @include responsive-down('xs') {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-size-xs);
+  }
+}
+
+.gimnasio__feedback-label--checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-m);
+  cursor: pointer;
+  margin-bottom: 0;
+  user-select: none;
+}
+
+.gimnasio__feedback-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.gimnasio__feedback-label--checkbox span {
+  position: relative;
+  padding-left: 2.25rem;
+  font-size: var(--font-size-sm);
+  color: var(--texto-principal);
+}
+
+.gimnasio__feedback-label--checkbox span::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: var(--superficie-fondo);
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+
+.gimnasio__feedback-label--checkbox span::after {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-60%) rotate(45deg) scale(0);
+  width: 0.375rem;
+  height: 0.75rem;
+  border: solid var(--texto-sobre-acento);
+  border-width: 0 2.5px 2.5px 0;
+  opacity: 0;
+  transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
+}
+
+.gimnasio__feedback-checkbox:checked + span::before {
+  background-color: var(--naranja-normal);
+  border-color: var(--naranja-normal);
+}
+
+.gimnasio__feedback-checkbox:checked + span::after {
+  transform: translateY(-60%) rotate(45deg) scale(1);
+  opacity: 1;
+}
+
+.gimnasio__feedback-checkbox:focus-visible + span::before {
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+.gimnasio__feedback-label--checkbox:hover span::before {
+  border-color: var(--naranja-normal);
+}
+
+.gimnasio__feedback-textarea {
+  width: 100%;
+  min-height: 5.5rem;
+  padding: var(--spacing-size-s) var(--spacing-size-m);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  background-color: var(--superficie-fondo);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radius-md);
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+
+  @include responsive-down('xs') {
+    min-height: 4.5rem;
+    font-size: var(--font-size-sm);
+  }
+}
+
+.gimnasio__feedback-textarea::placeholder {
+  color: var(--texto-suave);
+}
+
+.gimnasio__feedback-textarea:focus {
+  outline: none;
+  border-color: var(--naranja-normal);
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+.gimnasio__feedback-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-size-m);
+
+  @include responsive-down('xs') {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-size-s);
+  }
+}
+
+
+
+/* ── Banner "Ver mi progreso" (foto + CTA, sin cambios de composición) ── */
+
+.gimnasio__progreso {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--contenido-max-width);
+}
+
+.gimnasio__progreso-contenido {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 20rem;
+  overflow: hidden;
+  border-radius: var(--radius-bento);
+  border: 1px solid var(--borde-sutil);
+
+  @include responsive-down('md') {
+    flex-direction: column;
+    min-height: auto;
+  }
+}
+
+.gimnasio__progreso-panel {
+  @include flex-columna(var(--spacing-size-l));
+  position: relative;
+  z-index: 2;
+  width: 45%;
+  padding: var(--spacing-size-xxl);
+  background: var(--superficie-1);
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+
+  @include responsive-down('md') {
+    width: 100%;
+    padding: var(--spacing-size-l);
+    clip-path: none;
+  }
+}
+
+#gimnasio__progreso-boton ::ng-deep .boton {
+  max-width: 70%;
+}
+
+@include responsive-down('lg') {
+  #gimnasio__progreso-boton ::ng-deep .boton {
+    max-width: 60%;
+  }
+}
+
+@include responsive-down('md') {
+  #gimnasio__progreso-boton ::ng-deep .boton {
+    min-width: 0;
+    max-width: 85%;
+  }
+}
+
+.gimnasio__progreso-titulo {
+  @include titular-display(var(--font-size-3xl));
+
+  @include responsive-down('md') {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+.gimnasio__progreso-descripcion {
+  margin: 0;
+  max-width: 20rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  line-height: 1.6;
+  color: var(--texto-secundario);
+
+  @include responsive-down('md') {
+    font-size: var(--font-size-md);
+    max-width: 90%;
+  }
+}
+
+.gimnasio__progreso-imagen {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 70%;
+  height: 100%;
+  margin: 0;
+
+  @include responsive-down('md') {
+    position: relative;
+    width: 100%;
+    height: 15rem;
+  }
+
+  @include responsive-down('xs') {
+    height: 10rem;
+  }
+}
+
+.gimnasio__progreso-imagen-contenedor {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.gimnasio__progreso-imagen-foto {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  filter: grayscale(0.3) contrast(1.05);
+}
+
+
+
+/* ── Movimiento reducido: sin señales pulsantes ni cascadas ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .gimnasio__estado-punto {
+    animation: none;
+  }
+
+  .gimnasio__esqueleto-tarjeta {
+    animation: none;
+  }
+
+  .gimnasio__esqueleto-tarjeta::after {
+    animation: none;
+  }
+
+  .gimnasio__cabecera {
+    animation: none;
+  }
+
+  .gimnasio__tarjeta {
+    animation: none;
+  }
+}
+
+
+/* ── Progreso del día: cuántos ejercicios llevas hechos, de un vistazo ── */
+
+.gimnasio__progreso-dia {
+  @include flex-columna(0.5rem);
+  width: 100%;
+  max-width: var(--contenido-max-width);
+  margin-top: calc(var(--spacing-size-l) * -1);
+}
+
+.gimnasio__progreso-dia-texto {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texto-secundario);
+}
+
+.gimnasio__progreso-dia-cifra {
+  font-family: var(--fuente-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+
+.gimnasio__progreso-dia-barra {
+  display: block;
+  height: 0.3rem;
+  background: var(--superficie-1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.gimnasio__progreso-dia-relleno {
+  display: block;
+  height: 100%;
+  background: var(--naranja-normal);
+  box-shadow: 0 0 0.6rem var(--naranja-glow-media);
+  border-radius: var(--radius-full);
+  transform: scaleX(var(--relleno, 0));
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+
+/* ── Ver técnica: enlace-píldora con play que abre el vídeo del ejercicio ── */
+
+.gimnasio__tarjeta-datos-item {
+  display: contents;
+}
+
+.gimnasio__enlace-tecnica {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--naranja-normal);
+  border-radius: var(--radius-full);
+  font-family: var(--fuente-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--naranja-texto);
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.gimnasio__enlace-tecnica:hover {
+  background: var(--naranja-normal);
+  color: var(--texto-sobre-acento);
+}
+
+.gimnasio__enlace-tecnica:active {
+  transform: translateY(1px);
+}
+
+.gimnasio__enlace-tecnica-svg {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+
+/* ── Modal de técnica: el vídeo del ejercicio sin salir de la app ── */
+
+.gimnasio__tecnica {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal, 60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-size-m);
+  background: hsla(240, 6%, 4%, 0.72);
+  backdrop-filter: blur(6px);
+  animation: entrada-sube 0.25s ease backwards;
+}
+
+.gimnasio__tecnica-dialogo {
+  @include superficie-bento;
+  @include flex-columna(var(--spacing-size-m));
+  width: min(52rem, 100%);
+  box-sizing: border-box;
+  padding: var(--spacing-size-l);
+
+  @include responsive-down('xs') {
+    padding: var(--spacing-size-m);
+  }
+}
+
+.gimnasio__tecnica-cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-size-m);
+}
+
+.gimnasio__tecnica-textos {
+  @include flex-columna(0.3rem);
+  margin: 0;
+  min-width: 0;
+}
+
+.gimnasio__tecnica-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--naranja-texto);
+}
+
+.gimnasio__tecnica-eyebrow::before {
+  content: '';
+  width: 1.25rem;
+  height: 1px;
+  background: var(--naranja-normal);
+}
+
+.gimnasio__tecnica-nombre {
+  margin: 0;
+  font-family: var(--fuente-display);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--texto-principal);
+}
+
+.gimnasio__tecnica-cerrar {
+  @include flex-center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background: var(--superficie-fondo);
+  border: 1px solid var(--borde-medio);
+  border-radius: var(--radius-full);
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.gimnasio__tecnica-cerrar:hover {
+  border-color: var(--naranja-normal);
+  color: var(--texto-principal);
+}
+
+.gimnasio__tecnica-cerrar:active {
+  transform: scale(0.92);
+}
+
+.gimnasio__tecnica-cerrar-svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.gimnasio__tecnica-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--superficie-fondo);
+}
+
+.gimnasio__tecnica-pie {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.gimnasio__tecnica-youtube {
+  font-family: var(--fuente-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--borde-medio);
+  padding-bottom: 0.2rem;
+  color: var(--texto-secundario);
+  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  @include foco-visible;
+}
+
+.gimnasio__tecnica-youtube:hover {
+  color: var(--naranja-texto);
+  border-color: var(--naranja-normal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gimnasio__tecnica {
+    animation: none;
+  }
+}
+
+
+/* Estado del modal mientras se resuelve (o no) el vídeo */
+.gimnasio__tecnica-estado {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0;
+  background: var(--superficie-fondo);
+  border-radius: var(--radius-md);
+  font-family: var(--fuente-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: center;
+  color: var(--texto-secundario);
+}

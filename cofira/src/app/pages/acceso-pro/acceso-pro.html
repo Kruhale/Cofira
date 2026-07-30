@@ -1,0 +1,237 @@
+<main class="acceso-pro">
+
+  @if (pagoExitoso()) {
+    <section class="acceso-pro__exito">
+      <p class="acceso-pro__estado-etiqueta acceso-pro__estado-etiqueta--exito">
+        <span class="acceso-pro__estado-punto acceso-pro__estado-punto--exito" aria-hidden="true"></span>
+        {{ textos().etiquetaPagoConfirmado }}
+      </p>
+      <h1 class="acceso-pro__titulo">{{ textos().exitoTitulo }}</h1>
+      <p class="acceso-pro__exito-texto">{{ textos().exitoTexto }}</p>
+    </section>
+
+  } @else if (esPro()) {
+    <section class="acceso-pro__pro-activo">
+      <header class="acceso-pro__cabecera">
+        <p class="acceso-pro__eyebrow">{{ textos().eyebrow }}</p>
+        <h1 class="acceso-pro__titulo">{{ textos().tituloProActivo }} <em class="acceso-pro__titulo-acento">{{ textos().tituloProAcento }}</em></h1>
+        <p class="acceso-pro__contexto">{{ textos().contextoProActivo }}</p>
+      </header>
+
+      <article class="acceso-pro__tarjeta">
+        <header class="acceso-pro__tarjeta-cabecera">
+          <span class="acceso-pro__tarjeta-marca">Cofira <em class="acceso-pro__tarjeta-marca-acento">PRO</em></span>
+          <span class="acceso-pro__dato-valor acceso-pro__dato-valor--vivo">
+            <span class="acceso-pro__estado-punto" aria-hidden="true"></span>
+            {{ textos().estadoActiva }}
+          </span>
+        </header>
+
+        <section class="acceso-pro__tarjeta-datos">
+          <span class="acceso-pro__dato">
+            <span class="acceso-pro__dato-etiqueta">{{ textos().etiquetaDias }}</span>
+            <span class="acceso-pro__tarjeta-dias">{{ suscripcion()?.diasRestantes }}</span>
+          </span>
+          <span class="acceso-pro__dato">
+            <span class="acceso-pro__dato-etiqueta">{{ textos().etiquetaExpira }}</span>
+            <span class="acceso-pro__dato-valor">{{ suscripcion()?.fechaExpiracion | date: 'dd/MM/yyyy' }}</span>
+          </span>
+          <span class="acceso-pro__dato">
+            <span class="acceso-pro__dato-etiqueta">{{ textos().etiquetaPlan }}</span>
+            <span class="acceso-pro__dato-valor">
+              {{ textos().precio }}
+              <span class="acceso-pro__precio-periodo">{{ textos().precioPeriodo }}</span>
+            </span>
+          </span>
+        </section>
+
+        <footer class="acceso-pro__tarjeta-pie">
+          <a class="acceso-pro__gestionar" routerLink="/configuracion">{{ textos().enlaceGestionar }}</a>
+        </footer>
+      </article>
+
+      <section class="acceso-pro__apps">
+        <h2 class="acceso-pro__apps-titulo">{{ textos().appsTitulo }}</h2>
+        <ul class="acceso-pro__apps-lista">
+          <li class="acceso-pro__apps-item">
+            <a class="acceso-pro__app" routerLink="/alimentacion">
+              <span class="acceso-pro__app-nombre">{{ textos().appNutricion }}</span>
+              <span class="acceso-pro__app-desc">{{ textos().appNutricionDesc }}</span>
+              <span class="acceso-pro__app-flecha" aria-hidden="true">&#8594;</span>
+            </a>
+          </li>
+          <li class="acceso-pro__apps-item">
+            <a class="acceso-pro__app" routerLink="/gimnasio">
+              <span class="acceso-pro__app-nombre">{{ textos().appEjercicio }}</span>
+              <span class="acceso-pro__app-desc">{{ textos().appEjercicioDesc }}</span>
+              <span class="acceso-pro__app-flecha" aria-hidden="true">&#8594;</span>
+            </a>
+          </li>
+          <li class="acceso-pro__apps-item">
+            <a class="acceso-pro__app" routerLink="/seguimiento">
+              <span class="acceso-pro__app-nombre">{{ textos().appSeguimiento }}</span>
+              <span class="acceso-pro__app-desc">{{ textos().appSeguimientoDesc }}</span>
+              <span class="acceso-pro__app-flecha" aria-hidden="true">&#8594;</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <footer class="acceso-pro__pro-acciones">
+        <button (click)="volverAlInicio()" class="acceso-pro__volver" type="button">
+          {{ textos().botonVolverInicio }}
+        </button>
+      </footer>
+    </section>
+
+  } @else if (mostrarFormularioPago()) {
+    <article class="acceso-pro__pago">
+      <header class="acceso-pro__cabecera">
+        <button (click)="ocultarPago()" class="acceso-pro__pago-cerrar" type="button" [attr.aria-label]="textos().ariaVolver">
+          <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <p class="acceso-pro__eyebrow">{{ textos().eyebrow }}</p>
+        <h1 class="acceso-pro__titulo">{{ textos().pagoTitulo }}</h1>
+        <p class="acceso-pro__contexto">{{ textos().contextoPago }}</p>
+      </header>
+
+      <form (ngSubmit)="alEnviar()" [formGroup]="formularioPago" class="acceso-pro__form">
+        <fieldset class="acceso-pro__fieldset">
+          <legend class="acceso-pro__legend">{{ textos().legendDatosPago }}</legend>
+
+          <label class="acceso-pro__field">
+            <span class="acceso-pro__field-label">{{ textos().labelNumeroTarjeta }}</span>
+            <input
+              (input)="formatearNumeroTarjeta($event)"
+              [value]="numeroTarjetaFormateado"
+              autocomplete="cc-number"
+              class="acceso-pro__input"
+              formControlName="numeroTarjeta"
+              inputmode="numeric"
+              placeholder="1234 5678 9012 3456"
+              type="text">
+          </label>
+
+          <label class="acceso-pro__field">
+            <span class="acceso-pro__field-label">{{ textos().labelTitular }}</span>
+            <input
+              [placeholder]="textos().placeholderTitular"
+              autocomplete="cc-name"
+              class="acceso-pro__input"
+              formControlName="nombreTitular"
+              type="text">
+          </label>
+
+          <section class="acceso-pro__field-row">
+            <label class="acceso-pro__field acceso-pro__field--mitad">
+              <span class="acceso-pro__field-label">{{ textos().labelExpiracion }}</span>
+              <input
+                (input)="formatearFechaExpiracion($event)"
+                autocomplete="cc-exp"
+                class="acceso-pro__input"
+                formControlName="fechaExpiracion"
+                inputmode="numeric"
+                placeholder="MM/YY"
+                type="text">
+            </label>
+
+            <label class="acceso-pro__field acceso-pro__field--mitad">
+              <span class="acceso-pro__field-label">{{ textos().labelCvv }}</span>
+              <input
+                (input)="formatearCvv($event)"
+                autocomplete="cc-csc"
+                class="acceso-pro__input"
+                formControlName="cvv"
+                inputmode="numeric"
+                placeholder="123"
+                type="text">
+            </label>
+          </section>
+
+          <label class="acceso-pro__checkbox-field">
+            <input
+              class="acceso-pro__checkbox"
+              formControlName="renovacionAutomatica"
+              type="checkbox">
+            <span class="acceso-pro__checkbox-label">
+              {{ textos().checkboxRenovacion }}
+            </span>
+          </label>
+        </fieldset>
+
+        <footer class="acceso-pro__form-footer">
+          <span class="acceso-pro__dato">
+            <span class="acceso-pro__dato-etiqueta">{{ textos().etiquetaPrecio }}</span>
+            <span class="acceso-pro__precio-valor">
+              {{ textos().precio }}
+              <span class="acceso-pro__precio-periodo">{{ textos().precioPeriodo }}</span>
+            </span>
+          </span>
+
+          <app-button
+            [habilitado]="!puedeEnviar()"
+            tamanio="grande"
+            tipo="submit"
+            variante="primario">
+            @if (estaCargando()) {
+              <span class="acceso-pro__loading">
+                <svg aria-hidden="true" class="acceso-pro__spinner" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M4 12a8 8 0 018-8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{ textos().botonProcesando }}
+              </span>
+            } @else {
+              {{ textos().botonActivarPro }}
+            }
+          </app-button>
+        </footer>
+
+        <p class="acceso-pro__aviso">{{ textos().avisoPagoSimulado }}</p>
+      </form>
+    </article>
+
+  } @else {
+    <article class="acceso-pro__venta">
+      <header class="acceso-pro__cabecera">
+        <p class="acceso-pro__eyebrow">{{ textos().eyebrow }}</p>
+        <h1 class="acceso-pro__titulo">{{ textos().tituloBloqueo }}</h1>
+        <p class="acceso-pro__contexto">{{ textos().contextoBloqueo }}</p>
+      </header>
+
+      <section class="acceso-pro__beneficios">
+        <h2 class="acceso-pro__beneficios-titulo">{{ textos().beneficiosTitulo }}</h2>
+        <ol class="acceso-pro__beneficios-lista">
+          @for (beneficio of beneficiosPro(); track beneficio.icono; let indice = $index) {
+            <li class="acceso-pro__beneficio">
+              <span class="acceso-pro__beneficio-indice">0{{ indice + 1 }}</span>
+              <h3 class="acceso-pro__beneficio-titulo">{{ beneficio.titulo }}</h3>
+              <p class="acceso-pro__beneficio-detalle">{{ beneficio.descripcion }}</p>
+            </li>
+          }
+        </ol>
+      </section>
+
+      <footer class="acceso-pro__banda">
+        <span class="acceso-pro__dato">
+          <span class="acceso-pro__dato-etiqueta">{{ textos().etiquetaPrecio }}</span>
+          <span class="acceso-pro__precio-valor">
+            {{ textos().precio }}
+            <span class="acceso-pro__precio-periodo">{{ textos().precioPeriodo }}</span>
+          </span>
+        </span>
+
+        <section class="acceso-pro__acciones">
+          <app-button (click)="mostrarPago()" tamanio="grande" variante="primario">
+            {{ textos().botonActivarPro }}
+          </app-button>
+          <button (click)="volverAlInicio()" class="acceso-pro__volver" type="button">
+            {{ textos().botonVolverInicio }}
+          </button>
+        </section>
+      </footer>
+    </article>
+  }
+
+</main>

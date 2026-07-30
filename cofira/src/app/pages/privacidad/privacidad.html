@@ -1,0 +1,105 @@
+<main class="legal">
+  <header class="legal__header">
+    <h1 class="legal__titulo">{{ textos().tituloPagina }}</h1>
+    <p class="legal__fecha">{{ textos().etiquetaFecha }} {{ fechaActualizacion() }}</p>
+  </header>
+
+  <article class="legal__contenido">
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().introTitulo }}</h2>
+      <p class="legal__texto">{{ textos().introParrafo1 }}</p>
+      <p class="legal__texto">{{ textos().introParrafo2 }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().datosTitulo }}</h2>
+      <p class="legal__texto">{{ textos().datosIntro }}</p>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().perfilTitulo }}</h3>
+      <ul class="legal__lista">
+        @for (punto of textos().perfilPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().saludTitulo }}</h3>
+      <ul class="legal__lista">
+        @for (punto of textos().saludPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().tecnicaTitulo }}</h3>
+      <ul class="legal__lista">
+        @for (punto of textos().tecnicaPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().usoTitulo }}</h2>
+      <p class="legal__texto">{{ textos().usoIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().usoPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().seguridadTitulo }}</h2>
+      <p class="legal__texto">{{ textos().seguridadIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().seguridadPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+      <p class="legal__texto">{{ textos().seguridadConservacion }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().derechosTitulo }}</h2>
+      <p class="legal__texto">{{ textos().derechosIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().derechosPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+      <p class="legal__texto">
+        {{ textos().derechosEjercicio }}
+        <a class="legal__enlace" href="mailto:privacidad@cofira.com">privacidad&#64;cofira.com</a>.
+      </p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().comparticionTitulo }}</h2>
+      <p class="legal__texto">{{ textos().comparticionIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().comparticionPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().contactoTitulo }}</h2>
+      <p class="legal__texto">{{ textos().contactoIntro }}</p>
+      <ul class="legal__lista legal__lista--sin-estilo">
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoEmailEtiqueta }}</strong>
+          <a class="legal__enlace" href="mailto:privacidad@cofira.com">privacidad&#64;cofira.com</a>
+        </li>
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoDireccionEtiqueta }}</strong> {{ textos().contactoDireccion }}
+        </li>
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoDpoEtiqueta }}</strong>
+          <a class="legal__enlace" href="mailto:dpo@cofira.com">dpo&#64;cofira.com</a>
+        </li>
+      </ul>
+    </section>
+
+  </article>
+</main>

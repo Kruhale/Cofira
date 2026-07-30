@@ -1,0 +1,115 @@
+@import '../../../../styles/00-settings/css-variables';
+@import '../../../../styles/01-tools/mixins';
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-s);
+  padding: var(--spacing-size-s) var(--spacing-size-m);
+  margin-bottom: var(--spacing-size-s);
+  @include superficie-bento;
+  border-left: 0.25rem solid var(--alert-acento);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  color: var(--texto-principal);
+  transition: transform var(--duration-base) ease, box-shadow var(--duration-base) ease;
+  animation: alerta-deslizar-entrada var(--duration-base) ease;
+}
+
+.alert:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: var(--sombra-bento), var(--glow-interior), var(--glow-acento);
+}
+
+
+
+.alert__icono {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  color: var(--alert-acento);
+}
+
+.alert__icono-svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.alert__mensaje {
+  flex: 1;
+  margin: 0;
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-medium);
+  color: var(--texto-principal);
+}
+
+.alert__cerrar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  opacity: 0.7;
+  color: var(--texto-secundario);
+  transition: opacity var(--duration-fast) ease,
+    background var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+}
+
+.alert__cerrar-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: currentColor;
+}
+
+.alert__cerrar:hover {
+  opacity: 1;
+  background: var(--superficie-3);
+  color: var(--texto-principal);
+  transform: rotate(90deg);
+}
+
+.alert__cerrar:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--naranja-glow-suave);
+}
+
+
+
+.alert--success {
+  --alert-acento: var(--exito);
+}
+
+.alert--error {
+  --alert-acento: var(--peligro);
+}
+
+.alert--warning {
+  --alert-acento: var(--ambar);
+}
+
+.alert--info {
+  --alert-acento: var(--naranja-normal);
+}
+
+
+
+@keyframes alerta-deslizar-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(-0.625rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

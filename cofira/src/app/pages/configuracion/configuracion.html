@@ -1,0 +1,384 @@
+<main class="configuracion">
+  <header class="configuracion__cabecera">
+    <p class="configuracion__eyebrow">{{ textos().eyebrow }}</p>
+    <h1 class="configuracion__titulo">{{ textos().titulo }}</h1>
+    <p class="configuracion__subtitulo">{{ textos().subtitulo }}</p>
+  </header>
+
+  <section class="configuracion__contenido">
+    <nav aria-label="{{ textos().ariaMenuSecciones }}" class="configuracion__menu">
+      <button
+        (click)="cambiarSeccion('general')"
+        [attr.aria-current]="seccionActiva() === 'general' ? 'true' : null"
+        [class.configuracion__menu-item--activo]="seccionActiva() === 'general'"
+        class="configuracion__menu-item"
+        type="button">
+        <span>{{ textos().menuGeneral }}</span>
+      </button>
+
+      <button
+        (click)="cambiarSeccion('notificaciones')"
+        [attr.aria-current]="seccionActiva() === 'notificaciones' ? 'true' : null"
+        [class.configuracion__menu-item--activo]="seccionActiva() === 'notificaciones'"
+        class="configuracion__menu-item"
+        type="button">
+        <span>{{ textos().menuNotificaciones }}</span>
+      </button>
+
+      <button
+        (click)="cambiarSeccion('privacidad')"
+        [attr.aria-current]="seccionActiva() === 'privacidad' ? 'true' : null"
+        [class.configuracion__menu-item--activo]="seccionActiva() === 'privacidad'"
+        class="configuracion__menu-item"
+        type="button">
+        <span>{{ textos().menuPrivacidad }}</span>
+      </button>
+
+      <button
+        (click)="cambiarSeccion('suscripcion')"
+        [attr.aria-current]="seccionActiva() === 'suscripcion' ? 'true' : null"
+        [class.configuracion__menu-item--activo]="seccionActiva() === 'suscripcion'"
+        class="configuracion__menu-item"
+        type="button">
+        <span>{{ textos().menuSuscripcion }}</span>
+      </button>
+
+      <button
+        (click)="cambiarSeccion('cuenta')"
+        [attr.aria-current]="seccionActiva() === 'cuenta' ? 'true' : null"
+        [class.configuracion__menu-item--activo]="seccionActiva() === 'cuenta'"
+        class="configuracion__menu-item"
+        type="button">
+        <span>{{ textos().menuCuenta }}</span>
+      </button>
+    </nav>
+
+    <article class="configuracion__panel">
+      @switch (seccionActiva()) {
+        @case ('general') {
+          <section class="configuracion__seccion">
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloGeneral }}</h2>
+
+            <fieldset class="configuracion__grupo">
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoIdiomaRegion }}</legend>
+
+              <article class="configuracion__opcion">
+                <label class="configuracion__label" for="idioma">{{ textos().labelIdiomaApp }}</label>
+                <select
+                  (change)="cambiarIdiomaApp($any($event.target).value)"
+                  [value]="idiomaActual()"
+                  class="configuracion__select"
+                  id="idioma">
+                  @for (idioma of idiomas; track idioma.codigo) {
+                    <option [value]="idioma.codigo">{{ idioma.nombre }}</option>
+                  }
+                </select>
+              </article>
+            </fieldset>
+
+            <fieldset class="configuracion__grupo">
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoUnidades }}</legend>
+
+              <article class="configuracion__opcion">
+                <label class="configuracion__label" for="unidadesPeso">{{ textos().labelUnidadesPeso }}</label>
+                <select
+                  (change)="actualizarPreferencia('unidadesPeso', $any($event.target).value)"
+                  [value]="preferencias().unidadesPeso"
+                  class="configuracion__select"
+                  id="unidadesPeso">
+                  @for (unidad of unidadesPesoOpciones(); track unidad.codigo) {
+                    <option [value]="unidad.codigo">{{ unidad.nombre }}</option>
+                  }
+                </select>
+              </article>
+
+              <article class="configuracion__opcion">
+                <label class="configuracion__label" for="unidadesAltura">{{ textos().labelUnidadesAltura }}</label>
+                <select
+                  (change)="actualizarPreferencia('unidadesAltura', $any($event.target).value)"
+                  [value]="preferencias().unidadesAltura"
+                  class="configuracion__select"
+                  id="unidadesAltura">
+                  @for (unidad of unidadesAlturaOpciones(); track unidad.codigo) {
+                    <option [value]="unidad.codigo">{{ unidad.nombre }}</option>
+                  }
+                </select>
+              </article>
+            </fieldset>
+          </section>
+        }
+
+        @case ('notificaciones') {
+          <section class="configuracion__seccion">
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloNotificaciones }}</h2>
+
+            <fieldset class="configuracion__grupo">
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoCanales }}</legend>
+
+              <article class="configuracion__toggle-item">
+                <hgroup class="configuracion__toggle-info">
+                  <h3 class="configuracion__toggle-titulo">{{ textos().emailTitulo }}</h3>
+                  <p class="configuracion__toggle-descripcion">{{ textos().emailDescripcion }}</p>
+                </hgroup>
+                <button
+                  (click)="togglePreferencia('notificacionesEmail')"
+                  [class.configuracion__toggle--activo]="preferencias().notificacionesEmail"
+                  class="configuracion__toggle"
+                  type="button"
+                  role="switch"
+                  [attr.aria-checked]="preferencias().notificacionesEmail">
+                  <span [class.configuracion__toggle-circulo--activo]="preferencias().notificacionesEmail" class="configuracion__toggle-circulo"></span>
+                </button>
+              </article>
+
+              <article class="configuracion__toggle-item">
+                <hgroup class="configuracion__toggle-info">
+                  <h3 class="configuracion__toggle-titulo">{{ textos().pushTitulo }}</h3>
+                  <p class="configuracion__toggle-descripcion">{{ textos().pushDescripcion }}</p>
+                </hgroup>
+                <button
+                  (click)="togglePreferencia('notificacionesPush')"
+                  [class.configuracion__toggle--activo]="preferencias().notificacionesPush"
+                  class="configuracion__toggle"
+                  type="button"
+                  role="switch"
+                  [attr.aria-checked]="preferencias().notificacionesPush">
+                  <span [class.configuracion__toggle-circulo--activo]="preferencias().notificacionesPush" class="configuracion__toggle-circulo"></span>
+                </button>
+              </article>
+            </fieldset>
+
+            <fieldset class="configuracion__grupo">
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoRecordatorios }}</legend>
+
+              <article class="configuracion__toggle-item">
+                <hgroup class="configuracion__toggle-info">
+                  <h3 class="configuracion__toggle-titulo">{{ textos().recordatorioEntrenoTitulo }}</h3>
+                  <p class="configuracion__toggle-descripcion">{{ textos().recordatorioEntrenoDescripcion }}</p>
+                </hgroup>
+                <button
+                  (click)="togglePreferencia('recordatoriosEntrenamiento')"
+                  [class.configuracion__toggle--activo]="preferencias().recordatoriosEntrenamiento"
+                  class="configuracion__toggle"
+                  type="button"
+                  role="switch"
+                  [attr.aria-checked]="preferencias().recordatoriosEntrenamiento">
+                  <span [class.configuracion__toggle-circulo--activo]="preferencias().recordatoriosEntrenamiento" class="configuracion__toggle-circulo"></span>
+                </button>
+              </article>
+
+              <article class="configuracion__toggle-item">
+                <hgroup class="configuracion__toggle-info">
+                  <h3 class="configuracion__toggle-titulo">{{ textos().recordatorioComidasTitulo }}</h3>
+                  <p class="configuracion__toggle-descripcion">{{ textos().recordatorioComidasDescripcion }}</p>
+                </hgroup>
+                <button
+                  (click)="togglePreferencia('recordatoriosComidas')"
+                  [class.configuracion__toggle--activo]="preferencias().recordatoriosComidas"
+                  class="configuracion__toggle"
+                  type="button"
+                  role="switch"
+                  [attr.aria-checked]="preferencias().recordatoriosComidas">
+                  <span [class.configuracion__toggle-circulo--activo]="preferencias().recordatoriosComidas" class="configuracion__toggle-circulo"></span>
+                </button>
+              </article>
+            </fieldset>
+          </section>
+        }
+
+        @case ('privacidad') {
+          <section class="configuracion__seccion">
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloPrivacidad }}</h2>
+
+            <fieldset class="configuracion__grupo">
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoGestionDatos }}</legend>
+
+              <article class="configuracion__accion-item">
+                <hgroup class="configuracion__accion-info">
+                  <h3 class="configuracion__accion-titulo">{{ textos().exportarTitulo }}</h3>
+                  <p class="configuracion__accion-descripcion">{{ textos().exportarDescripcion }}</p>
+                </hgroup>
+                <app-button (click)="exportarDatos()" tamanio="pequeno" variante="secundario">
+                  {{ textos().botonExportar }}
+                </app-button>
+              </article>
+            </fieldset>
+
+            <fieldset class="configuracion__grupo">
+              <legend class="configuracion__grupo-titulo">{{ textos().grupoLegales }}</legend>
+
+              <nav class="configuracion__enlaces">
+                <a class="configuracion__enlace" routerLink="/privacidad">
+                  <span>{{ textos().enlacePrivacidad }}</span>
+                  <svg aria-hidden="true" class="configuracion__enlace-icono" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <a class="configuracion__enlace" routerLink="/terminos">
+                  <span>{{ textos().enlaceTerminos }}</span>
+                  <svg aria-hidden="true" class="configuracion__enlace-icono" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <a class="configuracion__enlace" routerLink="/cookies">
+                  <span>{{ textos().enlaceCookies }}</span>
+                  <svg aria-hidden="true" class="configuracion__enlace-icono" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </nav>
+            </fieldset>
+          </section>
+        }
+
+        @case ('suscripcion') {
+          <section class="configuracion__seccion">
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloSuscripcion }}</h2>
+
+            @if (esPro()) {
+              <fieldset class="configuracion__grupo">
+                <legend class="configuracion__grupo-titulo">
+                  <mark class="configuracion__badge-pro">PRO</mark>
+                  {{ textos().grupoEstadoSuscripcion }}
+                </legend>
+
+                <article class="configuracion__suscripcion-info">
+                  <section class="configuracion__suscripcion-detalle">
+                    <span class="configuracion__suscripcion-etiqueta">{{ textos().etiquetaEstado }}</span>
+                    <span class="configuracion__suscripcion-valor configuracion__suscripcion-valor--activa">
+                      @switch (suscripcionActual()?.estadoSuscripcion) {
+                        @case ('activa') { {{ textos().estadoActiva }} }
+                        @case ('periodo_gracia') { {{ textos().estadoGracia }} }
+                        @case ('cancelada') { {{ textos().estadoCancelada }} }
+                        @default { -- }
+                      }
+                    </span>
+                  </section>
+
+                  <section class="configuracion__suscripcion-detalle">
+                    <span class="configuracion__suscripcion-etiqueta">{{ textos().etiquetaFechaInicio }}</span>
+                    <span class="configuracion__suscripcion-valor">
+                      {{ formatearFechaSuscripcion(suscripcionActual()?.fechaInicio || '') }}
+                    </span>
+                  </section>
+
+                  <section class="configuracion__suscripcion-detalle">
+                    <span class="configuracion__suscripcion-etiqueta">{{ textos().etiquetaRenovacion }}</span>
+                    <span class="configuracion__suscripcion-valor">
+                      {{ formatearFechaSuscripcion(suscripcionActual()?.fechaExpiracion || '') }}
+                    </span>
+                  </section>
+
+                  <section class="configuracion__suscripcion-detalle">
+                    <span class="configuracion__suscripcion-etiqueta">{{ textos().etiquetaDiasRestantes }}</span>
+                    <span class="configuracion__suscripcion-valor">
+                      {{ diasRestantes() }} {{ textos().sufijoDias }}
+                    </span>
+                  </section>
+                </article>
+              </fieldset>
+
+              <fieldset class="configuracion__grupo">
+                <legend class="configuracion__grupo-titulo">{{ textos().grupoRenovacion }}</legend>
+
+                <article class="configuracion__toggle-item">
+                  <hgroup class="configuracion__toggle-info">
+                    <h3 class="configuracion__toggle-titulo">{{ textos().renovacionTitulo }}</h3>
+                    <p class="configuracion__toggle-descripcion">
+                      {{ textos().renovacionDescripcion }}
+                    </p>
+                  </hgroup>
+                  <button
+                    (click)="toggleRenovacionAutomatica()"
+                    [class.configuracion__toggle--activo]="renovacionAutomatica()"
+                    [disabled]="cargandoSuscripcion()"
+                    class="configuracion__toggle"
+                    type="button"
+                    role="switch"
+                    [attr.aria-checked]="renovacionAutomatica()">
+                    <span [class.configuracion__toggle-circulo--activo]="renovacionAutomatica()" class="configuracion__toggle-circulo"></span>
+                  </button>
+                </article>
+              </fieldset>
+
+              <fieldset class="configuracion__grupo configuracion__grupo--peligro">
+                <legend class="configuracion__grupo-titulo configuracion__grupo-titulo--peligro">{{ textos().grupoCancelar }}</legend>
+
+                <article class="configuracion__accion-item configuracion__accion-item--peligro">
+                  <hgroup class="configuracion__accion-info">
+                    <h3 class="configuracion__accion-titulo">{{ textos().cancelarProTitulo }}</h3>
+                    <p class="configuracion__accion-descripcion">
+                      {{ textos().cancelarProDescripcion }}
+                    </p>
+                  </hgroup>
+                  <app-button
+                    (click)="cancelarSuscripcion()"
+                    [habilitado]="cargandoSuscripcion()"
+                    tamanio="pequeno"
+                    variante="peligro">
+                    @if (cargandoSuscripcion()) {
+                      {{ textos().botonCancelando }}
+                    } @else {
+                      {{ textos().botonCancelar }}
+                    }
+                  </app-button>
+                </article>
+              </fieldset>
+            } @else {
+              <fieldset class="configuracion__grupo">
+                <legend class="configuracion__grupo-titulo">{{ textos().grupoActivarPro }}</legend>
+
+                <article class="configuracion__suscripcion-promo">
+                  <hgroup class="configuracion__suscripcion-promo-info">
+                    <h3 class="configuracion__suscripcion-promo-titulo">{{ textos().promoTitulo }}</h3>
+                    <ul class="configuracion__suscripcion-beneficios">
+                      @for (beneficio of textos().promoBeneficios; track beneficio) {
+                        <li>{{ beneficio }}</li>
+                      }
+                    </ul>
+                    <p class="configuracion__suscripcion-precio">
+                      <strong>{{ textos().precio }}</strong>{{ textos().precioPeriodo }}
+                    </p>
+                  </hgroup>
+                  <app-button (click)="activarPro()" tamanio="mediano" variante="primario">
+                    {{ textos().botonActivarPro }}
+                  </app-button>
+                </article>
+              </fieldset>
+            }
+          </section>
+        }
+
+        @case ('cuenta') {
+          <section class="configuracion__seccion">
+            <h2 class="configuracion__seccion-titulo">{{ textos().tituloCuenta }}</h2>
+
+            <fieldset class="configuracion__grupo configuracion__grupo--peligro">
+              <legend class="configuracion__grupo-titulo configuracion__grupo-titulo--peligro">{{ textos().grupoPeligro }}</legend>
+
+              <article class="configuracion__accion-item configuracion__accion-item--peligro">
+                <hgroup class="configuracion__accion-info">
+                  <h3 class="configuracion__accion-titulo">{{ textos().eliminarCuentaTitulo }}</h3>
+                  <p class="configuracion__accion-descripcion">{{ textos().eliminarCuentaDescripcion }}</p>
+                </hgroup>
+                <app-button (click)="eliminarCuenta()" tamanio="pequeno" variante="peligro">
+                  {{ textos().botonEliminar }}
+                </app-button>
+              </article>
+            </fieldset>
+          </section>
+        }
+      }
+
+      <footer class="configuracion__footer">
+        <app-button (click)="guardarPreferencias()" [habilitado]="estaCargando()" tamanio="mediano" variante="primario">
+          @if (estaCargando()) {
+            {{ textos().botonGuardando }}
+          } @else {
+            {{ textos().botonGuardar }}
+          }
+        </app-button>
+      </footer>
+    </article>
+  </section>
+</main>

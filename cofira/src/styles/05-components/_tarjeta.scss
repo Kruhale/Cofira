@@ -1,0 +1,170 @@
+@import '../01-tools/mixins';
+
+
+
+.tarjeta {
+  @include tarjeta-base;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.tarjeta__imagen {
+  width: 100%;
+  border-radius: var(--radius-xss);
+  margin-bottom: var(--spacing-size-s);
+  object-fit: cover;
+}
+
+.tarjeta__encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-size-s);
+}
+
+.tarjeta__titulo {
+  @include tipografia-titulo;
+  font-size: var(--font-size-xl);
+  color: var(--text-dark);
+  margin: 0 0 var(--spacing-size-xss) 0;
+}
+
+.tarjeta__subtitulo {
+  @include tipografia-titulo;
+  font-size: var(--font-size-lg);
+  color: var(--blanco-dark);
+  margin: 0 0 var(--spacing-size-xss) 0;
+}
+
+.tarjeta__contenido {
+  @include tipografia-texto;
+  font-size: var(--font-size-md);
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-size-s);
+  flex-grow: 1;
+}
+
+.tarjeta__precio {
+  @include tipografia-titulo;
+  font-size: var(--font-size-2xl);
+  color: var(--amarillo-normal);
+  margin: 0;
+}
+
+.tarjeta__precio-periodo {
+  @include tipografia-texto;
+  font-size: var(--font-size-sm);
+  color: var(--blanco-dark);
+}
+
+.tarjeta__lista {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-size-m) 0;
+}
+
+.tarjeta__item {
+  @include tipografia-texto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-size-xss);
+  padding: var(--spacing-size-xss) 0;
+  color: var(--text-dark);
+}
+
+.tarjeta__item::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--amarillo-normal);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tarjeta__acciones {
+  display: flex;
+  gap: var(--spacing-size-s);
+  margin-top: auto;
+  padding-top: var(--spacing-size-s);
+}
+
+.tarjeta__pie {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-size-s);
+  border-top: 0.0625rem solid var(--gris-dark);
+  margin-top: var(--spacing-size-s);
+}
+
+
+
+.tarjeta--destacada {
+  border: 0.125rem solid var(--amarillo-normal);
+  position: relative;
+}
+
+.tarjeta--destacada::before {
+  content: 'Recomendado';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--amarillo-normal);
+  color: var(--negro-normal);
+  padding: var(--spacing-size-xss) var(--spacing-size-s);
+  border-radius: var(--radius-xss);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+
+
+.tarjeta--horizontal {
+  flex-direction: row;
+}
+
+.tarjeta__imagen--horizontal {
+  width: 40%;
+  margin-bottom: 0;
+  margin-right: var(--spacing-size-m);
+}
+
+
+
+.tarjeta--pequena {
+  padding: var(--spacing-size-s);
+}
+
+.tarjeta--mediana {
+  padding: var(--spacing-size-m);
+}
+
+.tarjeta--grande {
+  padding: var(--spacing-size-l);
+}
+
+
+
+.tarjeta--precios {
+  text-align: center;
+}
+
+.tarjeta__titulo--precios {
+  font-size: var(--font-size-2xl);
+}
+
+.tarjeta__precio--precios {
+  font-size: var(--font-size-3xl);
+  margin: var(--spacing-size-m) 0;
+}
+
+.tarjeta__lista--precios {
+  text-align: left;
+}
+
+.tarjeta__acciones--precios {
+  justify-content: center;
+}

@@ -1,0 +1,124 @@
+<main class="legal">
+  <header class="legal__header">
+    <h1 class="legal__titulo">{{ textos().tituloPagina }}</h1>
+    <p class="legal__fecha">{{ textos().etiquetaFecha }} {{ fechaActualizacion() }}</p>
+  </header>
+
+  <article class="legal__contenido">
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().queSonTitulo }}</h2>
+      <p class="legal__texto">{{ textos().queSonParrafo1 }}</p>
+      <p class="legal__texto">{{ textos().queSonParrafo2 }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().tiposTitulo }}</h2>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().esencialesTitulo }}</h3>
+      <p class="legal__texto">{{ textos().esencialesTexto }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().esencialesPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().analiticasTitulo }}</h3>
+      <p class="legal__texto">{{ textos().analiticasTexto }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().analiticasPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().funcionalidadTitulo }}</h3>
+      <p class="legal__texto">{{ textos().funcionalidadTexto }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().funcionalidadPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().marketingTitulo }}</h3>
+      <p class="legal__texto">{{ textos().marketingTexto }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().marketingPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().duracionTitulo }}</h2>
+      <p class="legal__texto">{{ textos().duracionIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().duracionTipos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+
+      <p class="legal__texto">{{ textos().duracionExpiraIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().duracionExpiraPuntos; track $index) {
+          <li class="legal__lista-item">{{ punto }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().gestionTitulo }}</h2>
+      <p class="legal__texto">{{ textos().gestionIntro }}</p>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().panelTitulo }}</h3>
+      <p class="legal__texto">{{ textos().panelTexto }}</p>
+
+      <h3 class="legal__subtitulo-menor">{{ textos().navegadorTitulo }}</h3>
+      <p class="legal__texto">{{ textos().navegadorTexto }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().navegadorPuntos; track $index) {
+          <li class="legal__lista-item"><strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}</li>
+        }
+      </ul>
+
+      <p class="legal__texto legal__texto--destacado">
+        <strong>{{ textos().gestionNotaEtiqueta }}</strong> {{ textos().gestionNotaTexto }}
+      </p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().tercerosTitulo }}</h2>
+      <p class="legal__texto">{{ textos().tercerosIntro }}</p>
+      <ul class="legal__lista">
+        @for (punto of textos().tercerosPuntos; track $index) {
+          <li class="legal__lista-item">
+            <strong>{{ punto.etiqueta }}</strong> {{ punto.texto }}
+            <a class="legal__enlace" [href]="punto.enlaceUrl" rel="noopener" target="_blank">
+              {{ punto.enlaceTexto }}
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().actualizacionesTitulo }}</h2>
+      <p class="legal__texto">{{ textos().actualizacionesParrafo1 }}</p>
+      <p class="legal__texto">{{ textos().actualizacionesParrafo2 }}</p>
+    </section>
+
+    <section class="legal__seccion">
+      <h2 class="legal__subtitulo">{{ textos().contactoTitulo }}</h2>
+      <p class="legal__texto">{{ textos().contactoIntro }}</p>
+      <ul class="legal__lista legal__lista--sin-estilo">
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoEmailEtiqueta }}</strong>
+          <a class="legal__enlace" href="mailto:privacidad@cofira.com">privacidad&#64;cofira.com</a>
+        </li>
+        <li class="legal__lista-item">
+          <strong>{{ textos().contactoDireccionEtiqueta }}</strong> {{ textos().contactoDireccion }}
+        </li>
+      </ul>
+    </section>
+
+  </article>
+</main>

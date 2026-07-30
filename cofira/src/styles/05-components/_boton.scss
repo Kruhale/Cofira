@@ -1,0 +1,125 @@
+@import '../01-tools/mixins';
+
+
+
+.boton {
+  @include boton-pill;
+  font-size: var(--font-size-md);
+  letter-spacing: 0.01em;
+}
+
+
+
+/* El botón primario real vive en el componente app-button (button.scss): allí gana
+   por especificidad (encapsulación emulada). Aquí se deja la versión base por si se
+   usa .boton--primario suelto fuera del componente. */
+.boton--primario {
+  background: var(--gradiente-acento);
+  color: var(--texto-sobre-acento);
+  box-shadow: 0 0.5rem 1.25rem var(--naranja-glow-media);
+
+  @include hover-activo {
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.75rem 1.75rem var(--naranja-glow-fuerte);
+  }
+
+  @include click-activo {
+    transform: translateY(0);
+  }
+}
+
+
+
+.boton--secundario {
+  background: var(--superficie-3);
+  color: var(--texto-principal);
+  border-color: var(--borde-sutil);
+
+  @include hover-activo {
+    transform: translateY(-0.125rem);
+    border-color: var(--naranja-normal);
+    color: var(--naranja-texto);
+  }
+
+  @include click-activo {
+    transform: translateY(0);
+  }
+}
+
+
+
+.boton--fantasma {
+  background: transparent;
+  color: var(--texto-principal);
+  border-color: var(--borde-medio);
+
+  @include hover-activo {
+    background: var(--superficie-2);
+    border-color: var(--naranja-normal);
+    color: var(--naranja-texto);
+  }
+
+  @include click-activo {
+    background: var(--superficie-3);
+  }
+}
+
+
+
+.boton--peligro {
+  background: var(--peligro);
+  color: hsl(0, 0%, 100%);
+  box-shadow: 0 0.5rem 1.25rem var(--rojo-normal-transparente-030);
+
+  @include hover-activo {
+    transform: translateY(-0.125rem);
+    filter: brightness(1.08);
+  }
+
+  @include click-activo {
+    transform: translateY(0);
+  }
+}
+
+
+
+.boton--pequeno {
+  padding: 0.5rem 1.15rem;
+  font-size: var(--font-size-sm);
+  min-height: 2.25rem;
+}
+
+.boton--mediano {
+  padding: 0.7rem 1.6rem;
+  font-size: var(--font-size-md);
+  min-height: 2.85rem;
+}
+
+.boton--grande {
+  padding: 0.8rem 2rem;
+  font-size: var(--font-size-md);
+  min-height: 3rem;
+}
+
+
+
+.boton--completo {
+  width: 100%;
+}
+
+
+
+.boton__icono {
+  display: inline-flex;
+  margin-right: var(--spacing-size-xss);
+}
+
+.boton__icono-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.boton__icono--derecha {
+  margin-right: 0;
+  margin-left: var(--spacing-size-xss);
+}
